@@ -2,74 +2,66 @@
 
 import { Button } from "@/components/ui/button";
 
+const serviceTimes = [
+  { day: "Sunday", times: ["7:00 AM", "9:00 AM", "11:00 AM"] },
+  { day: "Monday", times: ["6:00 PM (90 Minutes with Jesus)"] },
+  { day: "Tuesday", times: ["6:00 AM (Covenant Hour of Prayer)"] },
+  {
+    day: "Wednesday",
+    times: ["6:00 AM (Covenant Hour of Prayer)", "6:00 PM (Communion Service)"],
+  },
+  { day: "Thursday", times: ["6:00 AM (Covenant Hour of Prayer)"] },
+  { day: "Friday", times: ["6:00 AM (Covenant Hour of Prayer)"] },
+  {
+    day: "Saturday",
+    times: ["7:00 AM (Covenant Hour of Prayer)", "5:00 PM (Home Cell Groups)"],
+  },
+];
+
+const facilities = [
+  {
+    title: "Main Auditorium",
+    description: "1,500-seater sanctuary with modern audio-visual equipment",
+    icon: "⛪",
+  },
+  {
+    title: "Children's Church",
+    description: "Dedicated space for children's ministry and Sunday School",
+    icon: "👶",
+  },
+  {
+    title: "Youth Center",
+    description: "Modern facility for youth activities and Bible study",
+    icon: "🧒",
+  },
+  {
+    title: "Fellowship Hall",
+    description: "Multi-purpose space for events, meetings, and fellowship",
+    icon: "🤝",
+  },
+  {
+    title: "Library",
+    description: "Extensive collection of Christian books and study materials",
+    icon: "📚",
+  },
+  {
+    title: "Prayer Room",
+    description: "Quiet space for personal prayer and meditation",
+    icon: "🙏",
+  },
+];
+
+const nearbyLandmarks = [
+  "Goderich Market (5 minutes walk)",
+  "Goderich Bus Station (10 minutes walk)",
+  "Goderich Police Station (15 minutes walk)",
+  "Goderich Hospital (20 minutes walk)",
+  "Goderich Beach (25 minutes walk)",
+];
+
 export default function LocationPage() {
-  const serviceTimes = [
-    { day: "Sunday", times: ["7:00 AM", "9:00 AM", "11:00 AM"] },
-    { day: "Monday", times: ["6:00 PM (90 Minutes with Jesus)"] },
-    { day: "Tuesday", times: ["6:00 AM (Covenant Hour of Prayer)"] },
-    {
-      day: "Wednesday",
-      times: [
-        "6:00 AM (Covenant Hour of Prayer)",
-        "6:00 PM (Communion Service)",
-      ],
-    },
-    { day: "Thursday", times: ["6:00 AM (Covenant Hour of Prayer)"] },
-    { day: "Friday", times: ["6:00 AM (Covenant Hour of Prayer)"] },
-    {
-      day: "Saturday",
-      times: [
-        "7:00 AM (Covenant Hour of Prayer)",
-        "5:00 PM (Home Cell Groups)",
-      ],
-    },
-  ];
-
-  const facilities = [
-    {
-      title: "Main Auditorium",
-      description: "1,500-seater sanctuary with modern audio-visual equipment",
-      icon: "⛪",
-    },
-    {
-      title: "Children's Church",
-      description: "Dedicated space for children's ministry and Sunday School",
-      icon: "👶",
-    },
-    {
-      title: "Youth Center",
-      description: "Modern facility for youth activities and Bible study",
-      icon: "🧒",
-    },
-    {
-      title: "Fellowship Hall",
-      description: "Multi-purpose space for events, meetings, and fellowship",
-      icon: "🤝",
-    },
-    {
-      title: "Library",
-      description:
-        "Extensive collection of Christian books and study materials",
-      icon: "📚",
-    },
-    {
-      title: "Prayer Room",
-      description: "Quiet space for personal prayer and meditation",
-      icon: "🙏",
-    },
-  ];
-
-  const nearbyLandmarks = [
-    "Goderich Market (5 minutes walk)",
-    "Goderich Bus Station (10 minutes walk)",
-    "Goderich Police Station (15 minutes walk)",
-    "Goderich Hospital (20 minutes walk)",
-    "Goderich Beach (25 minutes walk)",
-  ];
-
   return (
     <div className="pt-20">
-      {/* Hero Section */}
       <section className="relative bg-gradient-to-r from-primary-900 to-primary-700 text-white py-24">
         <div className="absolute inset-0 bg-black/40"></div>
         <div className="relative max-w-7xl mx-auto px-4 text-center">

@@ -75,7 +75,6 @@ const mediaCategories = [
 export default function MediaPage() {
   return (
     <main className="pt-20">
-      {/* Hero Section */}
       <section className="relative bg-gradient-to-r from-primary-900 to-primary-700 text-white py-24">
         <div className="absolute inset-0 bg-black/40"></div>
         <div className="relative max-w-7xl mx-auto px-4 text-center">
