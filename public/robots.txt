@@ -1,0 +1,30 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://wcigoderich.org/sitemap.xml
+
+# Disallow admin or private areas (if any)
+Disallow: /api/
+Disallow: /_next/
+Disallow: /admin/
+
+# Allow important pages
+Allow: /about/
+Allow: /services/
+Allow: /events/
+Allow: /media/
+Allow: /gallery/
+Allow: /contact/
+Allow: /prayer/
+Allow: /service-units/
+Allow: /giving/
+Allow: /testimonies/
+Allow: /wofbi/
+Allow: /homecell/
+Allow: /pastors/
+Allow: /education/
+Allow: /location/
+
+# Crawl delay (optional)
+Crawl-delay: 1
