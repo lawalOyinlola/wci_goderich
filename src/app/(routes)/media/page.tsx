@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const latestSermons = [
   {
@@ -391,10 +392,11 @@ export default function MediaPage() {
             Get notified about new content and never miss an inspiring message
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button variant="secondary" size="lg" href="/contact">
-              Contact Us
+            <Button variant="secondary" size="lg" asChild>
+              <Link href="/contact">Contact Us</Link>
             </Button>
-            <Button variant="outline" size="lg" href="/events">
+            <Button variant="outline" size="lg" asChild>
+              <Link href="/events">View Events</Link>
               View Events
             </Button>
           </div>
