@@ -328,11 +328,12 @@ export default function GalleryPage() {
               <Link href="/events">Upcoming Events</Link>
             </Button>
 
-            <Button variant="secondary" size="lg" href="/services">
-              Service Times
+            <Button variant="secondary" size="lg" asChild>
+              <Link href="/services">Service Times</Link>
             </Button>
-            <Button variant="outline" size="lg" href="/events">
-              Upcoming Events
+
+            <Button variant="secondary" size="lg" asChild>
+              <Link href="/events"> Upcoming Events</Link>
             </Button>
           </div>
         </div>
