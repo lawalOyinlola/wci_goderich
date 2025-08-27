@@ -6,7 +6,7 @@ const nextConfig = {
     // Improve development stability
     optimizePackageImports: ["lucide-react"],
     // React 18 stability
-    reactCompiler: false,
+    // reactCompiler: false,
   },
   // Improve development performance
   swcMinify: true,
