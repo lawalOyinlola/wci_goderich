@@ -127,7 +127,7 @@ export default function LocationPage() {
 
                 <div className="pt-4">
                   <Button
-                    variant="accent"
+                    variant=outline
                     size="lg"
                     href="/contact"
                     className="mr-4"
@@ -368,7 +368,7 @@ export default function LocationPage() {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button variant="accent" size="lg" href="/services">
+            <Button variant=outline size="lg" href="/services">
               View Service Schedule
             </Button>
             <Button variant="outline" size="lg" href="/contact">

@@ -364,7 +364,7 @@ export default function GivingPage() {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button variant="accent" size="lg" className="px-12">
+              <Button variant="outline" size="lg" className="px-12">
                 Give Now
               </Button>
               <Button variant="outline" size="lg">

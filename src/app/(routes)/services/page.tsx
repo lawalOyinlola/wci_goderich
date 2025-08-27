@@ -67,7 +67,7 @@ export default function ContactPage() {
               {...form.register("message")}
             />
           </div>
-          <Button type="submit" variant="accent" size="lg">
+          <Button type="submit" variant=outline size="lg">
             Send Message
           </Button>
         </form>

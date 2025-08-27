@@ -351,7 +351,7 @@ export default function TestimoniesPage() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button variant="accent" size="lg" href="/contact">
+              <Button variant=outline size="lg" href="/contact">
                 Share Your Story
               </Button>
               <Button variant="outline" size="lg" href="/prayer">

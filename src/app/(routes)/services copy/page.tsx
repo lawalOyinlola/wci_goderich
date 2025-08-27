@@ -310,7 +310,7 @@ export default function ServicesPage() {
               </p>
               <div className="space-y-4">
                 <Button
-                  variant="accent"
+                  variant=outline
                   size="lg"
                   href="/contact"
                   className="w-full"

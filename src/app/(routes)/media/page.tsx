@@ -167,7 +167,7 @@ export default function MediaPage() {
                   {latestSermons[0].description}
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <Button variant="accent" size="lg" className="flex-1">
+                  <Button variant=outline size="lg" className="flex-1">
                     Watch Now
                   </Button>
                   <Button variant="outline" size="lg" className="flex-1">
@@ -245,7 +245,7 @@ export default function MediaPage() {
                     {sermon.description}
                   </p>
                   <div className="flex gap-2">
-                    <Button variant="accent" size="sm" className="flex-1">
+                    <Button variant=outline size="sm" className="flex-1">
                       Watch
                     </Button>
                     <Button variant="outline" size="sm" className="flex-1">
@@ -314,7 +314,7 @@ export default function MediaPage() {
                       ></div>
                     </div>
                   </div>
-                  <Button variant="accent" size="sm" className="w-full">
+                  <Button variant=outline size="sm" className="w-full">
                     Continue Series
                   </Button>
                 </div>
@@ -350,7 +350,7 @@ export default function MediaPage() {
                 </p>
               </div>
               <div className="space-y-4">
-                <Button variant="accent" size="lg" className="w-full">
+                <Button variant=outline size="lg" className="w-full">
                   Subscribe on Spotify
                 </Button>
                 <Button variant="outline" size="lg" className="w-full">
@@ -372,7 +372,7 @@ export default function MediaPage() {
                 </p>
               </div>
               <div className="space-y-4">
-                <Button variant="accent" size="lg" className="w-full">
+                <Button variant=outline size="lg" className="w-full">
                   Download for iOS
                 </Button>
                 <Button variant="outline" size="lg" className="w-full">

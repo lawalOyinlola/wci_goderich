@@ -233,7 +233,7 @@ export default function ServiceUnitsPage() {
                       <span className="text-sm text-primary font-medium">
                         {unit.currentOpenings} openings available
                       </span>
-                      <Button variant="accent" size="sm">
+                      <Button variant=outline size="sm">
                         Join Now
                       </Button>
                     </div>
@@ -361,7 +361,7 @@ export default function ServiceUnitsPage() {
 
               <div className="space-y-4">
                 <Button
-                  variant="accent"
+                  variant=outline
                   size="lg"
                   className="w-full"
                   href="/contact"

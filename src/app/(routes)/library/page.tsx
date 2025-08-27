@@ -266,7 +266,7 @@ export default function LibraryPage() {
                   </p>
                   <div className="flex gap-2">
                     <Button
-                      variant="accent"
+                      variant="outline"
                       size="sm"
                       className="flex-1"
                       disabled={!book.available}
@@ -320,7 +320,7 @@ export default function LibraryPage() {
                     <p className="text-foreground/70 mb-4">
                       {material.description}
                     </p>
-                    <Button variant="accent" size="sm">
+                    <Button variant="outline" size="sm">
                       Download
                     </Button>
                   </div>
@@ -434,7 +434,7 @@ export default function LibraryPage() {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button variant="accent" size="lg" href="/location">
+            <Button variant="outline" size="lg" href="/location">
               Get Directions
             </Button>
             <Button variant="outline" size="lg" href="/contact">
