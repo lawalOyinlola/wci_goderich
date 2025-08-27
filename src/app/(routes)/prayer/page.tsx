@@ -247,7 +247,7 @@ export default function PrayerPage() {
             <div className="text-center">
               <Button
                 type="submit"
-                variant=outline
+                variant="outline"
                 size="lg"
                 className="px-12"
               >
@@ -426,7 +426,7 @@ export default function PrayerPage() {
             </div>
           </div>
 
-          <Button variant=outline size="lg" href="/services">
+          <Button variant="outline" size="lg" href="/services">
             View Full Schedule
           </Button>
         </div>

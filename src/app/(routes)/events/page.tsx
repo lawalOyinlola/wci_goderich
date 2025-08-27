@@ -4,81 +4,81 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
+const upcomingEvents = [
+  {
+    title: "Annual Revival Conference",
+    date: "December 15-17, 2024",
+    time: "6:00 PM Daily",
+    location: "WCI Goderich Auditorium",
+    description:
+      "Join us for three powerful nights of spiritual renewal, healing, and breakthrough. Special guest speakers and anointed worship.",
+    image: "/images/2025_theme.png",
+    category: "Conference",
+    featured: true,
+  },
+  {
+    title: "Christmas Carol Service",
+    date: "December 24, 2024",
+    time: "7:00 PM",
+    location: "WCI Goderich Auditorium",
+    description:
+      "Celebrate the birth of our Savior with traditional carols, special performances, and a message of hope.",
+    image: "/images/bg-covenant_exchange.jpg",
+    category: "Celebration",
+  },
+  {
+    title: "New Year's Prayer Service",
+    date: "January 1, 2025",
+    time: "12:00 AM",
+    location: "WCI Goderich Auditorium",
+    description:
+      "Start the new year in prayer and thanksgiving. Join us for a powerful night of intercession and worship.",
+    image: "/images/bg-2025_theme.jpg",
+    category: "Prayer",
+  },
+  {
+    title: "Youth Empowerment Summit",
+    date: "January 25, 2025",
+    time: "10:00 AM - 4:00 PM",
+    location: "WCI Goderich Youth Center",
+    description:
+      "A day of inspiration, workshops, and fellowship for young people to grow in faith and leadership.",
+    image: "/images/2025_covenant_exchange.png",
+    category: "Youth",
+  },
+  {
+    title: "Women's Conference",
+    date: "February 8, 2025",
+    time: "9:00 AM - 6:00 PM",
+    location: "WCI Goderich Auditorium",
+    description:
+      "A special gathering for women to be encouraged, equipped, and empowered in their faith journey.",
+    image: "/images/bg-prophetic_focus_june.jpg",
+    category: "Women",
+  },
+  {
+    title: "Men's Breakfast & Bible Study",
+    date: "February 15, 2025",
+    time: "7:00 AM - 9:00 AM",
+    location: "WCI Goderich Fellowship Hall",
+    description:
+      "Fellowship over breakfast while studying God's Word and building strong relationships.",
+    image: "/images/prophetic_focus_june.png",
+    category: "Men",
+  },
+];
+
+const eventCategories = [
+  { name: "All Events", count: upcomingEvents.length, active: true },
+  { name: "Conference", count: 1, active: false },
+  { name: "Celebration", count: 1, active: false },
+  { name: "Prayer", count: 1, active: false },
+  { name: "Youth", count: 1, active: false },
+  { name: "Women", count: 1, active: false },
+  { name: "Men", count: 1, active: false },
+];
+
 export default function EventsPage() {
-  const upcomingEvents = [
-    {
-      title: "Annual Revival Conference",
-      date: "December 15-17, 2024",
-      time: "6:00 PM Daily",
-      location: "WCI Goderich Auditorium",
-      description:
-        "Join us for three powerful nights of spiritual renewal, healing, and breakthrough. Special guest speakers and anointed worship.",
-      image: "/images/2025_theme.png",
-      category: "Conference",
-      featured: true,
-    },
-    {
-      title: "Christmas Carol Service",
-      date: "December 24, 2024",
-      time: "7:00 PM",
-      location: "WCI Goderich Auditorium",
-      description:
-        "Celebrate the birth of our Savior with traditional carols, special performances, and a message of hope.",
-      image: "/images/bg-covenant_exchange.jpg",
-      category: "Celebration",
-    },
-    {
-      title: "New Year's Prayer Service",
-      date: "January 1, 2025",
-      time: "12:00 AM",
-      location: "WCI Goderich Auditorium",
-      description:
-        "Start the new year in prayer and thanksgiving. Join us for a powerful night of intercession and worship.",
-      image: "/images/bg-2025_theme.jpg",
-      category: "Prayer",
-    },
-    {
-      title: "Youth Empowerment Summit",
-      date: "January 25, 2025",
-      time: "10:00 AM - 4:00 PM",
-      location: "WCI Goderich Youth Center",
-      description:
-        "A day of inspiration, workshops, and fellowship for young people to grow in faith and leadership.",
-      image: "/images/2025_covenant_exchange.png",
-      category: "Youth",
-    },
-    {
-      title: "Women's Conference",
-      date: "February 8, 2025",
-      time: "9:00 AM - 6:00 PM",
-      location: "WCI Goderich Auditorium",
-      description:
-        "A special gathering for women to be encouraged, equipped, and empowered in their faith journey.",
-      image: "/images/bg-prophetic_focus_june.jpg",
-      category: "Women",
-    },
-    {
-      title: "Men's Breakfast & Bible Study",
-      date: "February 15, 2025",
-      time: "7:00 AM - 9:00 AM",
-      location: "WCI Goderich Fellowship Hall",
-      description:
-        "Fellowship over breakfast while studying God's Word and building strong relationships.",
-      image: "/images/prophetic_focus_june.png",
-      category: "Men",
-    },
-  ];
-
-  const eventCategories = [
-    { name: "All Events", count: upcomingEvents.length, active: true },
-    { name: "Conference", count: 1, active: false },
-    { name: "Celebration", count: 1, active: false },
-    { name: "Prayer", count: 1, active: false },
-    { name: "Youth", count: 1, active: false },
-    { name: "Women", count: 1, active: false },
-    { name: "Men", count: 1, active: false },
-  ];
-
   return (
     <main className="pt-20">
       {/* Hero Section */}

@@ -2,132 +2,122 @@
 
 import { Button } from "@/components/ui/button";
 
+const services = [
+  {
+    title: "Sunday Worship Services",
+    times: ["7:00 AM", "9:00 AM", "11:00 AM"],
+    description:
+      "Join us for powerful worship, inspiring messages, and fellowship every Sunday. Our services are designed to uplift your spirit and strengthen your faith.",
+    icon: "⛪",
+    features: [
+      "Live Worship",
+      "Bible Teaching",
+      "Children's Church",
+      "Teens Ministry",
+    ],
+  },
+  {
+    title: "90 Minutes with Jesus",
+    time: "Mondays: 6:00 PM",
+    description:
+      "A focused time of Bible study and spiritual growth where we dive deep into God's Word and apply it to our daily lives.",
+    icon: "📖",
+    features: ["Bible Study", "Group Discussion", "Prayer Time", "Q&A Session"],
+  },
+  {
+    title: "Communion Service",
+    time: "Wednesdays: 6:00 PM",
+    description:
+      "A sacred time of remembrance and reflection on Christ's sacrifice, strengthening our spiritual connection with God.",
+    icon: "🍷",
+    features: ["Communion", "Worship", "Prayer", "Fellowship"],
+  },
+  {
+    title: "Covenant Hour of Prayer",
+    time: "Weekdays: 6:00 AM | Saturdays: 7:00 AM",
+    description:
+      "Start your day with prayer and intercession. Join believers in seeking God's face and lifting up our community.",
+    icon: "🙏",
+    features: ["Morning Prayer", "Intercession", "Praise", "Spiritual Warfare"],
+  },
+  {
+    title: "Spiritual Week of Emphasis",
+    time: "First Week Monthly: Wed-Fri 6:00 PM",
+    description:
+      "Intensive spiritual focus with special teachings, extended prayer sessions, and spiritual renewal.",
+    icon: "🔥",
+    features: [
+      "Special Teachings",
+      "Extended Prayer",
+      "Spiritual Renewal",
+      "Community Building",
+    ],
+  },
+  {
+    title: "Home Cell Groups",
+    time: "Saturdays: 5:00 PM",
+    description:
+      "Small group gatherings in homes for intimate fellowship, Bible study, and prayer support.",
+    icon: "🏠",
+    features: [
+      "Small Groups",
+      "Intimate Fellowship",
+      "Bible Study",
+      "Prayer Support",
+    ],
+  },
+];
+
+const ministries = [
+  {
+    title: "Children's Ministry",
+    description:
+      "Nurturing the faith of our youngest members through age-appropriate Bible stories, songs, and activities.",
+    ageRange: "Ages 3-12",
+    activities: [
+      "Sunday School",
+      "Vacation Bible School",
+      "Children's Choir",
+      "Bible Games",
+    ],
+  },
+  {
+    title: "Youth Ministry",
+    description:
+      "Empowering teenagers to grow in their faith through relevant teachings, activities, and peer support.",
+    ageRange: "Ages 13-18",
+    activities: [
+      "Youth Bible Study",
+      "Fellowship Events",
+      "Mentorship",
+      "Outreach Programs",
+    ],
+  },
+  {
+    title: "Women's Ministry",
+    description:
+      "Supporting and encouraging women in their spiritual journey through fellowship, prayer, and Bible study.",
+    activities: [
+      "Women's Bible Study",
+      "Prayer Groups",
+      "Fellowship Events",
+      "Outreach Programs",
+    ],
+  },
+  {
+    title: "Men's Ministry",
+    description:
+      "Building strong men of God through accountability, mentorship, and spiritual development.",
+    activities: [
+      "Men's Bible Study",
+      "Accountability Groups",
+      "Leadership Training",
+      "Community Service",
+    ],
+  },
+];
+
 export default function ServicesPage() {
-  const services = [
-    {
-      title: "Sunday Worship Services",
-      times: ["7:00 AM", "9:00 AM", "11:00 AM"],
-      description:
-        "Join us for powerful worship, inspiring messages, and fellowship every Sunday. Our services are designed to uplift your spirit and strengthen your faith.",
-      icon: "⛪",
-      features: [
-        "Live Worship",
-        "Bible Teaching",
-        "Children's Church",
-        "Teens Ministry",
-      ],
-    },
-    {
-      title: "90 Minutes with Jesus",
-      time: "Mondays: 6:00 PM",
-      description:
-        "A focused time of Bible study and spiritual growth where we dive deep into God's Word and apply it to our daily lives.",
-      icon: "📖",
-      features: [
-        "Bible Study",
-        "Group Discussion",
-        "Prayer Time",
-        "Q&A Session",
-      ],
-    },
-    {
-      title: "Communion Service",
-      time: "Wednesdays: 6:00 PM",
-      description:
-        "A sacred time of remembrance and reflection on Christ's sacrifice, strengthening our spiritual connection with God.",
-      icon: "🍷",
-      features: ["Communion", "Worship", "Prayer", "Fellowship"],
-    },
-    {
-      title: "Covenant Hour of Prayer",
-      time: "Weekdays: 6:00 AM | Saturdays: 7:00 AM",
-      description:
-        "Start your day with prayer and intercession. Join believers in seeking God's face and lifting up our community.",
-      icon: "🙏",
-      features: [
-        "Morning Prayer",
-        "Intercession",
-        "Praise",
-        "Spiritual Warfare",
-      ],
-    },
-    {
-      title: "Spiritual Week of Emphasis",
-      time: "First Week Monthly: Wed-Fri 6:00 PM",
-      description:
-        "Intensive spiritual focus with special teachings, extended prayer sessions, and spiritual renewal.",
-      icon: "🔥",
-      features: [
-        "Special Teachings",
-        "Extended Prayer",
-        "Spiritual Renewal",
-        "Community Building",
-      ],
-    },
-    {
-      title: "Home Cell Groups",
-      time: "Saturdays: 5:00 PM",
-      description:
-        "Small group gatherings in homes for intimate fellowship, Bible study, and prayer support.",
-      icon: "🏠",
-      features: [
-        "Small Groups",
-        "Intimate Fellowship",
-        "Bible Study",
-        "Prayer Support",
-      ],
-    },
-  ];
-
-  const ministries = [
-    {
-      title: "Children's Ministry",
-      description:
-        "Nurturing the faith of our youngest members through age-appropriate Bible stories, songs, and activities.",
-      ageRange: "Ages 3-12",
-      activities: [
-        "Sunday School",
-        "Vacation Bible School",
-        "Children's Choir",
-        "Bible Games",
-      ],
-    },
-    {
-      title: "Youth Ministry",
-      description:
-        "Empowering teenagers to grow in their faith through relevant teachings, activities, and peer support.",
-      ageRange: "Ages 13-18",
-      activities: [
-        "Youth Bible Study",
-        "Fellowship Events",
-        "Mentorship",
-        "Outreach Programs",
-      ],
-    },
-    {
-      title: "Women's Ministry",
-      description:
-        "Supporting and encouraging women in their spiritual journey through fellowship, prayer, and Bible study.",
-      activities: [
-        "Women's Bible Study",
-        "Prayer Groups",
-        "Fellowship Events",
-        "Outreach Programs",
-      ],
-    },
-    {
-      title: "Men's Ministry",
-      description:
-        "Building strong men of God through accountability, mentorship, and spiritual development.",
-      activities: [
-        "Men's Bible Study",
-        "Accountability Groups",
-        "Leadership Training",
-        "Community Service",
-      ],
-    },
-  ];
-
   return (
     <main className="pt-20">
       {/* Hero Section */}
@@ -310,7 +300,7 @@ export default function ServicesPage() {
               </p>
               <div className="space-y-4">
                 <Button
-                  variant=outline
+                  variant="outline"
                   size="lg"
                   href="/contact"
                   className="w-full"

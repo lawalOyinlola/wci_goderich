@@ -4,122 +4,121 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
+const wofbiPrograms = [
+  {
+    title: "Foundation School",
+    duration: "6 Months",
+    level: "Beginner",
+    description:
+      "Basic biblical principles and Christian fundamentals for new believers",
+    subjects: [
+      "Bible Basics",
+      "Christian Living",
+      "Prayer",
+      "Worship",
+      "Evangelism",
+    ],
+    schedule: "Saturdays: 9:00 AM - 12:00 PM",
+    fee: "Free",
+  },
+  {
+    title: "Leadership School",
+    duration: "12 Months",
+    level: "Intermediate",
+    description: "Advanced training for church leaders and ministry workers",
+    subjects: [
+      "Church Administration",
+      "Ministry Management",
+      "Leadership Skills",
+      "Biblical Counseling",
+      "Preaching",
+    ],
+    schedule: "Weekdays: 6:00 PM - 8:00 PM",
+    fee: "Minimal Registration",
+  },
+  {
+    title: "Advanced Ministry",
+    duration: "18 Months",
+    level: "Advanced",
+    description: "Specialized training for pastors and senior ministry leaders",
+    subjects: [
+      "Theology",
+      "Church History",
+      "Biblical Languages",
+      "Advanced Preaching",
+      "Church Planting",
+    ],
+    schedule: "Flexible (Online + In-person)",
+    fee: "Scholarship Available",
+  },
+];
+
+const bibleStudyPrograms = [
+  {
+    title: "New Believers Class",
+    duration: "4 Weeks",
+    description: "Perfect for those who are new to the Christian faith",
+    topics: ["Salvation", "Baptism", "Holy Spirit", "Church Membership"],
+    instructor: "Pastor Jerry Simon",
+    nextStart: "January 15, 2025",
+  },
+  {
+    title: "Bible Study Groups",
+    duration: "Ongoing",
+    description: "Small group Bible studies for deeper understanding",
+    topics: [
+      "Book Studies",
+      "Character Studies",
+      "Topical Studies",
+      "Life Application",
+    ],
+    instructor: "Various Leaders",
+    nextStart: "Every Saturday",
+  },
+  {
+    title: "Youth Bible Study",
+    duration: "School Year",
+    description: "Age-appropriate Bible teaching for teenagers",
+    topics: [
+      "Peer Pressure",
+      "Relationships",
+      "Faith & Science",
+      "Christian Values",
+    ],
+    instructor: "Youth Ministry Team",
+    nextStart: "September 2025",
+  },
+];
+
+const resources = [
+  {
+    title: "Digital Library",
+    description:
+      "Access to thousands of Christian books, sermons, and study materials",
+    icon: "📚",
+    access: "Free for Members",
+  },
+  {
+    title: "Online Courses",
+    description: "Self-paced online courses on various biblical topics",
+    icon: "💻",
+    access: "Free for Members",
+  },
+  {
+    title: "Study Guides",
+    description: "Comprehensive study guides for personal and group study",
+    icon: "📖",
+    access: "Free Download",
+  },
+  {
+    title: "Audio Resources",
+    description: "Sermons, teachings, and Bible study podcasts",
+    icon: "🎧",
+    access: "Free Streaming",
+  },
+];
+
 export default function EducationPage() {
-  const wofbiPrograms = [
-    {
-      title: "Foundation School",
-      duration: "6 Months",
-      level: "Beginner",
-      description:
-        "Basic biblical principles and Christian fundamentals for new believers",
-      subjects: [
-        "Bible Basics",
-        "Christian Living",
-        "Prayer",
-        "Worship",
-        "Evangelism",
-      ],
-      schedule: "Saturdays: 9:00 AM - 12:00 PM",
-      fee: "Free",
-    },
-    {
-      title: "Leadership School",
-      duration: "12 Months",
-      level: "Intermediate",
-      description: "Advanced training for church leaders and ministry workers",
-      subjects: [
-        "Church Administration",
-        "Ministry Management",
-        "Leadership Skills",
-        "Biblical Counseling",
-        "Preaching",
-      ],
-      schedule: "Weekdays: 6:00 PM - 8:00 PM",
-      fee: "Minimal Registration",
-    },
-    {
-      title: "Advanced Ministry",
-      duration: "18 Months",
-      level: "Advanced",
-      description:
-        "Specialized training for pastors and senior ministry leaders",
-      subjects: [
-        "Theology",
-        "Church History",
-        "Biblical Languages",
-        "Advanced Preaching",
-        "Church Planting",
-      ],
-      schedule: "Flexible (Online + In-person)",
-      fee: "Scholarship Available",
-    },
-  ];
-
-  const bibleStudyPrograms = [
-    {
-      title: "New Believers Class",
-      duration: "4 Weeks",
-      description: "Perfect for those who are new to the Christian faith",
-      topics: ["Salvation", "Baptism", "Holy Spirit", "Church Membership"],
-      instructor: "Pastor Jerry Simon",
-      nextStart: "January 15, 2025",
-    },
-    {
-      title: "Bible Study Groups",
-      duration: "Ongoing",
-      description: "Small group Bible studies for deeper understanding",
-      topics: [
-        "Book Studies",
-        "Character Studies",
-        "Topical Studies",
-        "Life Application",
-      ],
-      instructor: "Various Leaders",
-      nextStart: "Every Saturday",
-    },
-    {
-      title: "Youth Bible Study",
-      duration: "School Year",
-      description: "Age-appropriate Bible teaching for teenagers",
-      topics: [
-        "Peer Pressure",
-        "Relationships",
-        "Faith & Science",
-        "Christian Values",
-      ],
-      instructor: "Youth Ministry Team",
-      nextStart: "September 2025",
-    },
-  ];
-
-  const resources = [
-    {
-      title: "Digital Library",
-      description:
-        "Access to thousands of Christian books, sermons, and study materials",
-      icon: "📚",
-      access: "Free for Members",
-    },
-    {
-      title: "Online Courses",
-      description: "Self-paced online courses on various biblical topics",
-      icon: "💻",
-      access: "Free for Members",
-    },
-    {
-      title: "Study Guides",
-      description: "Comprehensive study guides for personal and group study",
-      icon: "📖",
-      access: "Free Download",
-    },
-    {
-      title: "Audio Resources",
-      description: "Sermons, teachings, and Bible study podcasts",
-      icon: "🎧",
-      access: "Free Streaming",
-    },
-  ];
-
   return (
     <div className="pt-20">
       {/* Hero Section */}

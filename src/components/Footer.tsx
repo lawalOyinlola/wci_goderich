@@ -4,56 +4,56 @@ import type { Route } from "next";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
+const footerSections = [
+  {
+    title: "About Us",
+    links: [
+      { label: "Our Story", href: "/about" },
+      { label: "Mission & Vision", href: "/about" },
+      { label: "Leadership", href: "/about" },
+      { label: "Core Values", href: "/about" },
+    ],
+  },
+  {
+    title: "Ministries",
+    links: [
+      { label: "Services", href: "/services" },
+      { label: "Service Units", href: "/service-units" },
+      { label: "WOFBI", href: "/wofbi" },
+      { label: "Education", href: "/education" },
+      { label: "Homecell", href: "/homecell" },
+    ],
+  },
+  {
+    title: "Resources",
+    links: [
+      { label: "Media Library", href: "/media" },
+      { label: "Book Library", href: "/library" },
+      { label: "Photo Gallery", href: "/gallery" },
+      { label: "Testimonies", href: "/testimonies" },
+      { label: "Prayer Requests", href: "/prayer" },
+    ],
+  },
+  {
+    title: "Get Involved",
+    links: [
+      { label: "Join Service Unit", href: "/service-units" },
+      { label: "Give Online", href: "/giving" },
+      { label: "Prayer Team", href: "/prayer" },
+      { label: "Volunteer", href: "/service-units" },
+      { label: "Contact Us", href: "/contact" },
+    ],
+  },
+];
+
+const quickLinks = [
+  { label: "Service Times", href: "/services" },
+  { label: "Upcoming Events", href: "/events" },
+  { label: "Location & Directions", href: "/location" },
+  { label: "Pastors", href: "/pastors" },
+];
+
 export default function Footer() {
-  const footerSections = [
-    {
-      title: "About Us",
-      links: [
-        { label: "Our Story", href: "/about" },
-        { label: "Mission & Vision", href: "/about" },
-        { label: "Leadership", href: "/about" },
-        { label: "Core Values", href: "/about" },
-      ],
-    },
-    {
-      title: "Ministries",
-      links: [
-        { label: "Services", href: "/services" },
-        { label: "Service Units", href: "/service-units" },
-        { label: "WOFBI", href: "/wofbi" },
-        { label: "Education", href: "/education" },
-        { label: "Homecell", href: "/homecell" },
-      ],
-    },
-    {
-      title: "Resources",
-      links: [
-        { label: "Media Library", href: "/media" },
-        { label: "Book Library", href: "/library" },
-        { label: "Photo Gallery", href: "/gallery" },
-        { label: "Testimonies", href: "/testimonies" },
-        { label: "Prayer Requests", href: "/prayer" },
-      ],
-    },
-    {
-      title: "Get Involved",
-      links: [
-        { label: "Join Service Unit", href: "/service-units" },
-        { label: "Give Online", href: "/giving" },
-        { label: "Prayer Team", href: "/prayer" },
-        { label: "Volunteer", href: "/service-units" },
-        { label: "Contact Us", href: "/contact" },
-      ],
-    },
-  ];
-
-  const quickLinks = [
-    { label: "Service Times", href: "/services" },
-    { label: "Upcoming Events", href: "/events" },
-    { label: "Location & Directions", href: "/location" },
-    { label: "Pastors", href: "/pastors" },
-  ];
-
   return (
     <footer className="bg-secondary-foreground text-primary-foreground py-16 mt-16">
       <div className="max-w-7xl mx-auto px-4">
@@ -119,7 +119,7 @@ export default function Footer() {
                 placeholder="Enter your email"
                 className="flex-1 px-4 py-2 rounded-md border border-secondary-600 bg-secondary-700 text-white placeholder-primary-foreground/50 focus:outline-none focus:ring-2 focus:ring-accent"
               />
-              <Button variant=outline size="sm">
+              <Button variant="outline" size="sm">
                 Subscribe
               </Button>
             </div>

@@ -2,115 +2,114 @@
 
 import { Button } from "@/components/ui/button";
 
+const givingMethods = [
+  {
+    title: "Sunday Service",
+    description: "Give during our Sunday worship services",
+    icon: "⛪",
+    instructions: "Place your offering in the collection basket during service",
+  },
+  {
+    title: "Online Giving",
+    description: "Give securely through our online platform",
+    icon: "💻",
+    instructions: "Use our secure online giving portal",
+  },
+  {
+    title: "Mobile Money",
+    description: "Give via mobile money services",
+    icon: "📱",
+    instructions: "Send to our registered mobile money numbers",
+  },
+  {
+    title: "Bank Transfer",
+    description: "Direct bank transfer to our account",
+    icon: "🏦",
+    instructions: "Transfer to our church bank account",
+  },
+];
+
+const givingCategories = [
+  {
+    title: "Tithe",
+    description: "10% of your income as commanded in Malachi 3:10",
+    percentage: "10%",
+    purpose: "Supporting the church's general operations and ministry",
+    verse: "Malachi 3:10",
+  },
+  {
+    title: "Offering",
+    description: "Voluntary gifts beyond the tithe",
+    percentage: "As Led",
+    purpose: "Special projects, missions, and outreach programs",
+    verse: "2 Corinthians 9:7",
+  },
+  {
+    title: "First Fruits",
+    description: "Giving the first and best of your increase",
+    percentage: "As Led",
+    purpose: "Honoring God with your first fruits",
+    verse: "Proverbs 3:9",
+  },
+  {
+    title: "Special Projects",
+    description: "Designated giving for specific needs",
+    percentage: "As Led",
+    purpose: "Building projects, missions, and special initiatives",
+    verse: "Exodus 35:5",
+  },
+];
+
+const impactAreas = [
+  {
+    title: "Church Operations",
+    description:
+      "Maintaining our facilities and supporting daily ministry activities",
+    icon: "⛪",
+    percentage: "40%",
+  },
+  {
+    title: "Missions & Outreach",
+    description: "Supporting local and international mission work",
+    icon: "🌍",
+    percentage: "25%",
+  },
+  {
+    title: "Youth & Children",
+    description: "Funding youth programs, children's ministry, and education",
+    icon: "👶",
+    percentage: "20%",
+  },
+  {
+    title: "Community Service",
+    description: "Helping those in need in our community",
+    icon: "🤝",
+    percentage: "15%",
+  },
+];
+
+const testimonies = [
+  {
+    name: "John M.",
+    testimony:
+      "When I started tithing faithfully, God opened doors I never imagined. My business grew, and I found myself able to give even more.",
+    category: "Tithing",
+  },
+  {
+    name: "Sarah K.",
+    testimony:
+      "Giving to missions has been one of the most rewarding experiences. Knowing that my offering helps spread the Gospel brings me great joy.",
+    category: "Missions",
+  },
+  {
+    name: "David L.",
+    testimony:
+      "I was hesitant about tithing at first, but when I obeyed God's command, He proved faithful. My financial situation improved significantly.",
+    category: "Tithing",
+  },
+];
+
 export default function GivingPage() {
-  const givingMethods = [
-    {
-      title: "Sunday Service",
-      description: "Give during our Sunday worship services",
-      icon: "⛪",
-      instructions:
-        "Place your offering in the collection basket during service",
-    },
-    {
-      title: "Online Giving",
-      description: "Give securely through our online platform",
-      icon: "💻",
-      instructions: "Use our secure online giving portal",
-    },
-    {
-      title: "Mobile Money",
-      description: "Give via mobile money services",
-      icon: "📱",
-      instructions: "Send to our registered mobile money numbers",
-    },
-    {
-      title: "Bank Transfer",
-      description: "Direct bank transfer to our account",
-      icon: "🏦",
-      instructions: "Transfer to our church bank account",
-    },
-  ];
-
-  const givingCategories = [
-    {
-      title: "Tithe",
-      description: "10% of your income as commanded in Malachi 3:10",
-      percentage: "10%",
-      purpose: "Supporting the church's general operations and ministry",
-      verse: "Malachi 3:10",
-    },
-    {
-      title: "Offering",
-      description: "Voluntary gifts beyond the tithe",
-      percentage: "As Led",
-      purpose: "Special projects, missions, and outreach programs",
-      verse: "2 Corinthians 9:7",
-    },
-    {
-      title: "First Fruits",
-      description: "Giving the first and best of your increase",
-      percentage: "As Led",
-      purpose: "Honoring God with your first fruits",
-      verse: "Proverbs 3:9",
-    },
-    {
-      title: "Special Projects",
-      description: "Designated giving for specific needs",
-      percentage: "As Led",
-      purpose: "Building projects, missions, and special initiatives",
-      verse: "Exodus 35:5",
-    },
-  ];
-
-  const impactAreas = [
-    {
-      title: "Church Operations",
-      description:
-        "Maintaining our facilities and supporting daily ministry activities",
-      icon: "⛪",
-      percentage: "40%",
-    },
-    {
-      title: "Missions & Outreach",
-      description: "Supporting local and international mission work",
-      icon: "🌍",
-      percentage: "25%",
-    },
-    {
-      title: "Youth & Children",
-      description: "Funding youth programs, children's ministry, and education",
-      icon: "👶",
-      percentage: "20%",
-    },
-    {
-      title: "Community Service",
-      description: "Helping those in need in our community",
-      icon: "🤝",
-      percentage: "15%",
-    },
-  ];
-
-  const testimonies = [
-    {
-      name: "John M.",
-      testimony:
-        "When I started tithing faithfully, God opened doors I never imagined. My business grew, and I found myself able to give even more.",
-      category: "Tithing",
-    },
-    {
-      name: "Sarah K.",
-      testimony:
-        "Giving to missions has been one of the most rewarding experiences. Knowing that my offering helps spread the Gospel brings me great joy.",
-      category: "Missions",
-    },
-    {
-      name: "David L.",
-      testimony:
-        "I was hesitant about tithing at first, but when I obeyed God's command, He proved faithful. My financial situation improved significantly.",
-      category: "Tithing",
-    },
-  ];
-
   return (
     <div className="pt-20">
       {/* Hero Section */}

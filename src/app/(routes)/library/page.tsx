@@ -3,130 +3,130 @@
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 
+const bookCategories = [
+  {
+    title: "Bible Study",
+    count: 45,
+    icon: "📖",
+    description: "Comprehensive Bible study materials and commentaries",
+    color: "bg-primary/10 text-primary",
+  },
+  {
+    title: "Christian Living",
+    count: 32,
+    icon: "❤️",
+    description: "Books on practical Christian living and discipleship",
+    color: "bg-accent/10 text-accent",
+  },
+  {
+    title: "Theology",
+    count: 28,
+    icon: "✝️",
+    description: "Deep theological works and doctrinal studies",
+    color: "bg-primary/10 text-primary",
+  },
+  {
+    title: "Prayer & Worship",
+    count: 18,
+    icon: "🙏",
+    description: "Resources for prayer, worship, and spiritual growth",
+    color: "bg-accent/10 text-accent",
+  },
+  {
+    title: "Family & Marriage",
+    count: 22,
+    icon: "👨‍👩‍👧‍👦",
+    description: "Christian family life and marriage guidance",
+    color: "bg-primary/10 text-primary",
+  },
+  {
+    title: "Youth & Children",
+    count: 15,
+    icon: "🧒",
+    description: "Age-appropriate materials for young believers",
+    color: "bg-accent/10 text-accent",
+  },
+];
+
+const featuredBooks = [
+  {
+    title: "The Purpose Driven Life",
+    author: "Rick Warren",
+    image: "/images/2025_theme.png",
+    category: "Christian Living",
+    description:
+      "A groundbreaking manifesto for Christian living in the 21st century.",
+    available: true,
+    rating: 4.8,
+  },
+  {
+    title: "Mere Christianity",
+    author: "C.S. Lewis",
+    image: "/images/bg-covenant_exchange.jpg",
+    category: "Theology",
+    description:
+      "A classic defense of the Christian faith by one of the most influential Christian writers.",
+    available: true,
+    rating: 4.9,
+  },
+  {
+    title: "The Power of a Praying Parent",
+    author: "Stormie Omartian",
+    image: "/images/bg-2025_theme.jpg",
+    category: "Prayer & Worship",
+    description:
+      "Learn how to pray effectively for your children and see God's power at work.",
+    available: false,
+    rating: 4.7,
+  },
+  {
+    title: "Boundaries in Marriage",
+    author: "Henry Cloud & John Townsend",
+    image: "/images/2025_covenant_exchange.png",
+    category: "Family & Marriage",
+    description:
+      "Essential principles for building a healthy, loving marriage relationship.",
+    available: true,
+    rating: 4.6,
+  },
+];
+
+const studyMaterials = [
+  {
+    title: "Bible Study Guide - Genesis",
+    type: "Study Guide",
+    pages: 45,
+    format: "PDF",
+    description:
+      "Comprehensive study guide for the book of Genesis with discussion questions and applications.",
+  },
+  {
+    title: "Prayer Journal Template",
+    type: "Template",
+    pages: 12,
+    format: "PDF",
+    description:
+      "Printable prayer journal to help you organize and track your prayer life.",
+  },
+  {
+    title: "Family Devotional Guide",
+    type: "Devotional",
+    pages: 30,
+    format: "PDF",
+    description:
+      "Daily devotional readings perfect for family worship and discussion.",
+  },
+  {
+    title: "Bible Memory Verses",
+    type: "Reference",
+    pages: 8,
+    format: "PDF",
+    description:
+      "Key Bible verses organized by topic for memorization and meditation.",
+  },
+];
+
 export default function LibraryPage() {
-  const bookCategories = [
-    {
-      title: "Bible Study",
-      count: 45,
-      icon: "📖",
-      description: "Comprehensive Bible study materials and commentaries",
-      color: "bg-primary/10 text-primary",
-    },
-    {
-      title: "Christian Living",
-      count: 32,
-      icon: "❤️",
-      description: "Books on practical Christian living and discipleship",
-      color: "bg-accent/10 text-accent",
-    },
-    {
-      title: "Theology",
-      count: 28,
-      icon: "✝️",
-      description: "Deep theological works and doctrinal studies",
-      color: "bg-primary/10 text-primary",
-    },
-    {
-      title: "Prayer & Worship",
-      count: 18,
-      icon: "🙏",
-      description: "Resources for prayer, worship, and spiritual growth",
-      color: "bg-accent/10 text-accent",
-    },
-    {
-      title: "Family & Marriage",
-      count: 22,
-      icon: "👨‍👩‍👧‍👦",
-      description: "Christian family life and marriage guidance",
-      color: "bg-primary/10 text-primary",
-    },
-    {
-      title: "Youth & Children",
-      count: 15,
-      icon: "🧒",
-      description: "Age-appropriate materials for young believers",
-      color: "bg-accent/10 text-accent",
-    },
-  ];
-
-  const featuredBooks = [
-    {
-      title: "The Purpose Driven Life",
-      author: "Rick Warren",
-      image: "/images/2025_theme.png",
-      category: "Christian Living",
-      description:
-        "A groundbreaking manifesto for Christian living in the 21st century.",
-      available: true,
-      rating: 4.8,
-    },
-    {
-      title: "Mere Christianity",
-      author: "C.S. Lewis",
-      image: "/images/bg-covenant_exchange.jpg",
-      category: "Theology",
-      description:
-        "A classic defense of the Christian faith by one of the most influential Christian writers.",
-      available: true,
-      rating: 4.9,
-    },
-    {
-      title: "The Power of a Praying Parent",
-      author: "Stormie Omartian",
-      image: "/images/bg-2025_theme.jpg",
-      category: "Prayer & Worship",
-      description:
-        "Learn how to pray effectively for your children and see God's power at work.",
-      available: false,
-      rating: 4.7,
-    },
-    {
-      title: "Boundaries in Marriage",
-      author: "Henry Cloud & John Townsend",
-      image: "/images/2025_covenant_exchange.png",
-      category: "Family & Marriage",
-      description:
-        "Essential principles for building a healthy, loving marriage relationship.",
-      available: true,
-      rating: 4.6,
-    },
-  ];
-
-  const studyMaterials = [
-    {
-      title: "Bible Study Guide - Genesis",
-      type: "Study Guide",
-      pages: 45,
-      format: "PDF",
-      description:
-        "Comprehensive study guide for the book of Genesis with discussion questions and applications.",
-    },
-    {
-      title: "Prayer Journal Template",
-      type: "Template",
-      pages: 12,
-      format: "PDF",
-      description:
-        "Printable prayer journal to help you organize and track your prayer life.",
-    },
-    {
-      title: "Family Devotional Guide",
-      type: "Devotional",
-      pages: 30,
-      format: "PDF",
-      description:
-        "Daily devotional readings perfect for family worship and discussion.",
-    },
-    {
-      title: "Bible Memory Verses",
-      type: "Reference",
-      pages: 8,
-      format: "PDF",
-      description:
-        "Key Bible verses organized by topic for memorization and meditation.",
-    },
-  ];
-
   return (
     <main className="pt-20">
       {/* Hero Section */}

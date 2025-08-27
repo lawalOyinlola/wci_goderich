@@ -3,134 +3,134 @@
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 
+const serviceUnits = [
+  {
+    title: "Ushering & Protocol",
+    icon: "🤝",
+    description:
+      "Welcome and assist church members and visitors during services and events.",
+    responsibilities: [
+      "Greet and welcome attendees",
+      "Assist with seating arrangements",
+      "Maintain order during services",
+      "Handle special needs and requests",
+    ],
+    requirements: "Friendly, organized, and available for Sunday services",
+    meetingTime: "Sundays: 6:30 AM (Pre-service briefing)",
+    currentOpenings: 8,
+  },
+  {
+    title: "Music & Worship",
+    icon: "🎵",
+    description:
+      "Lead the congregation in praise and worship through music and song.",
+    responsibilities: [
+      "Lead worship during services",
+      "Practice and rehearse songs",
+      "Maintain musical instruments",
+      "Coordinate with other musicians",
+    ],
+    requirements: "Musical talent, commitment to practice, heart for worship",
+    meetingTime: "Wednesdays: 6:00 PM (Practice)",
+    currentOpenings: 5,
+  },
+  {
+    title: "Children's Ministry",
+    icon: "👶",
+    description:
+      "Nurture and teach children about God's love and biblical principles.",
+    responsibilities: [
+      "Teach Sunday School lessons",
+      "Organize children's activities",
+      "Ensure children's safety",
+      "Build relationships with families",
+    ],
+    requirements: "Love for children, patience, basic teaching skills",
+    meetingTime: "Saturdays: 3:00 PM (Planning)",
+    currentOpenings: 12,
+  },
+  {
+    title: "Technical & Media",
+    icon: "🎥",
+    description:
+      "Handle audio, visual, and technical aspects of church services and events.",
+    responsibilities: [
+      "Operate sound equipment",
+      "Manage video and lighting",
+      "Record and stream services",
+      "Maintain technical equipment",
+    ],
+    requirements: "Technical aptitude, attention to detail, reliability",
+    meetingTime: "Sundays: 6:00 AM (Setup)",
+    currentOpenings: 3,
+  },
+  {
+    title: "Prayer & Intercession",
+    icon: "🙏",
+    description:
+      "Lead prayer sessions and intercede for the church and community.",
+    responsibilities: [
+      "Lead prayer meetings",
+      "Intercede for prayer requests",
+      "Organize prayer chains",
+      "Provide spiritual support",
+    ],
+    requirements: "Strong prayer life, spiritual maturity, compassion",
+    meetingTime: "Daily: 6:00 AM (Covenant Hour)",
+    currentOpenings: 15,
+  },
+  {
+    title: "Outreach & Evangelism",
+    icon: "🌍",
+    description:
+      "Share the Gospel and serve the community through various outreach programs.",
+    responsibilities: [
+      "Participate in evangelism",
+      "Organize community service",
+      "Visit and pray for people",
+      "Coordinate outreach events",
+    ],
+    requirements: "Heart for evangelism, good communication skills",
+    meetingTime: "Saturdays: 9:00 AM (Outreach)",
+    currentOpenings: 20,
+  },
+];
+
+const benefits = [
+  {
+    title: "Spiritual Growth",
+    description:
+      "Deepen your relationship with God through service and ministry",
+    icon: "📈",
+  },
+  {
+    title: "Skill Development",
+    description: "Learn new skills and discover hidden talents",
+    icon: "🎯",
+  },
+  {
+    title: "Community Building",
+    description: "Build meaningful relationships with fellow believers",
+    icon: "🤝",
+  },
+  {
+    title: "Leadership Experience",
+    description: "Develop leadership and organizational skills",
+    icon: "👑",
+  },
+  {
+    title: "Fulfillment",
+    description: "Experience the joy of serving God and others",
+    icon: "😊",
+  },
+  {
+    title: "Kingdom Impact",
+    description: "Make a difference in people's lives and the community",
+    icon: "🌟",
+  },
+];
+
 export default function ServiceUnitsPage() {
-  const serviceUnits = [
-    {
-      title: "Ushering & Protocol",
-      icon: "🤝",
-      description:
-        "Welcome and assist church members and visitors during services and events.",
-      responsibilities: [
-        "Greet and welcome attendees",
-        "Assist with seating arrangements",
-        "Maintain order during services",
-        "Handle special needs and requests",
-      ],
-      requirements: "Friendly, organized, and available for Sunday services",
-      meetingTime: "Sundays: 6:30 AM (Pre-service briefing)",
-      currentOpenings: 8,
-    },
-    {
-      title: "Music & Worship",
-      icon: "🎵",
-      description:
-        "Lead the congregation in praise and worship through music and song.",
-      responsibilities: [
-        "Lead worship during services",
-        "Practice and rehearse songs",
-        "Maintain musical instruments",
-        "Coordinate with other musicians",
-      ],
-      requirements: "Musical talent, commitment to practice, heart for worship",
-      meetingTime: "Wednesdays: 6:00 PM (Practice)",
-      currentOpenings: 5,
-    },
-    {
-      title: "Children's Ministry",
-      icon: "👶",
-      description:
-        "Nurture and teach children about God's love and biblical principles.",
-      responsibilities: [
-        "Teach Sunday School lessons",
-        "Organize children's activities",
-        "Ensure children's safety",
-        "Build relationships with families",
-      ],
-      requirements: "Love for children, patience, basic teaching skills",
-      meetingTime: "Saturdays: 3:00 PM (Planning)",
-      currentOpenings: 12,
-    },
-    {
-      title: "Technical & Media",
-      icon: "🎥",
-      description:
-        "Handle audio, visual, and technical aspects of church services and events.",
-      responsibilities: [
-        "Operate sound equipment",
-        "Manage video and lighting",
-        "Record and stream services",
-        "Maintain technical equipment",
-      ],
-      requirements: "Technical aptitude, attention to detail, reliability",
-      meetingTime: "Sundays: 6:00 AM (Setup)",
-      currentOpenings: 3,
-    },
-    {
-      title: "Prayer & Intercession",
-      icon: "🙏",
-      description:
-        "Lead prayer sessions and intercede for the church and community.",
-      responsibilities: [
-        "Lead prayer meetings",
-        "Intercede for prayer requests",
-        "Organize prayer chains",
-        "Provide spiritual support",
-      ],
-      requirements: "Strong prayer life, spiritual maturity, compassion",
-      meetingTime: "Daily: 6:00 AM (Covenant Hour)",
-      currentOpenings: 15,
-    },
-    {
-      title: "Outreach & Evangelism",
-      icon: "🌍",
-      description:
-        "Share the Gospel and serve the community through various outreach programs.",
-      responsibilities: [
-        "Participate in evangelism",
-        "Organize community service",
-        "Visit and pray for people",
-        "Coordinate outreach events",
-      ],
-      requirements: "Heart for evangelism, good communication skills",
-      meetingTime: "Saturdays: 9:00 AM (Outreach)",
-      currentOpenings: 20,
-    },
-  ];
-
-  const benefits = [
-    {
-      title: "Spiritual Growth",
-      description:
-        "Deepen your relationship with God through service and ministry",
-      icon: "📈",
-    },
-    {
-      title: "Skill Development",
-      description: "Learn new skills and discover hidden talents",
-      icon: "🎯",
-    },
-    {
-      title: "Community Building",
-      description: "Build meaningful relationships with fellow believers",
-      icon: "🤝",
-    },
-    {
-      title: "Leadership Experience",
-      description: "Develop leadership and organizational skills",
-      icon: "👑",
-    },
-    {
-      title: "Fulfillment",
-      description: "Experience the joy of serving God and others",
-      icon: "😊",
-    },
-    {
-      title: "Kingdom Impact",
-      description: "Make a difference in people's lives and the community",
-      icon: "🌟",
-    },
-  ];
-
   return (
     <div className="pt-20">
       {/* Hero Section */}
@@ -233,7 +233,7 @@ export default function ServiceUnitsPage() {
                       <span className="text-sm text-primary font-medium">
                         {unit.currentOpenings} openings available
                       </span>
-                      <Button variant=outline size="sm">
+                      <Button variant="outline" size="sm">
                         Join Now
                       </Button>
                     </div>
@@ -361,7 +361,7 @@ export default function ServiceUnitsPage() {
 
               <div className="space-y-4">
                 <Button
-                  variant=outline
+                  variant="outline"
                   size="lg"
                   className="w-full"
                   href="/contact"

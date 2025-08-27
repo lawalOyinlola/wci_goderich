@@ -19,9 +19,9 @@ export default function ContactPage() {
   const form = useForm<ContactForm>({});
   // const form = useForm<ContactForm>({ resolver: yupResolver(schema) });
 
-  const onSubmit = (data: ContactForm) => {
-    console.log("Contact submit", data);
-  };
+  // const onSubmit = (data: ContactForm) => {
+  //   console.log("Contact submit", data);
+  // };
 
   return (
     <section className="py-16">
@@ -67,7 +67,7 @@ export default function ContactPage() {
               {...form.register("message")}
             />
           </div>
-          <Button type="submit" variant=outline size="lg">
+          <Button type="submit" variant="outline" size="lg">
             Send Message
           </Button>
         </form>

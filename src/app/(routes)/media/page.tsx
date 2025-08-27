@@ -3,76 +3,76 @@
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 
+const latestSermons = [
+  {
+    title: "Walking in Faith and Victory",
+    pastor: "Pastor Jerry Simon",
+    date: "December 8, 2024",
+    duration: "45:32",
+    image: "/images/2025_theme.png",
+    description:
+      "Learn how to walk in faith and experience victory in every area of your life through God's promises.",
+    category: "Faith",
+    views: "1,247",
+  },
+  {
+    title: "The Power of Prayer",
+    pastor: "Pastor Jerry Simon",
+    date: "December 1, 2024",
+    duration: "52:18",
+    image: "/images/bg-covenant_exchange.jpg",
+    description:
+      "Discover the transformative power of prayer and how it can change your circumstances and strengthen your relationship with God.",
+    category: "Prayer",
+    views: "1,156",
+  },
+  {
+    title: "Living in God's Grace",
+    pastor: "Pastor Jerry Simon",
+    date: "November 24, 2024",
+    duration: "48:45",
+    image: "/images/bg-2025_theme.jpg",
+    description:
+      "Understanding and living in the abundant grace that God has provided for every believer.",
+    category: "Grace",
+    views: "1,089",
+  },
+];
+
+const sermonSeries = [
+  {
+    title: "Foundations of Faith",
+    episodes: 8,
+    image: "/images/prophetic_focus_june.png",
+    description:
+      "A comprehensive series on building a strong foundation in your Christian walk.",
+    progress: 3,
+  },
+  {
+    title: "Walking in Victory",
+    episodes: 6,
+    image: "/images/2025_covenant_exchange.png",
+    description:
+      "Learn how to overcome challenges and walk in the victory that Christ has won for you.",
+    progress: 2,
+  },
+  {
+    title: "Prayer and Intercession",
+    episodes: 5,
+    image: "/images/bg-prophetic_focus_june.jpg",
+    description: "Deepen your prayer life and learn the art of intercession.",
+    progress: 1,
+  },
+];
+
+const mediaCategories = [
+  { name: "All", count: 15, active: true },
+  { name: "Sermons", count: 8, active: false },
+  { name: "Bible Study", count: 4, active: false },
+  { name: "Testimonies", count: 3, active: false },
+];
+
 export default function MediaPage() {
-  const latestSermons = [
-    {
-      title: "Walking in Faith and Victory",
-      pastor: "Pastor Jerry Simon",
-      date: "December 8, 2024",
-      duration: "45:32",
-      image: "/images/2025_theme.png",
-      description:
-        "Learn how to walk in faith and experience victory in every area of your life through God's promises.",
-      category: "Faith",
-      views: "1,247",
-    },
-    {
-      title: "The Power of Prayer",
-      pastor: "Pastor Jerry Simon",
-      date: "December 1, 2024",
-      duration: "52:18",
-      image: "/images/bg-covenant_exchange.jpg",
-      description:
-        "Discover the transformative power of prayer and how it can change your circumstances and strengthen your relationship with God.",
-      category: "Prayer",
-      views: "1,156",
-    },
-    {
-      title: "Living in God's Grace",
-      pastor: "Pastor Jerry Simon",
-      date: "November 24, 2024",
-      duration: "48:45",
-      image: "/images/bg-2025_theme.jpg",
-      description:
-        "Understanding and living in the abundant grace that God has provided for every believer.",
-      category: "Grace",
-      views: "1,089",
-    },
-  ];
-
-  const sermonSeries = [
-    {
-      title: "Foundations of Faith",
-      episodes: 8,
-      image: "/images/prophetic_focus_june.png",
-      description:
-        "A comprehensive series on building a strong foundation in your Christian walk.",
-      progress: 3,
-    },
-    {
-      title: "Walking in Victory",
-      episodes: 6,
-      image: "/images/2025_covenant_exchange.png",
-      description:
-        "Learn how to overcome challenges and walk in the victory that Christ has won for you.",
-      progress: 2,
-    },
-    {
-      title: "Prayer and Intercession",
-      episodes: 5,
-      image: "/images/bg-prophetic_focus_june.jpg",
-      description: "Deepen your prayer life and learn the art of intercession.",
-      progress: 1,
-    },
-  ];
-
-  const mediaCategories = [
-    { name: "All", count: 15, active: true },
-    { name: "Sermons", count: 8, active: false },
-    { name: "Bible Study", count: 4, active: false },
-    { name: "Testimonies", count: 3, active: false },
-  ];
-
   return (
     <main className="pt-20">
       {/* Hero Section */}
@@ -167,7 +167,7 @@ export default function MediaPage() {
                   {latestSermons[0].description}
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <Button variant=outline size="lg" className="flex-1">
+                  <Button variant="outline" size="lg" className="flex-1">
                     Watch Now
                   </Button>
                   <Button variant="outline" size="lg" className="flex-1">
@@ -245,7 +245,7 @@ export default function MediaPage() {
                     {sermon.description}
                   </p>
                   <div className="flex gap-2">
-                    <Button variant=outline size="sm" className="flex-1">
+                    <Button variant="outline" size="sm" className="flex-1">
                       Watch
                     </Button>
                     <Button variant="outline" size="sm" className="flex-1">
@@ -314,7 +314,7 @@ export default function MediaPage() {
                       ></div>
                     </div>
                   </div>
-                  <Button variant=outline size="sm" className="w-full">
+                  <Button variant="outline" size="sm" className="w-full">
                     Continue Series
                   </Button>
                 </div>
@@ -350,7 +350,7 @@ export default function MediaPage() {
                 </p>
               </div>
               <div className="space-y-4">
-                <Button variant=outline size="lg" className="w-full">
+                <Button variant="outline" size="lg" className="w-full">
                   Subscribe on Spotify
                 </Button>
                 <Button variant="outline" size="lg" className="w-full">
@@ -372,7 +372,7 @@ export default function MediaPage() {
                 </p>
               </div>
               <div className="space-y-4">
-                <Button variant=outline size="lg" className="w-full">
+                <Button variant="outline" size="lg" className="w-full">
                   Download for iOS
                 </Button>
                 <Button variant="outline" size="lg" className="w-full">
