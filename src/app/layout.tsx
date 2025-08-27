@@ -14,6 +14,12 @@ const openSans = Open_Sans({
   variable: "--font-open-sans",
 });
 
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+};
+
 export const metadata: Metadata = {
   title: "WCI Goderich - Living Faith Church Worldwide",
   description:
@@ -87,11 +93,6 @@ export const metadata: Metadata = {
     shortcut: "/favicon.svg",
   },
   manifest: "/site.webmanifest",
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 1,
-  },
   category: "religion",
 };
 

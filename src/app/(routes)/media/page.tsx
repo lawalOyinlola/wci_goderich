@@ -397,7 +397,6 @@ export default function MediaPage() {
             </Button>
             <Button variant="outline" size="lg" asChild>
               <Link href="/events">View Events</Link>
-              View Events
             </Button>
           </div>
         </div>
