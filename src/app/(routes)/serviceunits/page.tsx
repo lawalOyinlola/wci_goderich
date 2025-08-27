@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const serviceUnits = [
   {
@@ -360,29 +361,14 @@ export default function ServiceUnitsPage() {
               </p>
 
               <div className="space-y-4">
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="w-full"
-                  href="/contact"
-                >
-                  Contact Us
+                <Button variant="outline" size="lg" className="w-full" asChild>
+                  <Link href="/contact">Contact Us</Link>
                 </Button>
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="w-full"
-                  href="/prayer"
-                >
-                  Prayer Request
+                <Button variant="outline" size="lg" className="w-full" asChild>
+                  <Link href="/prayer">Prayer Request</Link>
                 </Button>
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="w-full"
-                  href="/services"
-                >
-                  View Services
+                <Button variant="outline" size="lg" className="w-full" asChild>
+                  <Link href="/services">View Services</Link>
                 </Button>
               </div>
 
@@ -408,11 +394,11 @@ export default function ServiceUnitsPage() {
             Join a service unit and discover the joy of serving God and others
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button variant="secondary" size="lg" href="/contact">
-              Get Started
+            <Button variant="secondary" size="lg" asChild>
+              <Link href="/contact">Get Started</Link>
             </Button>
-            <Button variant="outline" size="lg" href="/services">
-              Learn More
+            <Button variant="outline" size="lg" asChild>
+              <Link href="/services">Learn More</Link>
             </Button>
           </div>
         </div>

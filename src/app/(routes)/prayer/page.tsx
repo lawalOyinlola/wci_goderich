@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 import { useState } from "react";
 
 export default function PrayerPage() {
@@ -425,8 +426,8 @@ export default function PrayerPage() {
             </div>
           </div>
 
-          <Button variant="outline" size="lg" href="/services">
-            View Full Schedule
+          <Button variant="outline" size="lg" asChild>
+            <Link href="/services">View Full Schedule</Link>
           </Button>
         </div>
       </section>
@@ -440,11 +441,11 @@ export default function PrayerPage() {
             God
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button variant="secondary" size="lg" href="/contact">
-              Contact Us
+            <Button variant="secondary" size="lg" asChild>
+              <Link href="/contact">Contact Us</Link>
             </Button>
-            <Button variant="outline" size="lg" href="/services">
-              Join Prayer Meetings
+            <Button variant="outline" size="lg" asChild>
+              <Link href="/services">Join Prayer Meetings</Link>
             </Button>
           </div>
         </div>

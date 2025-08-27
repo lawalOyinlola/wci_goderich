@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const services = [
   {
@@ -299,21 +300,11 @@ export default function ServicesPage() {
                 ministry and start serving today.
               </p>
               <div className="space-y-4">
-                <Button
-                  variant="outline"
-                  size="lg"
-                  href="/contact"
-                  className="w-full"
-                >
-                  Contact Us
+                <Button variant="outline" size="lg" className="w-full" asChild>
+                  <Link href="/contact">Contact Us</Link>
                 </Button>
-                <Button
-                  variant="outline"
-                  size="lg"
-                  href="/events"
-                  className="w-full"
-                >
-                  View Events
+                <Button variant="outline" size="lg" className="w-full" asChild>
+                  <Link href="/events">View Events</Link>
                 </Button>
               </div>
             </div>
@@ -329,11 +320,11 @@ export default function ServicesPage() {
             Experience the love of God and the warmth of our church family
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button variant="secondary" size="lg" href="/events">
-              View Schedule
+            <Button variant="secondary" size="lg" asChild>
+              <Link href="/events">View Schedule</Link>
             </Button>
-            <Button variant="outline" size="lg" href="/location">
-              Get Directions
+            <Button variant="outline" size="lg" asChild>
+              <Link href="/location">Get Directions</Link>
             </Button>
           </div>
         </div>

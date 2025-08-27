@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const bookCategories = [
   {
@@ -434,10 +435,10 @@ export default function LibraryPage() {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button variant="outline" size="lg" href="/location">
-              Get Directions
+            <Button variant="outline" size="lg" asChild>
+              <Link href="/location">Get Directions</Link>
             </Button>
-            <Button variant="outline" size="lg" href="/contact">
+            <Button variant="outline" size="lg">
               Contact Librarian
             </Button>
           </div>
@@ -454,11 +455,11 @@ export default function LibraryPage() {
             Discover the wealth of spiritual knowledge available in our library
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button variant="secondary" size="lg" href="/contact">
-              Get Library Card
+            <Button variant="secondary" size="lg" asChild>
+              <Link href="/contact">Get Library Card</Link>
             </Button>
-            <Button variant="outline" size="lg" href="/media">
-              Browse Online
+            <Button variant="outline" size="lg" asChild>
+              <Link href="/media">Browse Online</Link>
             </Button>
           </div>
         </div>

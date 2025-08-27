@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function TestimoniesPage() {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -351,11 +352,11 @@ export default function TestimoniesPage() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button variant="outline" size="lg" href="/contact">
-                Share Your Story
+              <Button variant="outline" size="lg" asChild>
+                <Link href="/contact">Share Your Story</Link>
               </Button>
-              <Button variant="outline" size="lg" href="/prayer">
-                Prayer Request
+              <Button variant="outline" size="lg" asChild>
+                <Link href="/prayer">Prayer Request</Link>
               </Button>
             </div>
           </div>
@@ -371,11 +372,11 @@ export default function TestimoniesPage() {
             faithfulness
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button variant="secondary" size="lg" href="/services">
-              Join Us
+            <Button variant="secondary" size="lg" asChild>
+              <Link href="/services">Join Us</Link>
             </Button>
-            <Button variant="outline" size="lg" href="/contact">
-              Get in Touch
+            <Button variant="outline" size="lg" asChild>
+              <Link href="/contact">Get in Touch</Link>
             </Button>
           </div>
         </div>

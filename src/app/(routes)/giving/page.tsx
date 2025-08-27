@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const givingMethods = [
   {
@@ -443,8 +444,8 @@ export default function GivingPage() {
             <Button variant="secondary" size="lg" className="px-12">
               Give Online
             </Button>
-            <Button variant="outline" size="lg" href="/contact">
-              Contact Us
+            <Button variant="outline" size="lg" asChild>
+              <Link href="/contact">Contact Us</Link>
             </Button>
           </div>
         </div>

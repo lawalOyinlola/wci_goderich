@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const serviceTimes = [
   { day: "Sunday", times: ["7:00 AM", "9:00 AM", "11:00 AM"] },
@@ -118,16 +119,11 @@ export default function LocationPage() {
                 </div>
 
                 <div className="pt-4">
-                  <Button
-                    variant="outline"
-                    size="lg"
-                    href="/contact"
-                    className="mr-4"
-                  >
+                  <Button variant="outline" size="lg" asChild className="mr-4">
                     Get Directions
                   </Button>
-                  <Button variant="outline" size="lg" href="/contact">
-                    Contact Us
+                  <Button variant="outline" size="lg" asChild>
+                    <Link href="/contact">Contact Us</Link>
                   </Button>
                 </div>
               </div>
@@ -360,11 +356,11 @@ export default function LocationPage() {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button variant="outline" size="lg" href="/services">
-              View Service Schedule
+            <Button variant="outline" size="lg" asChild>
+              <Link href="/services">View Service Schedule</Link>
             </Button>
-            <Button variant="outline" size="lg" href="/contact">
-              Ask Questions
+            <Button variant="outline" size="lg" asChild>
+              <Link href="/contact">Ask Questions</Link>
             </Button>
           </div>
         </div>
@@ -381,11 +377,11 @@ export default function LocationPage() {
             family
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button variant="secondary" size="lg" href="/services">
-              Service Times
+            <Button variant="secondary" size="lg" asChild>
+              <Link href="/services">Service Times</Link>
             </Button>
-            <Button variant="outline" size="lg" href="/contact">
-              Get in Touch
+            <Button variant="outline" size="lg" asChild>
+              <Link href="/contact">Get in Touch</Link>
             </Button>
           </div>
         </div>
