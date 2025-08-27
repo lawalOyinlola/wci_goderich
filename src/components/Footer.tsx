@@ -150,36 +150,36 @@ export default function Footer() {
               <h4 className="font-semibold text-white mb-4">Connect With Us</h4>
               <div className="flex space-x-4">
                 <Button
-                  href="https://facebook.com"
                   aria-label="Facebook"
                   variant="link"
                   className="text-primary-foreground hover:text-accent"
+                  asChild
                 >
-                  Facebook
+                  <Link href="https://facebook.com">Facebook</Link>
                 </Button>
                 <Button
-                  href="https://twitter.com"
                   aria-label="Twitter"
                   variant="link"
                   className="text-primary-foreground hover:text-accent"
+                  asChild
                 >
-                  Twitter
+                  <Link href="https://twitter.com">Twitter</Link>
                 </Button>
                 <Button
-                  href="https://instagram.com"
                   aria-label="Instagram"
                   variant="link"
                   className="text-primary-foreground hover:text-accent"
+                  asChild
                 >
-                  Instagram
+                  <Link href="https://instagram.com">Instagram</Link>
                 </Button>
                 <Button
-                  href="https://youtube.com"
                   aria-label="YouTube"
                   variant="link"
                   className="text-primary-foreground hover:text-accent"
+                  asChild
                 >
-                  YouTube
+                  <Link href="https://youtube.com">YouTube</Link>
                 </Button>
               </div>
             </div>
