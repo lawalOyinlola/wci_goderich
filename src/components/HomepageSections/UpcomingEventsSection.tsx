@@ -4,21 +4,20 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import SectionHeader from "../SectionHeader";
-import { AspectRatio } from "../ui/aspect-ratio";
 
 const events = [
   {
     title:
       "Sharing Our Faith & Gospel through chirst the teacher of all things",
     time: "8:30am - 11:30am",
-    pastor: "Abel Ukweni",
+    pastor: "Pastor Abel Ukweni",
     address: "203 Fake St. Mountain View, San Francisco, California, USA",
     image: "/images/2025_theme.png",
   },
   {
     title: "I will Restore Health Unto you",
     time: "8:30am - 11:30am",
-    pastor: "Lungi xxx",
+    pastor: "Pastor Lungi xxx",
     address: "Church Premises",
     image: "/images/bg-2025_theme.jpg",
   },
@@ -29,20 +28,20 @@ const events = [
     address: "203 Fake St. Mountain View, San Francisco, California, USA",
     image: "/images/2025_theme.png",
   },
-  {
-    title: "Sharing Our Faith & Gospel",
-    time: "8:30am - 11:30am",
-    pastor: "Jerry Simon",
-    address: "203 Fake St. Mountain View, San Francisco, California, USA",
-    image: "/images/bg-2025_theme.jpg",
-  },
-  {
-    title: "Sharing Our Faith & Gospel",
-    time: "8:30am - 11:30am",
-    pastor: "Jerry Simon",
-    address: "203 Fake St. Mountain View, San Francisco, California, USA",
-    image: "/images/2025_theme.png",
-  },
+  // {
+  //   title: "Sharing Our Faith & Gospel",
+  //   time: "8:30am - 11:30am",
+  //   pastor: "Business Men Fellowship",
+  //   address: "203 Fake St. Mountain View, San Francisco, California, USA",
+  //   image: "/images/bg-2025_theme.jpg",
+  // },
+  // {
+  //   title: "Sharing Our Faith & Gospel",
+  //   time: "8:30am - 11:30am",
+  //   pastor: "Children's Ministry",
+  //   address: "203 Fake St. Mountain View, San Francisco, California, USA",
+  //   image: "/images/2025_theme.png",
+  // },
 ];
 
 export default function UpcomingEventsSection() {
@@ -56,7 +55,7 @@ export default function UpcomingEventsSection() {
           title="Upcoming Events"
           subtitle="Events"
           description="Stay connected and join us for our upcoming church events."
-          titleClassName="text-primary-foreground z-99"
+          titleClassName="text-primary-foreground"
           subtitleClassName="text-primary-foreground"
           descriptionClassName="text-primary-foreground"
         />
@@ -65,14 +64,12 @@ export default function UpcomingEventsSection() {
           {events.map((event, index) => (
             <div key={index} className="flex flex-row items-end cursor-pointer">
               <div className="relative w-3/7 h-15/16">
-                <AspectRatio ratio={1 / 1}>
-                  <Image
-                    src={event.image}
-                    alt={event.title}
-                    fill
-                    className="object-cover"
-                  />
-                </AspectRatio>
+                <Image
+                  src={event.image}
+                  alt={event.title}
+                  fill
+                  className="object-cover"
+                />
               </div>
               <div className="relative bg-card text-card-foreground p-6 pt-18 w-4/7 min-h-[280px] flex flex-col gap-3 justify-start">
                 <div className="absolute top-6 -left-5 bg-accent text-primary-foreground px-3 pl-12 py-1 font-semibold text-sm whitespace-nowrap">

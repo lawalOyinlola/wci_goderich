@@ -36,9 +36,9 @@ export default function FeaturesSection() {
   return (
     <section className="bg-card text-card-foreground">
       <div className="relative max-w-7xl mx-auto px-4 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-9 gap-8 relative">
+        <div className="grid min-[480px]:grid-cols-2 sm:grid-cols-3 lg:grid-cols-9 gap-8 relative">
           {features.map((feature, index) => (
-            <div key={index} className="col-span-2">
+            <div key={index} className="lg:col-span-2">
               <div className="mb-4 w-fit">{feature.icon}</div>
               <h4 className="uppercase mb-2">{feature.title}</h4>
               <p className="mb-2 text-accent leading-7">{feature.subtitle}</p>
@@ -54,10 +54,10 @@ export default function FeaturesSection() {
             </div>
           ))}
 
-          <div className="text-center bg-primary text-primary-foreground px-8 md:-mt-30 pt-20 pb-10 col-span-3 flex flex-col items-center justify-center gap-4">
+          <div className="text-center bg-primary text-primary-foreground lg:px-8 p-4 lg:-mt-30 lg:pt-20 sm:py-10 sm:col-span-3 flex flex-col items-center justify-center gap-4">
             <h3>THE MANDATE</h3>
 
-            <blockquote className="border-l-2 pl-2 border-secondary/30 text-lg mt-6 italic leading-7">
+            <blockquote className="sm:border-l-2 border-secondary/30 sm:pl-2 text-lg mt-6 italic leading-7">
               &quot;Now the hour has come to liberate the world from all
               oppressions of the devil through the preaching of the word of
               faith, and I am sending you to undertake this task.&quot;

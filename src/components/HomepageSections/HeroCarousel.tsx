@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/carousel";
 import { Separator } from "../ui/separator";
 import Fade from "embla-carousel-fade";
+import { AspectRatio } from "../ui/aspect-ratio";
 
 const slides = [
   {
@@ -111,7 +112,7 @@ export default function HeroCarousel() {
   };
 
   return (
-    <section className="relative h-screen overflow-hidden">
+    <section className="relative overflow-hidden">
       <Carousel
         setApi={setApi}
         plugins={[plugin.current, fadePlugin.current]}
@@ -124,7 +125,7 @@ export default function HeroCarousel() {
         onMouseEnter={plugin.current.stop}
         onMouseLeave={plugin.current.reset}
       >
-        <CarouselContent className="h-dvh">
+        <CarouselContent className="h-[97vh]">
           {slides.map((slide, index) => (
             <CarouselItem key={index} className="h-full p-0">
               <div className="relative h-full">
@@ -152,20 +153,21 @@ export default function HeroCarousel() {
                       />
                     ) : (
                       <>
-                        <div className="flex items-center justify-center text-lg uppercase tracking-[0.2em] mb-4 font-light gap-6">
-                          <Separator className="w-40! bg-gray-300" />
+                        <div className="flex items-center justify-center text-lg uppercase tracking-[0.2em] mb-4 font-light gap-6 max-sm:gap-4 px-4">
+                          <Separator className="w-20! sm:w-45! bg-gray-300" />
+
                           <p className="font-lg font-stretch-125%">
                             {slide.subtitle}
                           </p>
 
-                          <Separator className="w-40! bg-gray-300" />
+                          <Separator className="w-20! sm:w-45! bg-gray-300" />
                         </div>
 
-                        <h1 className="text-6xl font-bold mb-8 leading-tight">
+                        <h1 className="sm:text-6xl font-bold mb-8 leading-tight text-5xl">
                           {slide.title}
                         </h1>
                         {slide.description && (
-                          <p className="text-xl mb-12 opacity-80 max-w-2xl mx-auto">
+                          <p className="text-xl mb-12 opacity-80 max-w-2xl mx-auto px-4">
                             {slide.description}
                           </p>
                         )}
@@ -173,14 +175,14 @@ export default function HeroCarousel() {
                     )}
 
                     {slide.buttons && (
-                      <div className="flex gap-6 justify-center flex-wrap">
+                      <div className="flex gap-4 sm:gap-6 justify-center flex-wrap px-4">
                         {slide.buttons.map((btn) => (
                           <Button
                             key={btn.link}
                             variant="secondary"
                             size="lg"
                             // className="min-w-40 border-background text-accent-foreground hover:bg-background hover:text-gray-900 transition-colors"
-                            className="min-w-40 bg-secondary"
+                            className="min-w-22 sm:min-w-40 bg-secondary hover:bg-secondary/80"
                             asChild
                           >
                             <Link href={btn.link as Route}>{btn.text}</Link>
@@ -196,8 +198,8 @@ export default function HeroCarousel() {
         </CarouselContent>
 
         {/* Navigation Buttons */}
-        <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/40 border-white/30 text-white hover:text-white transition-all duration-200 backdrop-blur-sm" />
-        <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/40 border-white/30 text-white hover:text-white transition-all duration-200 backdrop-blur-sm" />
+        <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/40 hover:bg-white/20 border-white/30 text-white hover:text-white transition-all duration-200 backdrop-blur-sm" />
+        <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/40 hover:bg-white/20 border-white/30 text-white hover:text-white transition-all duration-200 backdrop-blur-sm" />
 
         {/* Slide Indicators */}
         <div className="absolute bottom-8 left-0 right-0 flex justify-center gap-2 z-20">

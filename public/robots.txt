@@ -4,10 +4,13 @@ Allow: /
 # Sitemap
 Sitemap: https://wcigoderich.org/sitemap.xml
 
-# Disallow admin or private areas (if any)
+# Disallow admin or private areas
 Disallow: /api/
 Disallow: /_next/
 Disallow: /admin/
+Disallow: /private/
+Disallow: /temp/
+Disallow: /draft/
 
 # Allow important pages
 Allow: /about/
@@ -25,6 +28,46 @@ Allow: /homecell/
 Allow: /pastors/
 Allow: /education/
 Allow: /location/
+Allow: /library/
 
-# Crawl delay (optional)
+# Allow static assets
+Allow: /images/
+Allow: /favicon/
+Allow: /*.css
+Allow: /*.js
+Allow: /*.png
+Allow: /*.jpg
+Allow: /*.jpeg
+Allow: /*.gif
+Allow: /*.svg
+Allow: /*.ico
+Allow: /*.webp
+
+# Crawl delay for better server performance
 Crawl-delay: 1
+
+# Additional directives for specific bots
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Slurp
+Allow: /
+Crawl-delay: 2
+
+# Block bad bots
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /

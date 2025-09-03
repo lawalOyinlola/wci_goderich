@@ -17,6 +17,8 @@ import {
   CardDescription,
   CardFooter,
 } from "../ui/card";
+import { MagicCard } from "@/components/magicui/magic-card";
+import { useTheme } from "next-themes";
 
 // Services data
 const servicesData = [
@@ -78,41 +80,48 @@ const servicesData = [
 ];
 
 export default function ChurchServicesSection() {
+  const { theme } = useTheme();
+
   return (
     <section className="max-w-7xl mx-auto px-4 py-20">
       <SectionHeader title="Church Services" subtitle="Services" />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 auto-rows-fr">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 auto-rows-fr">
         {servicesData.map((service) => (
           <Card
             key={service.id}
-            // className="text-center hover:shadow-lg transition-shadow duration-300"
-            className="flex flex-col h-full text-center hover:shadow-lg transition-all duration-300 hover:-translate-y-1 backdrop-blur-sm border-0"
+            className="p-0 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 backdrop-blur-sm border-0 rounded-none"
           >
-            <CardHeader className="flex flex-col items-center justify-center">
-              <div
-                className={`mb-2 ${
-                  service.accentColor ? service.accentColor : "text-accent"
-                }`}
-              >
-                {service.icon}
-              </div>
-              <CardTitle className="text-xl tracking-tight font-bold">
-                {service.title}
-              </CardTitle>
-            </CardHeader>
+            <MagicCard
+              gradientColor={theme === "dark" ? "#262626" : "#D9D9D955"}
+              gradientSize={150}
+              className="h-full py-6 text-center"
+            >
+              <CardHeader className="flex flex-col gap-6 items-center justify-center">
+                <div
+                  className={`mb-2 ${
+                    service.accentColor ? service.accentColor : "text-accent"
+                  }`}
+                >
+                  {service.icon}
+                </div>
+                <CardTitle className="text-xl tracking-tight font-bold line-clamp-1">
+                  {service.title}
+                </CardTitle>
+              </CardHeader>
 
-            <CardContent className="flex-1 justify-center pb-2">
-              <CardDescription className="text-muted-foreground">
-                {service.description}
-              </CardDescription>
-            </CardContent>
-            
-            <CardFooter className="justify-center">
-              <div className="bg-accent/10 text-accent px-4 py-2 rounded-full text-sm font-semibold uppercase ">
-                {service.schedule}
-              </div>
-            </CardFooter>
+              <CardContent className="flex-1 justify-center pb-2">
+                <CardDescription className="text-muted-foreground line-clamp-3">
+                  {service.description}
+                </CardDescription>
+              </CardContent>
+
+              <CardFooter className="justify-center">
+                <div className="bg-accent/10 text-accent px-4 py-2 rounded-full text-sm font-semibold uppercase line-clamp-2">
+                  {service.schedule}
+                </div>
+              </CardFooter>
+            </MagicCard>
           </Card>
         ))}
       </div>

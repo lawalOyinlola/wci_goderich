@@ -7,8 +7,6 @@ import SectionHeader from "../SectionHeader";
 export default function LatestNewsSection() {
   return (
     <section className="max-w-7xl mx-auto px-4 py-20">
-      <h2 className="text-3xl font-semibold mb-12 text-center">Latest News</h2>
-
       <SectionHeader
         title="Latest News"
         subtitle="News"

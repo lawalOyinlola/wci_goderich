@@ -1,18 +1,19 @@
 import React from "react";
+import SectionHeader from "./SectionHeader";
 
 const testimonials = [
   {
     name: "Ben Bernard",
     role: "Instacart",
     quote:
-      "Cursor is at least a 2x improvement over Copilot. It's amazing having an AI pair programmer, and is an incredible accelerator for me and my team.",
+      "The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought.",
     avatar: "👨‍💻",
   },
   {
     name: "Kevin Whinnery",
     role: "OpenAI",
     quote:
-      "The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought.",
+      "The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought.",
     avatar: "🚀",
   },
   {
@@ -25,89 +26,84 @@ const testimonials = [
     name: "Andrew Milich",
     role: "Notion",
     quote:
-      "I love writing code and Cursor is a necessity. Cursor is steps ahead of my brain, proposing multi-line edits so I type 'tab' more than anything else.",
+      "The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought.",
     avatar: "⚡",
   },
   {
     name: "Morgan McGuire",
     role: "Weights & Biases",
     quote:
-      "Cursor is so good, and literally gets better/more feature-rich every couple of weeks.",
+      "The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought.",
     avatar: "🔬",
   },
   {
     name: "Alex MacCaw",
     role: "Reflect",
     quote:
-      "Cursor is the best product I've used in a while - it's an AI enabled editor. I just asked it to write a README for a project I've been working on - analyzed the code-base and worked first time.",
+      "Cursor is the best product I've used in a while - it's an AI enabled editor. I just asked it to write a README for a project I've been working on - analyzed the code-base and worked first time. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought.",
     avatar: "📝",
   },
   {
     name: "Johannes Schickling",
     role: "Prisma",
     quote:
-      "After many recommendations, I finally switched from VSC to Cursor and ... wow! It's absolutely incredible. If you like Copilot (or if you don't), you'll be blown away by Cursor. There is no going back. 🤯",
+      "The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought.",
     avatar: "⚙️",
   },
   {
     name: "Wes Bos",
     role: "Internet",
     quote:
-      "I really like how Cursor suggests edits to existing code. It noticed I was inconsistent with my markup and popped up this suggestion that matched my other items!",
+      "I really like how Cursor suggests edits to existing code. It noticed I was inconsistent with my markup and popped up this suggestion that matched my other items. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought.",
+    avatar: "🌐",
+  },
+  {
+    name: "Wes Bos",
+    role: "Internet",
+    quote:
+      "I really like how Cursor suggests edits to existing code. It noticed I was inconsistent with my markup and popped up this suggestion that matched my other items. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought.",
     avatar: "🌐",
   },
 ];
 
 export function CursorStyleTestimonials() {
   return (
-    <section className="py-20 bg-black text-white">
-      <div className="max-w-7xl mx-auto px-4">
+    <section className="py-20 bg-border dark:bg-primary-foreground">
+      <div className="container px-4">
         {/* Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold font-open-sans mb-4">
-            Loved by world-class devs
-          </h2>
-          <p className="text-xl font-open-sans text-gray-300 max-w-2xl mx-auto">
-            Engineers all around the world reach for Cursor by choice.
-          </p>
-        </div>
+
+        <SectionHeader
+          title="Wonders of God in the Community"
+          subtitle="Testimonies"
+          // subtitleClassName="text-black"
+        />
 
         {/* Testimonials Grid - Masonry Layout with Different Fade Effects */}
-        <div className="columns-1 md:columns-2 lg:columns-3 xl:columns-4 gap-6 space-y-6">
-          {testimonials.map((testimonial, index) => {
-            // Apply different fade effects to different cards for variety
-            let fadeClass = "fade-out-bottom";
+        <div className="columns-1 md:columns-2 lg:columns-3 xl:columns-4 gap-6 fade-out-all-sides">
+          {testimonials.map((testimonial, index) => (
+            <div
+              key={index}
+              className={`break-inside-avoid mb-6 bg-card text-card-foreground backdrop-blur-sm rounded-xl p-6 border border-border transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:bg-card/40 group`}
+            >
+              {/* Quote */}
+              <blockquote className="font-open-sans mb-4 leading-relaxed text-sm line-clamp-6">
+                "{testimonial.quote}"
+              </blockquote>
 
-            if (index % 4 === 0) fadeClass = "fade-out-all-sides";
-            else if (index % 4 === 1) fadeClass = "fade-out-corners";
-            else if (index % 4 === 2) fadeClass = "fade-out-rectangular";
-            else fadeClass = "fade-out-bottom";
-
-            return (
-              <div
-                key={index}
-                className={`break-inside-avoid mb-6 bg-gray-900/50 backdrop-blur-sm rounded-xl p-6 border border-gray-800/50 hover:border-gray-700/50 transition-all duration-300 hover:bg-gray-900/70 group ${fadeClass}`}
-              >
-                {/* Quote */}
-                <blockquote className="font-open-sans text-gray-200 mb-4 leading-relaxed text-sm">
-                  "{testimonial.quote}"
-                </blockquote>
-
-                {/* Author Info */}
-                <div className="flex items-center gap-3">
-                  <div className="text-2xl">{testimonial.avatar}</div>
-                  <div>
-                    <div className="font-semibold text-white text-sm">
-                      {testimonial.name}
-                    </div>
-                    <div className="text-xs text-gray-400">
-                      {testimonial.role}
-                    </div>
+              {/* Author Info */}
+              <div className="flex items-center gap-3">
+                <div className="text-2xl">{testimonial.avatar}</div>
+                <div>
+                  <div className="font-semibold text-sm">
+                    {testimonial.name}
+                  </div>
+                  <div className="text-xs text-gray-400">
+                    {testimonial.role}
                   </div>
                 </div>
               </div>
-            );
-          })}
+            </div>
+          ))}
         </div>
 
         {/* Call to Action with Combined Fade Effect */}

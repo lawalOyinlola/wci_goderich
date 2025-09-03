@@ -16,14 +16,14 @@ export default function WelcomeSection() {
             className="rounded-lg shadow-lg w-full"
           />
         </div>
-        <div className="md:w-1/2 flex flex-col gap-6 items-start">
+        <div className="md:w-1/2 flex flex-col gap-6 items-start px-4">
           <h2 className="uppercase text-sm text-gray-400 font-light tracking-[0.4em]">
             Welcome to WCI Goderich
           </h2>
 
           <h1>Connect, Grow and Serve with us</h1>
 
-          <p className="text-muted-foreground leading-7">
+          <p className="text-muted-foreground leading-7 max-lg:line-clamp-7">
             Winners Chapel International, Goderich is a branch of the Living
             Faith Church Worldwide, founded under the leadership of Bishop Dr.
             David Oyedepo. Our mandate is to preach the Word of Faith and set
@@ -39,8 +39,8 @@ export default function WelcomeSection() {
             you&apos;ll encounter God in a life-changing way.
           </p>
           <Button
-            variant="secondary"
-            size="lg"
+            variant="ghost"
+            size="sm"
             // className="bg-chart-4 dark:bg-muted-foreground dark:hover:bg-background"
             asChild
           >

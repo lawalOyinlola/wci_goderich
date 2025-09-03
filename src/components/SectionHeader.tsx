@@ -27,12 +27,11 @@ const SectionHeader = ({
             subtitleClassName
           )}
         >
-          {/* <span className="h-px bg-gray-300 w-40"></span> */}
+          {/* <Separator className="hidden sm:block w-40!" /> */}
 
-          <Separator className="w-40!" />
+          <Separator className="sm:w-40!" />
           <p>{subtitle}</p>
-          {/* <span className="h-px bg-gray-300 w-40"></span> */}
-          <Separator className="w-40!" />
+          <Separator className="sm:w-40!" />
         </div>
       )}
       <h1 className={cn("mb-8", titleClassName)}>{title}</h1>

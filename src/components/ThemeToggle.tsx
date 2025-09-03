@@ -13,13 +13,15 @@ import {
 const ThemeToggle = () => {
   const { setTheme } = useTheme();
 
+  // setTheme("system");
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="fixed bottom-8 right-6" asChild>
         <Button
           variant="secondary"
           size="icon"
-          className="bg-chart-4 dark:bg-muted-foreground dark:hover:bg-background"
+          className="bg-chart-4 hover:bg-secondary/80 dark:bg-muted-foreground dark:hover:bg-background"
         >
           <Sun className="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
           <Moon className="absolute h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />

@@ -28,6 +28,7 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import Image from "next/image";
+import { AnimatedBackground } from "@/components/motion-primitives/animated-background";
 
 const navItems = [
   { label: "About", href: "/about" },
@@ -48,7 +49,20 @@ const navItems = [
         ],
       },
       {
-        label: "Youth Ministry / Youth Alive",
+        label: "Teens Church",
+        description:
+          "Nurturing the faith of our youngest members through age-appropriate Bible stories, songs, and activities.",
+        href: "/ministries",
+        ageRange: "Ages 3-12",
+        activities: [
+          "Sunday School",
+          "Vacation Bible School",
+          "Children's Choir",
+          "Bible Games",
+        ],
+      },
+      {
+        label: "Youth Alive",
         description:
           "Empowering teenagers to grow in their faith through relevant teachings, activities, and peer support.",
         href: "/ministries",
@@ -84,18 +98,6 @@ const navItems = [
           "Community Service",
         ],
       },
-      // {
-      //   label: "Businessmen Fellowship",
-      //   description:
-      //     "Connecting Christian business professionals for networking, mentorship, and faith-based business practices.",
-      //   href: "/ministries",
-      //   activities: [
-      //     "Business Networking",
-      //     "Faith & Business Integration",
-      //     "Mentorship Programs",
-      //     "Community Outreach",
-      //   ],
-      // },
       {
         label: "Pastors",
         href: "/pastors",
@@ -194,7 +196,8 @@ const ListItem = forwardRef<
         <Link
           ref={ref}
           className={cn(
-            "block select-none space-y-1 rounded-md p-4 leading-none no-underline outline-none transition-colors hover:bg-accent/20 hover:text-accent-foreground focus:bg-accent/20 focus:text-accent-foreground",
+            "block select-none space-y-1 rounded-md p-4 leading-none no-underline outline-none transition-colors hover:bg-transparent hover:text-accent-foreground focus:bg-transparent focus:text-accent-foreground",
+            // "block select-none space-y-1 rounded-md p-4 leading-none no-underline outline-none transition-colors hover:bg-accent/20 hover:text-accent-foreground focus:bg-accent/20 focus:text-accent-foreground",
             className
           )}
           {...props}
@@ -220,7 +223,7 @@ export default function ChurchNavbar() {
 
   return (
     <header className="fixed inset-x-0 z-50 px-4">
-      <div className="container mt-5 p-1.5 bg-primary-foreground dark:bg-slate-900/80 border border-white/20 dark:border-slate-700/20 rounded-2xl shadow-2xl">
+      <div className="container mt-5 p-2 bg-foreground/30 dark:bg-background/30 border-none  dark:border-slate-700/20 rounded-2xl shadow-2xl backdrop-blur-sm">
         {/* Mobile Nav */}
         <div className="lg:hidden flex items-center justify-between">
           <Link href="/">
@@ -334,15 +337,26 @@ export default function ChurchNavbar() {
 
                         <NavigationMenuContent>
                           <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-                            {item.items.map((subItem) => (
-                              <ListItem
-                                key={subItem.label}
-                                href={subItem.href as Route}
-                                title={subItem.label}
-                              >
-                                {subItem.description}
-                              </ListItem>
-                            ))}
+                            <AnimatedBackground
+                              className="bg-accent/15 rounded-sm"
+                              transition={{
+                                type: "spring",
+                                bounce: 0.2,
+                                duration: 0.6,
+                              }}
+                              enableHover
+                            >
+                              {item.items.map((subItem, index) => (
+                                <ListItem
+                                  key={subItem.label}
+                                  href={subItem.href as Route}
+                                  title={subItem.label}
+                                  data-id={`card-${index}`}
+                                >
+                                  {subItem.description}
+                                </ListItem>
+                              ))}
+                            </AnimatedBackground>
                           </ul>
                         </NavigationMenuContent>
                       </>
@@ -365,7 +379,12 @@ export default function ChurchNavbar() {
 
           {/* Right Section - Action Buttons */}
           <div className="flex-1 flex justify-end items-center gap-1.5">
-            <Button variant="outline" size="lg" className="shadow-none" asChild>
+            <Button
+              variant="outline"
+              size="lg"
+              className="border-border/30 text-[#fdfcfb]"
+              asChild
+            >
               <Link href="/giving">Give Now</Link>
             </Button>
             <Button variant="destructive" size="lg" asChild>

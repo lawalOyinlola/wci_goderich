@@ -43,6 +43,9 @@ export default function LatestBlogSection() {
           subtitle="Blog"
           description="Far far away, behind the word mountains, far from the countries
             Vokalia and Consonantia"
+          titleClassName="text-primary-foreground"
+          subtitleClassName="text-primary-foreground"
+          descriptionClassName="text-primary-foreground"
         />
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

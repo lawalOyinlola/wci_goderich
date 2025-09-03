@@ -16,7 +16,7 @@ const buttonVariants = cva(
         outline:
           "border border-border bg-background/20 shadow-sm hover:bg-accent hover:text-accent-foreground focus-visible:ring-accent/20",
         secondary:
-          "text-secondary-foreground shadow-sm hover:bg-secondary/80 focus-visible:ring-secondary/20 bg-chart-4 dark:bg-muted-foreground dark:hover:bg-background",
+          "text-secondary-foreground shadow-sm hover:bg-muted-foreground/20 focus-visible:ring-secondary/20 bg-chart-4 dark:bg-muted-foreground dark:hover:bg-background",
         ghost:
           "hover:bg-accent hover:text-accent-foreground focus-visible:ring-accent/20",
         link: "text-primary underline-offset-4 hover:underline focus-visible:ring-primary/20",
@@ -24,7 +24,7 @@ const buttonVariants = cva(
       size: {
         default: "h-9 px-4 py-2 has-[>svg]:px-3",
         sm: "h-8 rounded-md gap-1.5 px-3 has-[>svg]:px-2.5",
-        lg: "h-11 rounded-lg px-6 has-[>svg]:px-4",
+        lg: "h-9 sm:h-11 rounded-lg px-4 sm:px-6 has-[>svg]:px-4",
         icon: "size-9",
       },
     },

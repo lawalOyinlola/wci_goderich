@@ -17,6 +17,7 @@ import GallerySection from "@/components/HomepageSections/GallerySection";
 import TestimonialsSection from "@/components/HomepageSections/TestimonialsSection";
 import LatestNewsSection from "@/components/HomepageSections/LatestNewsSection";
 import { CursorStyleTestimonials } from "@/components/CursorStyleTestimonials";
+import { TestimoniesSection } from "@/components/HomepageSections/TestimoniesSection";
 
 export default function HomePage() {
   return (
@@ -34,6 +35,10 @@ export default function HomePage() {
       <TestimonialsSection />
       <LatestNewsSection />
       <CursorStyleTestimonials />
+      <TestimoniesSection />
     </main>
   );
 }
+
+
+
