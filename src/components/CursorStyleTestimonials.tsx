@@ -1,182 +1,239 @@
-import React from "react";
+import React, { useState } from "react";
 import SectionHeader from "./SectionHeader";
+import { InfiniteSlider } from "@/components/motion-primitives/infinite-slider";
+// import { BorderTrail } from "@/components/motion-primitives/border-trail";
+import { MagicCard } from "@/components/magicui/magic-card";
+import { useTheme } from "next-themes";
+import { Button } from "./ui/button";
 
-const testimonials = [
+const testimonies = [
   {
+    id: 1,
     name: "Ben Bernard",
     role: "Instacart",
-    quote:
+    testimony:
       "The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought.",
     avatar: "👨‍💻",
   },
   {
+    id: 2,
     name: "Kevin Whinnery",
     role: "OpenAI",
-    quote:
+    testimony:
       "The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought.",
     avatar: "🚀",
   },
   {
+    id: 3,
     name: "Sawyer Hood",
     role: "Figma",
-    quote: "Cursor is hands down my biggest workflow improvement in years",
+    testimony: "Cursor is hands down my biggest workflow improvement in years",
     avatar: "🎨",
   },
   {
+    id: 4,
     name: "Andrew Milich",
     role: "Notion",
-    quote:
+    testimony:
       "The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought.",
     avatar: "⚡",
   },
   {
+    id: 5,
     name: "Morgan McGuire",
     role: "Weights & Biases",
-    quote:
+    testimony:
       "The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought.",
     avatar: "🔬",
   },
   {
+    id: 6,
     name: "Alex MacCaw",
     role: "Reflect",
-    quote:
+    testimony:
       "Cursor is the best product I've used in a while - it's an AI enabled editor. I just asked it to write a README for a project I've been working on - analyzed the code-base and worked first time. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought.",
     avatar: "📝",
   },
   {
+    id: 7,
     name: "Johannes Schickling",
     role: "Prisma",
-    quote:
+    testimony:
       "The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought.",
     avatar: "⚙️",
   },
   {
+    id: 8,
     name: "Wes Bos",
     role: "Internet",
-    quote:
+    testimony:
       "I really like how Cursor suggests edits to existing code. It noticed I was inconsistent with my markup and popped up this suggestion that matched my other items. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought.",
     avatar: "🌐",
   },
   {
+    id: 9,
     name: "Wes Bos",
     role: "Internet",
-    quote:
+    testimony:
+      "I really like how Cursor suggests edits to existing code. It noticed I was inconsistent with my markup and popped up this suggestion that matched my other items. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought.",
+    avatar: "🌐",
+  },
+  {
+    id: 10,
+    name: "Wes Bos",
+    role: "Internet",
+    testimony:
+      "I really like how Cursor suggests edits to existing code. It noticed I was inconsistent with my markup and popped up this suggestion that matched my other items. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought.",
+    avatar: "🌐",
+  },
+  {
+    id: 11,
+    name: "Wes Bos",
+    role: "Internet",
+    testimony:
       "I really like how Cursor suggests edits to existing code. It noticed I was inconsistent with my markup and popped up this suggestion that matched my other items. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought.",
     avatar: "🌐",
   },
 ];
 
 export function CursorStyleTestimonials() {
+  const { theme } = useTheme();
+  const [selectedTestimony, setSelectedTestimony] = useState<number | null>(
+    null
+  );
+
+  const columns = 4;
+  const perColumn = Math.ceil(testimonies.length / columns);
+  const columnData = Array.from({ length: columns }).map((_, colIndex) =>
+    testimonies.slice(colIndex * perColumn, (colIndex + 1) * perColumn)
+  );
+
   return (
     <section className="py-20 bg-border dark:bg-primary-foreground">
       <div className="container px-4">
-        {/* Header */}
-
         <SectionHeader
           title="Wonders of God in the Community"
           subtitle="Testimonies"
-          // subtitleClassName="text-black"
         />
 
-        {/* Testimonials Grid - Masonry Layout with Different Fade Effects */}
-        <div className="columns-1 md:columns-2 lg:columns-3 xl:columns-4 gap-6 fade-out-all-sides">
-          {testimonials.map((testimonial, index) => (
-            <div
-              key={index}
-              className={`break-inside-avoid mb-6 bg-card text-card-foreground backdrop-blur-sm rounded-xl p-6 border border-border transition-all duration-300 hover:shadow-lg hover:-translate-y-1 hover:bg-card/40 group`}
-            >
-              {/* Quote */}
-              <blockquote className="font-open-sans mb-4 leading-relaxed text-sm line-clamp-6">
-                "{testimonial.quote}"
-              </blockquote>
-
-              {/* Author Info */}
-              <div className="flex items-center gap-3">
-                <div className="text-2xl">{testimonial.avatar}</div>
-                <div>
-                  <div className="font-semibold text-sm">
-                    {testimonial.name}
+        {/* Four vertical InfiniteSlider columns */}
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 h-screen fade-out-all-sides">
+          {columnData.map((items, idx) => {
+            const interactive = idx === 1 || idx === 2;
+            return (
+              <InfiniteSlider
+                key={idx}
+                direction="vertical"
+                speed={25}
+                gap={16}
+                {...(interactive ? { speedOnHover: 5 } : {})}
+                reverse={idx % 2 === 1 ? false : true}
+              >
+                {items.map((t, i) => (
+                  <div
+                    key={`${idx}-${i}`}
+                    className="relative group bg-card text-card-foreground backdrop-blur-sm rounded-xl p-0 border border-border shadow-sm w-full md:w-[23rem] overflow-hidden"
+                    style={{ height: "auto" }}
+                  >
+                    <MagicCard
+                      gradientColor={theme === "dark" ? "#262626" : "#D9D9D955"}
+                      gradientSize={150}
+                      className="h-full p-6 bg-card"
+                    >
+                      {/* <BorderTrail
+                        className="group-hover:opacity-100 opacity-0 transition-opacity duration-300 bg-linear-to-l from-secondary-foreground via-chart-4 to-chart-5 "
+                        size={200}
+                      /> */}
+                      <blockquote
+                        className={`font-open-sans mb-4 leading-relaxed text-sm duration-300 transition-all ${
+                          selectedTestimony !== t.id && "line-clamp-6"
+                        }`}
+                      >
+                        &quot;{t.testimony}&quot;
+                      </blockquote>
+                      <div className="flex items-center gap-3">
+                        <div className="text-2xl">{t.avatar}</div>
+                        <div>
+                          <div className="font-semibold text-sm">{t.name}</div>
+                          <div className="text-xs text-gray-400">{t.role}</div>
+                        </div>
+                      </div>
+                    </MagicCard>
+                    {interactive && (
+                      <div className="absolute bottom-0 left-0 right-0 flex justify-end bg-gradient-to-t from-accent/10 via-card/40 to-transparent p-4 group-hover:opacity-100 opacity-0 transition-all duration-600 z-1">
+                        <Button
+                          variant="link"
+                          onClick={() => {
+                            setSelectedTestimony(t.id);
+                          }}
+                        >
+                          Read More
+                        </Button>
+                      </div>
+                    )}
                   </div>
-                  <div className="text-xs text-gray-400">
-                    {testimonial.role}
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
+                ))}
+              </InfiniteSlider>
+            );
+          })}
         </div>
 
-        {/* Call to Action with Combined Fade Effect */}
-        <div className="text-center mt-16">
-          <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-8 mx-auto max-w-2xl relative overflow-hidden fade-out-rectangular">
-            <h3 className="text-2xl font-bold font-open-sans mb-4">
-              Ready to transform your coding experience?
-            </h3>
-            <p className="font-open-sans text-blue-100 mb-6">
-              Join thousands of developers who have already discovered the power
-              of AI-assisted coding with Cursor.
-            </p>
-            <button className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold font-open-sans hover:bg-blue-50 transition-colors">
-              Get Started Free
-            </button>
-          </div>
-        </div>
+        <div className="grid grid-rows-2 gap-6 fade-out-sides mt-40">
+          {columnData.map((items, idx) => {
+            return (
+              <InfiniteSlider
+                key={idx}
+                speed={25}
+                gap={16}
+                speedOnHover={5}
+                reverse={idx % 2 === 1 ? false : true}
+              >
+                {items.map((t, i) => (
+                  <div
+                    key={`${idx}-${i}`}
+                    className="relative group aspect-[4/3] text-card-foreground backdrop-blur-sm rounded-xl p-0 border border-border shadow-sm w-full md:max-w-[25rem] overflow-hidden"
+                    style={{ height: "auto" }}
+                  >
+                    <MagicCard
+                      gradientColor={theme === "dark" ? "#262626" : "#D9D9D955"}
+                      gradientSize={150}
+                      className="h-full p-6 bg-card"
+                    >
+                      {/* <BorderTrail
+                        className="group-hover:opacity-100 opacity-0 transition-opacity duration-300 bg-linear-to-l from-secondary-foreground via-chart-4 to-chart-5 "
+                        size={200}
+                      /> */}
+                      <blockquote
+                        className={`font-open-sans mb-4 leading-relaxed text-sm duration-300 transition-all ${
+                          selectedTestimony !== t.id && "line-clamp-10"
+                        }`}
+                      >
+                        &quot;{t.testimony}&quot;
+                      </blockquote>
+                      <div className="flex items-center gap-3">
+                        <div className="text-2xl">{t.avatar}</div>
+                        <div>
+                          <div className="font-semibold text-sm">{t.name}</div>
+                          <div className="text-xs text-gray-400">{t.role}</div>
+                        </div>
+                      </div>
+                    </MagicCard>
 
-        {/* Demo Section - Show Different Fade Effects */}
-        <div className="mt-20">
-          <h3 className="text-2xl font-bold font-open-sans text-center mb-8">
-            Different Fade Effect Combinations
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* All Sides Fade */}
-            <div className="fade-out-all-sides bg-gray-800 p-6 rounded-xl">
-              <h4 className="font-semibold mb-2">All Sides Fade</h4>
-              <p className="text-sm text-gray-300">
-                Content fades out on all sides using multiple gradients
-                combined.
-              </p>
-            </div>
-
-            {/* Corners Fade */}
-            <div className="fade-out-corners bg-gray-800 p-6 rounded-xl">
-              <h4 className="font-semibold mb-2">Corners Fade</h4>
-              <p className="text-sm text-gray-300">
-                Diagonal fade effect from corners to center.
-              </p>
-            </div>
-
-            {/* Multi-directional Fade */}
-            <div className="fade-out-multi bg-gray-800 p-6 rounded-xl">
-              <h4 className="font-semibold mb-2">Multi-directional</h4>
-              <p className="text-sm text-gray-300">
-                Fade from all four directions simultaneously.
-              </p>
-            </div>
-
-            {/* Rectangular Fade */}
-            <div className="fade-out-rectangular bg-gray-800 p-6 rounded-xl">
-              <h4 className="font-semibold mb-2">Rectangular Fade</h4>
-              <p className="text-sm text-gray-300">
-                More structured fade than radial, rectangular shape.
-              </p>
-            </div>
-
-            {/* Custom Fade */}
-            <div className="fade-out-custom bg-gray-800 p-6 rounded-xl">
-              <h4 className="font-semibold mb-2">Custom Fade</h4>
-              <p className="text-sm text-gray-300">
-                Soft fade with 5% to 95% visibility range.
-              </p>
-            </div>
-
-            {/* Enhanced Radial */}
-            <div className="fade-out-all bg-gray-800 p-6 rounded-xl">
-              <h4 className="font-semibold mb-2">Enhanced Radial</h4>
-              <p className="text-sm text-gray-300">
-                Improved radial fade with multiple opacity steps.
-              </p>
-            </div>
-          </div>
+                    <div className="absolute bottom-0 left-0 right-0 flex justify-end bg-gradient-to-t from-accent/10 via-card/40 to-transparent p-4 group-hover:opacity-100 opacity-0 transition-all duration-600 z-1">
+                      <Button
+                        variant="link"
+                        onClick={() => {
+                          setSelectedTestimony(t.id);
+                        }}
+                      >
+                        Read More
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+              </InfiniteSlider>
+            );
+          })}
         </div>
       </div>
     </section>

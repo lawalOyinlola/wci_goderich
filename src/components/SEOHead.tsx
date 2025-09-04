@@ -61,6 +61,10 @@ export function generateMetadata({
     ? `https://wcigoderich.org${url}`
     : "https://wcigoderich.org";
 
+  // Only 'website' and 'article' are allowed by Next.js OpenGraph types
+  const ogType: "website" | "article" =
+    type === "article" ? "article" : "website";
+
   return {
     title: fullTitle,
     description: fullDescription,
@@ -73,7 +77,7 @@ export function generateMetadata({
       canonical: url || "/",
     },
     openGraph: {
-      type,
+      type: ogType,
       locale: "en_US",
       url: fullUrl,
       title: fullTitle,
@@ -202,4 +206,3 @@ export function generateEventStructuredData(eventData: {
     eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
   };
 }
-

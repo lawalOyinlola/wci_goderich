@@ -4,7 +4,8 @@ import { forwardRef, useState } from "react";
 import Link from "next/link";
 import type { Route } from "next";
 import { cn } from "@/lib/utils";
-import { Menu, Scale, X } from "lucide-react";
+// import { Menu, Scale, X } from "lucide-react";
+import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
