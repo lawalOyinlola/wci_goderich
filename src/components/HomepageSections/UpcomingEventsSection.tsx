@@ -50,7 +50,7 @@ export default function UpcomingEventsSection() {
       className="py-24 bg-cover bg-center relative"
       style={{ backgroundImage: "url('/images/bg-covenant_exchange.jpg')" }}
     >
-      <div className="max-w-screen mx-auto px-4">
+      <div className="max-w-500 w-full mx-auto px-4">
         <SectionHeader
           title="Upcoming Events"
           subtitle="Events"
@@ -60,18 +60,23 @@ export default function UpcomingEventsSection() {
           descriptionClassName="text-primary-foreground"
         />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 auto-rows-fr">
+        {/* flex-wrap layout with equal card sizes and centered wrap */}
+        <div className="flex flex-wrap justify-center gap-8">
           {events.map((event, index) => (
-            <div key={index} className="flex flex-row items-end cursor-pointer">
-              <div className="relative w-3/7 h-15/16">
+            <div
+              key={index}
+              className="cursor-pointer flex h-[300px] w-full flex-row items-stretch sm:w-[calc(50%-theme(spacing.8)/2)] lg:w-[calc(33.333%-theme(spacing.8)/1.5)] max-w-[560px]"
+            >
+              <div className="relative h-15/16 w-3/7 self-end">
                 <Image
                   src={event.image}
                   alt={event.title}
                   fill
+                  sizes="(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 30vw"
                   className="object-cover"
                 />
               </div>
-              <div className="relative bg-card text-card-foreground p-6 pt-18 w-4/7 min-h-[280px] flex flex-col gap-3 justify-start">
+              <div className="relative h-full w-3/5 bg-card p-6 pt-18 text-card-foreground flex flex-col gap-3 justify-start">
                 <div className="absolute top-6 -left-5 bg-accent text-primary-foreground px-3 pl-12 py-1 font-semibold text-sm whitespace-nowrap">
                   {event.time}
                 </div>

@@ -21,19 +21,6 @@
   animation-play-state: paused;
 }
 
-/* Pause animation when hovering over the container */
-.testimonies-container:hover .animate-scroll {
-  animation-play-state: paused;
-}
-
-/* Line clamp utility for testimonies */
-.line-clamp-6 {
-  display: -webkit-box;
-  -webkit-line-clamp: 6;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
 @theme inline {
   --font-outfit: Outfit, sans-serif;
   --font-lora: Lora, Georgia, serif;
@@ -75,6 +62,16 @@
   --radius-sm: calc(var(--radius) - 4px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  --animate-rippling: rippling var(--duration) ease-out;
+  @keyframes rippling {
+    0% {
+      opacity: 1;
+    }
+    100% {
+      transform: scale(2);
+      opacity: 0;
+    }
+  }
 }
 
 :root {
@@ -180,19 +177,6 @@
   --sidebar-accent-foreground: #f8fafc; /* Light gray */
   --sidebar-border: #334155; /* Medium slate */
   --sidebar-ring: #f87171; /* Lighter red */
-}
-
-/* Font utility classes */
-.font-lora {
-  font-family: var(--font-lora);
-}
-
-.font-open-sans {
-  font-family: var(--font-open-sans);
-}
-
-.font-great-vibes {
-  font-family: var(--font-great-vibes);
 }
 
 /* Cursor-style fade-out effects - apply directly to any element */
@@ -487,7 +471,7 @@
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border outline-ring/50 caret-primary;
   }
   body {
     @apply bg-background text-foreground overflow-x-hidden font-normal;

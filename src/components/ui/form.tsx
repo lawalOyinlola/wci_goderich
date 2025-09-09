@@ -4,10 +4,7 @@ import * as React from "react";
 import { FormProvider, useFormContext } from "react-hook-form";
 import { cn } from "@/lib/utils";
 
-export function Form({
-  children,
-  ...props
-}: React.ComponentProps<typeof FormProvider>) {
+export function Form({ children, ...props }: any) {
   return <FormProvider {...props}>{children}</FormProvider>;
 }
 
@@ -35,5 +32,7 @@ export function FormField({
 }
 
 export function FormMessage({ children }: { children?: React.ReactNode }) {
-  return <p className="text-sm text-destructive mt-1">{children}</p>;
+  return (
+    <p className="text-[12px] text-destructive text-right mr-1">{children}</p>
+  );
 }

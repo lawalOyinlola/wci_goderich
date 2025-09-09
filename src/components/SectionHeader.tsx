@@ -27,8 +27,6 @@ const SectionHeader = ({
             subtitleClassName
           )}
         >
-          {/* <Separator className="hidden sm:block w-40!" /> */}
-
           <Separator className="sm:w-40!" />
           <p>{subtitle}</p>
           <Separator className="sm:w-40!" />

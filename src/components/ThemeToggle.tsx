@@ -8,12 +8,10 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
+} from "@/components/ui/dropdown-menu";
 
 const ThemeToggle = () => {
   const { setTheme } = useTheme();
-
-  // setTheme("system");
 
   return (
     <DropdownMenu>
@@ -30,10 +28,10 @@ const ThemeToggle = () => {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem onClick={() => setTheme("light")}>
-          Light
+          Light Mode
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme("dark")}>
-          Dark
+          Dark Mode
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme("system")}>
           System

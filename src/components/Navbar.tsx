@@ -2,9 +2,9 @@
 
 import { forwardRef, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import type { Route } from "next";
 import { cn } from "@/lib/utils";
-// import { Menu, Scale, X } from "lucide-react";
 import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -28,7 +28,6 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
-import Image from "next/image";
 import { AnimatedBackground } from "@/components/motion-primitives/animated-background";
 
 const navItems = [
@@ -224,7 +223,7 @@ export default function ChurchNavbar() {
 
   return (
     <header className="fixed inset-x-0 z-50 px-4">
-      <div className="container mt-5 p-2 bg-foreground/30 dark:bg-background/30 border-none  dark:border-slate-700/20 rounded-2xl shadow-2xl backdrop-blur-sm">
+      <div className="container mt-5 p-2 bg-foreground/30 dark:bg-background/30 border-none dark:border-slate-700/20 rounded-2xl shadow-2xl backdrop-blur-sm">
         {/* Mobile Nav */}
         <div className="lg:hidden flex items-center justify-between">
           <Link href="/">
