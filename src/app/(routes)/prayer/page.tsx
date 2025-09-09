@@ -360,7 +360,7 @@ export default function PrayerPage() {
               Answered Prayers
             </h2>
             <p className="text-xl text-foreground/70 max-w-2xl mx-auto">
-              Testimonies of God's faithfulness in answering prayers
+              Testimonies of God&apos;s faithfulness in answering prayers
             </p>
           </div>
 
@@ -373,7 +373,7 @@ export default function PrayerPage() {
                   </div>
                 </div>
                 <p className="text-foreground/80 mb-4 italic">
-                  "{testimony.testimony}"
+                  &quot;{testimony.testimony}&quot;
                 </p>
                 <div className="text-center">
                   <p className="font-semibold text-foreground">
@@ -435,7 +435,7 @@ export default function PrayerPage() {
       {/* Call to Action */}
       <section className="py-20 bg-primary text-white">
         <div className="max-w-4xl mx-auto px-4 text-center">
-          <h2 className="text-4xl font-bold mb-6">Let's Pray Together</h2>
+          <h2 className="text-4xl font-bold mb-6">Let&apos;s Pray Together</h2>
           <p className="text-xl mb-8 opacity-90">
             Prayer is powerful and effective. Join us in lifting up our needs to
             God

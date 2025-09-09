@@ -1,19 +1,18 @@
 "use client";
 
 import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
 // import { Form } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 
-const schema = yup.object({
-  name: yup.string().required("Your name is required"),
-  email: yup.string().email().required("Valid email is required"),
-});
+// Schema removed - not used in this component
 
-type ContactForm = yup.InferType<typeof schema> & { message: string };
+type ContactForm = {
+  name: string;
+  email: string;
+  message: string;
+};
 
 export default function ContactPage() {
   const form = useForm<ContactForm>({});

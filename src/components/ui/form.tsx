@@ -1,10 +1,18 @@
 "use client";
 
 import * as React from "react";
-import { FormProvider, useFormContext } from "react-hook-form";
+import {
+  FormProvider,
+  useFormContext,
+  UseFormReturn,
+  FieldValues,
+} from "react-hook-form";
 import { cn } from "@/lib/utils";
 
-export function Form({ children, ...props }: any) {
+export function Form<TFieldValues extends FieldValues = FieldValues>({
+  children,
+  ...props
+}: UseFormReturn<TFieldValues> & { children: React.ReactNode }) {
   return <FormProvider {...props}>{children}</FormProvider>;
 }
 

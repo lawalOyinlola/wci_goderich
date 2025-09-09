@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -79,9 +79,9 @@ export default function TestimoniesPage() {
     { name: "Bible Study", count: 1 },
   ];
 
-  const nextSlide = () => {
+  const nextSlide = useCallback(() => {
     setCurrentSlide((prev) => (prev + 1) % testimonies.length);
-  };
+  }, [testimonies.length]);
 
   const prevSlide = () => {
     setCurrentSlide(
@@ -144,7 +144,7 @@ export default function TestimoniesPage() {
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [currentSlide, isDragging]);
+  }, [currentSlide, isDragging, nextSlide]);
 
   return (
     <div className="pt-20">

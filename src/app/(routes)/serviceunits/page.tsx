@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+// import Image from "next/image"; // Unused import removed
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
@@ -142,7 +142,7 @@ export default function ServiceUnitsPage() {
             Join a Service Unit
           </h1>
           <p className="text-xl md:text-2xl max-w-3xl mx-auto opacity-90">
-            Discover your calling and make a difference in God's kingdom
+            Discover your calling and make a difference in God&apos;s kingdom
           </p>
         </div>
       </section>
@@ -156,13 +156,13 @@ export default function ServiceUnitsPage() {
           <p className="text-xl text-foreground/70 mb-8 leading-relaxed">
             Service units are the backbone of our church ministry. They provide
             opportunities for every member to contribute their time, talents,
-            and resources to advance God's kingdom. Whether you're skilled in
-            music, have a heart for children, or want to serve behind the
-            scenes, there's a place for you.
+            and resources to advance God&apos;s kingdom. Whether you&apos;re
+            skilled in music, have a heart for children, or want to serve behind
+            the scenes, there&apos;s a place for you.
           </p>
           <p className="text-lg text-foreground/80 leading-relaxed">
-            <strong>1 Corinthians 12:27</strong> - "Now you are the body of
-            Christ, and each one of you is a part of it."
+            <strong>1 Corinthians 12:27</strong> - &quot;Now you are the body of
+            Christ, and each one of you is a part of it.&quot;
           </p>
         </div>
       </section>

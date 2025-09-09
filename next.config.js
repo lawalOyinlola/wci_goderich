@@ -2,14 +2,13 @@
 const nextConfig = {
   reactStrictMode: true,
   experimental: {
-    typedRoutes: true,
     // Improve development stability
     optimizePackageImports: ["lucide-react"],
     // React 18 stability
     // reactCompiler: false,
   },
-  // Improve development performance
-  swcMinify: true,
+  // typedRoutes moved to top level in Next.js 15
+  typedRoutes: true,
   // Reduce memory usage in development
   onDemandEntries: {
     maxInactiveAge: 25 * 1000,

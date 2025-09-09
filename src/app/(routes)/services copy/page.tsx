@@ -269,7 +269,7 @@ export default function ServicesPage() {
                     Bible Study Groups
                   </h3>
                   <p className="text-foreground/70">
-                    In-depth study of God's Word in small group settings for
+                    In-depth study of God&apos;s Word in small group settings for
                     deeper understanding.
                   </p>
                 </div>
@@ -284,7 +284,7 @@ export default function ServicesPage() {
                     Outreach Programs
                   </h3>
                   <p className="text-foreground/70">
-                    Community service and evangelism initiatives to share God's
+                    Community service and evangelism initiatives to share God&apos;s
                     love with others.
                   </p>
                 </div>
@@ -296,7 +296,7 @@ export default function ServicesPage() {
                 Get Involved
               </h3>
               <p className="text-foreground/70 mb-6">
-                There's a place for everyone in our church family. Find your
+                There&apos;s a place for everyone in our church family. Find your
                 ministry and start serving today.
               </p>
               <div className="space-y-4">
