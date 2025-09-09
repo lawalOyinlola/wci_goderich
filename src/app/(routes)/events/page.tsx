@@ -294,7 +294,7 @@ export default function EventsPage() {
                   <div className="bg-muted/50 rounded-lg p-3">
                     <p className="font-semibold text-foreground">Jan 1</p>
                     <p className="text-sm text-foreground/70">
-                      New Year's Prayer Service
+                      New Year&apos;s Prayer Service
                     </p>
                   </div>
                   <div className="bg-muted/50 rounded-lg p-3">
@@ -314,13 +314,13 @@ export default function EventsPage() {
                   <div className="bg-muted/50 rounded-lg p-3">
                     <p className="font-semibold text-foreground">Feb 8</p>
                     <p className="text-sm text-foreground/70">
-                      Women's Conference
+                      Women&apos;s Conference
                     </p>
                   </div>
                   <div className="bg-muted/50 rounded-lg p-3">
                     <p className="font-semibold text-foreground">Feb 15</p>
                     <p className="text-sm text-foreground/70">
-                      Men's Breakfast & Bible Study
+                      Men&apos;s Breakfast & Bible Study
                     </p>
                   </div>
                 </div>

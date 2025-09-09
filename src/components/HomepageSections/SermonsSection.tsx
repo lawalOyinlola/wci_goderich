@@ -51,7 +51,7 @@ const sermons: Sermon[] = [
   // },
 ];
 
-export default function ChurchSermonsSection() {
+export default function SermonsSection() {
   return (
     <section className="py-24">
       <div className="container max-w-7xl! px-4">
@@ -62,18 +62,21 @@ export default function ChurchSermonsSection() {
             Vokalia and Consonantia"
         />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 auto-rows-fr">
+        {/* Flex layout with equal card widths */}
+        <div className="flex flex-wrap justify-center gap-8">
           {sermons.map((sermon, index) => (
             <div
               key={index}
-              className="group relative overflow-hidden text-center"
+              className="group relative overflow-hidden text-center flex flex-col basis-full sm:basis-[calc(50%-theme(space.8)/2)] lg:basis-[calc(33.333%-theme(space.8)/1.5)] max-w-[420px]"
             >
               {/* Image Container */}
-              <div className="relative aspect-[1] shadow-lg overflow-hidden bg-red-500">
+              <div className="relative aspect-[1] shadow-lg overflow-hidden">
                 <Image
                   src={sermon.image}
                   alt={sermon.title}
                   fill
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  priority={index === 0}
                   className="object-cover transition-transform duration-500 group-hover:scale-110"
                 />
                 {/* Overlay */}
@@ -86,7 +89,7 @@ export default function ChurchSermonsSection() {
                     <p className="text-xs uppercase tracking-[0.2em]">
                       BY PASTOR:
                     </p>
-                    <p className="font-great-vibes italic text-2xl tracking-tighter font-medium my-1">
+                    <p className="font-great-vibes italic text-2xl -tracking-tight font-medium my-1">
                       {sermon.pastor}
                     </p>
                   </div>

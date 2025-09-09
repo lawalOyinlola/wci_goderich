@@ -121,7 +121,8 @@ export default function GivingPage() {
             Give & Support
           </h1>
           <p className="text-xl md:text-2xl max-w-3xl mx-auto opacity-90">
-            Partner with us in advancing God's kingdom through faithful giving
+            Partner with us in advancing God&apos;s kingdom through faithful
+            giving
           </p>
         </div>
       </section>
@@ -131,14 +132,14 @@ export default function GivingPage() {
         <div className="max-w-4xl mx-auto px-4 text-center">
           <h2 className="text-4xl font-bold mb-6 text-foreground">Why Give?</h2>
           <p className="text-xl text-foreground/70 mb-8 leading-relaxed">
-            Giving is not just about money—it's about worship, obedience, and
-            partnership in God's work. When we give, we acknowledge that
-            everything we have comes from God and we trust Him to provide.
+            Giving is not just about money—it&apos;s about worship, obedience,
+            and partnership in God&apos;s work. When we give, we acknowledge
+            that everything we have comes from God and we trust Him to provide.
           </p>
           <p className="text-lg text-foreground/80 leading-relaxed">
-            <strong>2 Corinthians 9:7</strong> - "Each of you must give as you
-            have made up your mind, not reluctantly or under compulsion, for God
-            loves a cheerful giver."
+            <strong>2 Corinthians 9:7</strong> - &quot;Each of you must give as
+            you have made up your mind, not reluctantly or under compulsion, for
+            God loves a cheerful giver.&quot;
           </p>
         </div>
       </section>
@@ -269,8 +270,8 @@ export default function GivingPage() {
               Stories of Faithful Giving
             </h2>
             <p className="text-xl text-foreground/70 max-w-2xl mx-auto">
-              Hear from members who have experienced God's faithfulness through
-              giving
+              Hear from members who have experienced God&apos;s faithfulness
+              through giving
             </p>
           </div>
 
@@ -290,7 +291,7 @@ export default function GivingPage() {
                 </div>
 
                 <blockquote className="text-foreground/80 mb-4 italic">
-                  "{testimony.testimony}"
+                  &quot;{testimony.testimony}&quot;
                 </blockquote>
 
                 <p className="font-semibold text-foreground">

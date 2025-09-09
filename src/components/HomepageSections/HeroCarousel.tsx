@@ -10,10 +10,10 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
+  type CarouselApi,
 } from "@/components/ui/carousel";
-import { Separator } from "../ui/separator";
+import { Separator } from "@/components/ui/separator";
 import Fade from "embla-carousel-fade";
-import { AspectRatio } from "../ui/aspect-ratio";
 
 const slides = [
   {
@@ -25,7 +25,7 @@ const slides = [
     buttons: [
       {
         text: "Read More",
-        link: "/prophetic-focus-june",
+        link: "/prophetic-focus-sept",
       },
       {
         text: "Services",
@@ -37,23 +37,31 @@ const slides = [
       },
     ],
   },
+  // {
+  //   title: "WISDOM IS BETTER THAN WEAPONS OF WAR",
+  //   subtitle: "PROPHETIC FOCUS - june",
+  //   description: "on their own accord in my life this year.",
+  //   background: "linear-gradient(135deg, #1a1a1a 0%, #2d3436 100%)",
+  //   bg_image: "./images/bg-prophetic_focus_june.jpg",
+  //   image: "/images/prophetic_focus_june.png",
+  //   buttons: [
+  //     {
+  //       text: "Read More",
+  //       link: "/events",
+  //     },
+  //     {
+  //       text: "Download",
+  //       link: "https://faithtabernacle.org.ng/",
+  //     },
+  //   ],
+  // },
   {
-    title: "WISDOM IS BETTER THAN WEAPONS OF WAR",
-    subtitle: "PROPHETIC FOCUS - JUNE",
-    description: "on their own accord in my life this year.",
+    title: "THE LORD IS MY SHEPHERD,",
+    subtitle: "PROPHETIC FOCUS - SEPT",
+    description: "I shall not want.",
     background: "linear-gradient(135deg, #1a1a1a 0%, #2d3436 100%)",
-    bg_image: "./images/bg-prophetic_focus_june.jpg",
-    image: "/images/prophetic_focus_june.png",
-    buttons: [
-      {
-        text: "Read More",
-        link: "/events",
-      },
-      {
-        text: "Download",
-        link: "https://faithtabernacle.org.ng/",
-      },
-    ],
+    bg_image: "./images/bg-prophetic_focus_sept.jpg",
+    image: "/images/prophetic_focus_sept.png",
   },
   {
     title: "MY NEW ERA",
@@ -80,7 +88,7 @@ const slides = [
 ];
 
 export default function HeroCarousel() {
-  const [api, setApi] = useState<any>();
+  const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
   const [count, setCount] = useState(0);
 

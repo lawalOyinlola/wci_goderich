@@ -1,13 +1,18 @@
 "use client";
 
 import * as React from "react";
-import { FormProvider, useFormContext } from "react-hook-form";
+import {
+  FormProvider,
+  useFormContext,
+  UseFormReturn,
+  FieldValues,
+} from "react-hook-form";
 import { cn } from "@/lib/utils";
 
-export function Form({
+export function Form<TFieldValues extends FieldValues = FieldValues>({
   children,
   ...props
-}: React.ComponentProps<typeof FormProvider>) {
+}: UseFormReturn<TFieldValues> & { children: React.ReactNode }) {
   return <FormProvider {...props}>{children}</FormProvider>;
 }
 
@@ -35,5 +40,7 @@ export function FormField({
 }
 
 export function FormMessage({ children }: { children?: React.ReactNode }) {
-  return <p className="text-sm text-destructive mt-1">{children}</p>;
+  return (
+    <p className="text-[12px] text-destructive text-right mr-1">{children}</p>
+  );
 }

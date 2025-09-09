@@ -1,218 +1,243 @@
 "use client";
 
+import {
+  EnvelopeIcon,
+  FacebookLogoIcon,
+  LinkedinLogoIcon,
+  MapPinIcon,
+  PhoneIcon,
+  TiktokLogoIcon,
+  XLogoIcon,
+  YoutubeLogoIcon,
+} from "@phosphor-icons/react";
 import type { Route } from "next";
+import Image from "next/image";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { Label } from "./ui/label";
+import { Input } from "./ui/input";
+import { Button } from "./ui/button";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import { Form, FormMessage } from "./ui/form";
 
-const footerSections = [
+const footerLinks = [
   {
-    title: "About Us",
-    links: [
-      { label: "Our Story", href: "/about" },
-      { label: "Mission & Vision", href: "/about" },
-      { label: "Leadership", href: "/about" },
-      { label: "Core Values", href: "/about" },
+    group: "About Us",
+    items: [
+      { title: "Our Story", href: "/about" },
+      { title: "Mission & Vision", href: "/about" },
+      { title: "Leadership", href: "/about" },
+      { title: "Core Values", href: "/about" },
+      { title: "Services", href: "/services" },
     ],
   },
   {
-    title: "Ministries",
-    links: [
-      { label: "Services", href: "/services" },
-      { label: "Service Units", href: "/service-units" },
-      { label: "WOFBI", href: "/wofbi" },
-      { label: "Education", href: "/education" },
-      { label: "Homecell", href: "/homecell" },
+    group: "Ministries",
+    items: [
+      { title: "WOFBI", href: "/wofbi" },
+      { title: "Homecell", href: "/homecell" },
+      { title: "Businessmen Fellowship", href: "/services" },
+      { title: "Women's Fellowship", href: "/services" },
+      { title: "Youth Alive", href: "/service-units" },
+      { title: "Teens Church", href: "/service-units" },
+      { title: "Children's Ministry", href: "/service-units" },
+      { title: "Education", href: "/education" },
     ],
   },
   {
-    title: "Resources",
-    links: [
-      { label: "Media Library", href: "/media" },
-      { label: "Book Library", href: "/library" },
-      { label: "Photo Gallery", href: "/gallery" },
-      { label: "Testimonies", href: "/testimonies" },
-      { label: "Prayer Requests", href: "/prayer" },
+    group: "Resources",
+    items: [
+      { title: "Media Library", href: "/media" },
+      { title: "Book Library", href: "/library" },
+      { title: "Photo Gallery", href: "/gallery" },
+      { title: "Testimonies", href: "/testimonies" },
+      { title: "Prayer Requests", href: "/prayer" },
     ],
   },
   {
-    title: "Get Involved",
-    links: [
-      { label: "Join Service Unit", href: "/service-units" },
-      { label: "Give Online", href: "/giving" },
-      { label: "Prayer Team", href: "/prayer" },
-      { label: "Volunteer", href: "/service-units" },
-      { label: "Contact Us", href: "/contact" },
+    group: "Get Involved",
+    items: [
+      { title: "Join a Service Unit", href: "/service-units" },
+      { title: "Give Online", href: "/giving" },
+      { title: "Prayer Team", href: "/prayer" },
+      { title: "Volunteer", href: "/service-units" },
+      { title: "Contact Us", href: "/contact" },
+      { title: "Church Location", href: "/location" },
     ],
   },
-];
-
-const quickLinks = [
-  { label: "Service Times", href: "/services" },
-  { label: "Upcoming Events", href: "/events" },
-  { label: "Location & Directions", href: "/location" },
-  { label: "Pastors", href: "/pastors" },
 ];
 
 export default function Footer() {
+  const EMAIL_REGEX = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+  const newsletterSchema: yup.ObjectSchema<{ email: string }> = yup.object({
+    email: yup
+      .string()
+      .email("Please enter a valid email address")
+      .matches(EMAIL_REGEX, "Please enter a valid email address")
+      .required("Email is required"),
+  });
+
+  const form = useForm<{ email: string }>({
+    resolver: yupResolver(newsletterSchema),
+    defaultValues: { email: "" },
+    mode: "onTouched",
+  });
+
   return (
-    <footer className="bg-secondary-foreground text-primary-foreground py-16 mt-16">
-      <div className="max-w-7xl mx-auto px-4">
-        {/* Main Footer Content */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-12">
-          {/* Church Info */}
-          <div className="lg:col-span-2">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">WCI</span>
-              </div>
+    <footer className="border-b bg-white pt-20 dark:bg-transparent">
+      <div className="container px-6">
+        <div className="grid gap-12 md:grid-cols-5">
+          <div className="md:col-span-2 flex flex-col gap-4">
+            <div className="flex items-center gap-3">
+              <Link href="/" aria-label="go home" className="block size-fit">
+                <Image
+                  src="/lfc_logo.png"
+                  alt="Living Faith Church Logo"
+                  width={40}
+                  height={40}
+                />
+              </Link>
               <div>
-                <h3 className="font-bold text-lg">WCI Goderich</h3>
-                <p className="text-sm text-primary-foreground/70">
+                <h6 className="font-bold text-md font-lora leading-none">
+                  WCI Goderich
+                </h6>
+                <p className="text-sm text-muted-foreground">
                   Living Faith Church
                 </p>
               </div>
             </div>
-            <p className="text-primary-foreground/80 mb-4 leading-relaxed">
+            <p className="px-2 text-sm leading-relaxed">
               Spreading the Gospel and transforming lives in Sierra Leone and
               beyond. Join us in our mission to share God&apos;s love with
               everyone.
             </p>
-            <div className="space-y-2 text-sm text-primary-foreground/70">
-              <p>📍 Main Street, Goderich, Western Area</p>
-              <p>📞 +232 88 123 456</p>
-              <p>✉️ info@wcigoderich.org</p>
+            <div className="space-y-2 text-sm text-muted-foreground">
+              <div className="flex items-center gap-2">
+                <MapPinIcon size={18} color="var(--primary)" weight="duotone" />
+                <span>Main Street, Goderich, Western Area</span>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <PhoneIcon size={18} color="var(--primary)" weight="duotone" />
+                <span>+232 88 123 456</span>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <EnvelopeIcon
+                  size={18}
+                  color="var(--primary)"
+                  weight="duotone"
+                />
+                <span>info@wcigoderich.org</span>
+              </div>
             </div>
+            <Form {...form}>
+              <form
+                noValidate
+                onSubmit={form.handleSubmit((values) => {
+                  // TODO: hook up to your newsletter API
+                  console.log("newsletter", values);
+                  form.reset();
+                })}
+                className="row-start-1 border-b pb-8 text-sm md:col-span-2 md:border-none lg:col-span-1 mt-8 p-4 rounded-md max-w-md w-full"
+              >
+                <div className="space-y-4">
+                  <Label htmlFor="mail" className="block font-medium">
+                    Stay Connected
+                  </Label>
+                  <div className="flex gap-4">
+                    <Input
+                      id="mail"
+                      type="email"
+                      placeholder="Your email"
+                      className="h-9 text-sm"
+                      aria-invalid={!!form.formState.errors.email}
+                      {...form.register("email")}
+                    />
+                    <Button type="submit">Submit</Button>
+                  </div>
+                  {form.formState.errors.email && (
+                    <FormMessage>
+                      {String(form.formState.errors.email.message)}
+                    </FormMessage>
+                  )}
+                  <span className="text-muted-foreground block text-sm">
+                    Get updates about services, events, and ministry
+                    opportunities
+                  </span>
+                </div>
+              </form>
+            </Form>
           </div>
 
-          {/* Footer Sections */}
-          {footerSections.map((section, index) => (
-            <div key={index}>
-              <h4 className="font-semibold text-lg mb-4 text-white">
-                {section.title}
-              </h4>
-              <ul className="space-y-2">
-                {section.links.map((link, linkIndex) => (
-                  <li key={linkIndex}>
-                    <Link
-                      href={link.href as Route}
-                      className="text-primary-foreground/70 hover:text-accent transition-colors text-sm"
-                    >
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-
-        {/* Newsletter Signup */}
-        <div className="bg-primary rounded-lg p-6 mb-8">
-          <div className="text-center">
-            <h4 className="font-semibold text-white mb-2">Stay Connected</h4>
-            <p className="text-primary-foreground/70 mb-4">
-              Get updates about services, events, and ministry opportunities
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="flex-1 px-4 py-2 rounded-md border border-secondary-600 bg-secondary-700 text-white placeholder-primary-foreground/50 focus:outline-none focus:ring-2 focus:ring-accent"
-              />
-              <Button variant="outline" size="sm">
-                Subscribe
-              </Button>
-            </div>
-          </div>
-        </div>
-
-        {/* Quick Links & Social */}
-        <div className="border-t border-secondary-700 pt-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-            {/* Quick Links */}
-            <div>
-              <h4 className="font-semibold text-white mb-4">Quick Links</h4>
-              <div className="flex flex-wrap gap-4">
-                {quickLinks.map((link, index) => (
+          <div className="grid grid-cols-2 gap-6 sm:grid-cols-4 md:col-span-3">
+            {footerLinks.map((link, index) => (
+              <div key={index} className="space-y-4 text-sm">
+                <span className="block font-medium">{link.group}</span>
+                {link.items.map((item, index) => (
                   <Link
                     key={index}
-                    href={link.href as Route}
-                    className="bg-secondary-800 hover:bg-secondary-700 text-primary-foreground/80 hover:text-accent px-3 py-2 rounded-md text-sm transition-all"
+                    href={item.href as Route}
+                    className="text-muted-foreground hover:text-primary block duration-150"
                   >
-                    {link.label}
+                    <span>{item.title}</span>
                   </Link>
                 ))}
               </div>
-            </div>
-
-            {/* Social Media */}
-            <div>
-              <h4 className="font-semibold text-white mb-4">Connect With Us</h4>
-              <div className="flex space-x-4">
-                <Button
-                  aria-label="Facebook"
-                  variant="link"
-                  className="text-primary-foreground hover:text-accent"
-                  asChild
-                >
-                  <Link href="https://facebook.com">Facebook</Link>
-                </Button>
-                <Button
-                  aria-label="Twitter"
-                  variant="link"
-                  className="text-primary-foreground hover:text-accent"
-                  asChild
-                >
-                  <Link href="https://twitter.com">Twitter</Link>
-                </Button>
-                <Button
-                  aria-label="Instagram"
-                  variant="link"
-                  className="text-primary-foreground hover:text-accent"
-                  asChild
-                >
-                  <Link href="https://instagram.com">Instagram</Link>
-                </Button>
-                <Button
-                  aria-label="YouTube"
-                  variant="link"
-                  className="text-primary-foreground hover:text-accent"
-                  asChild
-                >
-                  <Link href="https://youtube.com">YouTube</Link>
-                </Button>
-              </div>
-            </div>
+            ))}
           </div>
-
-          {/* Bottom Bar */}
-          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-            <p className="text-primary-foreground/70 text-sm">
-              &copy; {new Date().getFullYear()} WCI Goderich. All rights
-              reserved.
-            </p>
-            <div className="flex space-x-6 text-sm text-primary-foreground/70">
-              <Link
-                // fix route
-                href="/about"
-                className="hover:text-accent transition-colors"
-              >
-                Privacy Policy
-              </Link>
-              <Link
-                // fix route
-                href="/about"
-                className="hover:text-accent transition-colors"
-              >
-                Terms of Service
-              </Link>
-              <Link
-                href="/contact"
-                className="hover:text-accent transition-colors"
-              >
-                Contact
-              </Link>
-            </div>
+        </div>
+        <div className="mt-12 flex flex-wrap items-end justify-between gap-6 border-t py-6">
+          <span className="text-muted-foreground order-last block text-center text-sm md:order-first">
+            &copy; {new Date().getFullYear()} WCI Goderich. All rights reserved.
+          </span>
+          <div className="order-first flex flex-wrap justify-center gap-4 text-sm md:order-last">
+            <Link
+              href="#"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="X/Twitter"
+              className="text-muted-foreground hover:text-primary block"
+            >
+              <XLogoIcon size={24} weight="duotone" />
+            </Link>
+            <Link
+              href="#"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="LinkedIn"
+              className="text-muted-foreground hover:text-primary block"
+            >
+              <LinkedinLogoIcon size={24} weight="duotone" />
+            </Link>
+            <Link
+              href="#"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Facebook"
+              className="text-muted-foreground hover:text-primary block"
+            >
+              <FacebookLogoIcon size={24} weight="duotone" />
+            </Link>
+            <Link
+              href="#"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Threads"
+              className="text-muted-foreground hover:text-primary block"
+            >
+              <TiktokLogoIcon size={24} weight="duotone" />
+            </Link>
+            <Link
+              href="#"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instagram"
+              className="text-muted-foreground hover:text-primary block"
+            >
+              <YoutubeLogoIcon size={24} weight="duotone" />
+            </Link>
           </div>
         </div>
       </div>

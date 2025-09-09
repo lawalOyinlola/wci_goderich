@@ -7,7 +7,7 @@ import { Open_Sans } from "next/font/google";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import ChurchNavbar from "@/components/Navbar";
 import ThemeToggle from "@/components/ThemeToggle";
-// import Footer from "@/components/Footer";
+import Footer from "@/components/Footer";
 
 const openSans = Open_Sans({
   subsets: ["latin"],
@@ -226,7 +226,7 @@ export default function RootLayout({
           <ChurchNavbar />
           {children}
           <ThemeToggle />
-          {/* <Footer /> */}
+          <Footer />
         </ThemeProvider>
       </body>
     </html>

@@ -1,23 +1,18 @@
 "use client";
 
 import * as React from "react";
-// import Link from "next/link";
-
-// import { Button } from "@/components/ui/button";
 import HeroCarousel from "@/components/HomepageSections/HeroCarousel";
 import FeaturesSection from "@/components/HomepageSections/FeaturesSection";
 import WelcomeSection from "@/components/HomepageSections/WelcomeSection";
-import ChurchServicesSection from "@/components/HomepageSections/ChurchServicesSection";
+import ChurchServicesSection from "@/components/HomepageSections/ServicesSection";
 import UpcomingEventsSection from "@/components/HomepageSections/UpcomingEventsSection";
-import ChurchSermonsSection from "@/components/HomepageSections/ChurchSermonsSection";
+import ChurchSermonsSection from "@/components/HomepageSections/SermonsSection";
 import DonationSection from "@/components/HomepageSections/DonationSection";
 import JesusQuoteSection from "@/components/HomepageSections/JesusQuoteSection";
-import LatestBlogSection from "@/components/HomepageSections/LatestBlogSection";
 import GallerySection from "@/components/HomepageSections/GallerySection";
-import TestimonialsSection from "@/components/HomepageSections/TestimonialsSection";
 import LatestNewsSection from "@/components/HomepageSections/LatestNewsSection";
-import { CursorStyleTestimonials } from "@/components/CursorStyleTestimonials";
-import { TestimoniesSection } from "@/components/HomepageSections/TestimoniesSection";
+import TestimoniesSection from "@/components/HomepageSections/TestimoniesSection";
+import MonthlyBirthdaysSection from "@/components/HomepageSections/MonthlyBirthdaysSection";
 
 export default function HomePage() {
   return (
@@ -30,15 +25,10 @@ export default function HomePage() {
       <ChurchSermonsSection />
       <DonationSection />
       <JesusQuoteSection />
-      <LatestBlogSection />
       <GallerySection />
-      <TestimonialsSection />
+      <MonthlyBirthdaysSection />
       <LatestNewsSection />
-      <CursorStyleTestimonials />
       <TestimoniesSection />
     </main>
   );
 }
-
-
-

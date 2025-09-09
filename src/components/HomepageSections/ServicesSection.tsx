@@ -21,7 +21,6 @@ import {
 // import { useTheme } from "next-themes";
 import { BorderTrail } from "@/components/motion-primitives/border-trail";
 
-// Services data
 const servicesData = [
   {
     id: 1,
@@ -80,9 +79,7 @@ const servicesData = [
   },
 ];
 
-export default function ChurchServicesSection() {
-  // const { theme } = useTheme();
-
+export default function ServicesSection() {
   return (
     <section className="max-w-7xl mx-auto px-4 py-20">
       <SectionHeader title="Church Services" subtitle="Services" />
