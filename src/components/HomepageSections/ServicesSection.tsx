@@ -19,7 +19,8 @@ import {
 } from "../ui/card";
 // import { MagicCard } from "@/components/magicui/magic-card";
 // import { useTheme } from "next-themes";
-import { BorderTrail } from "@/components/motion-primitives/border-trail";
+// import { BorderTrail } from "@/components/motion-primitives/border-trail";
+import { BorderBeam } from "../magicui/border-beam";
 
 const servicesData = [
   {
@@ -95,9 +96,14 @@ export default function ServicesSection() {
               gradientSize={150}
               className="h-full py-6 text-center"
             > */}
-            <BorderTrail
+            {/* <BorderTrail
               className="group-hover:opacity-100 opacity-0 transition-opacity duration-300 bg-linear-to-l from-secondary-foreground via-accent to-chart-5 "
               size={250}
+            /> */}
+            <BorderBeam
+              size={200}
+              colorFrom="var(--accent)"
+              className="group-hover:opacity-100 opacity-0 transition-opacity duration-300"
             />
             <CardHeader className="flex flex-col gap-6 items-center justify-center">
               <div

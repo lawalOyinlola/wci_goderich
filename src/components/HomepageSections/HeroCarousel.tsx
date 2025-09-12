@@ -1,3 +1,5 @@
+"use client";
+
 import type { Route } from "next";
 import Link from "next/link";
 import Image from "next/image";
@@ -133,7 +135,7 @@ export default function HeroCarousel() {
         onMouseEnter={plugin.current.stop}
         onMouseLeave={plugin.current.reset}
       >
-        <CarouselContent className="h-[97vh]">
+        <CarouselContent className="h-screen">
           {slides.map((slide, index) => (
             <CarouselItem key={index} className="h-full p-0">
               <div className="relative h-full">

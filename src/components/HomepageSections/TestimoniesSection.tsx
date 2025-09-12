@@ -1,6 +1,7 @@
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
-import { BorderTrail } from "@/components/motion-primitives/border-trail";
+// import { BorderTrail } from "@/components/motion-primitives/border-trail";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
@@ -12,94 +13,107 @@ import {
 } from "@/components/ui/carousel";
 import AutoScroll from "embla-carousel-auto-scroll";
 import SectionHeader from "@/components/SectionHeader";
+import { BorderBeam } from "../magicui/border-beam";
 
 const testimonies = [
   {
     id: 1,
-    name: "Ben Bernard",
-    role: "Instacart",
-    testifier:
-      "The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought.",
-    avatar: "👨‍💻",
+    name: "Mary Johnson",
+    role: "Church Member",
+    testimony:
+      "God has been so faithful in my life. Through the ministry of WCI Goderich, I have experienced healing, breakthrough, and divine favor. The Word of Faith has transformed my family and brought us closer to God. I am forever grateful for this church family and the impact it has made in our lives. The prayers, teachings, and fellowship have been a source of strength and encouragement.",
+    avatar:
+      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&q=80",
   },
   {
     id: 2,
-    name: "Kevin Whinnery",
-    role: "OpenAI",
+    name: "Samuel Ade",
+    role: "Youth Leader",
     testimony:
-      "The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought.",
-    avatar: "🚀",
+      "WCI Goderich has been a place of transformation for me. The youth ministry has helped me grow in faith and discover my purpose. Through the teachings and mentorship, I have learned to walk in faith and see God's hand in every area of my life. The church has become my second family, and I am blessed to be part of this community.",
+    avatar:
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&q=80",
   },
   {
     id: 3,
-    name: "Sawyer Hood",
-    role: "Figma",
-    testimony: "Cursor is hands down my biggest workflow improvement in years",
-    avatar: "🎨",
+    name: "Grace Kamara",
+    role: "Prayer Warrior",
+    testimony:
+      "The power of prayer I have experienced in this church is beyond words. God has answered countless prayers and shown His faithfulness in miraculous ways.",
+    avatar:
+      "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&q=80",
   },
   {
     id: 4,
-    name: "Andrew Milich",
-    role: "Notion",
+    name: "Daniel Mensah",
+    role: "Business Owner",
     testimony:
-      "The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought.",
-    avatar: "⚡",
+      "The Word of Faith teachings have revolutionized my business and personal life. I have learned to apply biblical principles in all my endeavors, and God has blessed the work of my hands. The church's emphasis on faith and excellence has helped me achieve success beyond my expectations. I am grateful for the spiritual foundation this church has provided.",
+    avatar:
+      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&q=80",
   },
   {
     id: 5,
-    name: "Morgan McGuire",
-    role: "Weights & Biases",
+    name: "Esther Bangura",
+    role: "Children's Ministry",
     testimony:
-      "The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought.",
-    avatar: "🔬",
+      "Serving in the children's ministry has been a blessing beyond measure. I have seen God work in the lives of our children and their families. The church's commitment to raising godly children gives me hope for the future. Through this ministry, I have grown in my own faith and learned to trust God for greater things.",
+    avatar:
+      "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop&q=80",
   },
   {
     id: 6,
-    name: "Alex MacCaw",
-    role: "Reflect",
+    name: "Michael Thompson",
+    role: "Church Elder",
     testimony:
-      "Cursor is the best product I've used in a while - it's an AI enabled editor. I just asked it to write a README for a project I've been working on - analyzed the code-base and worked first time. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought.Cursor is the best product I've used in a while - it's an AI enabled editor. I just asked it to write a README for a project I've been working on - analyzed the code-base and worked first time. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought.",
-    avatar: "📝",
+      "Being part of WCI Goderich leadership has been a journey of faith and growth. I have witnessed God's hand in building this church and transforming lives. The vision of our pastor and the commitment of our members inspire me daily. This church is truly a place where miracles happen and lives are changed for the better.",
+    avatar:
+      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&q=80",
   },
   {
     id: 7,
-    name: "Johannes Schickling",
-    role: "Prisma",
+    name: "Sarah Conteh",
+    role: "Worship Leader",
     testimony:
-      "The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought.",
-    avatar: "⚙️",
+      "Leading worship in this church has been an incredible experience. I have seen God move powerfully during our worship services, touching hearts and transforming lives. The church's commitment to excellence in worship has helped me grow as a worshipper and leader. God has used this ministry to bless many people.",
+    avatar:
+      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&q=80",
   },
   {
     id: 8,
-    name: "Wes Bos",
-    role: "Internet",
+    name: "James Koroma",
+    role: "Church Member",
     testimony:
-      "I really like how Cursor suggests edits to existing code. It noticed I was inconsistent with my markup and popped up this suggestion that matched my other items. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought.",
-    avatar: "🌐",
+      "The Word of Faith has changed my perspective on life completely. I have learned to see challenges as opportunities for God to show His power. Through the teachings and prayers of this church, I have experienced breakthrough in my health, finances, and relationships. I am forever grateful for WCI Goderich.",
+    avatar:
+      "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=100&h=100&fit=crop&q=80",
   },
   {
     id: 9,
-    name: "Wes Bos",
-    role: "Internet",
+    name: "Fatmata Sesay",
+    role: "Women's Ministry",
     testimony:
-      "I really like how Cursor suggests edits to existing code. It noticed I was inconsistent with my markup and popped up this suggestion that matched my other items. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought.",
-    avatar: "🌐",
+      "The women's ministry has been a source of strength and encouragement for me. Through the fellowship and teachings, I have grown in faith and learned to trust God for all my needs. The church has provided a safe space for women to grow and serve God together.",
+    avatar:
+      "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=100&h=100&fit=crop&q=80",
   },
   {
     id: 10,
-    name: "Wes Bos",
-    role: "Internet",
+    name: "John Bangura",
+    role: "Church Member",
     testimony:
-      "I really like how Cursor suggests edits to existing code. It noticed I was inconsistent with my markup and popped up this suggestion that matched my other items. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought.",
-    avatar: "🌐",
+      "WCI Goderich has been a place of healing and restoration for my family. Through the prayers and support of the church, we have overcome challenges and seen God's faithfulness. The church family has been there for us in good times and difficult times, showing us the love of Christ.",
+    avatar:
+      "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=100&h=100&fit=crop&q=80",
   },
   {
     id: 11,
-    name: "Wes Bos",
-    role: "Internet",
+    name: "Aminata Kamara",
+    role: "Church Member",
     testimony:
-      "I really like how Cursor suggests edits to existing code. It noticed I was inconsistent with my markup and popped up this suggestion that matched my other items. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought. The Cursor tab completion while coding is occasionally so magic it defies reality - about ~25% of the time it is anticipating exactly what you want to do. It's enough to make you believe that eventually you'll be able to code at the speed of thought.",
-    avatar: "🌐",
+      "The teachings on faith and prosperity have transformed my life completely. I have learned to apply God's Word in practical ways and have seen amazing results. The church's emphasis on excellence and integrity has helped me in my career and personal life. I am blessed to be part of this family.",
+    avatar:
+      "https://images.unsplash.com/photo-1543589077-47d81606c1bf?w=100&h=100&fit=crop&q=80",
   },
 ];
 
@@ -173,10 +187,16 @@ export default function TestimoniesSection() {
                     }}
                   >
                     {hoveredItemId === testifier.id && (
-                      <BorderTrail
-                        className="bg-linear-to-l from-secondary-foreground via-chart-4 to-chart-5"
-                        size={260}
+                      <BorderBeam
+                        size={200}
+                        colorFrom="var(--accent)"
+                        className="group-hover:opacity-100 opacity-0 transition-opacity duration-300"
                       />
+
+                      // <BorderTrail
+                      //   className="bg-linear-to-l from-secondary-foreground via-chart-4 to-chart-5"
+                      //   size={260}
+                      // />
                     )}
 
                     <ScrollArea className="grow">
@@ -186,7 +206,15 @@ export default function TestimoniesSection() {
                     </ScrollArea>
 
                     <div className="flex items-center gap-3">
-                      <div className="text-2xl">{testifier.avatar}</div>
+                      <div className="w-10 h-10 rounded-full overflow-hidden">
+                        <Image
+                          src={testifier.avatar}
+                          alt={testifier.name}
+                          width={40}
+                          height={40}
+                          className="object-cover w-full h-full"
+                        />
+                      </div>
                       <div>
                         <p className="font-great-vibes font-semibold text-sm tracking-wider">
                           {testifier.name}
@@ -222,7 +250,7 @@ export default function TestimoniesSection() {
           </Carousel>
         </div>
 
-        <div className="text-center mt-16">
+        <div className="text-center mt-16 mx-4">
           <div className="text-primary-foreground bg-gradient-to-br from-accent via-[#f97316] to-[#f59e0b] rounded-2xl p-8 mx-auto max-w-2xl relative overflow-hidden">
             <h3 className="text-2xl font-bold font-lora mb-4">
               Share Your Testimony

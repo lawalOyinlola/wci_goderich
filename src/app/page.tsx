@@ -13,6 +13,7 @@ import GallerySection from "@/components/HomepageSections/GallerySection";
 import LatestNewsSection from "@/components/HomepageSections/LatestNewsSection";
 import TestimoniesSection from "@/components/HomepageSections/TestimoniesSection";
 import MonthlyBirthdaysSection from "@/components/HomepageSections/MonthlyBirthdaysSection";
+import ChurchLocationSection from "@/components/HomepageSections/ChurchLocationSection";
 
 export default function HomePage() {
   return (
@@ -29,6 +30,7 @@ export default function HomePage() {
       <MonthlyBirthdaysSection />
       <LatestNewsSection />
       <TestimoniesSection />
+      <ChurchLocationSection />
     </main>
   );
 }

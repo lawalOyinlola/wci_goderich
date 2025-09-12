@@ -11,7 +11,6 @@ import {
   YoutubeLogoIcon,
 } from "@phosphor-icons/react";
 import type { Route } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
@@ -20,6 +19,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { Form, FormMessage } from "./ui/form";
+import LogoTitle from "./LogoTitle";
 
 const footerLinks = [
   {
@@ -89,24 +89,7 @@ export default function Footer() {
       <div className="container px-6">
         <div className="grid gap-12 md:grid-cols-5">
           <div className="md:col-span-2 flex flex-col gap-4">
-            <div className="flex items-center gap-3">
-              <Link href="/" aria-label="go home" className="block size-fit">
-                <Image
-                  src="/lfc_logo.png"
-                  alt="Living Faith Church Logo"
-                  width={40}
-                  height={40}
-                />
-              </Link>
-              <div>
-                <h6 className="font-bold text-md font-lora leading-none">
-                  WCI Goderich
-                </h6>
-                <p className="text-sm text-muted-foreground">
-                  Living Faith Church
-                </p>
-              </div>
-            </div>
+            <LogoTitle />
             <p className="px-2 text-sm leading-relaxed">
               Spreading the Gospel and transforming lives in Sierra Leone and
               beyond. Join us in our mission to share God&apos;s love with

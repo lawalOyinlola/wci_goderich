@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -42,13 +42,20 @@ const MONTHS = [
 ];
 
 export default function MonthlyBirthdaysSection() {
-  const now = useMemo(() => new Date(), []);
-  const currentMonth = MONTHS[now.getMonth()];
-  const currentMonthIndex = now.getMonth() + 1;
+  const [now, setNow] = useState<Date | null>(null);
+  const [currentMonth, setCurrentMonth] = useState<string>("");
+  const [currentMonthIndex, setCurrentMonthIndex] = useState<number>(1);
   const [open, setOpen] = useState(false);
   const [imageError, setImageError] = useState<string | null>(null);
   const [imageBlob, setImageBlob] = useState<Blob | null>(null);
   const [uploaderResetToken, setUploaderResetToken] = useState(0);
+
+  useEffect(() => {
+    const currentDate = new Date();
+    setNow(currentDate);
+    setCurrentMonth(MONTHS[currentDate.getMonth()]);
+    setCurrentMonthIndex(currentDate.getMonth() + 1);
+  }, []);
 
   type BirthdayFormValues = {
     name: string;
@@ -81,6 +88,7 @@ export default function MonthlyBirthdaysSection() {
 
   const selectedMonth = currentMonthIndex;
   const maxDays = useMemo(() => {
+    if (!now) return 31; // Default fallback
     // Use the current year to reflect leap years correctly
     const referenceYear = now.getFullYear();
     return new Date(referenceYear, selectedMonth, 0).getDate();
@@ -103,42 +111,60 @@ export default function MonthlyBirthdaysSection() {
 
   const pastCelebrations = [
     {
-      src: "https://images.unsplash.com/photo-1554797589-7241bb691973?w=800&h=800&fit=crop",
+      src: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=400&fit=crop&q=80",
       alt: "Joyful birthday celebration",
       name: "Mary Johnson",
       date: "2024-08-12",
     },
     {
-      src: "https://images.unsplash.com/photo-1603575449299-b5d26f4ec5f1?w=800&h=800&fit=crop",
+      src: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop&q=80",
       alt: "Birthday cake and candles",
       name: "Samuel Ade",
       date: "2024-07-03",
     },
     {
-      src: "https://images.unsplash.com/photo-1543589077-47d81606c1bf?w=800&h=800&fit=crop",
+      src: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop&q=80",
       alt: "Church thanksgiving celebration",
       name: "Grace K.",
       date: "2024-06-25",
     },
     {
-      src: "https://images.unsplash.com/photo-1546484959-f9a53db89c39?w=800&h=800&fit=crop",
+      src: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=400&h=400&fit=crop&q=80",
       alt: "Group birthday thanksgiving",
       name: "Daniel Mensah",
       date: "2024-05-18",
     },
     {
-      src: "https://images.unsplash.com/photo-1486427944299-d1955d23e34d?w=800&h=800&fit=crop",
+      src: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?w=400&h=400&fit=crop&q=80",
       alt: "Smiling celebrants",
       name: "Esther B.",
       date: "2024-04-09",
     },
     {
-      src: "https://images.unsplash.com/photo-1520975922284-7b1a7a4f42e2?w=800&h=800&fit=crop",
+      src: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&q=80",
       alt: "Community celebration",
       name: "Michael T.",
       date: "2024-03-30",
     },
   ];
+
+  // Don't render until we have the date to prevent hydration mismatch
+  if (!now || !currentMonth) {
+    return (
+      <section className="py-20">
+        <div className="container px-4">
+          <div className="text-center mb-12">
+            <div className="flex items-center justify-center text-sm text-muted-foreground uppercase tracking-[0.4em] mb-3 font-light gap-4">
+              <Separator className="sm:w-40!" />
+              <p>Birthdays</p>
+              <Separator className="sm:w-40!" />
+            </div>
+            <h1 className="mb-8">Loading...</h1>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="py-20">
@@ -174,6 +200,7 @@ export default function MonthlyBirthdaysSection() {
                 src={item.src}
                 alt={item.alt}
                 fill
+                sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 16vw"
                 className="object-cover hover:scale-105 transition-transform duration-300"
               />
               <div className="absolute inset-x-0 bottom-0 p-2 text-xs text-white bg-gradient-to-t from-black/70 via-black/30 to-transparent">
