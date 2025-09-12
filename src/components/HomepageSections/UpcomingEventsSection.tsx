@@ -8,25 +8,28 @@ import SectionHeader from "../SectionHeader";
 const events = [
   {
     title:
-      "Sharing Our Faith & Gospel through chirst the teacher of all things",
+      "Sharing Our Faith & Gospel through Christ the teacher of all things",
     time: "8:30am - 11:30am",
     pastor: "Pastor Abel Ukweni",
-    address: "203 Fake St. Mountain View, San Francisco, California, USA",
-    image: "/images/2025_theme.png",
+    address: "WCI Goderich Church, Sierra Leone",
+    image:
+      "https://images.unsplash.com/photo-1542810634-71277d95dcbb?w=600&h=400&fit=crop&q=80",
   },
   {
     title: "I will Restore Health Unto you",
     time: "8:30am - 11:30am",
-    pastor: "Pastor Lungi xxx",
+    pastor: "Pastor Lungi Kamara",
     address: "Church Premises",
-    image: "/images/bg-2025_theme.jpg",
+    image:
+      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600&h=400&fit=crop&q=80",
   },
   {
-    title: "Sharing Our Faith & Gospel",
+    title: "Youth Alive Fellowship Service",
     time: "8:30am - 11:30am",
     pastor: "Youth Alive Fellowship",
-    address: "203 Fake St. Mountain View, San Francisco, California, USA",
-    image: "/images/2025_theme.png",
+    address: "WCI Goderich Church, Sierra Leone",
+    image:
+      "https://images.unsplash.com/photo-1486427944299-d1955d23e34d?w=600&h=400&fit=crop&q=80",
   },
   // {
   //   title: "Sharing Our Faith & Gospel",

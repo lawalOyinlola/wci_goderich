@@ -471,7 +471,7 @@
 
 @layer base {
   * {
-    @apply border-border outline-ring/50 caret-primary;
+    @apply border-border outline-ring/50 caret-primary selection:bg-accent/15;
   }
   body {
     @apply bg-background text-foreground overflow-x-hidden font-normal;

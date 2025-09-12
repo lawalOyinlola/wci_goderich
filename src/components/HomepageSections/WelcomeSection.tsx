@@ -5,18 +5,17 @@ import Link from "next/link";
 export default function WelcomeSection() {
   return (
     <section className="bg-border">
-      <div className="container py-20 flex flex-col md:flex-row items-center gap-10">
+      <div className="container flex flex-col md:flex-row items-center gap-10">
         <div className="md:w-1/2">
           <Image
-            // src="/welcome-image.jpg"
-            src="https://picsum.photos/400/400"
-            alt="Welcome"
+            src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800&h=800&fit=crop&q=80"
+            alt="WCI Goderich Church Welcome"
             width={400}
             height={400}
-            className="rounded-lg shadow-lg w-full"
+            className="shadow-lg w-full"
           />
         </div>
-        <div className="md:w-1/2 flex flex-col gap-6 items-start px-4">
+        <div className="md:w-1/2 py-20 flex flex-col gap-6 items-start px-4">
           <h2 className="uppercase text-sm text-gray-400 font-light tracking-[0.4em]">
             Welcome to WCI Goderich
           </h2>

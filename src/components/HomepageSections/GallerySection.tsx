@@ -13,49 +13,49 @@ interface GalleryImage {
 
 const galleryImages: GalleryImage[] = [
   {
-    src: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=600&fit=crop",
+    src: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=800&fit=crop&q=80",
     alt: "Church Interior",
     title: "Beautiful Church Interior",
   },
   {
-    src: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&h=600&fit=crop",
-    alt: "Church Service",
-    title: "Sunday Service",
+    src: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&h=800&fit=crop&q=80",
+    alt: "Sunday Service",
+    title: "Sunday Worship Service",
   },
   {
-    src: "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=800&h=600&fit=crop",
-    alt: "Prayer Time",
+    src: "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=800&h=800&fit=crop&q=80",
+    alt: "Prayer and Worship",
     title: "Prayer and Worship",
   },
   {
-    src: "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=800&h=600&fit=crop",
-    alt: "Prayer Time",
-    title: "Prayer and Worship",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1506905922546-21bda4d32df4?w=800&h=600&fit=crop",
+    src: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=800&h=800&fit=crop&q=80",
     alt: "Church Community",
-    title: "Church Community",
+    title: "Church Community Fellowship",
   },
   {
-    src: "https://images.unsplash.com/photo-151748680827-6ca8b3f04846?w=800&h=600&fit=crop",
-    alt: "Prayer Time",
-    title: "Prayer and Worship",
+    src: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=800&h=800&fit=crop&q=80",
+    alt: "Church Choir",
+    title: "Church Choir",
   },
   {
-    src: "https://images.unsplash.com/photo-1542810634-71277d95dcbb?w=800&h=600&fit=crop",
-    alt: "Bible Study",
-    title: "Bible Study Group",
+    src: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?w=800&h=800&fit=crop&q=80",
+    alt: "Church Event",
+    title: "Special Church Event",
   },
   {
-    src: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&h=600&fit=crop",
-    alt: "Worship Service",
-    title: "Worship Service",
+    src: "https://images.unsplash.com/photo-1554797589-7241bb691973?w=800&h=800&fit=crop&q=80",
+    alt: "Church Celebration",
+    title: "Church Celebration",
   },
   {
-    src: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=600&fit=crop",
-    alt: "Church Building",
-    title: "Church Building",
+    src: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=800&h=800&fit=crop&q=80",
+    alt: "Church Fellowship",
+    title: "Church Fellowship",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=800&h=800&fit=crop&q=80",
+    alt: "Church Ministry",
+    title: "Church Ministry",
   },
 ];
 
@@ -98,6 +98,7 @@ export default function GallerySection() {
                     src={image.src}
                     alt={image.alt}
                     fill
+                    sizes="(max-width: 768px) 256px, 320px"
                     className="object-cover group-hover:scale-110 transition-all duration-500"
                     priority={index === 0}
                   />
@@ -124,6 +125,7 @@ export default function GallerySection() {
                         src={image.src}
                         alt={image.alt}
                         fill
+                        sizes="(max-width: 768px) 256px, 320px"
                         className="object-cover group-hover:scale-110 transition-all duration-500"
                       />
                       <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black via-black/50 to-transparent p-4 group-hover:opacity-100 opacity-0 transition-all duration-600">

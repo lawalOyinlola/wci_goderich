@@ -5,12 +5,13 @@ import Link from "next/link";
 import Image from "next/image";
 import type { Route } from "next";
 import { cn } from "@/lib/utils";
-import { Menu } from "lucide-react";
+import { ListIcon } from "@phosphor-icons/react";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
   SheetContent,
   SheetHeader,
+  SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
 import {
@@ -29,6 +30,7 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { AnimatedBackground } from "@/components/motion-primitives/animated-background";
+import LogoTitle from "./LogoTitle";
 
 const navItems = [
   { label: "About", href: "/about" },
@@ -197,7 +199,6 @@ const ListItem = forwardRef<
           ref={ref}
           className={cn(
             "block select-none space-y-1 rounded-md p-4 leading-none no-underline outline-none transition-colors hover:bg-transparent hover:text-accent-foreground focus:bg-transparent focus:text-accent-foreground",
-            // "block select-none space-y-1 rounded-md p-4 leading-none no-underline outline-none transition-colors hover:bg-accent/20 hover:text-accent-foreground focus:bg-accent/20 focus:text-accent-foreground",
             className
           )}
           {...props}
@@ -206,9 +207,9 @@ const ListItem = forwardRef<
             {title}
           </div>
           {children && (
-            <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+            <div className="line-clamp-2 text-sm leading-snug text-muted-foreground">
               {children}
-            </p>
+            </div>
           )}
         </Link>
       </NavigationMenuLink>
@@ -227,99 +228,166 @@ export default function ChurchNavbar() {
         {/* Mobile Nav */}
         <div className="lg:hidden flex items-center justify-between">
           <Link href="/">
-            <Image
-              src="/lfc_logo.png"
-              alt="Living Faith Church Logo"
-              width={40}
-              height={40}
-            />
+            <div className="relative w-10 h-10">
+              <Image
+                src="/lfc_logo.png"
+                alt="Living Faith Church Logo"
+                fill
+                sizes="40px"
+                className="object-contain"
+              />
+            </div>
           </Link>
 
           <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon">
-                <Menu className="h-6 w-6" />
+                <ListIcon weight="bold" color="#f8fafc" className="size-7" />
+
                 <span className="sr-only">Open menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-full sm:w-[320px]">
-              <SheetHeader>
-                <Link
-                  href="/"
-                  className="flex items-center gap-3"
+            <SheetContent
+              side="right"
+              className="w-full sm:max-w-[400px] p-0 bg-foreground/30 dark:bg-background/30 border-none dark:border-slate-700/20 rounded-l-2xl shadow-2xl backdrop-blur-sm"
+            >
+              <SheetHeader className="px-6 py-6 border-b border-border/20 bg-gradient-to-r from-accent/10 via-accent/5 to-transparent">
+                <SheetTitle
+                  className="text-left text-[#f8fafc]!"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                    <span className="text-white font-bold text-sm">WCI</span>
-                  </div>
-                  <div>
-                    <p className="font-bold text-lg tracking-wide text-foreground">
-                      WCI Goderich
-                    </p>
-                    <p className="text-xs text-foreground/60">
-                      Living Faith Church
-                    </p>
-                  </div>
-                </Link>
+                  <LogoTitle />
+                </SheetTitle>
+                <p className="text-sm text-primary-foreground dark:text-muted-foreground mt-2">
+                  Welcome to WCI Goderich
+                </p>
               </SheetHeader>
-              <nav className="mt-8">
-                <Accordion type="multiple" className="w-full">
-                  {navItems.map((item) =>
-                    "items" in item ? (
-                      <AccordionItem key={item.label} value={item.label}>
-                        <AccordionTrigger className="text-base font-medium">
-                          {item.label}
-                        </AccordionTrigger>
-                        <AccordionContent>
-                          <div className="pl-4 flex flex-col gap-2">
-                            {item.items.map((subItem) => (
-                              <Link
-                                key={subItem.label}
-                                href={subItem.href as Route}
-                                className="text-muted-foreground hover:text-foreground transition-colors py-1"
-                                onClick={() => setIsMenuOpen(false)}
-                              >
-                                {subItem.label}
-                              </Link>
-                            ))}
-                          </div>
-                        </AccordionContent>
-                      </AccordionItem>
-                    ) : (
-                      <Link
-                        key={item.label}
-                        href={item.href}
-                        className="flex items-center justify-between w-full py-4 text-base font-medium border-b"
+
+              <div className="flex flex-col h-full">
+                <nav className="flex-1 px-6 py-6 overflow-y-auto scrollbar-thin scrollbar-thumb-accent/20 scrollbar-track-transparent">
+                  <Accordion
+                    type="single"
+                    collapsible
+                    className="w-full space-y-2"
+                  >
+                    {navItems.map((item) =>
+                      "items" in item ? (
+                        <AccordionItem
+                          key={item.label}
+                          value={item.label}
+                          className="border border-border/30 rounded-xl overflow-hidden bg-card/60 hover:bg-card/90 backdrop-blur-sm shadow-sm hover:shadow-md transition-all duration-300"
+                        >
+                          <AccordionTrigger className="px-5 py-4 text-base font-semibold hover:no-underline hover:bg-accent/15 transition-all duration-200 group">
+                            <span className="flex items-center gap-3">
+                              <span className="group-hover:text-accent transition-colors duration-200">
+                                {item.label}
+                              </span>
+                            </span>
+                          </AccordionTrigger>
+                          <AccordionContent className="px-5 pb-4 bg-gradient-to-b from-transparent to-accent/5">
+                            <div className="space-y-1.5 pt-2">
+                              {item.items.map((subItem, index) => (
+                                <Link
+                                  key={subItem.label}
+                                  href={subItem.href as Route}
+                                  className="block px-4 py-2.5 text-sm text-foreground dark:text-muted-foreground hover:text-foreground hover:bg-accent/15 rounded-lg transition-all duration-200 group border border-transparent hover:border-accent/20"
+                                  onClick={() => setIsMenuOpen(false)}
+                                  style={{ animationDelay: `${index * 50}ms` }}
+                                >
+                                  <span className="flex items-center gap-3">
+                                    <div className="w-1.5 h-1.5 rounded-full bg-muted-foreground group-hover:bg-accent group-hover:scale-125 transition-all duration-200"></div>
+                                    <span className="group-hover:translate-x-1 transition-transform duration-200">
+                                      {subItem.label}
+                                    </span>
+                                  </span>
+                                </Link>
+                              ))}
+                            </div>
+                          </AccordionContent>
+                        </AccordionItem>
+                      ) : (
+                        <Link
+                          key={item.label}
+                          href={item.href}
+                          className="flex items-center justify-between w-full px-5 py-4 text-base font-lora font-semibold border border-border/30 rounded-xl hover:border-accent/40 transition-all duration-300 group bg-card/60 hover:bg-card/90 backdrop-blur-sm shadow-sm hover:shadow-md"
+                          onClick={() => setIsMenuOpen(false)}
+                        >
+                          <span className="flex items-center gap-3">
+                            <span className="group-hover:text-accent transition-colors duration-200">
+                              {item.label}
+                            </span>
+                          </span>
+                          <div className="w-2 h-2 rounded-full bg-accent/50 group-hover:bg-accent group-hover:scale-125 transition-all duration-200"></div>
+                        </Link>
+                      )
+                    )}
+                  </Accordion>
+                </nav>
+
+                {/* Action Buttons */}
+                <div className="flex flex-col gap-2 px-6 py-6 border-t border-border/20 bg-gradient-to-r from-accent/10 via-accent/5 to-transparent space-y-3">
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    className="border-border/30 text-[#fdfcfb] h-11"
+                    onClick={() => setIsMenuOpen(false)}
+                    asChild
+                  >
+                    <Link href="/giving">Give Now</Link>
+                  </Button>
+                  <Button
+                    variant="destructive"
+                    size="lg"
+                    className="h-11"
+                    onClick={() => setIsMenuOpen(false)}
+                    asChild
+                  >
+                    <Link href="/prayer">Prayer Request</Link>
+                  </Button>
+
+                  {/* Additional quick links */}
+                  <div className="border-t border-border/20">
+                    <div className="grid grid-cols-2 gap-2">
+                      <Button
+                        asChild
+                        variant="ghost"
+                        size="sm"
+                        className="text-xs text-[#f8fafc] hover:text-accent hover:bg-accent/10 rounded-lg py-2"
                         onClick={() => setIsMenuOpen(false)}
                       >
-                        {item.label}
-                      </Link>
-                    )
-                  )}
-                </Accordion>
-                <Button
-                  asChild
-                  className="w-full mt-6"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  <Link href="/giving">Give Now</Link>
-                </Button>
-              </nav>
+                        <Link href="/contact">Contact</Link>
+                      </Button>
+                      <Button
+                        asChild
+                        variant="ghost"
+                        size="sm"
+                        className="text-xs text-[#f8fafc] hover:text-accent hover:bg-accent/10 rounded-lg py-2"
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        <Link href="/location">Location</Link>
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </SheetContent>
           </Sheet>
         </div>
 
-        {/* Desktop Nav - Three equal sections */}
+        {/* Desktop Nav */}
         <div className="hidden lg:flex items-center justify-between w-full">
           {/* Left Section - Logo */}
           <div className="flex-1 flex justify-start ml-2">
             <Link href="/">
-              <Image
-                src="/lfc_logo.png"
-                alt="Living Faith Church Logo"
-                width={40}
-                height={40}
-              />
+              <div className="relative w-10 h-10">
+                <Image
+                  src="/lfc_logo.png"
+                  alt="Living Faith Church Logo"
+                  fill
+                  sizes="40px"
+                  className="object-contain"
+                />
+              </div>
             </Link>
           </div>
 
