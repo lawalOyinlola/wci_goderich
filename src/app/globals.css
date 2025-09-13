@@ -493,3 +493,7 @@
 .container {
   @apply max-w-400 mx-auto;
 }
+
+.small-container {
+  @apply max-w-6xl mx-auto px-4;
+}

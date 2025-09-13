@@ -21,6 +21,7 @@ import {
 // import { useTheme } from "next-themes";
 // import { BorderTrail } from "@/components/motion-primitives/border-trail";
 import { BorderBeam } from "../magicui/border-beam";
+import { Badge } from "../ui/badge";
 
 const servicesData = [
   {
@@ -125,9 +126,13 @@ export default function ServicesSection() {
             </CardContent>
 
             <CardFooter className="justify-center">
-              <div className="bg-accent/10 text-accent px-4 py-2 rounded-full text-sm font-semibold uppercase line-clamp-2">
+              <Badge
+                variant="primary"
+                size="xl"
+                className="rounded-none uppercase line-clamp-2"
+              >
                 {service.schedule}
-              </div>
+              </Badge>
             </CardFooter>
             {/* </MagicCard> */}
           </Card>
