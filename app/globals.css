@@ -1,26 +1,192 @@
 @import "tailwindcss";
+/* @import "tw-animate-css"; */
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --radius: 0.625rem;
+
+  /* Primary Colors - Red (#ef4444) as requested */
+  --primary: #ef4444; /* Red */
+  --primary-foreground: #fdfcfb; /* White for excellent contrast */
+
+  /* Secondary Colors - Clean grays */
+  --secondary: #f8fafc; /* Light gray */
+  --secondary-foreground: #1e293b; /* Dark slate for excellent contrast */
+
+  /* Accent Colors - Red variations for hover states */
+  --accent: #ef4444; /* Same as primary */
+  --accent-foreground: #fdfcfb; /* White */
+
+  /* Muted Colors - Neutral grays */
+  --muted: #f1f5f9; /* Very light gray */
+  --muted-foreground: #64748b; /* Medium gray for good contrast */
+
+  /* Border Colors */
+  --border: #e2e8f0; /* Light gray */
+  --input: #f2f2f2; /* White */
+  --ring: #ef4444; /* Red for focus rings */
+
+  /* Background Colors */
+  --background: #fdfcfb; /* Pure white */
+  --foreground: #1e293b; /* Dark slate for excellent contrast */
+
+  /* Card Colors */
+  --card: #fdfcfb; /* White */
+  --card-foreground: #1e293b; /* Dark slate */
+
+  /* Popover Colors - For navigation menus */
+  --popover: #ffffff; /* White */
+  --popover-foreground: #1e293b; /* Dark slate */
+
+  /* Destructive Colors */
+  --destructive: #ef4444; /* Red */
+  --destructive-foreground: #fdfcfb; /* White for excellent contrast */
+
+  /* Chart Colors - Using our palette */
+  --chart-1: #ef4444; /* Red */
+  --chart-2: #f87171; /* Light red */
+  --chart-3: #dc2626; /* Dark red */
+  --chart-4: #fecaca; /* Very light red */
+  --chart-5: #991b1b; /* Very dark red */
+
+  /* Sidebar Colors */
+  --sidebar: #f8fafc; /* Light gray */
+  --sidebar-foreground: #1e293b; /* Dark slate */
+  --sidebar-primary: #ef4444; /* Red */
+  --sidebar-primary-foreground: #ffffff; /* White */
+  --sidebar-accent: #f1f5f9; /* Light gray */
+  --sidebar-accent-foreground: #1e293b; /* Dark slate */
+  --sidebar-border: #e2e8f0; /* Light gray */
+  --sidebar-ring: #ef4444; /* Red */
 }
 
 @theme inline {
+  --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-lora: var(--font-lora), ui-serif, Georgia, serif;
+  --font-great-vibes: var(--font-great-vibes), cursive;
+  --font-outfit: var(--font-outfit), sans-serif;
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-md: var(--radius);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --animate-rippling: rippling var(--duration) ease-out;
+  @keyframes rippling {
+    0% {
+      opacity: 1;
+    }
+    100% {
+      transform: scale(2);
+      opacity: 0;
+    }
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.dark {
+  --background: #0f172a; /* Very dark blue */
+  --foreground: #f8fafc; /* Light gray */
+
+  --primary: #f87171; /* Lighter red for dark mode */
+  --primary-foreground: #0f172a; /* Very dark blue */
+
+  --secondary: #1e293b; /* Dark slate */
+  --secondary-foreground: #f8fafc; /* Light gray */
+
+  --accent: #f87171; /* Lighter red */
+  --accent-foreground: #0f172a; /* Very dark blue */
+
+  --muted: #1e293b; /* Dark slate */
+  --muted-foreground: #94a3b8; /* Medium gray */
+
+  --border: #334155; /* Medium slate */
+  --input: #1e293b; /* Dark slate */
+  --ring: #f87171; /* Lighter red */
+
+  --card: #1e293b; /* Dark slate */
+  --card-foreground: #f8fafc; /* Light gray */
+
+  --popover: #1e293b; /* Dark slate */
+  --popover-foreground: #f8fafc; /* Light gray */
+
+  --destructive: #f87171; /* Lighter red */
+  --destructive-foreground: #0f172a; /* Very dark blue */
+
+  /* Chart Colors - Dark mode variations */
+  --chart-1: #f87171; /* Lighter red */
+  --chart-2: #fca5a5; /* Very light red */
+  --chart-3: #ef4444; /* Red */
+  --chart-4: #fecaca; /* Very light red */
+  --chart-5: #dc2626; /* Dark red */
+
+  /* Sidebar Colors - Dark mode */
+  --sidebar: #1e293b; /* Dark slate */
+  --sidebar-foreground: #f8fafc; /* Light gray */
+  --sidebar-primary: #f87171; /* Lighter red */
+  --sidebar-primary-foreground: #0f172a; /* Very dark blue */
+  --sidebar-accent: #1e293b; /* Dark slate */
+  --sidebar-accent-foreground: #f8fafc; /* Light gray */
+  --sidebar-border: #334155; /* Medium slate */
+  --sidebar-ring: #f87171; /* Lighter red */
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50 caret-primary selection:bg-accent/15;
+  }
+  body {
+    @apply bg-background text-foreground overflow-x-hidden font-normal;
+  }
+  h1 {
+    @apply text-4xl font-extrabold tracking-tight font-lora;
+  }
+  h2 {
+    @apply text-3xl font-semibold tracking-tight font-lora;
+  }
+  h3 {
+    @apply text-2xl font-semibold tracking-tight font-lora;
+  }
+  h4 {
+    @apply text-xl font-semibold tracking-tight font-lora;
+  }
+}
+
+@layer components {
+  .container {
+    @apply max-w-400 mx-auto px-4;
+  }
+
+  .small-container {
+    @apply max-w-7xl mx-auto px-4;
+  }
 }
