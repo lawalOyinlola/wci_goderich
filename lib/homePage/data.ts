@@ -19,7 +19,7 @@ const slides = [
       },
       {
         text: "Listen",
-        link: "/giving",
+        link: "/sermons",
       },
     ],
   },
@@ -36,7 +36,7 @@ const slides = [
     subtitle: "BREAKING NEW GROUNDS",
     description: "The theme for shiloh 2025 is Breaking new grounds",
     background: "linear-gradient(135deg, #1a1a1a 0%, #2d3436 100%)",
-    backgroundImage: "./images/bg-shiloh_2025.png",
+    backgroundImage: "/images/bg-shiloh_2025.png",
     image: "/images/shiloh_2025.png",
   },
   {

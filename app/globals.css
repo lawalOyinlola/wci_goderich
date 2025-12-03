@@ -191,6 +191,6 @@
   }
 
   .carousel-btn {
-    @apply absolute top-1/2 -translate-y-1/2 bg-white/40 hover:bg-white/20 border-white/30 text-white hover:text-white transition-all duration-200 backdrop-blur-sm;
+    @apply absolute top-1/2 -translate-y-1/2 bg-white/40 border border-white/30 text-white hover:text-white transition-all duration-200 backdrop-blur-sm;
   }
 }

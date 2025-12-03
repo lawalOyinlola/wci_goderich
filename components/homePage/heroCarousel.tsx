@@ -40,9 +40,15 @@ export default function HeroCarousel() {
     setCount(api.scrollSnapList().length);
     setCurrent(api.selectedScrollSnap() + 1);
 
-    api.on("select", () => {
+    const onSelect = () => {
       setCurrent(api.selectedScrollSnap() + 1);
-    });
+    };
+
+    api.on("select", onSelect);
+
+    return () => {
+      api.off("select", onSelect);
+    };
   }, [api]);
 
   const scrollTo = (index: number) => {
@@ -145,6 +151,8 @@ export default function HeroCarousel() {
               key={index}
               onClick={() => scrollTo(index)}
               variant="ghost"
+              aria-label={`Go to slide ${index + 1}`}
+              aria-current={index === current - 1 ? "true" : undefined}
               className={`w-2 h-2 p-0 rounded-full transition-all duration-300 ${
                 index === current - 1
                   ? "bg-white w-8 scale-110"
