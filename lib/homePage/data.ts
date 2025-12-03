@@ -63,4 +63,31 @@ const slides = [
   },
 ];
 
-export { slides };
+const features = [
+  {
+    icon: "ChurchIcon",
+    title: "Worship",
+    subtitle: "Honoring God in Spirit and Truth",
+    description:
+      "We gather to worship God with reverence and joy, acknowledging His holiness and grace in our lives.",
+    bible: "John 4:24",
+  },
+  {
+    icon: "UsersThreeIcon",
+    title: "Connect",
+    subtitle: "Building Community & Fellowship",
+    description:
+      "We foster meaningful relationships among believers to build spiritual growth and mutual support.",
+    bible: "Hebrews 10:24-25",
+  },
+  {
+    icon: "HeartIcon",
+    title: "God's Love",
+    subtitle: "Experiencing Grace and Mercy",
+    description:
+      "We embrace the unconditional love of God that transforms lives and brings hope to all.",
+    bible: "Romans 5:8",
+  },
+] as const;
+
+export { slides, features };

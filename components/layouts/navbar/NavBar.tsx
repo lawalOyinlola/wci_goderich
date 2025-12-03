@@ -32,6 +32,7 @@ import { Logo, LogoTitle } from "@/components/LogoTitle";
 import { AnimatedBackground } from "@/components/ui/animated-background";
 import { navItems } from "./navItems";
 import { isNavItemWithSubItems } from "./type";
+import { AnimatedButton } from "@/components/ui/animated-button";
 
 export default function Navbar() {
   return (
@@ -134,15 +135,21 @@ function MobileNav() {
 
             {/* Action Buttons */}
             <div className="flex flex-col gap-2 px-6 py-6 border-t border-border/20 bg-gradient-to-r from-accent/10 via-accent/5 to-transparent space-y-3">
-              <Button
+              <AnimatedButton
                 variant="outline"
                 size="lg"
-                className="border-border/30 text-[#fdfcfb] h-11"
+                className="border-border/30 text-[#fdfcfb]"
                 onClick={() => setIsMenuOpen(false)}
-                asChild
-              >
-                <Link href="/giving">Give Now</Link>
-              </Button>
+                href="/giving"
+                text="Give Now"
+              />
+              <AnimatedButton
+                size="lg"
+                variant="destructive"
+                onClick={() => setIsMenuOpen(false)}
+                href="/prayer"
+                text="Prayer Request"
+              />
               <Button
                 variant="destructive"
                 size="lg"
@@ -243,17 +250,19 @@ function DesktopNav() {
 
       {/* Right Section - Action Buttons */}
       <div className="flex-1 flex justify-end items-center gap-1.5">
-        <Button
+        <AnimatedButton
           variant="outline"
           size="lg"
           className="border-border/30 text-[#fdfcfb]"
-          asChild
-        >
-          <Link href="/giving">Give Now</Link>
-        </Button>
-        <Button variant="destructive" size="lg" asChild>
-          <Link href="/prayer">Prayer Request</Link>
-        </Button>
+          href="/giving"
+          text="Give Now"
+        />
+        <AnimatedButton
+          size="lg"
+          variant="destructive"
+          href="/prayer"
+          text="Prayer Request"
+        />
       </div>
     </div>
   );
