@@ -1,4 +1,6 @@
-const navItems = [
+import type { NavItem } from "./type";
+
+const navItems: NavItem[] = [
   { label: "About", href: "/about" },
   {
     label: "Ministries",

@@ -3,7 +3,7 @@ import { Outfit, Lora, Great_Vibes, Open_Sans } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/ThemeProvider";
-import Navbar from "@/components/layouts/navbar/NavBar";
+import { Navbar } from "@/components/layouts/navbar";
 
 const fontSans = Open_Sans({
   subsets: ["latin"],
