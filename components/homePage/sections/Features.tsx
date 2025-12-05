@@ -1,20 +1,20 @@
-import { features } from "@/lib/homePage/data";
-import { FeatureIcon } from "../FeatureIcon";
+import { FEATURES } from "@/lib/constants";
+import { IconComponent } from "@/components/IconComponent";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import { Separator } from "@/components/ui/separator";
 
-export default function FeaturesSection() {
+export default function Features() {
   return (
     <section className="bg-card text-card-foreground">
-      <div className="relative max-w-7xl mx-auto px-4 py-16">
+      <div className="relative small-container py-16">
         <div className="grid min-[480px]:grid-cols-2 sm:grid-cols-3 lg:grid-cols-9 gap-8 relative">
-          {features.map((feature, index) => (
+          {FEATURES.map((feature, index) => (
             <div
               key={index}
               className="group lg:col-span-2 flex flex-col h-full"
             >
               <div className="mb-4 w-fit">
-                <FeatureIcon iconName={feature.icon} />
+                <IconComponent iconName={feature.icon} />
               </div>
               <h4 className="uppercase mb-2">{feature.title}</h4>
               <p className="mb-2 text-accent leading-7">{feature.subtitle}</p>

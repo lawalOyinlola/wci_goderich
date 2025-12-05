@@ -4,8 +4,11 @@ import { forwardRef, useState } from "react";
 import Link from "next/link";
 import type { Route } from "next";
 import { cn } from "@/lib/utils";
+import { navItems } from "./navItems";
+import { isNavItemWithSubItems } from "./type";
 import { ListIcon } from "@phosphor-icons/react";
 import { Button } from "@/components/ui/button";
+import { Logo, LogoTitle } from "@/components/LogoTitle";
 import {
   Sheet,
   SheetContent,
@@ -28,10 +31,7 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
-import { Logo, LogoTitle } from "@/components/LogoTitle";
 import { AnimatedBackground } from "@/components/ui/animated-background";
-import { navItems } from "./navItems";
-import { isNavItemWithSubItems } from "./type";
 import { AnimatedButton } from "@/components/ui/animated-button";
 
 export default function Navbar() {
@@ -135,21 +135,15 @@ function MobileNav() {
 
             {/* Action Buttons */}
             <div className="flex flex-col gap-2 px-6 py-6 border-t border-border/20 bg-gradient-to-r from-accent/10 via-accent/5 to-transparent space-y-3">
-              <AnimatedButton
+              <Button
                 variant="outline"
                 size="lg"
-                className="border-border/30 text-[#fdfcfb]"
+                className="border-border/30 text-[#fdfcfb] h-11"
                 onClick={() => setIsMenuOpen(false)}
-                href="/giving"
-                text="Give Now"
-              />
-              <AnimatedButton
-                size="lg"
-                variant="destructive"
-                onClick={() => setIsMenuOpen(false)}
-                href="/prayer"
-                text="Prayer Request"
-              />
+                asChild
+              >
+                <Link href="/giving">Give Now</Link>
+              </Button>
               <Button
                 variant="destructive"
                 size="lg"
