@@ -1,10 +1,7 @@
-"use client";
-
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import SectionHeader from "@/components/SectionHeader";
-import { DownloadIcon, PlayIcon } from "@phosphor-icons/react";
 import { SERMONS } from "@/lib/constants";
+import SermonBtn from "../SermonBtn";
+import SectionHeader from "@/components/SectionHeader";
 
 export default function Sermons() {
   return (
@@ -49,31 +46,13 @@ export default function Sermons() {
                   </div>
 
                   {/* Action Buttons */}
-                  <div className="flex gap-2 tracking-[0.2em]">
-                    <Button
-                      variant="outline"
-                      className="bg-transparent hover:bg-accent/80 transition-colors text-xs text-white border-none ring-white ring-[0.4px] hover:ring-accent uppercase rounded py-0! px-1.5!"
-                    >
-                      <PlayIcon weight="fill" />
-                      Watch
-                    </Button>
-
-                    <Button
-                      variant="outline"
-                      className="bg-transparent hover:bg-accent/80 transition-colors text-xs text-white border-none ring-white ring-[0.4px] hover:ring-accent uppercase rounded px-1.5!"
-                    >
-                      <DownloadIcon weight="fill" />
-                      Download
-                    </Button>
-                  </div>
+                  <SermonBtn />
                 </div>
               </div>
 
               {/* Sermon Info */}
               <div className="p-6">
-                <h3 className="text-2xl font-lora font-medium mb-1">
-                  {sermon.title}
-                </h3>
+                <h3 className="text-2xl font-normal mb-1">{sermon.title}</h3>
                 <p className="text-xs text-muted-foreground uppercase tracking-[0.2em]">
                   {sermon.date}
                 </p>

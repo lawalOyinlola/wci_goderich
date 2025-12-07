@@ -32,7 +32,7 @@ export default function Donation() {
             />
           </h2>
 
-          <p className="text-lg md:text-xl text-gray-200 mb-8 leading-relaxed max-w-3xl mx-auto">
+          <p className="text-lg text-gray-200 mb-8 leading-relaxed max-w-3xl mx-auto">
             Help us build a place of worship that will serve our community for
             generations to come. Your generous contribution will help us create
             a space where faith, fellowship, and hope can flourish in our

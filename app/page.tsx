@@ -5,17 +5,21 @@ import ChurchServices from "@/components/homePage/sections/ChurchServices";
 import UpcomingEvents from "@/components/homePage/sections/UpcomingEvents";
 import Sermons from "@/components/homePage/sections/Sermons";
 import Donation from "@/components/homePage/sections/Donation";
+import Gallery from "@/components/homePage/sections/Gallery";
+import Birthdays from "@/components/homePage/sections/Birthdays";
 
 export default function Home() {
   return (
     <main>
       <HeroCarousel />
-      <Features />
-      <Welcome />
+      {/* <Features /> */}
+      {/* <Welcome /> */}
       <ChurchServices />
       <UpcomingEvents />
       <Sermons />
       <Donation />
+      {/* <Gallery /> */}
+      <Birthdays />
     </main>
   );
 }

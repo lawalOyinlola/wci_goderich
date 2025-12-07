@@ -54,14 +54,13 @@ export default function UpcomingEvents() {
                   <div className="max-w-full truncate absolute top-6 -left-5 bg-accent text-primary-foreground px-3 pl-5 py-1 font-semibold text-sm whitespace-nowrap">
                     {formatDateTime()}
                   </div>
-                  <p className="text-lg font-normal font-lora line-clamp-2 min-h-12 leading-6">
+                  <p className="text-lg font-normal line-clamp-2 min-h-12 leading-6">
                     {event.title}
                   </p>
                   <p className="text-sm italic text-gray-500 font-lora font-normal line-clamp-1">
-                    by:{" "}
-                    <i className="font-lora italic text-accent">{event.by}</i>
+                    by: <i className="text-accent">{event.by}</i>
                   </p>
-                  <p className="text-sm italic text-gray-500 line-clamp-2 min-h-10">
+                  <p className="text-sm text-gray-500 line-clamp-2 min-h-10 grow">
                     {event.address}
                   </p>
                   <CaretButton href="/events" text="Read More" />

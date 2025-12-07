@@ -40,7 +40,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning={true}>
       <body
         className={cn(
-          "min-h-screen bg-background font-outfit antialiased",
+          "min-h-screen bg-background font-outfit antialiased overflow-x-hidden",
           fontSans.variable,
           fontLora.variable,
           fontGreatVibes.variable,
@@ -53,7 +53,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Navbar />
+          {/* <Navbar /> */}
           {children}
         </ThemeProvider>
       </body>

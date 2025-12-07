@@ -1,5 +1,5 @@
 @import "tailwindcss";
-/* @import "tw-animate-css"; */
+@import "tw-animate-css";
 
 :root {
   --radius: 0.625rem;
@@ -130,7 +130,7 @@
   --muted-foreground: #94a3b8; /* Medium gray */
 
   --border: #334155; /* Medium slate */
-  --input: #1e293b; /* Dark slate */
+  --input: #f8fafc; /* Dark slate */
   --ring: #f87171; /* Lighter red */
 
   --card: #1e293b; /* Dark slate */
@@ -162,22 +162,22 @@
 
 @layer base {
   * {
-    @apply border-border outline-ring/50 caret-primary selection:bg-accent/15;
+    @apply border-border outline-ring/50 caret-primary font-outfit selection:bg-accent/15;
   }
   body {
     @apply bg-background text-foreground overflow-x-hidden font-normal;
   }
   h1 {
-    @apply text-4xl font-extrabold tracking-tight font-lora;
+    @apply text-4xl font-semibold tracking-tight;
   }
   h2 {
-    @apply text-3xl font-semibold tracking-tight font-lora;
+    @apply text-3xl font-semibold tracking-tight;
   }
   h3 {
-    @apply text-2xl font-semibold tracking-tight font-lora;
+    @apply text-2xl font-semibold tracking-tight;
   }
   h4 {
-    @apply text-xl font-semibold tracking-tight font-lora;
+    @apply text-xl font-semibold tracking-tight;
   }
 }
 
@@ -193,4 +193,8 @@
   .carousel-btn {
     @apply absolute top-1/2 -translate-y-1/2 bg-white/40 border border-white/30 text-white hover:text-white transition-all duration-200 backdrop-blur-sm;
   }
+}
+
+@utility flex-center {
+  @apply flex items-center justify-center;
 }
