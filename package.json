@@ -2,6 +2,7 @@
   "name": "wci_goderich",
   "version": "0.1.0",
   "private": true,
+  "packageManager": "pnpm@10.0.0",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -40,7 +41,6 @@
     "react-use-measure": "^2.1.7",
     "rough-notation": "^0.5.1",
     "tailwind-merge": "^3.4.0",
-    "use-file-upload": "^1.0.11",
     "yup": "^1.7.1"
   },
   "devDependencies": {

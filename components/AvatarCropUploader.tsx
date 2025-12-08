@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { useFileUpload } from "use-file-upload";
 import {
   Dialog,
   DialogContent,
@@ -50,18 +49,36 @@ export default function AvatarCropUploader({
   const lastAreaKeyRef = useRef<string | null>(null);
   const lastProcessedFileRef = useRef<string | null>(null);
 
-  const [files, uploadFile] = useFileUpload();
+  // Native file input implementation
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [uploadedFile, setUploadedFile] = useState<{
+    name: string;
+    source: string;
+  } | null>(null);
 
-  // Handle file from the hook - it can be a single file or array
-  const uploadedFile = Array.isArray(files) ? files[0] : files;
-  const fileId = uploadedFile?.name; // Use name as identifier since package doesn't provide id
+  const fileId = uploadedFile?.name;
+  const previewUrl = uploadedFile?.source || null;
 
-  // Convert URL object to string if needed
-  const previewUrl = uploadedFile?.source
-    ? typeof uploadedFile.source === "string"
-      ? uploadedFile.source
-      : uploadedFile.source.toString()
-    : null;
+  // Handle file input change
+  const handleFileChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const file = event.target.files?.[0];
+      if (file && file.type.startsWith("image/")) {
+        const source = URL.createObjectURL(file);
+        setUploadedFile({ name: file.name, source });
+      }
+      // Reset input value to allow selecting the same file again
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    },
+    []
+  );
+
+  // Trigger file input click
+  const uploadFile = useCallback(() => {
+    fileInputRef.current?.click();
+  }, []);
 
   // Reset crop area when preview changes
   useEffect(() => {
@@ -170,19 +187,20 @@ export default function AvatarCropUploader({
 
   return (
     <div className={className}>
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/*"
+        onChange={handleFileChange}
+        className="hidden"
+        aria-hidden="true"
+      />
       <div className="flex items-center gap-3">
         <div className="flex-center flex-col gap-2">
           <Button
             type="button"
             variant="outline"
-            onClick={() => {
-              uploadFile({ accept: "image/*", multiple: false }, (file) => {
-                if (file) {
-                  setIsDialogOpen(true);
-                  setZoom(1);
-                }
-              });
-            }}
+            onClick={uploadFile}
             aria-label={displayUrl ? "Change image" : "Upload image"}
           >
             <UploadSimpleIcon size={32} />
@@ -206,14 +224,7 @@ export default function AvatarCropUploader({
               <button
                 type="button"
                 className="border-card bg-background hover:bg-accent/50 relative flex size-18 items-center justify-center overflow-hidden rounded-md border border-dashed transition-colors"
-                onClick={() => {
-                  uploadFile({ accept: "image/*", multiple: false }, (file) => {
-                    if (file) {
-                      setIsDialogOpen(true);
-                      setZoom(1);
-                    }
-                  });
-                }}
+                onClick={uploadFile}
                 aria-label={displayUrl ? "Change image" : "Upload image"}
               >
                 {displayUrl ? (

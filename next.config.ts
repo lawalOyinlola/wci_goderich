@@ -8,9 +8,10 @@ const nextConfig: NextConfig = {
   //   turbopackFileSystemCacheForDev: true,
   //   optimizePackageImports: ["lucide-react"],
   // },
-  turbopack: {
-    root: __dirname,
-  },
+  // Turbopack temporarily disabled due to Google Fonts compatibility issue
+  // turbopack: {
+  //   root: __dirname,
+  // },
   images: {
     remotePatterns: [
       {
