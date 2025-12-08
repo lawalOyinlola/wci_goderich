@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { UPCOMING_EVENTS } from "@/lib/constants";
+import { formatEventDateTime } from "@/lib/utils";
 import SectionHeader from "@/components/SectionHeader";
 import CaretButton from "@/components/ui/caret-button";
 
@@ -21,21 +22,6 @@ export default function UpcomingEvents() {
 
         <div className="flex flex-wrap justify-center gap-8">
           {UPCOMING_EVENTS.map((event) => {
-            // Format date and time for display
-            const formatDateTime = () => {
-              const eventDate = new Date(event.date);
-              const formattedDate = eventDate.toLocaleDateString("en-US", {
-                day: "numeric",
-                month: "long",
-                year: "numeric",
-              });
-
-              if ("endTime" in event && event.endTime) {
-                return `${formattedDate} | ${event.startTime} - ${event.endTime}`;
-              }
-              return `${formattedDate} | ${event.startTime}`;
-            };
-
             return (
               <div
                 key={event.id}
@@ -52,7 +38,11 @@ export default function UpcomingEvents() {
                 </div>
                 <div className="relative h-full w-3/5 bg-card p-6 pt-18 text-card-foreground flex flex-col gap-3 justify-start">
                   <div className="max-w-full truncate absolute top-6 -left-5 bg-accent text-primary-foreground px-3 pl-5 py-1 font-semibold text-sm whitespace-nowrap">
-                    {formatDateTime()}
+                    {formatEventDateTime(
+                      event.date,
+                      event.startTime,
+                      "endTime" in event ? event.endTime : undefined
+                    )}
                   </div>
                   <p className="text-lg font-normal line-clamp-2 min-h-12 leading-6">
                     {event.title}

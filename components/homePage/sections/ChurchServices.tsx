@@ -1,4 +1,5 @@
 import { SERVICES } from "@/lib/constants";
+import { formatServiceSchedule } from "@/lib/utils";
 import SectionHeader from "@/components/SectionHeader";
 import { IconComponent } from "@/components/IconComponent";
 import {
@@ -19,18 +20,6 @@ export default function ChurchServices() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 auto-rows-fr">
         {SERVICES.map((service) => {
-          // Format schedule from day and times
-          const formatSchedule = () => {
-            const mainSchedule = `${service.day}: ${service.times.join(" | ")}`;
-            if ("additionalSchedule" in service && service.additionalSchedule) {
-              const additional = `${
-                service.additionalSchedule.day
-              }: ${service.additionalSchedule.times.join(" | ")}`;
-              return `${mainSchedule} | ${additional}`;
-            }
-            return mainSchedule;
-          };
-
           return (
             <Card
               key={service.id}
@@ -62,7 +51,7 @@ export default function ChurchServices() {
                   size="xl"
                   className="rounded-none uppercase line-clamp-2"
                 >
-                  {formatSchedule()}
+                  {formatServiceSchedule(service)}
                 </Badge>
               </CardFooter>
             </Card>

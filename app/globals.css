@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "leaflet/dist/leaflet.css";
 
 :root {
   --radius: 0.625rem;
@@ -196,4 +197,20 @@
 
 @utility flex-center {
   @apply flex items-center justify-center;
+}
+
+/* Leaflet Map Styles */
+.leaflet-container {
+  height: 100%;
+  width: 100%;
+  z-index: 0;
+}
+
+.leaflet-control-container {
+  z-index: 1000;
+}
+
+.custom-marker {
+  background: transparent !important;
+  border: none !important;
 }

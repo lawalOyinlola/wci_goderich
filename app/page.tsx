@@ -8,6 +8,7 @@ import Donation from "@/components/homePage/sections/Donation";
 import Gallery from "@/components/homePage/sections/Gallery";
 import Birthdays from "@/components/homePage/sections/Birthdays";
 import Testimonies from "@/components/homePage/sections/Testimonies";
+import ChurchLocation from "@/components/homePage/sections/ChurchLocation";
 
 export default function Home() {
   return (
@@ -22,6 +23,7 @@ export default function Home() {
       <Gallery />
       <Birthdays />
       <Testimonies />
+      <ChurchLocation />
     </main>
   );
 }
