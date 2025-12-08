@@ -1,13 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { useMemo, useState, useEffect, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-// @ts-expect-error - Install @types/canvas-confetti for proper types
-import confetti from "canvas-confetti";
 import { Button } from "@/components/ui/button";
 import { Highlighter } from "@/components/ui/highlighter";
 import { Separator } from "@/components/ui/separator";
@@ -22,21 +19,7 @@ import { SelectField } from "@/components/form/SelectField";
 import AvatarCropUploader from "@/components/AvatarCropUploader";
 import CtaContainer from "@/components/CtaContainer";
 import { AnimatedButton } from "@/components/ui/animated-button";
-
-const MONTHS = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
-];
+import { MONTHS, PAST_CELEBRATIONS } from "@/lib/constants";
 
 export default function MonthlyBirthdaysSection() {
   const [dateState, setDateState] = useState<{
@@ -76,23 +59,23 @@ export default function MonthlyBirthdaysSection() {
     day: number | null;
   };
 
-  const schema: yup.ObjectSchema<{ name: string; day: number | null }> =
-    yup.object({
-      name: yup
-        .string()
-        .required("Name is required")
-        .min(2, "Name must be at least 2 characters")
-        .max(50, "Name must not exceed 50 characters"),
-      day: yup
-        .number()
-        .nullable()
-        .typeError("Enter a valid day")
-        .required("Day is required")
-        .min(1)
-        .max(31),
-    });
+  const schema = yup.object({
+    name: yup
+      .string()
+      .required("Name is required")
+      .min(2, "Name must be at least 2 characters")
+      .max(50, "Name must not exceed 50 characters"),
+    day: yup
+      .number()
+      .nullable()
+      .typeError("Enter a valid day")
+      .required("Day is required")
+      .min(1)
+      .max(31),
+  });
 
   const form = useForm<BirthdayFormValues>({
+    // @ts-expect-error - yup version conflict with parent directory causing type mismatch
     resolver: yupResolver(schema),
     defaultValues: {
       name: "",
@@ -132,7 +115,11 @@ export default function MonthlyBirthdaysSection() {
     [maxDays]
   );
 
-  const triggerConfetti = useCallback(() => {
+  const triggerConfetti = useCallback(async () => {
+    // Dynamic import to code-split the confetti library
+    // @ts-expect-error - canvas-confetti types
+    const confetti = (await import("canvas-confetti")).default;
+
     const duration = 3000;
     const animationEnd = Date.now() + duration;
     const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
@@ -189,7 +176,6 @@ export default function MonthlyBirthdaysSection() {
       setCelebrantName(values.name);
       setShowCelebration(true);
 
-      // Trigger confetti celebration
       triggerConfetti();
 
       // Reset form and close popover
@@ -208,45 +194,6 @@ export default function MonthlyBirthdaysSection() {
     },
     [imageBlob, currentMonthIndex, form, triggerConfetti]
   );
-
-  const pastCelebrations = [
-    {
-      src: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=400&fit=crop&q=80",
-      alt: "Joyful birthday celebration",
-      name: "Mary Johnson",
-      date: "2024-08-12",
-    },
-    {
-      src: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop&q=80",
-      alt: "Birthday cake and candles",
-      name: "Samuel Ade",
-      date: "2024-07-03",
-    },
-    {
-      src: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop&q=80",
-      alt: "Church thanksgiving celebration",
-      name: "Grace K.",
-      date: "2024-06-25",
-    },
-    {
-      src: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=400&h=400&fit=crop&q=80",
-      alt: "Group birthday thanksgiving",
-      name: "Daniel Mensah",
-      date: "2024-05-18",
-    },
-    {
-      src: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?w=400&h=400&fit=crop&q=80",
-      alt: "Smiling celebrants",
-      name: "Esther B.",
-      date: "2024-04-09",
-    },
-    {
-      src: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&q=80",
-      alt: "Community celebration",
-      name: "Michael T.",
-      date: "2024-03-30",
-    },
-  ];
 
   // Don't render until we have the date to prevent hydration mismatch
   if (!now || !currentMonth) {
@@ -272,7 +219,7 @@ export default function MonthlyBirthdaysSection() {
       {showCelebration && (
         <div className="fixed inset-0 z-50 flex items-center justify-center pointer-events-none">
           <div className="animate-in fade-in zoom-in duration-500">
-            <div className="flex-center flex-col gap-2 bg-linear-to-r from-accent via-primary to-accent text-white px-10 py-4 rounded-2xl shadow-2xl transform -rotate-4">
+            <div className="flex-center flex-col gap-2 bg-gradient-to-r from-accent via-primary to-accent text-white px-10 py-4 rounded-2xl shadow-2xl transform -rotate-4">
               <h2 className="text-4xl md:text-6xl font-bold">
                 🎉 Happy Birthday!
               </h2>
@@ -311,7 +258,7 @@ export default function MonthlyBirthdaysSection() {
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-          {pastCelebrations.map((item, idx) => (
+          {PAST_CELEBRATIONS.map((item, idx) => (
             <div
               key={idx}
               // className="relative aspect-square rounded-xl overflow-hidden shadow-sm"
@@ -374,13 +321,17 @@ export default function MonthlyBirthdaysSection() {
               <form
                 id="birthday-form"
                 className="space-y-3"
-                onSubmit={form.handleSubmit(handleFormSubmit)}
+                onSubmit={
+                  // @ts-expect-error - form type inference issue due to yup version conflict
+                  form.handleSubmit(handleFormSubmit)
+                }
               >
                 <FieldGroup>
                   <div className="flex gap-4 justify-between">
                     <div className="grow">
                       <InputField
                         name="name"
+                        // @ts-expect-error - form control type inference issue
                         control={form.control}
                         label="Full name"
                         placeholder="Your full name"
@@ -391,6 +342,7 @@ export default function MonthlyBirthdaysSection() {
                     <div>
                       <SelectField
                         name="day"
+                        // @ts-expect-error - form control type inference issue
                         control={form.control}
                         label="Select day"
                         placeholder="Day"

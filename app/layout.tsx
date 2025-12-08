@@ -1,14 +1,9 @@
 import type { Metadata } from "next";
-import { Outfit, Lora, Great_Vibes, Open_Sans } from "next/font/google";
+import { Outfit, Lora, Great_Vibes } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { Navbar } from "@/components/layouts/navbar";
-
-const fontSans = Open_Sans({
-  subsets: ["latin"],
-  variable: "--font-sans",
-});
 
 const fontLora = Lora({
   subsets: ["latin"],
@@ -41,7 +36,6 @@ export default function RootLayout({
       <body
         className={cn(
           "min-h-screen bg-background font-outfit antialiased overflow-x-hidden",
-          fontSans.variable,
           fontLora.variable,
           fontGreatVibes.variable,
           fontOutfit.variable
@@ -53,7 +47,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {/* <Navbar /> */}
+          <Navbar />
           {children}
         </ThemeProvider>
       </body>

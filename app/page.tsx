@@ -7,19 +7,21 @@ import Sermons from "@/components/homePage/sections/Sermons";
 import Donation from "@/components/homePage/sections/Donation";
 import Gallery from "@/components/homePage/sections/Gallery";
 import Birthdays from "@/components/homePage/sections/Birthdays";
+import Testimonies from "@/components/homePage/sections/Testimonies";
 
 export default function Home() {
   return (
     <main>
       <HeroCarousel />
-      {/* <Features /> */}
-      {/* <Welcome /> */}
+      <Features />
+      <Welcome />
       <ChurchServices />
       <UpcomingEvents />
       <Sermons />
       <Donation />
-      {/* <Gallery /> */}
+      <Gallery />
       <Birthdays />
+      <Testimonies />
     </main>
   );
 }

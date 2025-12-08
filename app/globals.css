@@ -60,7 +60,6 @@
 }
 
 @theme inline {
-  --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
   --font-lora: var(--font-lora), ui-serif, Georgia, serif;
   --font-great-vibes: var(--font-great-vibes), cursive;
   --font-outfit: var(--font-outfit), sans-serif;

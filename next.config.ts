@@ -8,6 +8,9 @@ const nextConfig: NextConfig = {
   //   turbopackFileSystemCacheForDev: true,
   //   optimizePackageImports: ["lucide-react"],
   // },
+  turbopack: {
+    root: __dirname,
+  },
   images: {
     remotePatterns: [
       {
