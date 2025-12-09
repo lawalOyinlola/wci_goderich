@@ -6,7 +6,12 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Field, FieldError, FieldLabel, FieldDescription } from "@/components/ui/field";
+import {
+  Field,
+  FieldError,
+  FieldLabel,
+  FieldDescription,
+} from "@/components/ui/field";
 
 export function FooterNewsletter() {
   const EMAIL_REGEX = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
@@ -32,9 +37,7 @@ export function FooterNewsletter() {
         console.log("newsletter", values);
         form.reset();
       })}
-      className={cn(
-        "text-sm mt-8 p-4 rounded-md max-w-md w-full"
-      )}
+      className={cn("text-sm mt-8 p-4 rounded-md max-w-md w-full")}
     >
       <div className="space-y-4">
         <Controller
@@ -73,4 +76,3 @@ export function FooterNewsletter() {
     </form>
   );
 }
-

@@ -1,36 +1,144 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# WCI Goderich Church Website
 
-## Getting Started
+A modern, responsive website for WCI Goderich built with Next.js, featuring dynamic content sections, interactive components, and a beautiful user interface.
 
-First, run the development server:
+![WCI Goderich](public/lfc_logo.png)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## 🚀 Tech Stack
+
+- **Framework**: [Next.js 16](https://nextjs.org/) with App Router
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS 4
+- **UI Components**: Radix UI primitives
+- **Forms**: React Hook Form with Yup validation
+- **Maps**: React Leaflet
+- **Animations**: Motion (Framer Motion)
+- **Icons**: Phosphor Icons & Lucide React
+- **Theme**: Dark/Light mode support with next-themes
+- **Package Manager**: pnpm
+
+## ✨ Features
+
+- 🎠 **Hero Carousel** - Dynamic image carousel with auto-scroll
+- 🎯 **Features Section** - Highlight key church features
+- 👋 **Welcome Section** - Church introduction and mission
+- ⛪ **Church Services** - Service times and information
+- 📅 **Upcoming Events** - Event calendar and listings
+- 📖 **Sermons** - Sermon archive and audio/video content
+- 💝 **Donations** - Online giving integration
+- 📸 **Gallery** - Photo gallery with carousel
+- 🎂 **Birthdays** - Member birthday celebrations
+- 💬 **Testimonies** - Member testimonials
+- 📍 **Church Location** - Interactive map with location details
+- 🌓 **Theme Support** - Dark and light mode
+- 📱 **Responsive Design** - Mobile-first, fully responsive
+
+## 📋 Prerequisites
+
+- Node.js 18+
+- pnpm 10.0.0+
+
+## 🛠️ Getting Started
+
+1. **Clone the repository**
+
+   ```bash
+   git clone <repository-url>
+   cd wci_goderich
+   ```
+
+2. **Install dependencies**
+
+   ```bash
+   pnpm install
+   ```
+
+3. **Run the development server**
+
+   ```bash
+   pnpm dev
+   ```
+
+4. **Open your browser**
+   Navigate to [http://localhost:3000](http://localhost:3000) to see the result.
+
+## 📜 Available Scripts
+
+- `pnpm dev` - Start the development server
+- `pnpm build` - Build the production application
+- `pnpm start` - Start the production server
+- `pnpm lint` - Run ESLint to check code quality
+
+## 📁 Project Structure
+
+```
+wci_goderich/
+├── app/                    # Next.js app directory
+│   ├── layout.tsx         # Root layout
+│   ├── page.tsx           # Home page
+│   └── globals.css        # Global styles
+├── components/            # React components
+│   ├── form/              # Form components
+│   ├── homePage/          # Home page sections
+│   │   └── sections/      # Individual page sections
+│   ├── layouts/           # Layout components
+│   │   ├── footer/        # Footer components
+│   │   └── navbar/        # Navigation components
+│   └── ui/                # Reusable UI components
+├── lib/                   # Utility functions and constants
+├── public/                # Static assets
+│   └── images/            # Image files
+└── package.json           # Dependencies and scripts
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🎨 Key Components
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **NavBar** - Responsive navigation with mobile menu
+- **Footer** - Multi-column footer with links, newsletter, and social media
+- **HeroCarousel** - Auto-scrolling image carousel
+- **ChurchLocationMap** - Interactive map using Leaflet
+- **AvatarCropUploader** - Image upload and cropping functionality
+- **Form Components** - Reusable form fields with validation
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🌐 Deployment
 
-## Learn More
+The easiest way to deploy this Next.js app is using [Vercel](https://vercel.com):
 
-To learn more about Next.js, take a look at the following resources:
+1. Push your code to a Git repository
+2. Import your project on Vercel
+3. Vercel will automatically detect Next.js and configure the build settings
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+For more deployment options, check out the [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying).
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 📝 Configuration
 
-## Deploy on Vercel
+### Image Domains
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The project is configured to allow images from:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- picsum.photos
+- images.unsplash.com
+- images.pexels.com
+- via.placeholder.com
+- placehold.co
+
+To add more domains, update `next.config.ts`.
+
+### Environment Variables
+
+Create a `.env.local` file in the root directory for environment-specific variables (if needed).
+
+## 🤝 Contributing
+
+1. Create a feature branch
+2. Make your changes
+3. Test thoroughly
+4. Submit a pull request
+
+## 📄 License
+
+This project is private and proprietary.
+
+---
+
+Built with ❤️ by YERO for WCI Goderich

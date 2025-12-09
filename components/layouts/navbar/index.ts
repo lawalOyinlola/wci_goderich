@@ -1,3 +1,3 @@
 export { default as Navbar } from "./NavBar";
-export { navItems } from "./navItems";
+export { NAV_ITEMS } from "./navItems";
 export * from "./type";
