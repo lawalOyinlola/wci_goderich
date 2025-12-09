@@ -17,6 +17,19 @@ const CHURCH_INFO = {
   VALUES: ["Love", "Service", "Community"] as const,
 };
 
+const CHURCH_LOCATION = {
+  name: "WCI Goderich - Living Faith Church Worldwide",
+  address: "CPPG+CMJ, Freetown, Sierra Leone",
+  city: "Freetown, Sierra Leone",
+  coordinates: {
+    lat: 8.4606,
+    lng: -13.2897,
+  },
+  accessibility: "Easily accessible by public transport",
+  description:
+    "Visit us at our church in Freetown, Sierra Leone. We're located in the heart of the community, easily accessible and welcoming to all.",
+} as const;
+
 const MONTHS = [
   "January",
   "February",
@@ -383,6 +396,7 @@ const TESTIMONIES = [
 
 export {
   CHURCH_INFO,
+  CHURCH_LOCATION,
   FEATURES,
   SERVICES,
   SERMONS,

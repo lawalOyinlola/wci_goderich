@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import { Outfit, Lora, Great_Vibes } from "next/font/google";
-import "./globals.css";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { Navbar } from "@/components/layouts/navbar";
+import { Footer } from "@/components/layouts/footer";
+import "./globals.css";
 
 const fontLora = Lora({
   subsets: ["latin"],
@@ -49,6 +50,7 @@ export default function RootLayout({
         >
           <Navbar />
           {children}
+          <Footer />
         </ThemeProvider>
       </body>
     </html>

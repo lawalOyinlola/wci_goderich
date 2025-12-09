@@ -4,7 +4,7 @@ import Link from "next/link";
 import type { Route } from "next";
 import { forwardRef, useState } from "react";
 import { cn } from "@/lib/utils";
-import { navItems } from "./navItems";
+import { NAV_ITEMS } from "./navItems";
 import { isNavItemWithSubItems } from "./type";
 import { Logo, LogoTitle } from "@/components/LogoTitle";
 import { ListIcon } from "@phosphor-icons/react";
@@ -79,7 +79,7 @@ function MobileNav() {
           <div className="flex flex-col h-full">
             <nav className="flex-1 px-6 py-6 overflow-y-auto scrollbar-thin scrollbar-thumb-accent/20 scrollbar-track-transparent">
               <Accordion type="single" collapsible className="w-full space-y-2">
-                {navItems.map((item) =>
+                {NAV_ITEMS.map((item) =>
                   "items" in item ? (
                     <AccordionItem
                       key={item.label}
@@ -197,7 +197,7 @@ function DesktopNav() {
       <div className="flex-1 flex justify-center">
         <NavigationMenu>
           <NavigationMenuList>
-            {navItems.map((item) => (
+            {NAV_ITEMS.map((item) => (
               <NavigationMenuItem key={item.label}>
                 {isNavItemWithSubItems(item) ? (
                   <>

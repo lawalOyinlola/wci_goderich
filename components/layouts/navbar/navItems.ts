@@ -1,6 +1,6 @@
 import type { NavItem } from "./type";
 
-const navItems: NavItem[] = [
+export const NAV_ITEMS: NavItem[] = [
   { label: "About", href: "/about" },
   {
     label: "Ministries",
@@ -155,5 +155,3 @@ const navItems: NavItem[] = [
   },
   { label: "Contact", href: "/contact" },
 ];
-
-export { navItems };
