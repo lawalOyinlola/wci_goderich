@@ -6,10 +6,7 @@ import CaretButton from "@/components/ui/caret-button";
 
 export default function UpcomingEvents() {
   return (
-    <section
-      className="py-24 bg-cover bg-center relative"
-      style={{ backgroundImage: "url('/images/bg-covenant_exchange.jpg')" }}
-    >
+    <section className="py-20 bg-cover bg-center relative bg-[url(/images/bg-covenant_exchange.jpg)]">
       <div className="max-w-500 w-full mx-auto px-4">
         <SectionHeader
           title="Upcoming Events"

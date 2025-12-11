@@ -14,10 +14,8 @@ export default function Donation() {
         backgroundAttachment: "fixed",
       }}
     >
-      {/* Overlay for better text readability */}
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
 
-      {/* Content */}
       <div className="relative z-10 max-w-4xl mx-auto px-4 py-16 text-center text-white">
         <div className="bg-white/10 backdrop-blur-md rounded-2xl p-8 md:p-12 border border-white/20 shadow-2xl">
           <h2 className="font-outfit">

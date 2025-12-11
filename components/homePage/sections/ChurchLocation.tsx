@@ -1,8 +1,10 @@
-import { CHURCH_LOCATION } from "@/lib/constants";
+import { CHURCH_INFO } from "@/lib/constants";
 import ChurchLocationMap from "../ChurchLocationMap";
 import ChurchLocationInfo from "../ChurchLocationInfo";
 
 export default function ChurchLocation() {
+  const { CHURCH_LOCATION } = CHURCH_INFO;
+
   return (
     <section className="py-20 bg-gray-50 dark:bg-gray-900">
       <div className="container">

@@ -145,7 +145,7 @@ export default function ChurchLocationMap() {
   };
 
   return (
-    <Card className="overflow-hidden shadow-lg">
+    <Card className="overflow-hidden shadow-lg lg:rounded-r-none">
       <CardContent className="p-0">
         <div className="relative h-100 md:h-144">
           <MapContainer center={mapPosition} zoom={15} scrollWheelZoom={false}>
