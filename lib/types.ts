@@ -1,14 +1,24 @@
-interface Pastor {
+export enum LeadershipRole {
+  RESIDENT_PASTOR = "RESIDENT_PASTOR",
+  ASSOCIATE_PASTOR = "ASSOCIATE_PASTOR",
+  CHAIRMAN = "CHAIRMAN",
+  ELDER = "ELDER",
+  DEACON = "DEACON",
+  WORSHIP_DIRECTOR = "WORSHIP_DIRECTOR",
+  MINISTRY_LEADER = "MINISTRY_LEADER",
+  DIRECTOR = "DIRECTOR",
+  OTHER = "OTHER",
+}
+
+interface PersonBase {
   id: number;
   name: string;
   title: string;
+  role: LeadershipRole;
   bio: string;
   image: string;
   email?: string;
   phone?: string;
-  education?: string[];
-  experience?: string[];
-  specialties?: string[];
   socialMedia?: {
     linkedin?: string;
     facebook?: string;
@@ -17,21 +27,19 @@ interface Pastor {
     twitter?: string;
   };
   featured?: boolean;
+}
+
+interface Pastor extends PersonBase {
+  education?: string[];
+  experience?: string[];
+  specialties?: string[];
   ordinationDate?: string;
   yearsInMinistry?: number;
 }
 
-interface Leader {
-  id: number;
-  name: string;
-  title: string;
+interface Leader extends PersonBase {
   department: string;
-  bio: string;
-  image: string;
-  email?: string;
-  phone?: string;
   responsibilities?: string[];
-  featured?: boolean;
 }
 
-export type { Pastor, Leader };
+export type { PersonBase, Pastor, Leader };

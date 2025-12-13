@@ -1,17 +1,19 @@
 import SectionHeader from "@/components/SectionHeader";
 import Image from "next/image";
 import { LEADERSHIP } from "@/lib/constants";
+import { LeadershipRole } from "@/lib/types";
 
 const Leadership = () => {
   const { PASTORS, DIRECTORS } = LEADERSHIP;
 
   const filteredPastors = PASTORS.filter(
     (pastor) =>
-      pastor.title === "Resident Pastor" || pastor.title === "Associate Pastor"
+      pastor.role === LeadershipRole.RESIDENT_PASTOR ||
+      pastor.role === LeadershipRole.ASSOCIATE_PASTOR
   );
 
-  const filteredDirectors = DIRECTORS.filter((director) =>
-    director.title.toLowerCase().includes("chairman")
+  const filteredDirectors = DIRECTORS.filter(
+    (director) => director.role === LeadershipRole.CHAIRMAN
   );
 
   const leaders = [...filteredPastors, ...filteredDirectors];
@@ -20,7 +22,7 @@ const Leadership = () => {
     <section className="py-20 bg-muted/30">
       <div className="small-container">
         <SectionHeader
-          title="Pastors and Director"
+          title="Pastors and Directors"
           subtitle="Leadership"
           description="Meet our dedicated leaders serving the church and community."
         />
@@ -50,11 +52,11 @@ const Leadership = () => {
                     {"phone" in leader && leader.phone && (
                       <a
                         href={`tel:${leader.phone}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                        // target="_blank"
+                        // rel="noopener noreferrer"
                         className="group-hover:text-primary-600 dark:group-hover:text-primary-400 inline-block translate-y-8 text-sm tracking-wide opacity-0 transition-all duration-500 hover:underline group-hover:translate-y-0 group-hover:opacity-100"
                       >
-                        Linktree
+                       Call
                       </a>
                     )}
                   </div>

@@ -1,15 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useRef } from "react";
 import { CHURCH_INFO } from "@/lib/constants";
 import { ArrowDownIcon, PlayCircleIcon } from "@phosphor-icons/react";
 import { AnimatedButton } from "@/components/ui/animated-button";
-import { VideoDialog } from "@/components/ui/video-dialog";
-import { VideoModal } from "@/components/ui/video-modal";
+import { VideoDialog, type VideoDialogRef } from "@/components/ui/video-dialog";
 
 export default function HeroSection() {
   const { CORE_VALUES } = CHURCH_INFO;
-  const [isVideoOpen, setIsVideoOpen] = useState(false);
+  const videoDialogRef = useRef<VideoDialogRef>(null);
 
   return (
     <main className="overflow-hidden">
@@ -40,7 +39,7 @@ export default function HeroSection() {
                     size="lg"
                     onClick={(e) => {
                       e.preventDefault();
-                      setIsVideoOpen(true);
+                      videoDialogRef.current?.open();
                     }}
                   />
                 </div>
@@ -71,6 +70,7 @@ export default function HeroSection() {
             <div className="before:border-foreground/5 before:bg-foreground/5 relative h-full before:absolute before:-inset-x-4 before:bottom-7 before:top-0 before:skew-x-6 before:rounded-[calc(var(--radius)+1rem)] before:border before:pointer-events-none">
               <div className="bg-background rounded-(--radius) shadow-foreground/10 ring-foreground/5 relative h-full -translate-y-12 skew-x-6 overflow-hidden border border-transparent shadow-md ring-1">
                 <VideoDialog
+                  ref={videoDialogRef}
                   videoSrc="/videos/about_us_hero.mp4"
                   thumbnailSrc="/images/about_us_hero.png"
                   thumbnailAlt="About Us Hero"
@@ -84,12 +84,6 @@ export default function HeroSection() {
           </div>
         </div>
       </section>
-      <VideoModal
-        isOpen={isVideoOpen}
-        onClose={() => setIsVideoOpen(false)}
-        videoSrc="/videos/about_us_hero.mp4"
-        videoTitle="About Us - WCI Goderich"
-      />
     </main>
   );
 }

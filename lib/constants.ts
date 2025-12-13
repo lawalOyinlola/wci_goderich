@@ -1,3 +1,5 @@
+import { LeadershipRole } from "./types";
+
 const CHURCH_INFO = {
   NAME: "WINNERS CHAPEL INT'L GODERICH",
   TAGLINE:
@@ -27,7 +29,7 @@ const CHURCH_INFO = {
     },
   ],
   MANDATE:
-    "To iberate the world from all oppressions of the devil through the preaching of the word of faith",
+    "To liberate the world from all oppressions of the devil through the preaching of the word of faith",
   MANDATE_TASK:
     "Now the hour has come to liberate the world from all oppressions of the devil through the preaching of the word of faith, and I am sending you to undertake this task.",
   PILLARS_OF_FAITH: [
@@ -103,8 +105,8 @@ const CHURCH_INFO = {
       postalCode: "SL-001",
     },
     coordinates: {
-      latitude: 8.4606,
-      longitude: -13.2897,
+      lat: 8.4606,
+      lng: -13.2897,
     },
     parking:
       "Free parking available on church premises and surrounding streets",
@@ -152,10 +154,11 @@ const LEADERSHIP = {
       id: 1,
       name: "Pastor Abel Ukweni",
       title: "Resident Pastor",
-      bio: "Pastor Jerry Simon has been serving as Senior Pastor of WCI Goderich since 2015. With over 15 years of ministry experience, he is passionate about teaching God's Word and building strong believers. He holds a Master's degree in Theology and is known for his practical and inspiring messages.",
+      role: LeadershipRole.RESIDENT_PASTOR,
+      bio: "Pastor Abel Ukweni has been serving as Resident Pastor of WCI Goderich since 2015. With over 15 years of ministry experience, he is passionate about teaching God's Word and building strong believers. He holds a Master's degree in Theology and is known for his practical and inspiring messages.",
       image:
         "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=826&h=1239&fit=crop&q=80",
-      email: "pastor.jerry@wcigoderich.org",
+      email: "pastor.abel@wcigoderich.org",
       phone: "+232 88 123 456",
       education: [
         "Master of Theology - Living Faith Bible College",
@@ -163,7 +166,7 @@ const LEADERSHIP = {
         "Certificate in Pastoral Ministry - International Bible Institute",
       ],
       experience: [
-        "Senior Pastor - WCI Goderich (2015-Present)",
+        "Resident Pastor - WCI Goderich (2015-Present)",
         "Associate Pastor - WCI Freetown (2010-2015)",
         "Youth Pastor - WCI Bo (2008-2010)",
         "Ministry Intern - WCI Kenema (2006-2008)",
@@ -176,9 +179,9 @@ const LEADERSHIP = {
         "Prayer Ministry",
       ],
       socialMedia: {
-        facebook: "https://facebook.com/pastorjerrysimon",
-        twitter: "https://twitter.com/pastorjerrysimon",
-        instagram: "https://instagram.com/pastorjerrysimon",
+        facebook: "https://facebook.com/pastorabelukweni",
+        twitter: "https://twitter.com/pastorabelukweni",
+        instagram: "https://instagram.com/pastorabelukweni",
       },
       featured: true,
       ordinationDate: "2008",
@@ -188,10 +191,11 @@ const LEADERSHIP = {
       id: 2,
       name: "Pastor Lungi Kamara",
       title: "Associate Pastor",
-      bio: "Pastor Sarah Johnson serves as our Associate Pastor, focusing on women's ministry and family counseling. She brings a heart for nurturing and discipleship, having served in ministry for over 12 years.",
+      role: LeadershipRole.ASSOCIATE_PASTOR,
+      bio: "Pastor Lungi Kamara serves as our Associate Pastor, focusing on women's ministry and family counseling. She brings a heart for nurturing and discipleship, having served in ministry for over 12 years.",
       image:
         "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=826&h=1239&fit=crop&q=80",
-      email: "pastor.sarah@wcigoderich.org",
+      email: "pastor.lungi@wcigoderich.org",
       phone: "+232 88 123 457",
       education: [
         "Master of Divinity - Sierra Leone Theological College",
@@ -212,8 +216,8 @@ const LEADERSHIP = {
         "Pastoral Care",
       ],
       socialMedia: {
-        facebook: "https://facebook.com/pastorsarahjohnson",
-        instagram: "https://instagram.com/pastorsarahjohnson",
+        facebook: "https://facebook.com/pastorlungikamara",
+        instagram: "https://instagram.com/pastorlungikamara",
       },
       featured: true,
       ordinationDate: "2012",
@@ -225,6 +229,7 @@ const LEADERSHIP = {
       id: 1,
       name: "Elder David Thompson",
       title: "Church Elder",
+      role: LeadershipRole.ELDER,
       department: "Leadership",
       bio: "Elder David Thompson has been a faithful member of our church for over 20 years and serves as a spiritual leader and advisor to the pastoral team.",
       image:
@@ -242,6 +247,7 @@ const LEADERSHIP = {
       id: 2,
       name: "Deacon Grace Williams",
       title: "Head Deacon",
+      role: LeadershipRole.DEACON,
       department: "Service",
       bio: "Deacon Grace Williams leads our deacon board and oversees various service ministries within the church.",
       image:
@@ -259,6 +265,7 @@ const LEADERSHIP = {
       id: 3,
       name: "Sister Maria Rodriguez",
       title: "Worship Director",
+      role: LeadershipRole.WORSHIP_DIRECTOR,
       department: "Worship",
       bio: "Sister Maria Rodriguez leads our worship ministry, bringing excellence and anointing to our praise and worship services.",
       image:
@@ -276,6 +283,7 @@ const LEADERSHIP = {
       id: 4,
       name: "Brother James Wilson",
       title: "Men's Ministry Leader",
+      role: LeadershipRole.MINISTRY_LEADER,
       department: "Ministry",
       bio: "Brother James Wilson leads our men's ministry, focusing on spiritual growth, accountability, and leadership development among men.",
       image:
@@ -293,6 +301,7 @@ const LEADERSHIP = {
       id: 5,
       name: "Sister Lisa Anderson",
       title: "Children's Ministry Director",
+      role: LeadershipRole.DIRECTOR,
       department: "Ministry",
       bio: "Sister Lisa Anderson leads our children's ministry, creating engaging and educational programs for children of all ages.",
       image:
@@ -312,28 +321,30 @@ const LEADERSHIP = {
       id: 3,
       name: "Pastor Michael Chen",
       title: "Chairman Board of Directors",
-      bio: "Pastor Michael Chen leads our dynamic youth ministry, bringing energy and creativity to reaching the next generation. He has a passion for seeing young people grow in their faith and discover their purpose in God.",
+      role: LeadershipRole.CHAIRMAN,
+      bio: "Pastor Michael Chen serves as Chairman of the Board of Directors, providing strategic leadership and governance oversight for WCI Goderich. With extensive experience in organizational leadership and church administration, he ensures the church operates with integrity, vision, and accountability while supporting the pastoral team in fulfilling the church's mission.",
       image:
         "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=826&h=1239&fit=crop&q=80",
       email: "pastor.michael@wcigoderich.org",
       phone: "+232 88 123 458",
       education: [
-        "Bachelor of Youth Ministry - Living Faith Bible College",
-        "Certificate in Youth Leadership - International Youth Ministry Institute",
-        "Diploma in Christian Education - Sierra Leone Theological College",
+        "Master of Divinity - Sierra Leone Theological College",
+        "Bachelor of Business Administration - University of Sierra Leone",
+        "Certificate in Church Administration - International Bible Institute",
+        "Diploma in Leadership and Governance - Christian Leadership Institute",
       ],
       experience: [
-        "Youth Pastor - WCI Goderich (2020-Present)",
-        "Youth Coordinator - WCI Freetown (2018-2020)",
-        "Youth Leader - WCI Bo (2016-2018)",
-        "Volunteer Youth Worker - WCI Kenema (2014-2016)",
+        "Chairman Board of Directors - WCI Goderich (2020-Present)",
+        "Board Member - WCI Freetown (2018-2020)",
+        "Church Administrator - WCI Bo (2016-2018)",
+        "Leadership Team Member - WCI Kenema (2014-2016)",
       ],
       specialties: [
-        "Youth Ministry",
-        "Young Adult Ministry",
-        "Worship Leading",
-        "Event Planning",
-        "Mentorship",
+        "Strategic Planning",
+        "Church Governance",
+        "Organizational Leadership",
+        "Financial Oversight",
+        "Board Development",
       ],
       socialMedia: {
         facebook: "https://facebook.com/pastormichaelchen",
@@ -341,24 +352,11 @@ const LEADERSHIP = {
         tiktok: "https://tiktok.com/@pastormichaelchen",
       },
       featured: true,
-      ordinationDate: "2018",
-      yearsInMinistry: 8,
+      ordinationDate: "2014",
+      yearsInMinistry: 10,
     },
   ],
 };
-
-const CHURCH_LOCATION = {
-  name: "WCI Goderich - Living Faith Church Worldwide",
-  address: "CPPG+CMJ, Freetown, Sierra Leone",
-  city: "Freetown, Sierra Leone",
-  coordinates: {
-    lat: 8.4606,
-    lng: -13.2897,
-  },
-  accessibility: "Easily accessible by public transport",
-  description:
-    "Visit us at our church in Freetown, Sierra Leone. We're located in the heart of the community, easily accessible and welcoming to all.",
-} as const;
 
 const MONTHS = [
   "January",
@@ -727,7 +725,6 @@ const TESTIMONIES = [
 export {
   CHURCH_INFO,
   LEADERSHIP,
-  CHURCH_LOCATION,
   FEATURES,
   SERVICES,
   SERMONS,

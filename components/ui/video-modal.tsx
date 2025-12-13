@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { createPortal } from "react-dom";
 import { XIcon } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
@@ -73,17 +73,7 @@ export function VideoModal({
   videoTitle = "Video player",
   animationStyle = "from-center",
 }: VideoModalProps) {
-  const [mounted, setMounted] = useState(false);
   const selectedAnimation = animationVariants[animationStyle];
-
-  useEffect(() => {
-    // Ensure portal only renders on client to avoid hydration mismatch
-    if (typeof window !== "undefined") {
-      // Use setTimeout to defer state update and satisfy linter
-      const timer = setTimeout(() => setMounted(true), 0);
-      return () => clearTimeout(timer);
-    }
-  }, []);
 
   // Close on Escape key
   useEffect(() => {
@@ -147,10 +137,10 @@ export function VideoModal({
     </AnimatePresence>
   );
 
-  if (!mounted || typeof window === "undefined") {
+  // Component is "use client" so document is available in browser
+  if (typeof document === "undefined") {
     return null;
   }
 
   return createPortal(modalContent, document.body);
 }
-

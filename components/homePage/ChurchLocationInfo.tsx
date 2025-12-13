@@ -17,13 +17,17 @@ import {
   ChurchIcon,
 } from "@phosphor-icons/react";
 
-export default function ChurchLocationInfo() {
-  const { CHURCH_LOCATION, CONTACT } = CHURCH_INFO;
-  const { street, city, province } = CHURCH_LOCATION.address;
-  const { phone, email, officeHours } = CONTACT;
+const { CHURCH_LOCATION, CONTACT } = CHURCH_INFO;
+const {
+  street = "",
+  city = "",
+  province = "",
+} = CHURCH_LOCATION?.address ?? {};
+const { phone, email, officeHours } = CONTACT;
 
+export default function ChurchLocationInfo() {
   return (
-    <Card className="shadow-lg lg:rounded-l-none">
+    <Card className="shadow-lg lg:rounded-l-none 2xl:gap-9">
       <CardHeader>
         <div className="flex items-start gap-3">
           <MapPinIcon weight="duotone" className="size-8 text-primary" />
