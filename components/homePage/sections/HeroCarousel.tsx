@@ -7,7 +7,7 @@ import { AnimatedButton } from "@/components/ui/animated-button";
 
 export default function HeroCarousel() {
   return (
-    <section className="relative overflow-hidden">
+    <main className="relative overflow-hidden">
       <HeroCarouselWrapper>
         {slides.map((slide, index) => (
           <CarouselItem key={index} className="h-full p-0">
@@ -77,6 +77,6 @@ export default function HeroCarousel() {
           </CarouselItem>
         ))}
       </HeroCarouselWrapper>
-    </section>
+    </main>
   );
 }

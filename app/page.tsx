@@ -12,7 +12,7 @@ import ChurchLocation from "@/components/homePage/sections/ChurchLocation";
 
 export default function Home() {
   return (
-    <main>
+    <>
       <HeroCarousel />
       <Features />
       <Welcome />
@@ -24,6 +24,6 @@ export default function Home() {
       <Birthdays />
       <Testimonies />
       <ChurchLocation />
-    </main>
+    </>
   );
 }

@@ -10,6 +10,11 @@ import {
   HandsPrayingIcon,
   CrossIcon,
   HouseLineIcon,
+  FacebookLogoIcon,
+  LinkedinLogoIcon,
+  TiktokLogoIcon,
+  XLogoIcon,
+  YoutubeLogoIcon,
   type Icon,
 } from "@phosphor-icons/react";
 
@@ -22,6 +27,11 @@ const iconMap: Record<string, Icon> = {
   HandsPrayingIcon,
   CrossIcon,
   HouseLineIcon,
+  FacebookLogoIcon,
+  LinkedinLogoIcon,
+  TiktokLogoIcon,
+  XLogoIcon,
+  YoutubeLogoIcon,
 };
 
 interface IconComponentProps {
@@ -45,7 +55,7 @@ export function IconComponent({
     <Icon
       weight="duotone"
       size={size || 54}
-      className={cn("text-accent", className)}
+      className={cn("text-accent transition-all duration-300", className)}
     />
   );
 }

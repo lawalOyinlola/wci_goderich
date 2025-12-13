@@ -163,6 +163,7 @@
 @layer base {
   * {
     @apply border-border outline-ring/50 caret-primary font-outfit selection:bg-accent/15;
+    /* @apply border border-red-500; */
   }
   body {
     @apply bg-background text-foreground overflow-x-hidden font-normal;
@@ -183,11 +184,11 @@
 
 @layer components {
   .container {
-    @apply max-w-400 mx-auto px-4;
+    @apply max-w-400 w-full mx-auto px-4;
   }
 
   .small-container {
-    @apply max-w-7xl mx-auto px-4;
+    @apply max-w-7xl w-full mx-auto px-4 py-20;
   }
 
   .carousel-btn {

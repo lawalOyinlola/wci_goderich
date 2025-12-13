@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import { useMap, useMapEvent } from "react-leaflet";
 import type { LeafletMouseEvent, Map as LeafletMap, DivIcon } from "leaflet";
-import { CHURCH_LOCATION } from "@/lib/constants";
+import { CHURCH_INFO } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -56,13 +56,14 @@ function DetectClick({
   return null;
 }
 
+const { address, coordinates } = CHURCH_INFO.CHURCH_LOCATION ?? {};
+const { street, city, region, province, postalCode, country } = address ?? {};
+const { lat, lng } = coordinates ?? {};
+
 export default function ChurchLocationMap() {
   const [mapInstance, setMapInstance] = useState<LeafletMap | null>(null);
   const [customIcon, setCustomIcon] = useState<DivIcon | null>(null);
-  const [mapPosition, setMapPosition] = useState<[number, number]>([
-    CHURCH_LOCATION.coordinates.lat,
-    CHURCH_LOCATION.coordinates.lng,
-  ]);
+  const [mapPosition, setMapPosition] = useState<[number, number]>([lat, lng]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -108,15 +109,9 @@ export default function ChurchLocationMap() {
 
   const handleReset = () => {
     if (mapInstance) {
-      mapInstance.setView(
-        [CHURCH_LOCATION.coordinates.lat, CHURCH_LOCATION.coordinates.lng],
-        15
-      );
+      mapInstance.setView([lat, lng], 15);
     }
-    setMapPosition([
-      CHURCH_LOCATION.coordinates.lat,
-      CHURCH_LOCATION.coordinates.lng,
-    ]);
+    setMapPosition([lat, lng]);
   };
 
   const handleUseMyLocation = () => {
@@ -140,12 +135,12 @@ export default function ChurchLocationMap() {
   };
 
   const handleGetDirections = () => {
-    const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${CHURCH_LOCATION.coordinates.lat},${CHURCH_LOCATION.coordinates.lng}`;
+    const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`;
     window.open(directionsUrl, "_blank", "noopener,noreferrer");
   };
 
   return (
-    <Card className="overflow-hidden shadow-lg">
+    <Card className="overflow-hidden shadow-lg lg:rounded-r-none">
       <CardContent className="p-0">
         <div className="relative h-100 md:h-144">
           <MapContainer center={mapPosition} zoom={15} scrollWheelZoom={false}>
@@ -157,20 +152,15 @@ export default function ChurchLocationMap() {
             <ChangeCenter position={mapPosition} />
             <DetectClick onSelect={setMapPosition} />
             {customIcon && (
-              <Marker
-                position={[
-                  CHURCH_LOCATION.coordinates.lat,
-                  CHURCH_LOCATION.coordinates.lng,
-                ]}
-                icon={customIcon}
-              >
+              <Marker position={[lat, lng]} icon={customIcon}>
                 <Popup>
                   <div className="p-2">
                     <h3 className="font-semibold text-lg mb-2">
-                      {CHURCH_LOCATION.name}
+                      {CHURCH_INFO.NAME}
                     </h3>
                     <p className="text-sm text-gray-600 mb-3">
-                      {CHURCH_LOCATION.address}
+                      {street}, {city}, {region}, {province}, {country},{" "}
+                      {postalCode}
                     </p>
                     <Button
                       onClick={handleGetDirections}

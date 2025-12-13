@@ -15,8 +15,12 @@ import { Badge } from "@/components/ui/badge";
 
 export default function ChurchServices() {
   return (
-    <section className="small-container py-20">
-      <SectionHeader title="Church Services" subtitle="Services" />
+    <section className="small-container">
+      <SectionHeader
+        title="Church Services"
+        subtitle="Services"
+        description="Join us for worship, prayer, and fellowship throughout the week."
+      />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 auto-rows-fr">
         {SERVICES.map((service) => {

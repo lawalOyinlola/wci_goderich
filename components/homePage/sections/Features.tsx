@@ -1,12 +1,14 @@
-import { FEATURES } from "@/lib/constants";
+import { FEATURES, CHURCH_INFO } from "@/lib/constants";
 import { IconComponent } from "@/components/IconComponent";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import { Separator } from "@/components/ui/separator";
 
 export default function Features() {
+  const { MANDATE_TASK } = CHURCH_INFO;
+
   return (
     <section className="bg-card text-card-foreground">
-      <div className="relative small-container py-16">
+      <div className="relative small-container">
         <div className="grid min-[480px]:grid-cols-2 sm:grid-cols-3 lg:grid-cols-9 gap-8 relative">
           {FEATURES.map((feature, index) => (
             <div
@@ -34,9 +36,7 @@ export default function Features() {
             <h3>THE MANDATE</h3>
 
             <blockquote className="sm:border-l-2 border-secondary/30 sm:pl-2 text-lg mt-6 italic leading-7">
-              &quot;Now the hour has come to liberate the world from all
-              oppressions of the devil through the preaching of the word of
-              faith, and I am sending you to undertake this task.&quot;
+              {MANDATE_TASK}
             </blockquote>
 
             <AnimatedButton
