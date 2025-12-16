@@ -15,7 +15,6 @@ import {
 } from "@/components/ui/carousel";
 import { BorderBeam } from "@/components/ui/border-beam";
 import AutoScroll from "embla-carousel-auto-scroll";
-import { AnimatedButton } from "@/components/ui/animated-button";
 import { TESTIMONIES } from "@/lib/constants";
 
 export default function Testimonies() {
@@ -155,21 +154,11 @@ export default function Testimonies() {
           className="mt-16 mx-4"
           title="Share Your Testimony"
           description="Has God worked in your life? We'd love to hear your story and share it with our community."
-        >
-          <AnimatedButton
-            size="lg"
-            variant="outline"
-            href="/testimonies"
-            text="View Testimonies"
-          />
-          <AnimatedButton
-            size="lg"
-            variant="secondary"
-            href="/testimonies"
-            className="bg-background!"
-            text="Share Your Story"
-          />
-        </CtaContainer>
+          buttons={[
+            { text: "View Testimonies", href: "/testimonies" },
+            { text: "Share Your Story", href: "/testimonies" },
+          ]}
+        />
       </div>
     </section>
   );

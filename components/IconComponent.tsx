@@ -1,6 +1,5 @@
 "use client";
 
-import { cn } from "@/lib/utils";
 import {
   ChurchIcon,
   HeartIcon,
@@ -17,6 +16,7 @@ import {
   YoutubeLogoIcon,
   type Icon,
 } from "@phosphor-icons/react";
+import { cn } from "@/lib/utils";
 
 const iconMap: Record<string, Icon> = {
   ChurchIcon,

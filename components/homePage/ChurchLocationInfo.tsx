@@ -1,7 +1,5 @@
 "use client";
 
-import { SERVICES, CHURCH_INFO } from "@/lib/constants";
-import { formatServiceSchedule } from "@/lib/utils";
 import {
   Card,
   CardContent,
@@ -16,6 +14,8 @@ import {
   EnvelopeIcon,
   ChurchIcon,
 } from "@phosphor-icons/react";
+import { formatServiceSchedule } from "@/lib/utils";
+import { SERVICES, CHURCH_INFO } from "@/lib/constants";
 
 const { CHURCH_LOCATION, CONTACT } = CHURCH_INFO;
 const {

@@ -32,56 +32,100 @@ const CHURCH_INFO = {
     "To liberate the world from all oppressions of the devil through the preaching of the word of faith",
   MANDATE_TASK:
     "Now the hour has come to liberate the world from all oppressions of the devil through the preaching of the word of faith, and I am sending you to undertake this task.",
-  PILLARS_OF_FAITH: [
-    {
-      title: "FAITH",
-      text: `"For whatsoever is born of God overcometh the world: and this is the victory that overcometh the world, even our faith." (1 John 5:4; Ephesians 6:16)`,
-    },
-    {
-      title: "THE WORD",
-      text: `"Who being the brightness of his glory, and the express image of his person, and upholding all things by the word of his power..." (John 1:1-12; Hebrews 1:3)`,
-    },
-    {
-      title: "THE SUPERNATURAL",
-      text: `"The wind bloweth where it listeth, and thou hearest the sound thereof, but canst not tell whence it cometh, and whither it goeth: so is every one that is born of the Spirit." (Psalm 82:5-7; John 3:8)`,
-    },
-    {
-      title: "PRAISE",
-      text: `"And when they began to sing and to praise, the Lord set ambushments against the children of Ammon, Moab, and mount Seir, which were come against Judah: and they were smitten." (2 Chro. 20:20-22; Psalm 67:1-7; 149:1-9)`,
-    },
-    {
-      title: "THE HOLY SPIRIT",
-      text: `"And it shall come to pass in that day, that his burden shall be taken away from off thy shoulder, and his yoke from off thy neck, and the yoke shall be destroyed because of the anointing." (Acts 1:1-8; Isaiah 10:27)`,
-    },
-    {
-      title: "PROSPERITY",
-      text: `"Beloved, I wish above all things that thou mayest prosper and be in health, even as thy soul prospereth." 3 John 2. "Cry yet, saying, Thus saith the Lord of hosts; My cities through prosperity shall yet be spread abroad..." (3 John 2; Psalm 35:27; Zech. 1:17)`,
-    },
-    {
-      title: "VISION",
-      text: `"Where there is no vision, the people perish: but he that keepeth the law, happy is he." (Proverbs 29:18, Jer. 29:11)`,
-    },
-    {
-      title: "PRAYER",
-      text: `"And this is the confidence that we have in him, that, if we ask anything according to his will, he heareth us." (1 John 5:14)`,
-    },
-    {
-      title: "HEALING",
-      text: `"That it might be fulfilled which was spoken by Esaias the prophet, saying, Himself took our infirmities, and bare our sicknesses." (Isaiah 53:3-4; Jer. 8:22; Matt. 8:17)`,
-    },
-    {
-      title: "WISDOM",
-      text: `"And wisdom and knowledge shall be the stability of thy times, and strength of salvation: the fear of the Lord is his treasure." (Prov. 24:3-4, Isaiah 33:6)`,
-    },
-    {
-      title: "CONSECRATION",
-      text: `"Nevertheless the foundation of God standeth sure, having this seal, the Lord knoweth them that are his. And let every one that nameth the name of Christ depart from iniquity." (Hebrews 12:14; 2 Tim. 2:19)`,
-    },
-    {
-      title: "SUCCESS",
-      text: `"This book of the law shall not depart out of thy mouth; but thou shalt meditate therein day and night, that thou mayest observe to do according to all that is written therein: for then thou shalt make thy way prosperous, and then thou shalt have good success." (Joshua 1:8-10)`,
-    },
-  ],
+  PILLARS_OF_FAITH: {
+    title: "12 Pillars of our commission",
+    subtitle: "Our guide",
+    description: [
+      'God commissioned the presiding Bishop of this commission with a Word of Faith ministry to our generation. Remember Paul said, "...if the trumpet give an uncertain sound, who shall prepare himself to the battle?" (1 Cor 14:8) As a Commission, we have experienced amazing testimonies ever since this commission was handed down - that is over thirty years now!',
+      'The Holy Ghost further inspired the servant of God, Dr. David Oyedepo, to classify the Word of Faith He has committed into his hands into the specific areas of emphasis, in direct response to Isaiah 40:6, "The voice said, Cry. And he said, What shall I cry?"... He has named these 12 areas of emphasis as the 12 Pillars of our Commission. We have crossed Jordan into power, bearing the ark of liberation. Here are the 12 stones, after the order of Joshua 4:1-8, 20-24. Having stood firm upon these twelve stones! And they have resulted in breakthroughs - both for the ministry and all that are partakers with us, of the same grace.',
+    ],
+    pillars: [
+      {
+        id: 1,
+        title: "FAITH",
+        description:
+          "For whatsoever is born of God overcometh the world: and this is the victory that overcometh the world, even our faith.",
+        verses: ["1 John 5:4", "Ephesians 6:16"],
+      },
+      {
+        id: 2,
+        title: "THE WORD",
+        description:
+          "Who being the brightness of his glory, and the express image of his person, and upholding all things by the word of his power...",
+        verses: ["John 1:1-12", "Hebrews 1:3"],
+      },
+      {
+        id: 3,
+        title: "THE SUPERNATURAL",
+        description:
+          "The wind bloweth where it listeth, and thou hearest the sound thereof, but canst not tell whence it cometh, and whither it goeth: so is every one that is born of the Spirit.",
+        verses: ["Psalm 82:5-7", "John 3:8"],
+      },
+      {
+        id: 4,
+        title: "PRAISE",
+        description:
+          "And when they began to sing and to praise, the Lord set ambushments against the children of Ammon, Moab, and mount Seir, which were come against Judah: and they were smitten.",
+        verses: ["2 Chronicles 20:20-22", "Psalm 67:1-7", "Psalm 149:1-9"],
+      },
+      {
+        id: 5,
+        title: "THE HOLY SPIRIT",
+        description:
+          "And it shall come to pass in that day, that his burden shall be taken away from off thy shoulder, and his yoke from off thy neck, and the yoke shall be destroyed because of the anointing.",
+        verses: ["Acts 1:1-8", "Isaiah 10:27"],
+      },
+      {
+        id: 6,
+        title: "PROSPERITY",
+        description:
+          "Beloved, I wish above all things that thou mayest prosper and be in health, even as thy soul prospereth. Cry yet, saying, Thus saith the Lord of hosts; My cities through prosperity shall yet be spread abroad...",
+        verses: ["3 John 2", "Psalm 35:27", "Zechariah 1:17"],
+      },
+      {
+        id: 7,
+        title: "VISION",
+        description:
+          "Where there is no vision, the people perish: but he that keepeth the law, happy is he.",
+        verses: ["Proverbs 29:18", "Jeremiah 29:11"],
+      },
+      {
+        id: 8,
+        title: "PRAYER",
+        description:
+          "And this is the confidence that we have in him, that, if we ask anything according to his will, he heareth us.",
+        verses: ["1 John 5:14"],
+      },
+      {
+        id: 9,
+        title: "HEALING",
+        description:
+          "That it might be fulfilled which was spoken by Esaias the prophet, saying, Himself took our infirmities, and bare our sicknesses.",
+        verses: ["Isaiah 53:3-4", "Jeremiah 8:22", "Matthew 8:17"],
+      },
+      {
+        id: 10,
+        title: "WISDOM",
+        description:
+          "And wisdom and knowledge shall be the stability of thy times, and strength of salvation: the fear of the Lord is his treasure.",
+        verses: ["Proverbs 24:3-4", "Isaiah 33:6"],
+      },
+      {
+        id: 11,
+        title: "CONSECRATION",
+        description:
+          "Nevertheless the foundation of God standeth sure, having this seal, the Lord knoweth them that are his. And let every one that nameth the name of Christ depart from iniquity.",
+        verses: ["Hebrews 12:14", "2 Timothy 2:19"],
+      },
+      {
+        id: 12,
+        title: "SUCCESS",
+        description:
+          "This book of the law shall not depart out of thy mouth; but thou shalt meditate therein day and night, that thou mayest observe to do according to all that is written therein: for then thou shalt make thy way prosperous, and then thou shalt have good success.",
+        verses: ["Joshua 1:8-10"],
+      },
+    ],
+  },
   FOUNDED: "2010",
   DENOMINATION: "Living Faith Church Worldwide",
   LOGO: "/lfc_logo.png",
@@ -148,7 +192,95 @@ const CHURCH_INFO = {
   ],
 };
 
+const MINISTRIES = {
+  title: "Ministries & Fellowship",
+  subtitle: "Congregation",
+  description:
+    "Our church offers diverse branches of fellowship designed to meet the spiritual needs of every member. From our Children's Ministry nurturing young hearts with age-appropriate teachings, to Teens Church guiding adolescents through their formative years, Youth Alive empowering young adults in their faith journey, and Businessmen Fellowship building strong men of God through accountability and mentorship. Each fellowship provides a unique space for connection, growth, and service within our church community.",
+  ministries: [
+    {
+      id: 1,
+      title: "Children's Ministry",
+      description:
+        "Nurturing the faith of our youngest members through age-appropriate Bible stories, songs, and activities.",
+      href: "/ministries",
+      ageRange: "Ages 1-12",
+      activities: [
+        "Sunday School",
+        "Vacation Bible School",
+        "Children's Choir",
+        "Bible Games",
+      ],
+    },
+    {
+      id: 2,
+      title: "Teens Church",
+      description:
+        "Nurturing the faith of our youngest members through age-appropriate Bible stories, songs, and activities.",
+      href: "/ministries",
+      ageRange: "Ages 13-18",
+      activities: [
+        "Sunday School",
+        "Vacation Bible School",
+        "Children's Choir",
+        "Bible Games",
+      ],
+    },
+    {
+      id: 3,
+      title: "Youth Alive",
+      description:
+        "Empowering teenagers to grow in their faith through relevant teachings, activities, and peer support.",
+      href: "/ministries",
+      ageRange: "Ages 18-60",
+      activities: [
+        "Youth Bible Study",
+        "Fellowship Events",
+        "Mentorship",
+        "Outreach Programs",
+      ],
+    },
+    {
+      id: 4,
+      title: "Businessmen Fellowship",
+      description:
+        "Building strong men of God through accountability, mentorship, and spiritual development.",
+      href: "/ministries",
+      ageRange: "Ages 18 and above",
+      activities: [
+        "Men's Bible Study",
+        "Accountability Groups",
+        "Leadership Training",
+        "Community Service",
+      ],
+    },
+    // {
+    //   id: 5,
+    //   title: "Women's Ministry",
+    //   description:
+    //     "Supporting and encouraging women in their spiritual journey through fellowship, prayer, and Bible study.",
+    //   href: "/ministries",
+    //   activities: [
+    //     "Women's Bible Study",
+    //     "Prayer Groups",
+    //     "Fellowship Events",
+    //     "Outreach Programs",
+    //   ],
+    // },
+
+    {
+      id: 5,
+      title: "Pastors",
+      href: "/pastors",
+      description: "Meet our dedicated pastoral team and leadership.",
+    },
+  ],
+} as const;
+
 const LEADERSHIP = {
+  title: "Pastors and Directors",
+  subtitle: "Leadership",
+  description: "Meet our dedicated leaders serving the church and community.",
   PASTORS: [
     {
       id: 1,
@@ -189,7 +321,7 @@ const LEADERSHIP = {
     },
     {
       id: 2,
-      name: "Pastor Lungi Kamara",
+      name: "Pastor Lungay Sellu",
       title: "Associate Pastor",
       role: LeadershipRole.ASSOCIATE_PASTOR,
       bio: "Pastor Lungi Kamara serves as our Associate Pastor, focusing on women's ministry and family counseling. She brings a heart for nurturing and discipleship, having served in ministry for over 12 years.",
@@ -479,7 +611,7 @@ const SERMONS = [
     id: 2,
     title: "Developing Spiritual Mentality",
     date: "AUGUST 01, 2025",
-    pastor: "Lungi xxx",
+    pastor: "Lungay Sellu",
     image: "https://picsum.photos/800/600?random=2",
   },
   {
@@ -724,6 +856,7 @@ const TESTIMONIES = [
 
 export {
   CHURCH_INFO,
+  MINISTRIES,
   LEADERSHIP,
   FEATURES,
   SERVICES,

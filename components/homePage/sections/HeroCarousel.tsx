@@ -1,9 +1,9 @@
 import Image from "next/image";
-import { slides } from "@/lib/slides";
 import { HeroCarouselWrapper } from "../HeroCarouselWrapper";
 import { CarouselItem } from "@/components/ui/carousel";
 import { Separator } from "@/components/ui/separator";
 import { AnimatedButton } from "@/components/ui/animated-button";
+import { slides } from "@/lib/slides";
 
 export default function HeroCarousel() {
   return (

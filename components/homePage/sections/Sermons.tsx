@@ -1,7 +1,7 @@
 import Image from "next/image";
-import { SERMONS } from "@/lib/constants";
 import SermonBtn from "../SermonBtn";
 import SectionHeader from "@/components/SectionHeader";
+import { SERMONS } from "@/lib/constants";
 
 export default function Sermons() {
   return (
@@ -17,7 +17,7 @@ export default function Sermons() {
           {SERMONS.map((sermon, index) => (
             <div
               key={sermon.id}
-              className="group relative overflow-hidden text-center flex flex-col basis-full sm:basis-[calc(50%-theme(space.8)/2)] lg:basis-[calc(33.333%-theme(space.8)/1.5)] max-w-[420px]"
+              className="group relative overflow-hidden text-center flex flex-col basis-full sm:basis-[calc(50%-theme(space.8)/2)] lg:basis-[calc(33.333%-theme(space.8)/1.5)] max-w-[420px] rounded"
             >
               <div className="relative aspect-[1] shadow-lg overflow-hidden">
                 <Image

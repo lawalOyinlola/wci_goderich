@@ -1,10 +1,10 @@
 "use client";
 
 import { useRef } from "react";
-import { CHURCH_INFO } from "@/lib/constants";
-import { ArrowDownIcon, PlayCircleIcon } from "@phosphor-icons/react";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import { VideoDialog, type VideoDialogRef } from "@/components/ui/video-dialog";
+import { ArrowDownIcon, PlayCircleIcon } from "@phosphor-icons/react";
+import { CHURCH_INFO } from "@/lib/constants";
 
 export default function HeroSection() {
   const { CORE_VALUES } = CHURCH_INFO;
@@ -28,7 +28,7 @@ export default function HeroSection() {
                 <div className="flex items-center gap-3">
                   <AnimatedButton
                     href="#"
-                    text="Our Services"
+                    text="Our Ministries"
                     icon={<ArrowDownIcon weight="bold" />}
                     size="lg"
                   />
@@ -53,9 +53,7 @@ export default function HeroSection() {
                       key={index}
                       className="flex flex-col gap-2 border-l-2 border-muted-foreground/20 pl-2"
                     >
-                      <h3 className="font-great-vibes tracking-widest">
-                        {value.title}
-                      </h3>
+                      <h3 className="tracking-wider">{value.title}</h3>
                       <p className="text-sm text-muted-foreground">
                         {value.description}
                       </p>
