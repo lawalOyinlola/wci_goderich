@@ -35,7 +35,7 @@ export default function CtaContainer({
           {buttons &&
             buttons.map((button, index) => (
               <AnimatedButton
-                key={button.href.toString() + index}
+                key={button.href + index}
                 size="lg"
                 variant={`${index !== 0 ? "secondary" : "outline"}`}
                 className={`${index !== 0 ? "bg-background!" : ""} `}

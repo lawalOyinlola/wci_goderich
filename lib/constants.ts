@@ -216,7 +216,7 @@ const MINISTRIES = {
       id: 2,
       title: "Teens Church",
       description:
-        "Nurturing the faith of our youngest members through age-appropriate Bible stories, songs, and activities.",
+        "Empowering teenagers to grow in their faith through relevant teachings, dynamic worship, and peer fellowship.",
       href: "/ministries",
       ageRange: "Ages 13-18",
       activities: [
@@ -230,7 +230,7 @@ const MINISTRIES = {
       id: 3,
       title: "Youth Alive",
       description:
-        "Empowering teenagers to grow in their faith through relevant teachings, activities, and peer support.",
+        "Empowering young adults and adults to walk in victory through practical Word-based teachings, mentorship, and impactful service.",
       href: "/ministries",
       ageRange: "Ages 18-60",
       activities: [

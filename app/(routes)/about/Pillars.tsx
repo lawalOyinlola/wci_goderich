@@ -3,7 +3,8 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { CHURCH_INFO } from "@/lib/constants";
 
 const Pillars = () => {
-  const { title, subtitle, description, pillars } = CHURCH_INFO.PILLARS_OF_FAITH;
+  const { title, subtitle, description, pillars } =
+    CHURCH_INFO.PILLARS_OF_FAITH;
 
   return (
     <section className="py-20 bg-muted/30">
@@ -11,7 +12,9 @@ const Pillars = () => {
         <SectionHeader
           title={title}
           subtitle={subtitle}
-          description={description}
+          description={description[0]}
+          descriptionClassName="mb-8"
+          additionalText={description[1]}
         />
 
         <div className="mt-12 md:mt-24">

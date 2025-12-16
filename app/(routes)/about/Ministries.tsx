@@ -1,7 +1,9 @@
-import { Cpu, Lock, Sparkles, Zap } from "lucide-react";
+import { Zap } from "lucide-react";
+// import { Cpu, Lock, Sparkles, Zap } from "lucide-react";
 import SectionHeader from "@/components/SectionHeader";
 import { MINISTRIES } from "@/lib/constants";
 import { Badge } from "@/components/ui/badge";
+import Image from "next/image";
 
 export default function Ministries() {
   const { title, subtitle, description, ministries } = MINISTRIES;
@@ -19,17 +21,16 @@ export default function Ministries() {
           description={description}
         />
 
-        <img
+        <Image
           className="rounded-(--radius) grayscale"
-          src="https://images.unsplash.com/photo-1616587226960-4a03badbe8bf?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          alt="team image"
-          height=""
-          width=""
-          loading="lazy"
+          src="https://images.unsplash.com/photo-1616587226960-4a03badbe8bf?q=80&w=2940&auto=format&fit=crop"
+          alt="Church ministries team"
+          width={2940}
+          height={1960}
         />
 
         <div className="relative mx-auto grid grid-cols-2 gap-x-3 gap-y-6 sm:gap-8 lg:grid-cols-4">
-          {filteredMinistries.map((ministry, index) => (
+          {filteredMinistries.map((ministry) => (
             <div key={ministry?.id} className="space-y-3 cursor-pointer">
               <div className="flex items-center gap-2">
                 <Zap className="size-4" />

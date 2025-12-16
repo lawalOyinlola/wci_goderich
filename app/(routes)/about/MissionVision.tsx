@@ -15,7 +15,7 @@ export default function MissionVision() {
           subtitle="About Us"
           description={ABOUT_US[0]}
           descriptionClassName="mb-8"
-          others={ABOUT_US[1]}
+          additionalText={ABOUT_US[1]}
         />
         <Card className="@min-4xl:max-w-full @min-4xl:grid-cols-3 @min-4xl:divide-x @min-4xl:divide-y-0 mx-auto mt-8 grid max-w-sm divide-y overflow-hidden shadow-zinc-950/5 *:text-center md:mt-16 bg-background py-0 *:py-6">
           <div className="group shadow-zinc-950/5">

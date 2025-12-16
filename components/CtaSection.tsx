@@ -1,11 +1,10 @@
-import { type Route } from "next";
 import SectionHeader from "@/components/SectionHeader";
 import CtaContainer from "./CtaContainer";
 import { cn } from "@/lib/utils";
 
 interface CtaButton {
   text: string;
-  href: Route;
+  href: string;
 }
 
 interface CtaSectionProps {

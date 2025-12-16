@@ -3,7 +3,8 @@ import SectionHeader from "@/components/SectionHeader";
 import { CHURCH_INFO } from "@/lib/constants";
 
 const PillarsOne = () => {
-  const { title, subtitle, description, pillars } = CHURCH_INFO.PILLARS_OF_FAITH;
+  const { title, subtitle, description, pillars } =
+    CHURCH_INFO.PILLARS_OF_FAITH;
 
   return (
     <section className="bg-muted/30">
@@ -13,7 +14,7 @@ const PillarsOne = () => {
           subtitle={subtitle}
           description={description[0]}
           descriptionClassName="mb-8"
-          others={description[1]}
+          additionalText={description[1]}
         />
 
         <div className="mt-12 md:mt-24">
