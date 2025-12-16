@@ -1,6 +1,6 @@
-import { DONATIONS } from "@/lib/constants";
 import { WordRotate } from "@/components/ui/word-rotate";
 import { AnimatedButton } from "@/components/ui/animated-button";
+import { DONATIONS } from "@/lib/constants";
 
 export default function Donation() {
   return (

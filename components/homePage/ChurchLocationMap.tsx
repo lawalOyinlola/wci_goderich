@@ -4,13 +4,13 @@ import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import { useMap, useMapEvent } from "react-leaflet";
 import type { LeafletMouseEvent, Map as LeafletMap, DivIcon } from "leaflet";
-import { CHURCH_INFO } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   ArrowCounterClockwiseIcon,
   NavigationArrowIcon,
 } from "@phosphor-icons/react";
+import { CHURCH_INFO } from "@/lib/constants";
 
 // Dynamically import the map components to avoid SSR issues
 const MapContainer = dynamic(

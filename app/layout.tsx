@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Outfit, Lora, Great_Vibes } from "next/font/google";
-import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { Navbar } from "@/components/layouts/navbar";
 import { Footer } from "@/components/layouts/footer";
+import { cn } from "@/lib/utils";
 import "./globals.css";
 
 const fontLora = Lora({

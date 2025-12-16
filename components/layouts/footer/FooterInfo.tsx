@@ -1,8 +1,8 @@
 "use client";
 
-import { EnvelopeIcon, MapPinIcon, PhoneIcon } from "@phosphor-icons/react";
 import { FooterNewsletter } from "./FooterNewsletter";
 import LogoTitle from "@/components/LogoTitle";
+import { EnvelopeIcon, MapPinIcon, PhoneIcon } from "@phosphor-icons/react";
 import { CHURCH_INFO } from "@/lib/constants";
 
 export function FooterInfo() {

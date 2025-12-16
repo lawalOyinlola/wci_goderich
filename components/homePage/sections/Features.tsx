@@ -1,7 +1,7 @@
-import { FEATURES, CHURCH_INFO } from "@/lib/constants";
 import { IconComponent } from "@/components/IconComponent";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import { Separator } from "@/components/ui/separator";
+import { FEATURES, CHURCH_INFO } from "@/lib/constants";
 
 export default function Features() {
   const { MANDATE_TASK } = CHURCH_INFO;

@@ -3,15 +3,15 @@
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   Field,
   FieldError,
   FieldLabel,
   FieldDescription,
 } from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 export function FooterNewsletter() {
   const EMAIL_REGEX = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;

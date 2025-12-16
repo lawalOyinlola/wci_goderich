@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { CHURCH_INFO } from "@/lib/constants";
 import { IconComponent } from "@/components/IconComponent";
+import { CHURCH_INFO } from "@/lib/constants";
 
 export function FooterSocial() {
   const { SOCIAL_LINKS } = CHURCH_INFO;

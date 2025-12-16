@@ -1,6 +1,6 @@
-import { CHURCH_INFO } from "@/lib/constants";
 import ChurchLocationMap from "../ChurchLocationMap";
 import ChurchLocationInfo from "../ChurchLocationInfo";
+import { CHURCH_INFO } from "@/lib/constants";
 
 export default function ChurchLocation() {
   const { CHURCH_LOCATION } = CHURCH_INFO;

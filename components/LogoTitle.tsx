@@ -88,5 +88,4 @@ export function LogoTitle({
   return content;
 }
 
-// Default export for backwards compatibility
 export default LogoTitle;

@@ -1,63 +1,56 @@
 import Image from "next/image";
 import SectionHeader from "@/components/SectionHeader";
-import { LEADERSHIP } from "@/lib/constants";
-import { LeadershipRole } from "@/lib/types";
+import { CHURCH_INFO } from "@/lib/constants";
 
-const Leadership = () => {
-  const { title, subtitle, description, PASTORS, DIRECTORS } = LEADERSHIP;
-
-  const filteredPastors = PASTORS.filter(
-    (pastor) =>
-      pastor.role === LeadershipRole.RESIDENT_PASTOR ||
-      pastor.role === LeadershipRole.ASSOCIATE_PASTOR
-  );
-
-  const filteredDirectors = DIRECTORS.filter(
-    (director) => director.role === LeadershipRole.CHAIRMAN
-  );
-
-  const leaders = [...filteredPastors, ...filteredDirectors];
+const PillarsOne = () => {
+  const { title, subtitle, description, pillars } =
+    CHURCH_INFO.PILLARS_OF_FAITH;
 
   return (
-    <section className="py-20 bg-muted/30">
-      <div className="small-container">
+    <section className="bg-muted/30">
+      <div className="small-container max-w-5xl">
         <SectionHeader
           title={title}
           subtitle={subtitle}
-          description={description}
+          description={description[0]}
+          descriptionClassName="mb-8"
+          additionalText={description[1]}
         />
 
         <div className="mt-12 md:mt-24">
           <div className="max-w-4xl mx-auto grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
-            {leaders.map((leader, index) => (
-              <div key={leader.id || index} className="group overflow-hidden">
+            {pillars.map((pillar, index) => (
+              <div key={pillar.id || index} className="group overflow-hidden">
                 <Image
-                  className="h-96 w-full rounded-md object-cover object-top grayscale transition-all duration-500 hover:grayscale-0 group-hover:h-[22.5rem] group-hover:rounded-xl"
-                  src={leader.image}
-                  alt={`${leader.title} - ${leader.name}`}
+                  className="h-60 w-full rounded-md object-cover object-top grayscale transition-all duration-500 hover:grayscale-0 group-hover:h-50 group-hover:rounded-xl"
+                  src={"/images/bg-2025_theme.jpg"}
+                  alt={`${pillar.title} - ${pillar.title}`}
                   width={826}
                   height={1239}
                 />
                 <div className="px-2 pt-2 sm:pb-0 sm:pt-4">
                   <div className="flex justify-between">
                     <h3 className="text-base font-medium transition-all duration-500 group-hover:tracking-wider">
-                      {leader.name}
+                      {pillar.title}
                     </h3>
+                    <span className="text-xs">
+                      _{String(pillar.id).padStart(2, "0")}
+                    </span>
                   </div>
                   <div className="mt-1 flex items-center justify-between">
                     <span className="text-muted-foreground inline-block translate-y-6 text-sm opacity-0 transition duration-300 group-hover:translate-y-0 group-hover:opacity-100">
-                      {leader.title}
+                      {pillar.description}
                     </span>
-                    {"phone" in leader && leader.phone && (
+                    {/* {"verses" in pillar && pillar.verses && (
                       <a
-                        href={`tel:${leader.phone}`}
+                        href={`tel:${pillar.verses}`}
                         // target="_blank"
                         // rel="noopener noreferrer"
                         className="group-hover:text-primary-600 dark:group-hover:text-primary-400 inline-block translate-y-8 text-sm tracking-wide opacity-0 transition-all duration-500 hover:underline group-hover:translate-y-0 group-hover:opacity-100"
                       >
-                        Call
+                        {pillar.verses.join(", ")}
                       </a>
-                    )}
+                    )} */}
                   </div>
                 </div>
               </div>
@@ -69,4 +62,4 @@ const Leadership = () => {
   );
 };
 
-export default Leadership;
+export default PillarsOne;

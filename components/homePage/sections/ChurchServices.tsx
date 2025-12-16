@@ -1,4 +1,3 @@
-import { SERVICES } from "@/lib/constants";
 import { formatServiceSchedule } from "@/lib/utils";
 import SectionHeader from "@/components/SectionHeader";
 import { IconComponent } from "@/components/IconComponent";
@@ -12,6 +11,7 @@ import {
 } from "@/components/ui/card";
 import { BorderBeam } from "@/components/ui/border-beam";
 import { Badge } from "@/components/ui/badge";
+import { SERVICES } from "@/lib/constants";
 
 export default function ChurchServices() {
   return (
@@ -27,7 +27,7 @@ export default function ChurchServices() {
           return (
             <Card
               key={service.id}
-              className="group py-6 backdrop-blur-sm border-0 rounded-none hover:shadow-lg hover:shadow-primary/20 hover:-translate-y-1 transition-all duration-300"
+              className="group py-6 backdrop-blur-sm border-0 hover:shadow-lg hover:shadow-primary/20 hover:-translate-y-1 transition-all duration-300"
             >
               <BorderBeam
                 size={200}
@@ -53,7 +53,7 @@ export default function ChurchServices() {
                 <Badge
                   variant="primary"
                   size="xl"
-                  className="rounded-none uppercase line-clamp-2"
+                  className="uppercase line-clamp-2"
                 >
                   {formatServiceSchedule(service)}
                 </Badge>

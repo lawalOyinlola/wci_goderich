@@ -1,5 +1,5 @@
-import { FOOTER_LINKS } from "./footerItems";
 import CaretButton from "@/components/ui/caret-button";
+import { FOOTER_LINKS } from "./footerItems";
 
 export function FooterLinks() {
   return (

@@ -1,13 +1,9 @@
 "use client";
 
+import { forwardRef, useState } from "react";
 import Link from "next/link";
 import type { Route } from "next";
-import { forwardRef, useState } from "react";
-import { cn } from "@/lib/utils";
-import { NAV_ITEMS } from "./navItems";
-import { isNavItemWithSubItems } from "./type";
 import { Logo, LogoTitle } from "@/components/LogoTitle";
-import { ListIcon } from "@phosphor-icons/react";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -33,10 +29,14 @@ import {
 } from "@/components/ui/navigation-menu";
 import { AnimatedBackground } from "@/components/ui/animated-background";
 import { AnimatedButton } from "@/components/ui/animated-button";
+import { ListIcon } from "@phosphor-icons/react";
+import { cn } from "@/lib/utils";
+import { isNavItemWithSubItems } from "./type";
+import { NAV_ITEMS } from "./navItems";
 
 export default function Navbar() {
   return (
-    <header className="fixed inset-x-0 z-99999 px-4">
+    <header className="fixed inset-x-0 z-99 px-4">
       <div className="container mt-5 p-2 bg-foreground/30 dark:bg-background/30 border-none dark:border-slate-700/20 rounded-2xl shadow-2xl backdrop-blur-sm">
         <MobileNav />
         <DesktopNav />

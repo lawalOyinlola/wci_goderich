@@ -1,5 +1,5 @@
-import { cn } from "@/lib/utils";
 import { Separator } from "./ui/separator";
+import { cn } from "@/lib/utils";
 
 interface SectionHeaderProps {
   title: string;
@@ -8,6 +8,7 @@ interface SectionHeaderProps {
   titleClassName?: string;
   subtitleClassName?: string;
   descriptionClassName?: string;
+  additionalText?: string;
 }
 
 const SectionHeader = ({
@@ -17,9 +18,10 @@ const SectionHeader = ({
   titleClassName,
   subtitleClassName,
   descriptionClassName,
+  additionalText,
 }: SectionHeaderProps) => {
   return (
-    <div className="text-center mb-12">
+    <div className="text-center mb-12 max-w-5xl mx-auto">
       {subtitle && (
         <div
           className={cn(
@@ -32,11 +34,14 @@ const SectionHeader = ({
           <Separator className="sm:w-40!" />
         </div>
       )}
-      <h1 className={cn("mb-8", titleClassName)}>{title}</h1>
+      <h1 className={cn("mb-8 capitalize", titleClassName)}>{title}</h1>
       {description && (
         <p className={cn("text-muted-foreground", descriptionClassName)}>
           {description}
         </p>
+      )}
+      {additionalText && (
+        <p className="text-muted-foreground">{additionalText}</p>
       )}
     </div>
   );

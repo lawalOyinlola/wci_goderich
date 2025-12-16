@@ -1,8 +1,8 @@
 import Image from "next/image";
-import { UPCOMING_EVENTS } from "@/lib/constants";
-import { formatEventDateTime } from "@/lib/utils";
 import SectionHeader from "@/components/SectionHeader";
 import CaretButton from "@/components/ui/caret-button";
+import { formatEventDateTime } from "@/lib/utils";
+import { UPCOMING_EVENTS } from "@/lib/constants";
 
 export default function UpcomingEvents() {
   return (
@@ -24,7 +24,7 @@ export default function UpcomingEvents() {
                 key={event.id}
                 className="cursor-pointer flex h-[300px] w-full flex-row items-stretch sm:w-[calc(50%-theme(spacing.8)/2)] lg:w-[calc(33.333%-theme(spacing.8)/1.5)] max-w-[560px]"
               >
-                <div className="relative h-15/16 w-3/7 self-end">
+                <div className="relative h-15/16 w-3/7 self-end rounded-l-sm overflow-hidden">
                   <Image
                     src={event.image}
                     alt={event.title}
@@ -33,8 +33,8 @@ export default function UpcomingEvents() {
                     className="object-cover bg-muted-foreground"
                   />
                 </div>
-                <div className="relative h-full w-3/5 bg-card p-6 pt-18 text-card-foreground flex flex-col gap-3 justify-start">
-                  <div className="max-w-full truncate absolute top-6 -left-5 bg-accent text-primary-foreground px-3 pl-5 py-1 font-semibold text-sm whitespace-nowrap">
+                <div className="relative h-full w-3/5 bg-card p-6 pt-18 text-card-foreground flex flex-col gap-3 justify-start rounded-r-sm">
+                  <div className="max-w-full truncate absolute top-6 -left-5 bg-accent text-primary-foreground px-3 pl-5 py-1 font-semibold text-sm whitespace-nowrap rounded-r-sm">
                     {formatEventDateTime(
                       event.date,
                       event.startTime,
