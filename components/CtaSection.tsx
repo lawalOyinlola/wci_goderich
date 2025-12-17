@@ -25,7 +25,7 @@ export default function CtaSection({
   containerClassName,
 }: CtaSectionProps) {
   return (
-    <div className={cn("max-w-4xl mx-auto px-4 py-20 text-center", className)}>
+    <div className={cn("small-container max-w-4xl text-center", className)}>
       <SectionHeader title={title} description={description} />
 
       <CtaContainer

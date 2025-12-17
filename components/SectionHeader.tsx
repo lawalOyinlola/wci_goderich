@@ -29,9 +29,9 @@ const SectionHeader = ({
             subtitleClassName
           )}
         >
-          <Separator className="sm:w-40!" />
-          <p>{subtitle}</p>
-          <Separator className="sm:w-40!" />
+          <Separator className="shrink sm:w-40!" />
+          <p className="whitespace-nowrap">{subtitle}</p>
+          <Separator className="shrink sm:w-40!" />
         </div>
       )}
       <h1 className={cn("mb-8 capitalize", titleClassName)}>{title}</h1>

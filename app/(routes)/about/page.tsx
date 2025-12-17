@@ -1,7 +1,6 @@
 import HeroSection from "./Hero";
 import MissionVision from "./MissionVision";
 import Pillars from "./Pillars";
-import PillarsOne from "./Pillars_one";
 import Leadership from "./Leadership";
 import CtaSection from "@/components/CtaSection";
 import Ministries from "./Ministries";
@@ -12,7 +11,6 @@ const AboutUsPage = () => {
       <HeroSection />
       <MissionVision />
       <Pillars />
-      <PillarsOne />
       <Ministries />
       <Leadership />
       <CtaSection

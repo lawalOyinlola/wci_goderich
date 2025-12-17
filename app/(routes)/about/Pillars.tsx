@@ -1,13 +1,19 @@
 import SectionHeader from "@/components/SectionHeader";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { CHURCH_INFO } from "@/lib/constants";
+import { Badge } from "@/components/ui/badge";
 
 const Pillars = () => {
   const { title, subtitle, description, pillars } =
     CHURCH_INFO.PILLARS_OF_FAITH;
 
   return (
-    <section className="py-20 bg-muted/30">
+    <section className="bg-muted/30">
       <div className="small-container">
         <SectionHeader
           title={title}
@@ -18,24 +24,30 @@ const Pillars = () => {
         />
 
         <div className="mt-12 md:mt-24">
-          <div className="max-w-6xl mx-auto grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <Accordion
+            className="max-w-6xl mx-auto grid gap-6 sm:grid-cols-2 lg:grid-cols-3 items-start"
+            defaultValue={["1", "2", "3"]}
+            type="multiple"
+          >
             {pillars.map((pillar) => (
-              <Card
+              <AccordionItem
+                className="group rounded-md border bg-background px-4 py-1 outline-none last:border-b has-focus-visible:border-ring has-focus-visible:ring-[3px] has-focus-visible:ring-ring/50 shadow-sm transition-all hover:shadow-primary/20 hover:-translate-y-1 duration-300"
                 key={pillar.id}
-                className="group overflow-hidden transition-all duration-300 hover:shadow-lg"
+                value={String(pillar.id)}
               >
-                <CardHeader className="pb-3">
-                  <div className="flex items-center justify-between mb-2">
+                <AccordionTrigger className="justify-start gap-3 py-2 text-[15px] leading-6 hover:no-underline focus-visible:ring-0">
+                  <div className="flex items-start gap-6 grow">
                     <span className="text-xs text-muted-foreground font-mono">
-                      {String(pillar.id).padStart(2, "0")}
+                      _{String(pillar.id).padStart(2, "0")}
                     </span>
+
+                    <h3 className="text-lg font-semibold tracking-tight capitalize">
+                      {pillar.title}
+                    </h3>
                   </div>
-                  <h3 className="text-lg font-semibold tracking-tight">
-                    {pillar.title}
-                  </h3>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <p className="text-sm text-muted-foreground leading-relaxed">
+                </AccordionTrigger>
+                <AccordionContent className="pe-7 pb-2 pt-6 text-muted-foreground flex flex-col gap-4">
+                  <p className="text-sm text-muted-foreground leading-relaxed grow">
                     "{pillar.description}"
                   </p>
                   <div className="pt-2 border-t">
@@ -44,19 +56,21 @@ const Pillars = () => {
                     </p>
                     <div className="flex flex-wrap gap-2">
                       {pillar.verses.map((verse, index) => (
-                        <span
-                          key={index}
-                          className="text-xs bg-muted px-2 py-1 rounded-md font-mono"
+                        <Badge
+                          key={pillar.title + index}
+                          variant="muted"
+                          size="sm"
+                          className="line-clamp-2 group-hover:border-transparent group-hover:bg-accent/10 group-hover:text-accent transition-all duration-300"
                         >
                           {verse}
-                        </span>
+                        </Badge>
                       ))}
                     </div>
                   </div>
-                </CardContent>
-              </Card>
+                </AccordionContent>
+              </AccordionItem>
             ))}
-          </div>
+          </Accordion>
         </div>
       </div>
     </section>
