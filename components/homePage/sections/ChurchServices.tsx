@@ -27,7 +27,7 @@ export default function ChurchServices() {
           return (
             <Card
               key={service.id}
-              className="group py-6 backdrop-blur-sm border-0 hover:shadow-lg hover:shadow-primary/20 hover:-translate-y-1 transition-all duration-300"
+              className="group py-6 backdrop-blur-sm border-0 hover:shadow-primary/20 hover:-translate-y-1 transition-all duration-300"
             >
               <BorderBeam
                 size={200}

@@ -19,7 +19,7 @@ const Leadership = () => {
   const leaders = [...filteredPastors, ...filteredDirectors];
 
   return (
-    <section className="py-20 bg-muted/30">
+    <section className="bg-muted/30">
       <div className="small-container">
         <SectionHeader
           title={title}
