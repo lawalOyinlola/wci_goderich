@@ -36,7 +36,7 @@ const Pillars = () => {
                 value={String(pillar.id)}
               >
                 <AccordionTrigger className="justify-start gap-3 py-2 text-[15px] leading-6 hover:no-underline focus-visible:ring-0">
-                  <div className="flex items-start gap-6 grow">
+                  <div className="flex flex-col items-start gap-1 grow">
                     <span className="text-xs text-muted-foreground font-mono">
                       _{String(pillar.id).padStart(2, "0")}
                     </span>
@@ -46,7 +46,7 @@ const Pillars = () => {
                     </h3>
                   </div>
                 </AccordionTrigger>
-                <AccordionContent className="pe-7 pb-2 pt-6 text-muted-foreground flex flex-col gap-4">
+                <AccordionContent className="pb-2 pt-4 text-muted-foreground flex flex-col gap-4">
                   <p className="text-sm text-muted-foreground leading-relaxed grow">
                     "{pillar.description}"
                   </p>

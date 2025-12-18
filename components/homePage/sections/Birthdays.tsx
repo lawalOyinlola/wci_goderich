@@ -261,8 +261,7 @@ export default function MonthlyBirthdaysSection() {
           {PAST_CELEBRATIONS.map((item, idx) => (
             <div
               key={idx}
-              // className="relative aspect-square rounded-xl overflow-hidden shadow-sm"
-              className="relative aspect-square overflow-hidden shadow-sm"
+              className="relative aspect-square rounded-md overflow-hidden shadow-sm"
             >
               <Image
                 src={item.src}
