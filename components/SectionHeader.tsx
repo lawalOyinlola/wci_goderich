@@ -5,6 +5,7 @@ interface SectionHeaderProps {
   title: string;
   subtitle?: string;
   description?: string;
+  className?: string;
   titleClassName?: string;
   subtitleClassName?: string;
   descriptionClassName?: string;
@@ -15,13 +16,14 @@ const SectionHeader = ({
   title,
   subtitle,
   description,
+  className,
   titleClassName,
   subtitleClassName,
   descriptionClassName,
   additionalText,
 }: SectionHeaderProps) => {
   return (
-    <div className="text-center mb-12 max-w-5xl mx-auto">
+    <div className={cn("text-center mb-12 max-w-5xl mx-auto", className)}>
       {subtitle && (
         <div
           className={cn(

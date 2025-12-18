@@ -63,7 +63,7 @@ export default function Testimonies() {
                 >
                   <div
                     key={index}
-                    className="relative group flex flex-col justify-between bg-card dark:bg-background gap-4 aspect-[4/3] backdrop-blur-sm p-6 border border-border shadow-sm overflow-hidden"
+                    className="relative group flex flex-col justify-between bg-card dark:bg-background gap-4 aspect-[4/3] backdrop-blur-sm p-6 border border-border shadow-sm rounded-xl overflow-hidden"
                     onMouseEnter={() => {
                       setHoveredItemId(testifier.id);
                     }}
@@ -92,11 +92,6 @@ export default function Testimonies() {
                         colorFrom="var(--accent)"
                         className="group-hover:opacity-100 opacity-0 transition-opacity duration-300"
                       />
-
-                      // <BorderTrail
-                      //   className="bg-linear-to-l from-secondary-foreground via-chart-4 to-chart-5"
-                      //   size={260}
-                      // />
                     )}
 
                     <ScrollArea className="grow">

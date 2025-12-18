@@ -51,7 +51,7 @@ export const FOOTER_LINKS: FooterLinkGroup[] = [
       { title: "Give Online", href: "/giving" },
       { title: "Prayer Team", href: "/prayer" },
       { title: "Volunteer", href: "/service-units" },
-      { title: "Contact Us", href: "/contact" },
+      { title: "Contact Us", href: "/contact-us" },
       { title: "Church Location", href: "/location" },
     ],
   },
