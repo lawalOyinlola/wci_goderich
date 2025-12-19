@@ -63,7 +63,7 @@ export default function Testimonies() {
                 >
                   <div
                     key={index}
-                    className="relative group flex flex-col justify-between bg-card dark:bg-background gap-4 aspect-[4/3] backdrop-blur-sm p-6 border border-border shadow-sm rounded-xl overflow-hidden"
+                    className="relative group flex flex-col justify-between bg-card dark:bg-background gap-4 aspect-4/3 backdrop-blur-sm p-6 border border-border shadow-sm rounded-xl overflow-hidden"
                     onMouseEnter={() => {
                       setHoveredItemId(testifier.id);
                     }}
@@ -103,7 +103,7 @@ export default function Testimonies() {
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-full overflow-hidden">
                         <Image
-                          src={testifier.avatar}
+                          src={testifier.image}
                           alt={testifier.name}
                           width={40}
                           height={40}
