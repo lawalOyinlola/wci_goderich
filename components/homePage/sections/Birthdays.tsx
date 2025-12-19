@@ -202,9 +202,9 @@ export default function MonthlyBirthdaysSection() {
         <div className="container">
           <div className="text-center mb-12">
             <div className="flex items-center justify-center text-sm text-muted-foreground uppercase tracking-[0.4em] mb-3 font-light gap-4">
-              <Separator className="sm:w-40!" />
+              <Separator className="shrink sm:w-40!" />
               <p>Birthdays</p>
-              <Separator className="sm:w-40!" />
+              <Separator className="shrink sm:w-40!" />
             </div>
             <h1 className="mb-8">Loading...</h1>
           </div>

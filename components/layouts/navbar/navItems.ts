@@ -9,7 +9,7 @@ export const NAV_ITEMS: NavItem[] = [
         label: "Children's Ministry",
         description:
           "Nurturing the faith of our youngest members through age-appropriate Bible stories, songs, and activities.",
-        href: "/ministries",
+        href: "/ministries/children",
         ageRange: "Ages 3-12",
         activities: [
           "Sunday School",
@@ -22,7 +22,7 @@ export const NAV_ITEMS: NavItem[] = [
         label: "Teens Church",
         description:
           "Nurturing the faith of our youngest members through age-appropriate Bible stories, songs, and activities.",
-        href: "/ministries",
+        href: "/ministries/teens",
         ageRange: "Ages 3-12",
         activities: [
           "Sunday School",
@@ -35,7 +35,7 @@ export const NAV_ITEMS: NavItem[] = [
         label: "Youth Alive",
         description:
           "Empowering teenagers to grow in their faith through relevant teachings, activities, and peer support.",
-        href: "/ministries",
+        href: "/ministries/youth",
         ageRange: "Ages 13-18",
         activities: [
           "Youth Bible Study",
@@ -44,23 +44,23 @@ export const NAV_ITEMS: NavItem[] = [
           "Outreach Programs",
         ],
       },
-      {
-        label: "Women's Ministry",
-        description:
-          "Supporting and encouraging women in their spiritual journey through fellowship, prayer, and Bible study.",
-        href: "/ministries",
-        activities: [
-          "Women's Bible Study",
-          "Prayer Groups",
-          "Fellowship Events",
-          "Outreach Programs",
-        ],
-      },
+      // {
+      //   label: "Women's Ministry",
+      //   description:
+      //     "Supporting and encouraging women in their spiritual journey through fellowship, prayer, and Bible study.",
+      //   href: "/ministries",
+      //   activities: [
+      //     "Women's Bible Study",
+      //     "Prayer Groups",
+      //     "Fellowship Events",
+      //     "Outreach Programs",
+      //   ],
+      // },
       {
         label: "Businessmen Fellowship",
         description:
           "Building strong men of God through accountability, mentorship, and spiritual development.",
-        href: "/ministries",
+        href: "/ministries/businessmen",
         activities: [
           "Men's Bible Study",
           "Accountability Groups",
@@ -89,7 +89,7 @@ export const NAV_ITEMS: NavItem[] = [
         description: "Find a unit to serve and grow your faith.",
       },
       {
-        label: "Homecell",
+        label: "Satellite Fellowship",
         href: "/homecell",
         description:
           "Connect with a small group near you for fellowship and Bible study.",
