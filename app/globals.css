@@ -203,7 +203,7 @@
   }
 
   .small-container {
-    @apply max-w-7xl w-full mx-auto px-4 py-20;
+    @apply max-w-7xl w-full mx-auto px-4 py-16 md:py-24;
   }
 
   .carousel-btn {

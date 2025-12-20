@@ -14,8 +14,8 @@ export default function Faqs() {
   const { title, subtitle, description, questions } = FAQS;
 
   return (
-    <section className="py-16 md:py-24">
-      <div className="mx-auto max-w-5xl px-4 md:px-6">
+    <section>
+      <div className="small-container max-w-5xl">
         <div className="grid gap-8 md:grid-cols-5 md:gap-12">
           <div className="md:col-span-2">
             <SectionHeader
@@ -37,7 +37,7 @@ export default function Faqs() {
                     value={String(question.id)}
                     className="data-[state=open]:bg-card dark:data-[state=open]:bg-muted peer rounded-xl border-none px-7 py-1 data-[state=open]:border-none data-[state=open]:shadow-sm"
                   >
-                    <AccordionTrigger className="cursor-pointer text-base hover:no-underline">
+                    <AccordionTrigger className="cursor-pointer text-lg font-semibold tracking-wide hover:no-underline">
                       {question.question}
                     </AccordionTrigger>
                     <AccordionContent>

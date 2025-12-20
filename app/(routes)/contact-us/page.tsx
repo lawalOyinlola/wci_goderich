@@ -1,5 +1,6 @@
 import { Spotlight } from "@/components/ui/spotlight";
 import Faqs from "./Faqs";
+import ContactForm from "./ContactForm";
 
 const ContactUsPage = () => {
   return (
@@ -20,6 +21,7 @@ const ContactUsPage = () => {
         </div>
       </section>
       <Faqs />
+      <ContactForm />
     </>
   );
 };

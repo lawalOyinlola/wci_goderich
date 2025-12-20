@@ -8,7 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { Field, FieldError, FieldLabel } from "../ui/field";
+import { Field, FieldError, FieldLabel, FieldDescription } from "../ui/field";
 import { cn } from "@/lib/utils";
 
 interface SelectOption {
@@ -23,6 +23,7 @@ interface SelectFieldProps<T extends FieldValues> {
   placeholder?: string;
   id?: string;
   options: SelectOption[];
+  description?: string;
   orientation?: "vertical" | "horizontal" | "responsive";
   disabled?: boolean;
   className?: string;
@@ -41,6 +42,7 @@ export function SelectField<T extends FieldValues>({
   placeholder = "Select...",
   id,
   options,
+  description,
   orientation = "vertical",
   disabled,
   className,
@@ -87,6 +89,7 @@ export function SelectField<T extends FieldValues>({
               ))}
             </SelectContent>
           </Select>
+          {description && <FieldDescription>{description}</FieldDescription>}
           {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
         </Field>
       )}
