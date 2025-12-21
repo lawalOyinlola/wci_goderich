@@ -150,18 +150,11 @@ export default function ContactForm() {
   };
 
   return (
-    <section className="bg-muted py-15 sm:py-24 lg:py-32">
-      <div className="mx-auto max-w-4xl px-4 lg:px-0">
-        {/* <h1 className="text-4xl font-semibold lg:text-5xl">
-          Get in Touch With Us
-        </h1>
-        <p className="text-muted-foreground mt-4 text-lg">
-          We&apos;d love to hear from you. Whether you have a question, prayer
-          request, or just want to connect, we&apos;re here to help.
-        </p> */}
+    <section className="bg-muted">
+      <div className="small-container max-w-4xl">
         <SectionHeader
-          title="Connect With Us"
-          subtitle="Get in Touch"
+          title="How can we help you?"
+          subtitle="Contact Us"
           description="We'd love to hear from you. Whether you have a question, prayer request, or just want to connect, we're here to help."
         />
         <div className="mt-12 grid gap-12 lg:grid-cols-5">
@@ -199,11 +192,13 @@ export default function ContactForm() {
             className="@container lg:col-span-3"
           >
             <Card className="p-8 sm:p-12">
-              <h3 className="text-xl font-semibold">How Can We Help You?</h3>
-              <p className="text-sm text-muted-foreground">
-                Fill out the form below and we&apos;ll get back to you as soon
-                as possible.
-              </p>
+              <div className="flex flex-col gap-4">
+                <h3 className="text-xl font-semibold">Send us a message</h3>
+                <p className="text-sm text-muted-foreground">
+                  Fill out the form below and we&apos;ll get back to you as soon
+                  as possible.
+                </p>
+              </div>
 
               <div className="mt-6 space-y-6">
                 <InputField

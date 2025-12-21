@@ -1,6 +1,7 @@
 import { Spotlight } from "@/components/ui/spotlight";
 import Faqs from "./Faqs";
 import ContactForm from "./ContactForm";
+import CtaSection from "@/components/CtaSection";
 
 const ContactUsPage = () => {
   return (
@@ -22,6 +23,15 @@ const ContactUsPage = () => {
       </section>
       <Faqs />
       <ContactForm />
+      <CtaSection
+        title="Visit Us This Sunday"
+        description="Experience the power of God's Word in our community"
+        mainText="We'd love to welcome you to our church family. Join us for our services and experience the transformative power of God's Word in fellowship with believers."
+        buttons={[
+          { text: "Our Services", href: "/services" },
+          { text: "Learn More About Us", href: "/about" },
+        ]}
+      />
     </>
   );
 };
