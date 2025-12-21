@@ -769,20 +769,6 @@ const TESTIMONIES = [
   },
   {
     id: 2,
-    name: "Samuel Ade",
-    role: "Youth Leader",
-    image:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&q=80",
-    testimony:
-      "WCI Goderich has been a place of transformation for me. The youth ministry has helped me grow in faith and discover my purpose. Through the teachings and mentorship, I have learned to walk in faith and see God's hand in every area of my life. The church has become my second family, and I am blessed to be part of this community.",
-    category: "Transformation",
-    date: "2024-11-20",
-    type: "text" as const,
-    featured: true,
-    verified: true,
-  },
-  {
-    id: 3,
     name: "Grace Kamara",
     role: "Prayer Warrior",
     image:
@@ -797,21 +783,7 @@ const TESTIMONIES = [
     verified: true,
   },
   {
-    id: 4,
-    name: "Daniel Mensah",
-    role: "Business Owner",
-    image:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&q=80",
-    testimony:
-      "The Word of Faith teachings have revolutionized my business and personal life. I have learned to apply biblical principles in all my endeavors, and God has blessed the work of my hands. The church's emphasis on faith and excellence has helped me achieve success beyond my expectations. I am grateful for the spiritual foundation this church has provided.",
-    category: "Business & Prosperity",
-    date: "2024-09-25",
-    type: "text" as const,
-    featured: true,
-    verified: true,
-  },
-  {
-    id: 5,
+    id: 3,
     name: "Esther Bangura",
     role: "Children's Ministry",
     image:
@@ -826,21 +798,22 @@ const TESTIMONIES = [
     verified: true,
   },
   {
-    id: 6,
-    name: "Michael Thompson",
-    role: "Church Elder",
+    id: 4,
+    name: "Fatmata Sesay",
+    role: "Women's Ministry",
     image:
-      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&q=80",
+      "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=100&h=100&fit=crop&q=80",
     testimony:
-      "Being part of WCI Goderich leadership has been a journey of faith and growth. I have witnessed God's hand in building this church and transforming lives. The vision of our pastor and the commitment of our members inspire me daily. This church is truly a place where miracles happen and lives are changed for the better.",
-    category: "Leadership",
-    date: "2024-07-30",
-    type: "text" as const,
-    featured: true,
-    verified: true,
+      "The women's ministry has been a source of strength and encouragement for me. Through the fellowship and teachings, I have grown in faith and learned to trust God for all my needs. The church has provided a safe space for women to grow and serve God together.",
+    category: "Women's Ministry",
+    date: "2024-04-22",
+    type: "audio" as const,
+    audioUrl: "https://example.com/audio/testimony9.mp3",
+    featured: false,
+    verified: false,
   },
   {
-    id: 7,
+    id: 5,
     name: "Sarah Conteh",
     role: "Worship Leader",
     image:
@@ -855,7 +828,50 @@ const TESTIMONIES = [
     verified: true,
   },
   {
+    id: 6,
+    name: "Samuel Ade",
+    role: "Youth Leader",
+    image:
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&q=80",
+    testimony:
+      "WCI Goderich has been a place of transformation for me. The youth ministry has helped me grow in faith and discover my purpose. Through the teachings and mentorship, I have learned to walk in faith and see God's hand in every area of my life. The church has become my second family, and I am blessed to be part of this community.",
+    category: "Transformation",
+    date: "2024-11-20",
+    type: "text" as const,
+    featured: true,
+    verified: true,
+  },
+  {
+    id: 7,
+    name: "Daniel Mensah",
+    role: "Business Owner",
+    image:
+      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&q=80",
+    testimony:
+      "The Word of Faith teachings have revolutionized my business and personal life. I have learned to apply biblical principles in all my endeavors, and God has blessed the work of my hands. The church's emphasis on faith and excellence has helped me achieve success beyond my expectations. I am grateful for the spiritual foundation this church has provided.",
+    category: "Business & Prosperity",
+    date: "2024-09-25",
+    type: "text" as const,
+    featured: true,
+    verified: true,
+  },
+  {
     id: 8,
+    name: "Michael Thompson",
+    role: "Church Elder",
+    image:
+      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&q=80",
+    testimony:
+      "Being part of WCI Goderich leadership has been a journey of faith and growth. I have witnessed God's hand in building this church and transforming lives. The vision of our pastor and the commitment of our members inspire me daily. This church is truly a place where miracles happen and lives are changed for the better.",
+    category: "Leadership",
+    date: "2024-07-30",
+    type: "text" as const,
+    featured: true,
+    verified: true,
+  },
+
+  {
+    id: 9,
     name: "James Koroma",
     role: "Church Member",
     image:
@@ -868,21 +884,7 @@ const TESTIMONIES = [
     featured: true,
     verified: true,
   },
-  {
-    id: 9,
-    name: "Fatmata Sesay",
-    role: "Women's Ministry",
-    image:
-      "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=100&h=100&fit=crop&q=80",
-    testimony:
-      "The women's ministry has been a source of strength and encouragement for me. Through the fellowship and teachings, I have grown in faith and learned to trust God for all my needs. The church has provided a safe space for women to grow and serve God together.",
-    category: "Women's Ministry",
-    date: "2024-04-22",
-    type: "audio" as const,
-    audioUrl: "https://example.com/audio/testimony9.mp3",
-    featured: false,
-    verified: false,
-  },
+
   {
     id: 10,
     name: "John Bangura",

@@ -1,7 +1,22 @@
+"use client";
+
+import { useState, useMemo } from "react";
 import { Spotlight } from "@/components/ui/spotlight";
-// import Faqs from "./Faqs";
+import { TESTIMONIES } from "@/lib/constants";
+import { Testimony } from "@/lib/types";
+import TestimoniesTabs from "./TestimoniesTabs";
+import TestimonyCard from "./TestimonyCard";
 
 const TestimoniesPage = () => {
+  const [activeTab, setActiveTab] = useState("all");
+
+  const filteredTestimonies = useMemo(() => {
+    if (activeTab === "all") {
+      return TESTIMONIES;
+    }
+    return TESTIMONIES.filter((testimony) => testimony.type === activeTab);
+  }, [activeTab]);
+
   return (
     <>
       <section className="relative bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white py-40">
@@ -21,7 +36,34 @@ const TestimoniesPage = () => {
           </p>
         </div>
       </section>
-      {/* <Faqs /> */}
+
+      <section className="py-15 sm:py-24 lg:py-32">
+        <div className="container mx-auto px-4">
+          <TestimoniesTabs
+            testimonies={TESTIMONIES as unknown as Testimony[]}
+            activeTab={activeTab}
+            onTabChange={setActiveTab}
+          >
+            <div
+              className={`grid gap-4 md:grid-cols-2  ${
+                activeTab === "all" ? "lg:grid-cols-13" : "lg:grid-cols-4"
+              }`}
+            >
+              {filteredTestimonies.map((testimony) => (
+                <TestimonyCard
+                  key={testimony.id}
+                  testimony={testimony}
+                  className={
+                    testimony.type === "text"
+                      ? "lg:col-span-7 lg:row-span-2"
+                      : "lg:col-span-3"
+                  }
+                />
+              ))}
+            </div>
+          </TestimoniesTabs>
+        </div>
+      </section>
     </>
   );
 };
