@@ -1,42 +1,35 @@
 "use client";
 
 import { Controller, Control, FieldValues, Path } from "react-hook-form";
-import { Input } from "@/components/ui/input";
-import {
-  Field,
-  FieldError,
-  FieldLabel,
-  FieldDescription,
-} from "@/components/ui/field";
+import { Textarea } from "@/components/ui/textarea";
+import { Field, FieldError, FieldLabel, FieldDescription } from "@/components/ui/field";
 import { cn } from "@/lib/utils";
 
-interface InputFieldProps<T extends FieldValues> {
+interface TextAreaFieldProps<T extends FieldValues> {
   name: Path<T>;
   control: Control<T>;
   label: string;
   placeholder?: string;
   id?: string;
-  type?: string;
-  autoComplete?: string;
+  rows?: number;
   description?: string;
   orientation?: "vertical" | "horizontal" | "responsive";
   disabled?: boolean;
   className?: string;
 }
 
-export function InputField<T extends FieldValues>({
+export function TextAreaField<T extends FieldValues>({
   name,
   control,
   label,
   placeholder,
   id,
-  type = "text",
-  autoComplete,
+  rows = 4,
   description,
   orientation = "vertical",
   disabled,
   className,
-}: InputFieldProps<T>) {
+}: TextAreaFieldProps<T>) {
   const fieldId = id || `field-${name}`;
 
   return (
@@ -51,13 +44,12 @@ export function InputField<T extends FieldValues>({
           className={cn(className, "gap-1")}
         >
           <FieldLabel htmlFor={fieldId}>{label}</FieldLabel>
-          <Input
+          <Textarea
             {...field}
             id={fieldId}
-            type={type}
+            rows={rows}
             placeholder={placeholder}
             aria-invalid={fieldState.invalid}
-            autoComplete={autoComplete}
             disabled={disabled}
           />
           {description && <FieldDescription>{description}</FieldDescription>}
@@ -67,3 +59,4 @@ export function InputField<T extends FieldValues>({
     />
   );
 }
+
