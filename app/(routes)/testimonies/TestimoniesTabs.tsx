@@ -26,40 +26,37 @@ export default function TestimoniesTabs({
   children,
 }: TestimoniesTabsProps) {
   const testimonyTypes = useMemo<TestimonyType[]>(() => {
-    const allCount = testimonies.length;
-    const textCount = testimonies.filter(
-      (t: Testimony) => t.type === "written"
-    ).length;
-    const videoCount = testimonies.filter(
-      (t: Testimony) => t.type === "video"
-    ).length;
-    const audioCount = testimonies.filter(
-      (t: Testimony) => t.type === "audio"
-    ).length;
+    const counts = testimonies.reduce(
+      (acc, t) => {
+        acc[t.type]++;
+        return acc;
+      },
+      { written: 0, video: 0, audio: 0 }
+    );
 
     return [
       {
         value: "all",
         label: "All",
-        count: allCount,
+        count: testimonies.length,
       },
       {
         value: "written",
         label: "Written",
         icon: "FileTextIcon",
-        count: textCount,
+        count: counts.written,
       },
       {
         value: "video",
         label: "Video",
         icon: "VideoCameraIcon",
-        count: videoCount,
+        count: counts.video,
       },
       {
         value: "audio",
         label: "Audio",
         icon: "MusicNotesIcon",
-        count: audioCount,
+        count: counts.audio,
       },
     ];
   }, [testimonies]);
