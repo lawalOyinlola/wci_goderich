@@ -1,13 +1,12 @@
 "use client";
 
-import { useMemo, Suspense } from "react";
+import { useMemo } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { Spotlight } from "@/components/ui/spotlight";
-import { TESTIMONIES } from "@/lib/constants";
-import { Testimony } from "@/lib/types";
 import TestimoniesTabs from "./TestimoniesTabs";
 import TestimonyCard from "./TestimonyCard";
 import CtaSection from "@/components/CtaSection";
+import { Spotlight } from "@/components/ui/spotlight";
+import { TESTIMONIES } from "@/lib/constants";
 
 function TestimoniesContent() {
   const searchParams = useSearchParams();
@@ -15,7 +14,7 @@ function TestimoniesContent() {
   const typeParam = searchParams.get("type");
 
   // Validate and set active tab from URL
-  const validTypes = ["all", "text", "video", "audio"];
+  const validTypes = ["all", "written", "video", "audio"];
   const activeTab =
     typeParam && validTypes.includes(typeParam) ? typeParam : "all";
 
@@ -43,20 +42,16 @@ function TestimoniesContent() {
     <section className="py-16 sm:py-24 lg:py-32 bg-linear-to-b to-muted/70 from-background">
       <div className="container mx-auto px-4">
         <TestimoniesTabs
-          testimonies={TESTIMONIES as unknown as Testimony[]}
+          testimonies={TESTIMONIES}
           activeTab={activeTab}
           onTabChange={handleTabChange}
         >
-          <div
-            className={`grid gap-4 md:grid-cols-2  ${
-              activeTab === "all" ? "lg:grid-cols-4" : "lg:grid-cols-4"
-            }`}
-          >
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             {filteredTestimonies.map((testimony) => (
               <TestimonyCard
                 key={testimony.id}
                 testimony={testimony}
-                className={testimony.type === "text" ? "lg:col-span-2" : ""}
+                className={testimony.type === "written" ? "lg:col-span-2" : ""}
               />
             ))}
           </div>
@@ -87,23 +82,11 @@ const TestimoniesPage = () => {
         </div>
       </section>
 
-      <Suspense
-        fallback={
-          <section className="py-15 sm:py-24 lg:py-32">
-            <div className="container mx-auto px-4">
-              <div className="text-center text-muted-foreground">
-                Loading testimonies...
-              </div>
-            </div>
-          </section>
-        }
-      >
-        <TestimoniesContent />
-      </Suspense>
+      <TestimoniesContent />
 
       <CtaSection
         title="Share Your Testimony"
-        description="Has you experienced God's faithfulness in your life? We'd love to hear about it and share it with our church family."
+        description="Have you experienced God's faithfulness in your life? We'd love to hear about it and share it with our church family."
         mainText="Your testimony can be a source of encouragement, hope and inspiration for others and it brings glory to God. Whether it's a story of healing, provision, salvation, or any other blessing, every testimony matters."
         buttons={[
           { text: "Share Your Story", href: "/contact-us" },

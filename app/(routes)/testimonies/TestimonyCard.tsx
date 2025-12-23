@@ -1,7 +1,4 @@
-"use client";
-
-import Image from "next/image";
-import { Testimony } from "@/lib/types";
+import { IconComponent } from "@/components/IconComponent";
 import {
   Card,
   CardHeader,
@@ -10,12 +7,11 @@ import {
   CardContent,
   CardFooter,
 } from "@/components/ui/card";
-import { Video, Music, FileText } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { VideoDialog } from "@/components/ui/video-dialog";
 import { Button } from "@/components/ui/button";
-import { Play } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Testimony } from "@/lib/types";
+import { cn } from "@/lib/utils";
 
 interface TestimonyCardProps {
   testimony: Testimony;
@@ -26,7 +22,7 @@ interface TestimonyCardProps {
 function TextTestimonyContent({
   testimony,
 }: {
-  testimony: Extract<Testimony, { type: "text" }>;
+  testimony: Extract<Testimony, { type: "written" }>;
 }) {
   return (
     <blockquote className="text-sm leading-relaxed line-clamp-20">
@@ -44,10 +40,10 @@ function VideoTestimonyContent({
   // Convert YouTube URL to embed URL if needed
   const getEmbedUrl = (url: string): string => {
     // If it's already an embed URL, return as is
-    if (url.includes("youtube.com/embed") || url.includes("youtu.be/")) {
+    if (url.includes("youtube.com/embed")) {
       return url;
     }
-    // Extract video ID from YouTube URL
+    // Extract video ID from YouTube URL (handles both youtube.com/watch?v= and youtu.be/ formats)
     const match = url.match(
       /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)/
     );
@@ -92,13 +88,17 @@ function AudioTestimonyContent({
       <div className="relative aspect-video rounded-lg overflow-hidden bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20">
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 p-6">
           <div className="relative w-24 h-24 rounded-full overflow-hidden">
-            <Image
-              src={testimony.image}
-              alt={testimony.name}
-              fill
-              sizes="96px"
-              className="object-cover"
-            />
+            <Avatar className="size-24">
+              <AvatarImage src={testimony.image} />
+              <AvatarFallback>
+                {testimony.name
+                  .split(" ")
+                  .filter(Boolean)
+                  .slice(0, 2)
+                  .map((n) => n.charAt(0).toUpperCase())
+                  .join("")}
+              </AvatarFallback>
+            </Avatar>
           </div>
           <Button asChild size="lg" className="gap-2">
             <a
@@ -106,7 +106,11 @@ function AudioTestimonyContent({
               target="_blank"
               rel="noopener noreferrer"
             >
-              <Play className="w-5 h-5 fill-current" />
+              <IconComponent
+                iconName="PlayCircleIcon"
+                size={20}
+                className="text-current"
+              />
               Listen to Audio
             </a>
           </Button>
@@ -120,20 +124,9 @@ export default function TestimonyCard({
   testimony,
   className,
 }: TestimonyCardProps) {
-  const getTypeIcon = () => {
-    switch (testimony.type) {
-      case "video":
-        return <Video className="w-4 h-4" />;
-      case "audio":
-        return <Music className="w-4 h-4" />;
-      case "text":
-        return <FileText className="w-4 h-4" />;
-    }
-  };
-
   const renderContent = () => {
     switch (testimony.type) {
-      case "text":
+      case "written":
         return <TextTestimonyContent testimony={testimony} />;
       case "video":
         return <VideoTestimonyContent testimony={testimony} />;
@@ -152,23 +145,15 @@ export default function TestimonyCard({
       <CardHeader>
         <div className="flex items-start gap-4">
           <div className="relative w-10 h-10 rounded-full overflow-hidden shrink-0">
-            {/* <Image
-              src={testimony.image}
-              alt={testimony.name}
-              fill
-              sizes="48px"
-              className="object-cover"
-            /> */}
             <Avatar className="size-10">
               <AvatarImage src={testimony.image} />
               <AvatarFallback>
-                {testimony.name.charAt(0).toUpperCase() +
-                  testimony.name
-                    .split(" ")
-                    .slice(1)
-                    .join("")
-                    .charAt(0)
-                    .toUpperCase()}
+                {testimony.name
+                  .split(" ")
+                  .filter(Boolean)
+                  .slice(0, 2)
+                  .map((n) => n.charAt(0).toUpperCase())
+                  .join("")}
               </AvatarFallback>
             </Avatar>
           </div>
@@ -199,7 +184,7 @@ export default function TestimonyCard({
       <CardContent
         className={cn(
           "flex-1",
-          testimony.type !== "text" && "flex flex-col gap-4"
+          testimony.type !== "written" && "flex flex-col gap-4"
         )}
       >
         {renderContent()}
@@ -207,7 +192,17 @@ export default function TestimonyCard({
 
       <CardFooter className="flex items-center justify-between text-xs text-muted-foreground border-t [.border-t]:pt-4">
         <div className="flex items-center gap-2">
-          {getTypeIcon()}
+          <IconComponent
+            iconName={
+              testimony.type === "written"
+                ? "FileTextIcon"
+                : testimony.type === "video"
+                ? "VideoCameraIcon"
+                : "MusicNotesIcon"
+            }
+            size={16}
+            className="text-current"
+          />
           <span className="capitalize">{testimony.type} Testimony</span>
         </div>
         <time dateTime={testimony.date}>

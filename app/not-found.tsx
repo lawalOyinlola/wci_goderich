@@ -1,3 +1,4 @@
+import { Home, Search } from "lucide-react";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import {
   Card,
@@ -8,7 +9,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { BorderBeam } from "@/components/ui/border-beam";
-import { Home, Search } from "lucide-react";
 
 export default function NotFound() {
   return (

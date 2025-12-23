@@ -1,19 +1,19 @@
 "use client";
 
 import { useMemo } from "react";
+import { IconComponent } from "@/components/IconComponent";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { FileText, Video, Music } from "lucide-react";
 import { Testimony } from "@/lib/types";
 
 interface TestimonyType {
   value: string;
   label: string;
-  icon?: "FileText" | "Video" | "Music";
+  icon?: "FileTextIcon" | "VideoCameraIcon" | "MusicNotesIcon";
   count: number;
 }
 
 interface TestimoniesTabsProps {
-  testimonies: Testimony[];
+  testimonies: readonly Testimony[];
   activeTab: string;
   onTabChange: (value: string) => void;
   children: React.ReactNode;
@@ -28,7 +28,7 @@ export default function TestimoniesTabs({
   const testimonyTypes = useMemo<TestimonyType[]>(() => {
     const allCount = testimonies.length;
     const textCount = testimonies.filter(
-      (t: Testimony) => t.type === "text"
+      (t: Testimony) => t.type === "written"
     ).length;
     const videoCount = testimonies.filter(
       (t: Testimony) => t.type === "video"
@@ -44,21 +44,21 @@ export default function TestimoniesTabs({
         count: allCount,
       },
       {
-        value: "text",
-        label: "Text",
-        icon: "FileText",
+        value: "written",
+        label: "Written",
+        icon: "FileTextIcon",
         count: textCount,
       },
       {
         value: "video",
         label: "Video",
-        icon: "Video",
+        icon: "VideoCameraIcon",
         count: videoCount,
       },
       {
         value: "audio",
         label: "Audio",
-        icon: "Music",
+        icon: "MusicNotesIcon",
         count: audioCount,
       },
     ];
@@ -73,14 +73,15 @@ export default function TestimoniesTabs({
             value={type.value}
             className="flex items-center gap-2 pl-4 pr-1.5 py-1 rounded-md text-slate-600 dark:text-slate-400 bg-white dark:bg-slate-700 shadow-sm border border-slate-200 dark:border-slate-600 data-[state=active]:bg-primary/30 data-[state=active]:text-primary data-[state=active]:shadow-sm data-[state=active]:border data-[state=active]:border-primary dark:data-[state=active]:bg-primary/30 dark:data-[state=active]:text-primary dark:data-[state=active]:border-primary transition-all duration-200 hover:text-primary hover:border-primary group"
           >
-            {type.icon &&
-              (type.icon === "FileText" ? (
-                <FileText className="w-4 h-4 group-hover:text-primary transition-colors" />
-              ) : type.icon === "Music" ? (
-                <Music className="w-4 h-4 group-hover:text-primary transition-colors" />
-              ) : type.icon === "Video" ? (
-                <Video className="w-4 h-4 group-hover:text-primary transition-colors" />
-              ) : null)}
+            {type.icon && (
+              <IconComponent
+                iconName={type.icon}
+                weight={activeTab === type.value ? "duotone" : "regular"}
+                size={16}
+                className="group-hover:text-primary transition-colors"
+              />
+            )}
+
             <span className="group-hover:text-primary transition-colors">
               {type.label}
             </span>

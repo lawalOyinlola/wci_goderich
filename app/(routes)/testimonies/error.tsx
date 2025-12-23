@@ -1,6 +1,11 @@
 "use client";
 
 import { useEffect } from "react";
+import {
+  WarningCircleIcon,
+  ArrowCounterClockwiseIcon,
+  HouseLineIcon,
+} from "@phosphor-icons/react";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import {
   Card,
@@ -11,7 +16,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { BorderBeam } from "@/components/ui/border-beam";
-import { AlertCircle, RefreshCw, Home } from "lucide-react";
 
 export default function TestimoniesError({
   error,
@@ -30,7 +34,7 @@ export default function TestimoniesError({
         <BorderBeam size={250} />
         <CardHeader className="text-center">
           <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-destructive/10">
-            <AlertCircle className="h-8 w-8 text-destructive" />
+            <WarningCircleIcon size={44} color="var(--primary)" />
           </div>
           <CardTitle className="text-xl">Unable to Load Testimonies</CardTitle>
           <CardDescription className="mt-2">
@@ -44,6 +48,11 @@ export default function TestimoniesError({
               <p className="text-muted-foreground break-words">
                 {error.message}
               </p>
+              {error.digest && (
+                <p className="text-muted-foreground mt-2 text-xs">
+                  Error ID: {error.digest}
+                </p>
+              )}
             </div>
           )}
         </CardContent>
@@ -51,15 +60,14 @@ export default function TestimoniesError({
           <AnimatedButton
             onClick={reset}
             text="Try Again"
-            icon={<RefreshCw className="h-4 w-4" />}
+            icon={<ArrowCounterClockwiseIcon size={16} />}
             className="w-full sm:w-auto"
           />
           <AnimatedButton
-            onClick={reset}
             variant="outline"
             href="/"
             text="Go Home"
-            icon={<Home className="h-4 w-4" />}
+            icon={<HouseLineIcon weight="duotone" size={16} />}
             className="w-full sm:w-auto"
           />
         </CardFooter>
