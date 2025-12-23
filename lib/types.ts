@@ -79,11 +79,11 @@ type TestimonyBase = {
   verified: boolean;
 };
 
-type TextTestimony = TestimonyBase & { type: "text" };
+type WrittenTestimony = TestimonyBase & { type: "written" };
 type VideoTestimony = TestimonyBase & { type: "video"; videoUrl: string };
 type AudioTestimony = TestimonyBase & { type: "audio"; audioUrl: string };
 
-type Testimony = TextTestimony | VideoTestimony | AudioTestimony;
+type Testimony = WrittenTestimony | VideoTestimony | AudioTestimony;
 
 export type {
   PersonBase,
@@ -92,7 +92,7 @@ export type {
   School,
   WofbiProgram,
   Testimony,
-  TextTestimony,
+  WrittenTestimony,
   VideoTestimony,
   AudioTestimony,
 };

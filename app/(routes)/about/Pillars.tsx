@@ -5,8 +5,8 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { CHURCH_INFO } from "@/lib/constants";
 import { Badge } from "@/components/ui/badge";
+import { CHURCH_INFO } from "@/lib/constants";
 
 const Pillars = () => {
   const { title, subtitle, description, pillars } =
