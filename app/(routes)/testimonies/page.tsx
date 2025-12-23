@@ -1,14 +1,23 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useMemo, Suspense } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import { Spotlight } from "@/components/ui/spotlight";
 import { TESTIMONIES } from "@/lib/constants";
 import { Testimony } from "@/lib/types";
 import TestimoniesTabs from "./TestimoniesTabs";
 import TestimonyCard from "./TestimonyCard";
+import CtaSection from "@/components/CtaSection";
 
-const TestimoniesPage = () => {
-  const [activeTab, setActiveTab] = useState("all");
+function TestimoniesContent() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const typeParam = searchParams.get("type");
+
+  // Validate and set active tab from URL
+  const validTypes = ["all", "text", "video", "audio"];
+  const activeTab =
+    typeParam && validTypes.includes(typeParam) ? typeParam : "all";
 
   const filteredTestimonies = useMemo(() => {
     if (activeTab === "all") {
@@ -17,6 +26,47 @@ const TestimoniesPage = () => {
     return TESTIMONIES.filter((testimony) => testimony.type === activeTab);
   }, [activeTab]);
 
+  const handleTabChange = (value: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    if (value === "all") {
+      params.delete("type");
+    } else {
+      params.set("type", value);
+    }
+    router.push(
+      `/testimonies${params.toString() ? `?${params.toString()}` : ""}`,
+      { scroll: false }
+    );
+  };
+
+  return (
+    <section className="py-16 sm:py-24 lg:py-32 bg-linear-to-b to-muted/70 from-background">
+      <div className="container mx-auto px-4">
+        <TestimoniesTabs
+          testimonies={TESTIMONIES as unknown as Testimony[]}
+          activeTab={activeTab}
+          onTabChange={handleTabChange}
+        >
+          <div
+            className={`grid gap-4 md:grid-cols-2  ${
+              activeTab === "all" ? "lg:grid-cols-4" : "lg:grid-cols-4"
+            }`}
+          >
+            {filteredTestimonies.map((testimony) => (
+              <TestimonyCard
+                key={testimony.id}
+                testimony={testimony}
+                className={testimony.type === "text" ? "lg:col-span-2" : ""}
+              />
+            ))}
+          </div>
+        </TestimoniesTabs>
+      </div>
+    </section>
+  );
+}
+
+const TestimoniesPage = () => {
   return (
     <>
       <section className="relative bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white py-40">
@@ -37,33 +87,29 @@ const TestimoniesPage = () => {
         </div>
       </section>
 
-      <section className="py-15 sm:py-24 lg:py-32">
-        <div className="container mx-auto px-4">
-          <TestimoniesTabs
-            testimonies={TESTIMONIES as unknown as Testimony[]}
-            activeTab={activeTab}
-            onTabChange={setActiveTab}
-          >
-            <div
-              className={`grid gap-4 md:grid-cols-2  ${
-                activeTab === "all" ? "lg:grid-cols-13" : "lg:grid-cols-4"
-              }`}
-            >
-              {filteredTestimonies.map((testimony) => (
-                <TestimonyCard
-                  key={testimony.id}
-                  testimony={testimony}
-                  className={
-                    testimony.type === "text"
-                      ? "lg:col-span-7 lg:row-span-2"
-                      : "lg:col-span-3"
-                  }
-                />
-              ))}
+      <Suspense
+        fallback={
+          <section className="py-15 sm:py-24 lg:py-32">
+            <div className="container mx-auto px-4">
+              <div className="text-center text-muted-foreground">
+                Loading testimonies...
+              </div>
             </div>
-          </TestimoniesTabs>
-        </div>
-      </section>
+          </section>
+        }
+      >
+        <TestimoniesContent />
+      </Suspense>
+
+      <CtaSection
+        title="Share Your Testimony"
+        description="Has you experienced God's faithfulness in your life? We'd love to hear about it and share it with our church family."
+        mainText="Your testimony can be a source of encouragement, hope and inspiration for others and it brings glory to God. Whether it's a story of healing, provision, salvation, or any other blessing, every testimony matters."
+        buttons={[
+          { text: "Share Your Story", href: "/contact-us" },
+          { text: "Learn More", href: "/about" },
+        ]}
+      />
     </>
   );
 };

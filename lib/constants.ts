@@ -869,7 +869,6 @@ const TESTIMONIES = [
     featured: true,
     verified: true,
   },
-
   {
     id: 9,
     name: "James Koroma",
@@ -884,7 +883,6 @@ const TESTIMONIES = [
     featured: true,
     verified: true,
   },
-
   {
     id: 10,
     name: "John Bangura",

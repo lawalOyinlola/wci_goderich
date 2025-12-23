@@ -29,8 +29,8 @@ export default function HeroCarousel() {
                     <Image
                       src={slide.image}
                       alt={slide.title}
-                      width={3000}
-                      height={0}
+                      width={1006}
+                      height={566}
                       className="mx-auto"
                       priority={true}
                     />
