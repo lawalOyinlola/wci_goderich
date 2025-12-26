@@ -56,7 +56,7 @@ export default function Gallery() {
                     priority={index === 0}
                   />
                   <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black via-black/50 to-transparent p-4 group-hover:opacity-100 opacity-0 transition-all duration-600">
-                    <h3 className="text-white text-lg font-lora font-semibold translate-y-20 transition-all duration-600 group-hover:translate-y-0">
+                    <h3 className="text-white text-lg font-semibold translate-y-20 transition-all duration-600 group-hover:translate-y-0">
                       {image.title || image.alt}
                     </h3>
                   </div>
@@ -82,7 +82,7 @@ export default function Gallery() {
                         className="object-cover group-hover:scale-110 transition-all duration-500"
                       />
                       <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black via-black/50 to-transparent p-4 group-hover:opacity-100 opacity-0 transition-all duration-600">
-                        <h3 className="text-white text-lg font-lora font-semibold translate-y-20 transition-all duration-600 group-hover:translate-y-0">
+                        <h3 className="text-white text-lg font-semibold translate-y-20 transition-all duration-600 group-hover:translate-y-0">
                           {image.title || image.alt}
                         </h3>
                       </div>

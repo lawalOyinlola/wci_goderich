@@ -31,7 +31,7 @@ const Pillars = () => {
           >
             {pillars.map((pillar) => (
               <AccordionItem
-                className="group rounded-md border bg-background px-4 py-1 outline-none last:border-b has-focus-visible:border-ring has-focus-visible:ring-[3px] has-focus-visible:ring-ring/50 shadow-sm transition-all hover:shadow-primary/20 hover:-translate-y-1 duration-300"
+                className="group rounded-md border bg-background px-4 py-1 outline-none last:border-b has-focus-visible:border-ring has-focus-visible:ring-[3px] has-focus-visible:ring-ring/50 shadow-sm transition-all hover:shadow-primary/20 hover:-translate-y-1 duration-300 cursor-pointer active:-translate-y-0.5"
                 key={pillar.id}
                 value={String(pillar.id)}
               >

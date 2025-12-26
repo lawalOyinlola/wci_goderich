@@ -143,7 +143,7 @@ export default function TestimonyCard({
   return (
     <Card
       className={cn(
-        "group relative flex flex-col h-full transition-all hover:shadow-md overflow-hidden gap-4 *:px-4",
+        "group relative flex flex-col h-full transition-all duration-300 hover:shadow-md overflow-hidden gap-4 *:px-4 has-focus-visible:border-ring has-focus-visible:ring-[3px] has-focus-visible:ring-ring/50 shadow-sm hover:shadow-primary/20",
         className
       )}
     >
