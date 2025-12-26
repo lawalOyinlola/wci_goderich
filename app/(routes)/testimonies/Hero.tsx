@@ -22,7 +22,7 @@ export default function Hero() {
 
                 <div className="mt-12 flex flex-col items-center justify-center gap-2 sm:flex-row lg:justify-start">
                   <AnimatedButton
-                    href="#"
+                    href="#testimonies"
                     text="View Testimonies"
                     icon={<ArrowDownIcon weight="bold" />}
                     size="lg"

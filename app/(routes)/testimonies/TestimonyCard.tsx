@@ -10,9 +10,9 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { VideoDialog } from "@/components/ui/video-dialog";
 import { Button } from "@/components/ui/button";
+import { BorderBeam } from "@/components/ui/border-beam";
 import { Testimony } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import { BorderBeam } from "@/components/ui/border-beam";
 
 interface TestimonyCardProps {
   testimony: Testimony;

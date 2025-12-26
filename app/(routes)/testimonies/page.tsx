@@ -10,11 +10,10 @@ import CtaSection from "@/components/CtaSection";
 import { TESTIMONIES } from "@/lib/constants";
 
 function TestimoniesContent() {
-  const { testimonies } = TESTIMONIES;
-
   const searchParams = useSearchParams();
   const router = useRouter();
   const typeParam = searchParams.get("type");
+  const { testimonies } = TESTIMONIES;
 
   // Validate and set active tab from URL
   const validTypes = ["all", "written", "video", "audio"];

@@ -20,6 +20,7 @@ import { TESTIMONIES } from "@/lib/constants";
 export default function Testimonies() {
   const [isHovered, setIsHovered] = useState(false);
   const [hoveredItemId, setHoveredItemId] = useState<number | null>(null);
+  const { testimonies } = TESTIMONIES;
 
   return (
     <section className="py-20 bg-gradient-to-br from-slate-100 to-slate-50 dark:from-slate-900 dark:to-slate-800">
@@ -56,7 +57,7 @@ export default function Testimonies() {
             }}
           >
             <CarouselContent>
-              {TESTIMONIES.map((testifier, index) => (
+              {testimonies.map((testifier, index) => (
                 <CarouselItem
                   key={index}
                   className="group basis-4/5 sm:basis-3/4 md:basis-2/3 lg:basis-5/12 xl:basis-1/3 2xl:basis-2/7 py-3"
