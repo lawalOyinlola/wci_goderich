@@ -10,6 +10,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { VideoDialog } from "@/components/ui/video-dialog";
 import { Button } from "@/components/ui/button";
+import { BorderBeam } from "@/components/ui/border-beam";
 import { Testimony } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
@@ -142,10 +143,15 @@ export default function TestimonyCard({
   return (
     <Card
       className={cn(
-        "flex flex-col h-full transition-all hover:shadow-md overflow-hidden gap-4 *:px-4",
+        "group relative flex flex-col h-full transition-all duration-300 hover:shadow-md overflow-hidden gap-4 *:px-4 has-focus-visible:border-ring has-focus-visible:ring-[3px] has-focus-visible:ring-ring/50 shadow-sm hover:shadow-primary/20",
         className
       )}
     >
+      <BorderBeam
+        size={200}
+        colorFrom="var(--accent)"
+        className="group-hover:opacity-100 opacity-0 transition-opacity duration-300"
+      />
       <CardHeader>
         <div className="flex items-start gap-4">
           <div className="relative w-10 h-10 rounded-full overflow-hidden shrink-0">
