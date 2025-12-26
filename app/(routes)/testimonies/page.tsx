@@ -2,13 +2,16 @@
 
 import { useMemo } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
+import Hero from "./Hero";
+import SectionHeader from "@/components/SectionHeader";
 import TestimoniesTabs from "./TestimoniesTabs";
 import TestimonyCard from "./TestimonyCard";
 import CtaSection from "@/components/CtaSection";
-import { Spotlight } from "@/components/ui/spotlight";
 import { TESTIMONIES } from "@/lib/constants";
 
 function TestimoniesContent() {
+  const { testimonies } = TESTIMONIES;
+
   const searchParams = useSearchParams();
   const router = useRouter();
   const typeParam = searchParams.get("type");
@@ -20,9 +23,9 @@ function TestimoniesContent() {
 
   const filteredTestimonies = useMemo(() => {
     if (activeTab === "all") {
-      return TESTIMONIES;
+      return testimonies;
     }
-    return TESTIMONIES.filter((testimony) => testimony.type === activeTab);
+    return testimonies.filter((testimony) => testimony.type === activeTab);
   }, [activeTab]);
 
   const handleTabChange = (value: string) => {
@@ -39,10 +42,15 @@ function TestimoniesContent() {
   };
 
   return (
-    <section className="py-16 sm:py-24 lg:py-32 bg-linear-to-b to-muted/70 from-background">
+    <section className="py-16 sm:py-24 lg:py-32 bg-linear-to-b to-muted/70 from-background z-20">
       <div className="container mx-auto px-4">
+        <SectionHeader
+          title="God's Faithfulness in Our Lives"
+          subtitle={TESTIMONIES.subtitle}
+          description="Hear from our church family about how God has worked in their lives"
+        />
         <TestimoniesTabs
-          testimonies={TESTIMONIES}
+          testimonies={testimonies}
           activeTab={activeTab}
           onTabChange={handleTabChange}
         >
@@ -64,26 +72,8 @@ function TestimoniesContent() {
 const TestimoniesPage = () => {
   return (
     <>
-      <section className="relative bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white py-40">
-        <div className="absolute inset-0 bg-gradient-to-r from-red-600/20 to-red-700/20"></div>
-
-        <Spotlight
-          className="-top-1/5 -left-1/7 md:-top-1/4 md:left-1/6"
-          fill="#fdfcfb"
-        />
-        <div className="relative max-w-7xl mx-auto px-4 text-center">
-          <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-white to-slate-200 bg-clip-text text-transparent">
-            Stories of Transformation
-          </h1>
-          <p className="text-xl md:text-2xl max-w-3xl mx-auto text-slate-300">
-            Discover how God&apos;s faithfulness and love have transformed lives
-            in our church family
-          </p>
-        </div>
-      </section>
-
+      <Hero />
       <TestimoniesContent />
-
       <CtaSection
         title="Share Your Testimony"
         description="Have you experienced God's faithfulness in your life? We'd love to hear about it and share it with our church family."
