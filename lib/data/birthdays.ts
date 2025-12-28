@@ -1,39 +1,34 @@
-import { supabase } from "@/lib/supabase/client";
+import type { Birthday } from "@/lib/types/birthdays";
 
-export interface Birthday {
-  id: string;
-  name: string;
-  month: number;
-  day: number;
-  image: string;
-  created_at: string;
-  updated_at: string;
-}
+// Re-export for convenience
+export type { Birthday };
 
 /**
- * Fetches birthdays from Supabase
+ * Fetches birthdays from the API route
  * @param month - Optional month filter (1-12)
  * @returns Array of birthdays
  */
 export async function getBirthdays(month?: number): Promise<Birthday[]> {
   try {
-    let query = supabase
-      .from("birthdays")
-      .select("*")
-      .order("day", { ascending: true });
-
+    const params = new URLSearchParams();
     if (month && month >= 1 && month <= 12) {
-      query = query.eq("month", month);
+      params.append("month", month.toString());
     }
 
-    const { data, error } = await query;
+    const queryString = params.toString();
+    const url = `/api/birthdays${queryString ? `?${queryString}` : ""}`;
 
-    if (error) {
-      console.error("Error fetching birthdays:", error);
-      return [];
+    const response = await fetch(url, {
+      method: "GET",
+      cache: "no-store", // Always fetch fresh data
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch birthdays");
     }
 
-    return data || [];
+    const result = await response.json();
+    return result.data || [];
   } catch (error) {
     console.error("Error in getBirthdays:", error);
     return [];

@@ -1,15 +1,10 @@
 import { createClient } from "@supabase/supabase-js";
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 
 // Support both new (Secret) and legacy (service_role) key names
 const supabaseSecretKey =
   process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY;
-
-// Fallback to publishable key if secret key is not available (for client-side access level)
-const supabasePublishableKey =
-  process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ||
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
 if (!supabaseUrl) {
   throw new Error(
@@ -17,17 +12,16 @@ if (!supabaseUrl) {
   );
 }
 
-// For server-side operations, use secret key if available (admin access)
-// Otherwise use publishable key (client-side access level)
-const supabaseKey = supabaseSecretKey || supabasePublishableKey;
-
-if (!supabaseKey) {
+// Server-side operations require the secret key for admin access
+if (!supabaseSecretKey) {
   throw new Error(
-    "Missing Supabase key. Please check your .env.local file. " +
-    "You need SUPABASE_SECRET_KEY (or SUPABASE_SERVICE_ROLE_KEY for legacy) for admin operations, " +
-    "or NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY (or NEXT_PUBLIC_SUPABASE_ANON_KEY for legacy) for client access."
+    "Missing SUPABASE_SECRET_KEY (or SUPABASE_SERVICE_ROLE_KEY for legacy). " +
+      "Server-side Supabase client requires the secret key for admin operations. " +
+      "Please check your .env.local file and ensure SUPABASE_SECRET_KEY is set."
   );
 }
+
+const supabaseKey = supabaseSecretKey;
 
 export const supabaseServer = createClient(supabaseUrl, supabaseKey, {
   auth: {
@@ -35,4 +29,3 @@ export const supabaseServer = createClient(supabaseUrl, supabaseKey, {
     persistSession: false,
   },
 });
-

@@ -58,9 +58,17 @@ export async function uploadImage(
       throw new Error("Unsupported file type. Expected Blob, File, or Buffer.");
     }
 
+    // Determine MIME type
+    let mimeType = "image/jpeg"; // default fallback
+    if (file instanceof File) {
+      mimeType = file.type || mimeType;
+    } else if (file instanceof Blob) {
+      mimeType = file.type || mimeType;
+    }
+
     // Convert buffer to base64 data URL for Cloudinary upload
     const base64 = buffer.toString("base64");
-    const dataUri = `data:image/jpeg;base64,${base64}`;
+    const dataUri = `data:${mimeType};base64,${base64}`;
 
     // Build upload options
     const uploadOptions: Record<string, unknown> = {
@@ -100,11 +108,6 @@ export async function uploadImage(
   }
 }
 
-/**
- * Deletes an image from Cloudinary by URL
- * @param imageUrl - The full URL of the image to delete
- * @returns Promise with deletion result
- */
 /**
  * Deletes an image from Cloudinary by URL
  * Handles the folder structure: WCI_Goderich/birthdays/filename or WCI_Goderich/testimonies/filename

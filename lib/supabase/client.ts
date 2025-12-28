@@ -1,6 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 // Support both new (Publishable) and legacy (anon) key names
 const supabasePublishableKey =
   process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ||
@@ -9,9 +9,8 @@ const supabasePublishableKey =
 if (!supabaseUrl || !supabasePublishableKey) {
   throw new Error(
     "Missing Supabase environment variables. Please check your .env.local file. " +
-    "You need NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY (or NEXT_PUBLIC_SUPABASE_ANON_KEY for legacy)."
+      "You need NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY (or NEXT_PUBLIC_SUPABASE_ANON_KEY for legacy)."
   );
 }
 
 export const supabase = createClient(supabaseUrl, supabasePublishableKey);
-

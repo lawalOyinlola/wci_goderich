@@ -1,7 +1,7 @@
 import Image from "next/image";
 import SectionHeader from "@/components/SectionHeader";
 import { LEADERSHIP } from "@/lib/constants";
-import { LeadershipRole } from "@/lib/types";
+import { LeadershipRole } from "@/lib/types/leadership";
 
 const Leadership = () => {
   const { title, subtitle, description, PASTORS, DIRECTORS } = LEADERSHIP;

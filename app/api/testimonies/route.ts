@@ -1,5 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseServer } from "@/lib/supabase/server";
+import {
+  transformTestimonies,
+  transformTestimony,
+} from "@/lib/data/testimonies";
 
 export const runtime = "nodejs";
 
@@ -47,20 +51,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Transform data to match frontend expectations
-    const transformedData = data?.map((testimony) => ({
-      id: testimony.id,
-      name: testimony.name,
-      role: testimony.role,
-      image: testimony.image,
-      testimony: testimony.testimony,
-      category: testimony.category,
-      date: testimony.date,
-      type: testimony.type,
-      ...(testimony.type === "video" && { videoUrl: testimony.video_url }),
-      ...(testimony.type === "audio" && { audioUrl: testimony.audio_url }),
-      featured: testimony.featured,
-      verified: testimony.verified,
-    }));
+    const transformedData = transformTestimonies(data || []);
 
     return NextResponse.json(
       { data: transformedData, success: true },
@@ -150,20 +141,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Transform response to match frontend expectations
-    const transformedData = {
-      id: data.id,
-      name: data.name,
-      role: data.role,
-      image: data.image,
-      testimony: data.testimony,
-      category: data.category,
-      date: data.date,
-      type: data.type,
-      ...(data.type === "video" && { videoUrl: data.video_url }),
-      ...(data.type === "audio" && { audioUrl: data.audio_url }),
-      featured: data.featured,
-      verified: data.verified,
-    };
+    const transformedData = transformTestimony(data);
 
     return NextResponse.json(
       { data: transformedData, success: true },
@@ -177,4 +155,3 @@ export async function POST(request: NextRequest) {
     );
   }
 }
-

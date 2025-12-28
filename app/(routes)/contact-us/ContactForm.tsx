@@ -19,7 +19,7 @@ import {
   FieldDescription,
 } from "@/components/ui/field";
 import { CHURCH_INFO, LEADERSHIP } from "@/lib/constants";
-import { LeadershipRole } from "@/lib/types";
+import { LeadershipRole } from "@/lib/types/leadership";
 import { PaperPlaneTiltIcon } from "@phosphor-icons/react";
 
 type ContactFormValues = {

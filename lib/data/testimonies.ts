@@ -1,11 +1,79 @@
-import { supabase } from "@/lib/supabase/client";
-import type { Testimony } from "@/lib/types";
+import type { Testimony } from "@/lib/types/testimonies";
 
 export interface TestimonyFilters {
   type?: "written" | "video" | "audio";
   category?: string;
   featured?: boolean;
   limit?: number;
+}
+
+/**
+ * Database testimony format (snake_case fields)
+ */
+type DatabaseTestimony = {
+  id: string;
+  name: string;
+  role: string;
+  image: string;
+  testimony: string;
+  category: string;
+  date: string;
+  type: "written" | "video" | "audio";
+  video_url: string | null;
+  audio_url: string | null;
+  featured: boolean;
+  verified: boolean;
+};
+
+/**
+ * Transforms a database testimony object to frontend format (camelCase)
+ * @param dbTestimony - Testimony from database with snake_case fields
+ * @returns Testimony in frontend format with camelCase fields
+ */
+export function transformTestimony(dbTestimony: DatabaseTestimony): Testimony {
+  const base = {
+    id: dbTestimony.id,
+    name: dbTestimony.name,
+    role: dbTestimony.role,
+    image: dbTestimony.image,
+    testimony: dbTestimony.testimony,
+    category: dbTestimony.category,
+    date: dbTestimony.date,
+    featured: dbTestimony.featured,
+    verified: dbTestimony.verified,
+  };
+
+  if (dbTestimony.type === "video") {
+    return {
+      ...base,
+      type: "video" as const,
+      videoUrl: dbTestimony.video_url!,
+    };
+  }
+
+  if (dbTestimony.type === "audio") {
+    return {
+      ...base,
+      type: "audio" as const,
+      audioUrl: dbTestimony.audio_url!,
+    };
+  }
+
+  return {
+    ...base,
+    type: "written" as const,
+  };
+}
+
+/**
+ * Transforms an array of database testimony objects to frontend format
+ * @param dbTestimonies - Array of testimonies from database
+ * @returns Array of testimonies in frontend format
+ */
+export function transformTestimonies(
+  dbTestimonies: DatabaseTestimony[]
+): Testimony[] {
+  return dbTestimonies.map(transformTestimony);
 }
 
 /**
@@ -68,4 +136,3 @@ export async function getTestimonyById(id: string): Promise<Testimony | null> {
     return null;
   }
 }
-

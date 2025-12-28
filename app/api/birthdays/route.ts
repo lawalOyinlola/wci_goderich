@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseServer } from "@/lib/supabase/server";
-import { uploadImage } from "@/lib/cloudinary";
+import { uploadImage, deleteImage } from "@/lib/cloudinary";
 
 export const runtime = "nodejs";
 
@@ -10,7 +10,10 @@ export async function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams;
     const month = searchParams.get("month"); // Optional filter by month (1-12)
 
-    let query = supabaseServer.from("birthdays").select("*").order("day", { ascending: true });
+    let query = supabaseServer
+      .from("birthdays")
+      .select("*")
+      .order("day", { ascending: true });
 
     if (month) {
       const monthNum = parseInt(month, 10);
@@ -66,9 +69,13 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (dayNum < 1 || dayNum > 31) {
+    // Days per month (non-leap year)
+    const daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    const maxDay = daysInMonth[monthNum - 1];
+
+    if (dayNum < 1 || dayNum > maxDay) {
       return NextResponse.json(
-        { error: "Day must be between 1 and 31" },
+        { error: `Day must be between 1 and ${maxDay} for month ${monthNum}` },
         { status: 400 }
       );
     }
@@ -84,15 +91,11 @@ export async function POST(request: NextRequest) {
         );
       }
 
-      const blob = new Blob([await imageFile.arrayBuffer()], {
-        type: imageFile.type,
-      });
-
       // Use upload preset for birthdays (if configured) or fallback to manual config
       const birthdaysUploadPreset =
         process.env.CLOUDINARY_UPLOAD_PRESET_BIRTHDAYS;
-      
-      imageUrl = await uploadImage(blob, {
+
+      imageUrl = await uploadImage(imageFile, {
         ...(birthdaysUploadPreset
           ? {
               upload_preset: birthdaysUploadPreset,
@@ -110,10 +113,7 @@ export async function POST(request: NextRequest) {
             }),
       });
     } else {
-      return NextResponse.json(
-        { error: "Image is required" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Image is required" }, { status: 400 });
     }
 
     // Insert into database
@@ -129,6 +129,10 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (error) {
+      // Clean up orphaned image
+      if (imageUrl) {
+        await deleteImage(imageUrl).catch(() => {});
+      }
       console.error("Error creating birthday:", error);
       return NextResponse.json(
         { error: "Failed to create birthday record" },
@@ -145,4 +149,3 @@ export async function POST(request: NextRequest) {
     );
   }
 }
-

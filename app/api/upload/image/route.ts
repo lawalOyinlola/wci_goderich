@@ -12,10 +12,7 @@ export async function POST(request: NextRequest) {
     const uploadPreset = formData.get("upload_preset") as string | null;
 
     if (!file) {
-      return NextResponse.json(
-        { error: "No file provided" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "No file provided" }, { status: 400 });
     }
 
     // Validate file type
@@ -35,12 +32,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Convert File to Blob for upload
-    const blob = new Blob([await file.arrayBuffer()], { type: file.type });
-
     // Upload to Cloudinary
     // Use upload preset if provided, otherwise use folder and default transformations
-    const imageUrl = await uploadImage(blob, {
+    const imageUrl = await uploadImage(file, {
       ...(uploadPreset
         ? { upload_preset: uploadPreset, folder: folder || undefined }
         : {
@@ -52,10 +46,7 @@ export async function POST(request: NextRequest) {
           }),
     });
 
-    return NextResponse.json(
-      { url: imageUrl, success: true },
-      { status: 200 }
-    );
+    return NextResponse.json({ url: imageUrl, success: true }, { status: 200 });
   } catch (error) {
     console.error("Error uploading image:", error);
     return NextResponse.json(
@@ -64,4 +55,3 @@ export async function POST(request: NextRequest) {
     );
   }
 }
-
