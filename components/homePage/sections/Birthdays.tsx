@@ -20,6 +20,7 @@ import {
 import { FieldError, FieldGroup } from "@/components/ui/field";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import { MONTHS, PAST_CELEBRATIONS } from "@/lib/constants";
+import { submitBirthday } from "@/lib/data/birthdays";
 
 export default function MonthlyBirthdaysSection() {
   const [dateState, setDateState] = useState<{
@@ -59,7 +60,7 @@ export default function MonthlyBirthdaysSection() {
     day: number | null;
   };
 
-  const schema = yup.object({
+  const schema: yup.ObjectSchema<BirthdayFormValues> = yup.object({
     name: yup
       .string()
       .required("Name is required")
@@ -75,7 +76,6 @@ export default function MonthlyBirthdaysSection() {
   });
 
   const form = useForm<BirthdayFormValues>({
-    // @ts-expect-error - yup version conflict with parent directory causing type mismatch
     resolver: yupResolver(schema),
     defaultValues: {
       name: "",
@@ -152,7 +152,7 @@ export default function MonthlyBirthdaysSection() {
   }, []);
 
   const handleFormSubmit = useCallback(
-    (values: BirthdayFormValues) => {
+    async (values: BirthdayFormValues) => {
       // Validate image upload
       if (!imageBlob) {
         setImageError("Please upload a clear photo.");
@@ -161,36 +161,53 @@ export default function MonthlyBirthdaysSection() {
 
       setImageError(null);
 
-      // Prepare payload
-      const payload = {
-        name: values.name,
-        month: currentMonthIndex,
-        day: values.day,
-        image: imageBlob,
-      };
+      try {
+        // Prepare FormData for API
+        const formData = new FormData();
+        formData.append("name", values.name);
+        formData.append("month", currentMonthIndex.toString());
+        formData.append("day", values.day!.toString());
 
-      // TODO: Replace with API call or email integration
-      console.log("Birthday submission", payload);
+        // Convert blob to File for FormData
+        const imageFile = new File(
+          [imageBlob],
+          `birthday-${values.name}-${Date.now()}.jpg`,
+          {
+            type: "image/jpeg",
+          }
+        );
+        formData.append("image", imageFile);
 
-      // Show celebration message
-      setCelebrantName(values.name);
-      setShowCelebration(true);
+        // Submit to API
+        await submitBirthday(formData);
 
-      triggerConfetti();
+        // Show celebration message
+        setCelebrantName(values.name);
+        setShowCelebration(true);
 
-      // Reset form and close popover
-      form.reset({ name: "", day: null });
-      setImageBlob(null);
-      setUploaderResetToken((t) => t + 1);
+        triggerConfetti();
 
-      // Close popover and hide celebration message after delay
-      setTimeout(() => {
-        setOpen(false);
+        // Reset form and close popover
+        form.reset({ name: "", day: null });
+        setImageBlob(null);
+        setUploaderResetToken((t) => t + 1);
+
+        // Close popover and hide celebration message after delay
         setTimeout(() => {
-          setShowCelebration(false);
-          setCelebrantName("");
-        }, 2000);
-      }, 500);
+          setOpen(false);
+          setTimeout(() => {
+            setShowCelebration(false);
+            setCelebrantName("");
+          }, 2000);
+        }, 500);
+      } catch (error) {
+        console.error("Error submitting birthday:", error);
+        setImageError(
+          error instanceof Error
+            ? error.message
+            : "Failed to submit. Please try again."
+        );
+      }
     },
     [imageBlob, currentMonthIndex, form, triggerConfetti]
   );
@@ -320,17 +337,13 @@ export default function MonthlyBirthdaysSection() {
               <form
                 id="birthday-form"
                 className="space-y-3"
-                onSubmit={
-                  // @ts-expect-error - form type inference issue due to yup version conflict
-                  form.handleSubmit(handleFormSubmit)
-                }
+                onSubmit={form.handleSubmit(handleFormSubmit)}
               >
                 <FieldGroup>
                   <div className="flex gap-4 justify-between">
                     <div className="grow">
                       <InputField
                         name="name"
-                        // @ts-expect-error - form control type inference issue
                         control={form.control}
                         label="Full name"
                         placeholder="Your full name"
@@ -341,7 +354,6 @@ export default function MonthlyBirthdaysSection() {
                     <div>
                       <SelectField
                         name="day"
-                        // @ts-expect-error - form control type inference issue
                         control={form.control}
                         label="Select day"
                         placeholder="Day"

@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+
+# files
+CLOUDINARY_PRESETS.md
+ENV_TEMPLATE.md
+SETUP.md
