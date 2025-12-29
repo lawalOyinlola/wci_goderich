@@ -3,7 +3,7 @@
 import { useMemo } from "react";
 import { IconComponent } from "@/components/IconComponent";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Testimony } from "@/lib/types";
+import type { Testimony } from "@/lib/types/testimonies";
 
 interface TestimonyType {
   value: string;

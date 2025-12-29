@@ -1,4 +1,5 @@
-import { LeadershipRole, Testimony } from "./types";
+import { LeadershipRole } from "./types/leadership";
+import type { Testimony } from "./types/testimonies";
 
 const CHURCH_INFO = {
   NAME: "WINNERS CHAPEL INT'L GODERICH",
@@ -41,84 +42,84 @@ const CHURCH_INFO = {
     ],
     pillars: [
       {
-        id: 1,
+        id: "1",
         title: "FAITH",
         description:
           "For whatsoever is born of God overcometh the world: and this is the victory that overcometh the world, even our faith.",
         verses: ["1 John 5:4", "Ephesians 6:16"],
       },
       {
-        id: 2,
+        id: "2",
         title: "THE WORD",
         description:
           "Who being the brightness of his glory, and the express image of his person, and upholding all things by the word of his power...",
         verses: ["John 1:1-12", "Hebrews 1:3"],
       },
       {
-        id: 3,
+        id: "3",
         title: "THE SUPERNATURAL",
         description:
           "The wind bloweth where it listeth, and thou hearest the sound thereof, but canst not tell whence it cometh, and whither it goeth: so is every one that is born of the Spirit.",
         verses: ["Psalm 82:5-7", "John 3:8"],
       },
       {
-        id: 4,
+        id: "4",
         title: "PRAISE",
         description:
           "And when they began to sing and to praise, the Lord set ambushments against the children of Ammon, Moab, and mount Seir, which were come against Judah: and they were smitten.",
         verses: ["2 Chronicles 20:20-22", "Psalm 67:1-7", "Psalm 149:1-9"],
       },
       {
-        id: 5,
+        id: "5",
         title: "THE HOLY SPIRIT",
         description:
           "And it shall come to pass in that day, that his burden shall be taken away from off thy shoulder, and his yoke from off thy neck, and the yoke shall be destroyed because of the anointing.",
         verses: ["Acts 1:1-8", "Isaiah 10:27"],
       },
       {
-        id: 6,
+        id: "6",
         title: "PROSPERITY",
         description:
           "Beloved, I wish above all things that thou mayest prosper and be in health, even as thy soul prospereth. Cry yet, saying, Thus saith the Lord of hosts; My cities through prosperity shall yet be spread abroad...",
         verses: ["3 John 2", "Psalm 35:27", "Zechariah 1:17"],
       },
       {
-        id: 7,
+        id: "7",
         title: "VISION",
         description:
           "Where there is no vision, the people perish: but he that keepeth the law, happy is he.",
         verses: ["Proverbs 29:18", "Jeremiah 29:11"],
       },
       {
-        id: 8,
+        id: "8",
         title: "PRAYER",
         description:
           "And this is the confidence that we have in him, that, if we ask anything according to his will, he heareth us.",
         verses: ["1 John 5:14"],
       },
       {
-        id: 9,
+        id: "9",
         title: "HEALING",
         description:
           "That it might be fulfilled which was spoken by Esaias the prophet, saying, Himself took our infirmities, and bare our sicknesses.",
         verses: ["Isaiah 53:3-4", "Jeremiah 8:22", "Matthew 8:17"],
       },
       {
-        id: 10,
+        id: "10",
         title: "WISDOM",
         description:
           "And wisdom and knowledge shall be the stability of thy times, and strength of salvation: the fear of the Lord is his treasure.",
         verses: ["Proverbs 24:3-4", "Isaiah 33:6"],
       },
       {
-        id: 11,
+        id: "11",
         title: "CONSECRATION",
         description:
           "Nevertheless the foundation of God standeth sure, having this seal, the Lord knoweth them that are his. And let every one that nameth the name of Christ depart from iniquity.",
         verses: ["Hebrews 12:14", "2 Timothy 2:19"],
       },
       {
-        id: 12,
+        id: "12",
         title: "SUCCESS",
         description:
           "This book of the law shall not depart out of thy mouth; but thou shalt meditate therein day and night, that thou mayest observe to do according to all that is written therein: for then thou shalt make thy way prosperous, and then thou shalt have good success.",
@@ -199,7 +200,7 @@ const MINISTRIES = {
     "Our church offers diverse branches of fellowship designed to meet the spiritual needs of every member. From our Children's Ministry nurturing young hearts with age-appropriate teachings, to Teens Church guiding adolescents through their formative years, Youth Alive empowering young adults in their faith journey, and Businessmen Fellowship building strong men of God through accountability and mentorship. Each fellowship provides a unique space for connection, growth, and service within our church community.",
   ministries: [
     {
-      id: 1,
+      id: "1",
       title: "Children's Ministry",
       description:
         "Nurturing the faith of our youngest members through age-appropriate Bible stories, songs, and activities.",
@@ -213,7 +214,7 @@ const MINISTRIES = {
       ],
     },
     {
-      id: 2,
+      id: "2",
       title: "Teens Church",
       description:
         "Empowering teenagers to grow in their faith through relevant teachings, dynamic worship, and peer fellowship.",
@@ -227,7 +228,7 @@ const MINISTRIES = {
       ],
     },
     {
-      id: 3,
+      id: "3",
       title: "Youth Alive",
       description:
         "Empowering young adults and adults to walk in victory through practical Word-based teachings, mentorship, and impactful service.",
@@ -241,7 +242,7 @@ const MINISTRIES = {
       ],
     },
     {
-      id: 4,
+      id: "4",
       title: "Businessmen Fellowship",
       description:
         "Building strong men of God through accountability, mentorship, and spiritual development.",
@@ -269,7 +270,7 @@ const MINISTRIES = {
     // },
 
     {
-      id: 5,
+      id: "5",
       title: "Pastors",
       href: "/pastors",
       description: "Meet our dedicated pastoral team and leadership.",
@@ -283,7 +284,7 @@ const LEADERSHIP = {
   description: "Meet our dedicated leaders serving the church and community.",
   PASTORS: [
     {
-      id: 1,
+      id: "1",
       name: "Pastor Abel Ukweni",
       title: "Resident Pastor",
       role: LeadershipRole.RESIDENT_PASTOR,
@@ -320,7 +321,7 @@ const LEADERSHIP = {
       yearsInMinistry: 16,
     },
     {
-      id: 2,
+      id: "2",
       name: "Pastor Lungay Sellu",
       title: "Associate Pastor",
       role: LeadershipRole.ASSOCIATE_PASTOR,
@@ -358,7 +359,7 @@ const LEADERSHIP = {
   ],
   LEADERS: [
     {
-      id: 1,
+      id: "1",
       name: "Elder David Thompson",
       title: "Church Elder",
       role: LeadershipRole.ELDER,
@@ -376,7 +377,7 @@ const LEADERSHIP = {
       featured: true,
     },
     {
-      id: 2,
+      id: "2",
       name: "Deacon Grace Williams",
       title: "Head Deacon",
       role: LeadershipRole.DEACON,
@@ -394,7 +395,7 @@ const LEADERSHIP = {
       featured: true,
     },
     {
-      id: 3,
+      id: "3",
       name: "Sister Maria Rodriguez",
       title: "Worship Director",
       role: LeadershipRole.WORSHIP_DIRECTOR,
@@ -412,7 +413,7 @@ const LEADERSHIP = {
       featured: true,
     },
     {
-      id: 4,
+      id: "4",
       name: "Brother James Wilson",
       title: "Men's Ministry Leader",
       role: LeadershipRole.MINISTRY_LEADER,
@@ -430,7 +431,7 @@ const LEADERSHIP = {
       featured: false,
     },
     {
-      id: 5,
+      id: "5",
       name: "Sister Lisa Anderson",
       title: "Children's Ministry Director",
       role: LeadershipRole.DIRECTOR,
@@ -450,7 +451,7 @@ const LEADERSHIP = {
   ],
   DIRECTORS: [
     {
-      id: 3,
+      id: "3",
       name: "Pastor Michael Chen",
       title: "Chairman Board of Directors",
       role: LeadershipRole.CHAIRMAN,
@@ -759,7 +760,7 @@ const TESTIMONIES = {
     "Discover the powerful testimonies of our members as they share how God has transformed their lives.",
   testimonies: [
     {
-      id: 1,
+      id: "1",
       name: "Mary Johnson",
       role: "Church Member",
       image:
@@ -773,7 +774,7 @@ const TESTIMONIES = {
       verified: true,
     },
     {
-      id: 2,
+      id: "2",
       name: "Grace Kamara",
       role: "Prayer Warrior",
       image:
@@ -788,7 +789,7 @@ const TESTIMONIES = {
       verified: true,
     },
     {
-      id: 3,
+      id: "3",
       name: "Esther Bangura",
       role: "Children's Ministry",
       image:
@@ -803,7 +804,7 @@ const TESTIMONIES = {
       verified: true,
     },
     {
-      id: 4,
+      id: "4",
       name: "Fatmata Sesay",
       role: "Women's Ministry",
       image:
@@ -818,7 +819,7 @@ const TESTIMONIES = {
       verified: false,
     },
     {
-      id: 5,
+      id: "5",
       name: "Sarah Conteh",
       role: "Worship Leader",
       image:
@@ -833,7 +834,7 @@ const TESTIMONIES = {
       verified: true,
     },
     {
-      id: 6,
+      id: "6",
       name: "Samuel Ade",
       role: "Youth Leader",
       image:
@@ -847,7 +848,7 @@ const TESTIMONIES = {
       verified: true,
     },
     {
-      id: 7,
+      id: "7",
       name: "Daniel Mensah",
       role: "Business Owner",
       image:
@@ -861,7 +862,7 @@ const TESTIMONIES = {
       verified: true,
     },
     {
-      id: 8,
+      id: "8",
       name: "Michael Thompson",
       role: "Church Elder",
       image:
@@ -875,7 +876,7 @@ const TESTIMONIES = {
       verified: true,
     },
     {
-      id: 9,
+      id: "9",
       name: "James Koroma",
       role: "Church Member",
       image:
@@ -889,7 +890,7 @@ const TESTIMONIES = {
       verified: true,
     },
     {
-      id: 10,
+      id: "10",
       name: "John Bangura",
       role: "Church Member",
       image:
@@ -903,7 +904,7 @@ const TESTIMONIES = {
       verified: true,
     },
     {
-      id: 11,
+      id: "11",
       name: "Aminata Kamara",
       role: "Church Member",
       image:
@@ -917,7 +918,7 @@ const TESTIMONIES = {
       verified: true,
     },
     {
-      id: 12,
+      id: "12",
       name: "David Kargbo",
       role: "Church Member",
       image:
@@ -932,7 +933,7 @@ const TESTIMONIES = {
       verified: true,
     },
     {
-      id: 13,
+      id: "13",
       name: "Patricia Williams",
       role: "Church Member",
       image:
@@ -956,61 +957,61 @@ const FAQS = {
     "Find answers to common questions about our church, services, ministries, and how to get involved. If you don't find what you're looking for, feel free to reach out to us through the contact form below.",
   questions: [
     {
-      id: 1,
+      id: "1",
       question: "When are your service times?",
       answer:
         "We have multiple service times to accommodate everyone. Our Sunday Worship services are held at 7:00 AM, 9:00 AM, and 11:00 AM. We also have mid-week services including 90 Min with Jesus on Mondays at 6:00 PM, Communion Service on Wednesdays at 6:00 PM, and Covenant Hour of Prayer weekdays at 6:00 AM (7:00 AM on Saturdays). Satellite Fellowship meetings are held on Saturdays at 5:00 PM.",
     },
     {
-      id: 2,
+      id: "2",
       question: "Where is the church located and where should I park?",
       answer:
         "Our church is located at Main Street, Goderich, Western Area, Sierra Leone. We offer free parking available on church premises and surrounding streets. The church is easily accessible by public transport and is wheelchair accessible.",
     },
     {
-      id: 3,
+      id: "3",
       question: "What should I wear?",
       answer:
         "We welcome everyone as they are. While there's no strict dress code, we encourage modest and respectful attire. Most people dress in business casual or Sunday best, but feel free to come in whatever makes you comfortable.",
     },
     {
-      id: 4,
+      id: "4",
       question: "What do you have for my kids?",
       answer:
         "We have vibrant ministries for children of all ages! Our Children's Ministry serves ages 1-12 with Sunday School, Vacation Bible School, Children's Choir, and Bible Games. Teens Church is designed for ages 13-18 with age-appropriate teachings, dynamic worship, and peer fellowship. All children's programs run concurrently with our main services.",
     },
     {
-      id: 5,
+      id: "5",
       question: "How can I submit a prayer request?",
       answer:
         "You can submit prayer requests through our website's prayer request or contact form, contact us directly via phone or email, or submit them during our services. We also have dedicated prayer times including our daily Covenant Hour of Prayer at 6:00 AM (7:00 AM on Saturdays) where we intercede for all prayer requests. Additionally, we have prayer groups that pray at midnight for one hour until 1:00 AM, interceding for self and all submitted requests.",
     },
     {
-      id: 6,
+      id: "6",
       question: "What is a prayer group?",
       answer:
         "A prayer group is a small gathering of believers who meet regularly to pray together, intercede for the church, community, and personal needs. We have various prayer groups including our daily Covenant Hour of Prayer, prayer teams, and small group prayer meetings. We also have special prayer groups divided in such a way that every member is assigned to a group, with each group having an assigned day of the week for prayer at midnight until 1:00 AM. It is encouraged for every member to be in at least one group and pray on the day assigned to their group, providing intensive intercession for prayer requests. These groups provide support, encouragement, and a powerful atmosphere for answered prayers.",
     },
     {
-      id: 7,
+      id: "7",
       question: "How do I join a Small Group or volunteer?",
       answer:
         "You can join a Small Group (Home Cell) by speaking with our ushers or ministry leaders after any service, contacting us through our website, or reaching out via phone or email. For volunteering, we have various service units and ministries you can get involved with. Visit our 'Get Involved' section or speak with our ministry coordinators to find the best fit for your gifts and interests.",
     },
     {
-      id: 8,
+      id: "8",
       question: "What ministries and fellowships are available?",
       answer:
         "We offer several branches of fellowship including Children's Ministry (ages 1-12), Teens Church (ages 13-18), Youth Alive (ages 18-60), and Businessmen Fellowship (ages 18+). Each fellowship provides age-appropriate teachings, activities, and opportunities for spiritual growth, mentorship, and service.",
     },
     {
-      id: 9,
+      id: "9",
       question: "How can I give or donate?",
       answer:
         "You can give online through our website's giving portal, during our services, or contact our finance office for other giving options. We accept donations for various causes including Building Projects, Church Beautification, Worshippers Transportation, Church Welfare, and Media/Tech Equipment.",
     },
     {
-      id: 10,
+      id: "10",
       question: "Do you offer counseling or pastoral care?",
       answer:
         "Yes, we offer pastoral care and counseling services. Our pastoral team is available to provide spiritual guidance, support during difficult times, and counseling for various life situations. Please contact us through our contact form or reach out directly to schedule an appointment.",
@@ -1022,7 +1023,7 @@ const SCHOOLS = {
   sierraLeone: {
     primary: [
       {
-        id: 1,
+        id: "1",
         name: "Winners Chapel International Primary School",
         location: "Goderich, Freetown",
         type: "primary" as const,
@@ -1031,7 +1032,7 @@ const SCHOOLS = {
         established: "2015",
       },
       {
-        id: 2,
+        id: "2",
         name: "Living Faith Primary School",
         location: "Freetown",
         type: "primary" as const,
@@ -1041,7 +1042,7 @@ const SCHOOLS = {
     ],
     secondary: [
       {
-        id: 3,
+        id: "3",
         name: "Winners Chapel International Secondary School",
         location: "Goderich, Freetown",
         type: "secondary" as const,
@@ -1050,7 +1051,7 @@ const SCHOOLS = {
         established: "2016",
       },
       {
-        id: 4,
+        id: "4",
         name: "Living Faith Secondary School",
         location: "Freetown",
         type: "secondary" as const,
@@ -1063,7 +1064,7 @@ const SCHOOLS = {
   nigeria: {
     primary: [
       {
-        id: 5,
+        id: "5",
         name: "Covenant University Staff School",
         location: "Ota, Ogun State",
         type: "primary" as const,
@@ -1072,7 +1073,7 @@ const SCHOOLS = {
         website: "https://covenantuniversity.edu.ng",
       },
       {
-        id: 6,
+        id: "6",
         name: "Living Faith Primary School",
         location: "Canaanland, Ota",
         type: "primary" as const,
@@ -1080,7 +1081,7 @@ const SCHOOLS = {
           "Primary school within the Canaanland campus, nurturing young believers.",
       },
       {
-        id: 7,
+        id: "7",
         name: "Faith Academy Primary School",
         location: "Canaanland, Ota",
         type: "primary" as const,
@@ -1090,7 +1091,7 @@ const SCHOOLS = {
     ],
     secondary: [
       {
-        id: 8,
+        id: "8",
         name: "Faith Academy",
         location: "Canaanland, Ota, Ogun State",
         type: "secondary" as const,
@@ -1100,7 +1101,7 @@ const SCHOOLS = {
         established: "1999",
       },
       {
-        id: 9,
+        id: "9",
         name: "Kingdom Heritage Model School",
         location: "Canaanland, Ota",
         type: "secondary" as const,
@@ -1108,7 +1109,7 @@ const SCHOOLS = {
           "Secondary education focused on producing well-rounded individuals.",
       },
       {
-        id: 10,
+        id: "10",
         name: "Living Faith Secondary School",
         location: "Canaanland, Ota",
         type: "secondary" as const,
@@ -1118,7 +1119,7 @@ const SCHOOLS = {
     ],
     university: [
       {
-        id: 11,
+        id: "11",
         name: "Covenant University",
         location: "Ota, Ogun State",
         type: "university" as const,
@@ -1128,7 +1129,7 @@ const SCHOOLS = {
         established: "2002",
       },
       {
-        id: 12,
+        id: "12",
         name: "Landmark University",
         location: "Omu-Aran, Kwara State",
         type: "university" as const,
@@ -1138,7 +1139,7 @@ const SCHOOLS = {
         established: "2011",
       },
       {
-        id: 13,
+        id: "13",
         name: "Crown University",
         location: "Canaanland, Ota",
         type: "university" as const,
@@ -1160,7 +1161,7 @@ const WOFBI = {
     "To be a leading Bible institute that produces well-equipped ministers and leaders who will impact their generation for Christ.",
   programs: [
     {
-      id: 1,
+      id: "1",
       title: "Foundation School",
       duration: "6 Months",
       level: "Beginner" as const,
@@ -1200,7 +1201,7 @@ const WOFBI = {
       featured: true,
     },
     {
-      id: 2,
+      id: "2",
       title: "Leadership School",
       duration: "12 Months",
       level: "Intermediate" as const,
@@ -1241,7 +1242,7 @@ const WOFBI = {
       featured: true,
     },
     {
-      id: 3,
+      id: "3",
       title: "Advanced Ministry",
       duration: "18 Months",
       level: "Advanced" as const,
@@ -1343,7 +1344,7 @@ const MINISTRY_DETAILS = {
     },
     programs: [
       {
-        id: 1,
+        id: "1",
         name: "Sunday School",
         description:
           "Interactive Bible lessons with stories, crafts, and activities designed for different age groups.",
@@ -1351,7 +1352,7 @@ const MINISTRY_DETAILS = {
         time: "Sundays 9:00 AM",
       },
       {
-        id: 2,
+        id: "2",
         name: "Children's Choir",
         description:
           "Kids learn to worship God through music, songs, and joyful praise.",
@@ -1359,7 +1360,7 @@ const MINISTRY_DETAILS = {
         time: "Saturdays 2:00 PM",
       },
       {
-        id: 3,
+        id: "3",
         name: "Vacation Bible School",
         description:
           "An exciting week-long program during school holidays with games, crafts, Bible stories, and lots of fun!",
@@ -1367,7 +1368,7 @@ const MINISTRY_DETAILS = {
         time: "School Holidays",
       },
       {
-        id: 4,
+        id: "4",
         name: "Bible Games & Activities",
         description:
           "Learning through play! Interactive games that teach biblical principles in a fun way.",
@@ -1375,7 +1376,7 @@ const MINISTRY_DETAILS = {
         time: "Sundays & Special Events",
       },
       {
-        id: 5,
+        id: "5",
         name: "Children's Camp",
         description:
           "Annual camp experience with outdoor activities, Bible studies, and lasting friendships.",
@@ -1437,7 +1438,7 @@ const MINISTRY_DETAILS = {
     },
     programs: [
       {
-        id: 1,
+        id: "1",
         name: "Teens Sunday Service",
         description:
           "Dynamic worship and relevant Bible teachings tailored for teenagers.",
@@ -1445,7 +1446,7 @@ const MINISTRY_DETAILS = {
         time: "Sundays 9:00 AM",
       },
       {
-        id: 2,
+        id: "2",
         name: "Teens Connect",
         description:
           "Midweek fellowship with Bible study, discussions, and peer support.",
@@ -1453,14 +1454,14 @@ const MINISTRY_DETAILS = {
         time: "Wednesdays 6:00 PM",
       },
       {
-        id: 3,
+        id: "3",
         name: "Teens Impact",
         description: "Outreach and community service projects led by teens.",
         ageGroup: "Ages 13-18",
         time: "Monthly",
       },
       {
-        id: 4,
+        id: "4",
         name: "Teens Camp",
         description:
           "Annual camp with worship, teaching, fun activities, and spiritual growth.",
@@ -1468,7 +1469,7 @@ const MINISTRY_DETAILS = {
         time: "Summer Break",
       },
       {
-        id: 5,
+        id: "5",
         name: "Teens Leadership Academy",
         description:
           "Leadership development program for teens who want to serve and lead.",
@@ -1533,7 +1534,7 @@ const MINISTRY_DETAILS = {
     },
     programs: [
       {
-        id: 1,
+        id: "1",
         name: "Youth Alive Service",
         description:
           "Powerful worship and practical Word-based teachings for young adults.",
@@ -1541,7 +1542,7 @@ const MINISTRY_DETAILS = {
         time: "Sundays 11:00 AM",
       },
       {
-        id: 2,
+        id: "2",
         name: "Youth Bible Study",
         description:
           "In-depth Bible study and discussion groups for spiritual growth.",
@@ -1549,7 +1550,7 @@ const MINISTRY_DETAILS = {
         time: "Thursdays 7:00 PM",
       },
       {
-        id: 3,
+        id: "3",
         name: "Mentorship Program",
         description:
           "One-on-one and group mentorship for personal and professional development.",
@@ -1557,7 +1558,7 @@ const MINISTRY_DETAILS = {
         time: "Flexible Schedule",
       },
       {
-        id: 4,
+        id: "4",
         name: "Youth Impact Projects",
         description:
           "Community outreach and service projects to make a positive impact.",
@@ -1565,7 +1566,7 @@ const MINISTRY_DETAILS = {
         time: "Monthly",
       },
       {
-        id: 5,
+        id: "5",
         name: "Youth Conference",
         description:
           "Annual conference with powerful speakers, worship, and networking.",
@@ -1630,7 +1631,7 @@ const MINISTRY_DETAILS = {
     },
     programs: [
       {
-        id: 1,
+        id: "1",
         name: "Monthly Fellowship",
         description:
           "Monthly gathering for prayer, Bible study, and business discussions.",
@@ -1638,7 +1639,7 @@ const MINISTRY_DETAILS = {
         time: "First Saturday, 4:00 PM",
       },
       {
-        id: 2,
+        id: "2",
         name: "Men's Bible Study",
         description:
           "In-depth Bible study focused on biblical principles for business and life.",
@@ -1646,7 +1647,7 @@ const MINISTRY_DETAILS = {
         time: "Tuesdays 6:00 AM",
       },
       {
-        id: 3,
+        id: "3",
         name: "Accountability Groups",
         description:
           "Small groups for mutual support, accountability, and encouragement.",
@@ -1654,7 +1655,7 @@ const MINISTRY_DETAILS = {
         time: "Weekly",
       },
       {
-        id: 4,
+        id: "4",
         name: "Business Seminars",
         description:
           "Quarterly seminars on business excellence, leadership, and financial wisdom.",
@@ -1662,7 +1663,7 @@ const MINISTRY_DETAILS = {
         time: "Quarterly",
       },
       {
-        id: 5,
+        id: "5",
         name: "Leadership Training",
         description:
           "Training programs to develop leadership skills for business and ministry.",

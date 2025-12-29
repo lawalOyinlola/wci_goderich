@@ -20,6 +20,8 @@ import {
 import { FieldError, FieldGroup } from "@/components/ui/field";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import { MONTHS, PAST_CELEBRATIONS } from "@/lib/constants";
+import { submitBirthday } from "@/lib/data/birthdays";
+import { formatOrdinal } from "@/lib/utils";
 
 export default function MonthlyBirthdaysSection() {
   const [dateState, setDateState] = useState<{
@@ -37,6 +39,7 @@ export default function MonthlyBirthdaysSection() {
   const [uploaderResetToken, setUploaderResetToken] = useState(0);
   const [showCelebration, setShowCelebration] = useState(false);
   const [celebrantName, setCelebrantName] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     // Set date on mount to prevent hydration mismatch between server and client
@@ -59,7 +62,7 @@ export default function MonthlyBirthdaysSection() {
     day: number | null;
   };
 
-  const schema = yup.object({
+  const schema: yup.ObjectSchema<BirthdayFormValues> = yup.object({
     name: yup
       .string()
       .required("Name is required")
@@ -75,7 +78,6 @@ export default function MonthlyBirthdaysSection() {
   });
 
   const form = useForm<BirthdayFormValues>({
-    // @ts-expect-error - yup version conflict with parent directory causing type mismatch
     resolver: yupResolver(schema),
     defaultValues: {
       name: "",
@@ -90,21 +92,6 @@ export default function MonthlyBirthdaysSection() {
     const referenceYear = now.getFullYear();
     return new Date(referenceYear, selectedMonth, 0).getDate();
   }, [selectedMonth, now]);
-
-  const formatOrdinal = (n: number): string => {
-    const mod100 = n % 100;
-    if (mod100 >= 11 && mod100 <= 13) return `${n}th`;
-    switch (n % 10) {
-      case 1:
-        return `${n}st`;
-      case 2:
-        return `${n}nd`;
-      case 3:
-        return `${n}rd`;
-      default:
-        return `${n}th`;
-    }
-  };
 
   const dayOptions = useMemo(
     () =>
@@ -152,7 +139,7 @@ export default function MonthlyBirthdaysSection() {
   }, []);
 
   const handleFormSubmit = useCallback(
-    (values: BirthdayFormValues) => {
+    async (values: BirthdayFormValues) => {
       // Validate image upload
       if (!imageBlob) {
         setImageError("Please upload a clear photo.");
@@ -160,37 +147,57 @@ export default function MonthlyBirthdaysSection() {
       }
 
       setImageError(null);
+      setIsSubmitting(true);
 
-      // Prepare payload
-      const payload = {
-        name: values.name,
-        month: currentMonthIndex,
-        day: values.day,
-        image: imageBlob,
-      };
+      try {
+        // Prepare FormData for API
+        const formData = new FormData();
+        formData.append("name", values.name);
+        formData.append("month", currentMonthIndex.toString());
+        formData.append("day", values.day!.toString());
 
-      // TODO: Replace with API call or email integration
-      console.log("Birthday submission", payload);
+        // Convert blob to File for FormData
+        const imageFile = new File(
+          [imageBlob],
+          `birthday-${values.name}-${Date.now()}.jpg`,
+          {
+            type: "image/jpeg",
+          }
+        );
+        formData.append("image", imageFile);
 
-      // Show celebration message
-      setCelebrantName(values.name);
-      setShowCelebration(true);
+        // Submit to API
+        await submitBirthday(formData);
 
-      triggerConfetti();
+        // Show celebration message
+        setCelebrantName(values.name);
+        setShowCelebration(true);
 
-      // Reset form and close popover
-      form.reset({ name: "", day: null });
-      setImageBlob(null);
-      setUploaderResetToken((t) => t + 1);
+        triggerConfetti();
 
-      // Close popover and hide celebration message after delay
-      setTimeout(() => {
-        setOpen(false);
+        // Reset form and close popover
+        form.reset({ name: "", day: null });
+        setImageBlob(null);
+        setUploaderResetToken((t) => t + 1);
+
+        // Close popover and hide celebration message after delay
         setTimeout(() => {
-          setShowCelebration(false);
-          setCelebrantName("");
-        }, 2000);
-      }, 500);
+          setOpen(false);
+          setTimeout(() => {
+            setShowCelebration(false);
+            setCelebrantName("");
+          }, 2000);
+        }, 500);
+      } catch (error) {
+        console.error("Error submitting birthday:", error);
+        setImageError(
+          error instanceof Error
+            ? error.message
+            : "Failed to submit. Please try again."
+        );
+      } finally {
+        setIsSubmitting(false);
+      }
     },
     [imageBlob, currentMonthIndex, form, triggerConfetti]
   );
@@ -320,34 +327,31 @@ export default function MonthlyBirthdaysSection() {
               <form
                 id="birthday-form"
                 className="space-y-3"
-                onSubmit={
-                  // @ts-expect-error - form type inference issue due to yup version conflict
-                  form.handleSubmit(handleFormSubmit)
-                }
+                onSubmit={form.handleSubmit(handleFormSubmit)}
               >
                 <FieldGroup>
                   <div className="flex gap-4 justify-between">
                     <div className="grow">
                       <InputField
                         name="name"
-                        // @ts-expect-error - form control type inference issue
                         control={form.control}
                         label="Full name"
                         placeholder="Your full name"
                         id="birthday-form-name"
                         autoComplete="name"
+                        disabled={isSubmitting}
                       />
                     </div>
                     <div>
                       <SelectField
                         name="day"
-                        // @ts-expect-error - form control type inference issue
                         control={form.control}
                         label="Select day"
                         placeholder="Day"
                         id="birthday-form-day"
                         options={dayOptions}
                         transformValue={(val) => (val ? Number(val) : null)}
+                        disabled={isSubmitting}
                       />
                     </div>
                   </div>
@@ -373,8 +377,15 @@ export default function MonthlyBirthdaysSection() {
                 </FieldGroup>
 
                 <div className="flex justify-end pt-1">
-                  <Button size="sm" type="submit">
-                    Submit Details
+                  <Button size="sm" type="submit" disabled={isSubmitting}>
+                    {isSubmitting ? (
+                      <>
+                        <span className="inline-block size-3 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                        Submitting...
+                      </>
+                    ) : (
+                      "Submit Details"
+                    )}
                   </Button>
                 </div>
               </form>

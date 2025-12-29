@@ -126,7 +126,27 @@ To add more domains, update `next.config.ts`.
 
 ### Environment Variables
 
-Create a `.env.local` file in the root directory for environment-specific variables (if needed).
+The project requires several environment variables to function properly. Copy `.env.example` to `.env.local` and fill in your actual values:
+
+```bash
+cp .env.example .env.local
+```
+
+#### Required Variables
+
+- **NEXT_PUBLIC_SUPABASE_URL** - Your Supabase project URL
+- **NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY** - Supabase publishable key (or use legacy `NEXT_PUBLIC_SUPABASE_ANON_KEY`)
+- **SUPABASE_SECRET_KEY** - Supabase secret key for server-side operations (or use legacy `SUPABASE_SERVICE_ROLE_KEY`)
+- **CLOUDINARY_URL** - Cloudinary configuration URL (or use individual `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`)
+
+#### Optional Variables
+
+- **CLOUDINARY_UPLOAD_PRESET_BIRTHDAYS** - Cloudinary upload preset for birthday images
+- **CLOUDINARY_UPLOAD_PRESET_TESTIMONIES** - Cloudinary upload preset for testimony images
+
+See `.env.example` for detailed descriptions and where to obtain these values.
+
+**Important**: Never commit `.env.local` to git. It's already in `.gitignore`.
 
 ## 🤝 Contributing
 
