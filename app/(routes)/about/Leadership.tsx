@@ -44,8 +44,13 @@ const Leadership = () => {
                   className="group overflow-hidden"
                   onMouseEnter={() => setActiveLeaderId(leaderId)}
                   onMouseLeave={() => setActiveLeaderId(null)}
-                  onTouchStart={() => setActiveLeaderId(leaderId)}
-                  onTouchEnd={() => setActiveLeaderId(null)}
+                  // onTouchStart={() => setActiveLeaderId(leaderId)}
+                  // onTouchEnd={() => setActiveLeaderId(null)}
+                  onTouchStart={() =>
+                    setActiveLeaderId((prev) =>
+                      prev === leaderId ? null : leaderId
+                    )
+                  }
                 >
                   <Image
                     className={cn(

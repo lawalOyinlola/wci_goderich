@@ -1,3 +1,5 @@
+"use client";
+
 import { AnimatedButton } from "@/components/ui/animated-button";
 import { ArrowDownIcon } from "@phosphor-icons/react";
 

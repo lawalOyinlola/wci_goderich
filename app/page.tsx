@@ -9,8 +9,15 @@ import Gallery from "@/components/homePage/sections/Gallery";
 import Birthdays from "@/components/homePage/sections/Birthdays";
 import Testimonies from "@/components/homePage/sections/Testimonies";
 import ChurchLocation from "@/components/homePage/sections/ChurchLocation";
+import { getTestimoniesServer } from "@/lib/data/testimonies.server";
 
-export default function Home() {
+export default async function Home() {
+  // Fetch featured testimonies on the server
+  const featuredTestimonies = await getTestimoniesServer({
+    featured: true,
+    limit: 10,
+  });
+
   return (
     <>
       <HeroCarousel />
@@ -22,7 +29,7 @@ export default function Home() {
       <Donation />
       <Gallery />
       <Birthdays />
-      <Testimonies />
+      <Testimonies initialTestimonies={featuredTestimonies} />
       <ChurchLocation />
     </>
   );

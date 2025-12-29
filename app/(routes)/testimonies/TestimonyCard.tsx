@@ -12,20 +12,11 @@ import { VideoDialog } from "@/components/ui/video-dialog";
 import { Button } from "@/components/ui/button";
 import { BorderBeam } from "@/components/ui/border-beam";
 import type { Testimony } from "@/lib/types/testimonies";
-import { cn } from "@/lib/utils";
+import { cn, getEmbedUrl, getAvatarInitials } from "@/lib/utils";
 
 interface TestimonyCardProps {
   testimony: Testimony;
   className?: string;
-}
-
-function getAvatarInitials(name: string): string {
-  return name
-    .split(" ")
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((n) => n.charAt(0).toUpperCase())
-    .join("");
 }
 
 // Text Testimony Content Component
@@ -47,22 +38,6 @@ function VideoTestimonyContent({
 }: {
   testimony: Extract<Testimony, { type: "video" }>;
 }) {
-  // Convert YouTube URL to embed URL if needed
-  const getEmbedUrl = (url: string): string => {
-    // If it's already an embed URL, return as is
-    if (url.includes("youtube.com/embed")) {
-      return url;
-    }
-    // Extract video ID from YouTube URL (handles both youtube.com/watch?v= and youtu.be/ formats)
-    const match = url.match(
-      /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)/
-    );
-    if (match && match[1]) {
-      return `https://www.youtube.com/embed/${match[1]}`;
-    }
-    return url;
-  };
-
   const embedUrl = getEmbedUrl(testimony.videoUrl);
 
   return (

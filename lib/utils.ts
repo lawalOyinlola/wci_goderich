@@ -94,3 +94,37 @@ export function formatOrdinal(n: number): string {
       return `${n}th`;
   }
 }
+
+/**
+ * Converts a YouTube URL to an embed URL format
+ * Handles both youtube.com/watch?v= and youtu.be/ formats
+ * @param url - YouTube URL to convert
+ * @returns Embed URL or original URL if conversion fails
+ */
+export function getEmbedUrl(url: string): string {
+  // If it's already an embed URL, return as is
+  if (url.includes("youtube.com/embed")) {
+    return url;
+  }
+  // Extract video ID from YouTube URL (handles both youtube.com/watch?v= and youtu.be/ formats)
+  const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)/);
+  if (match && match[1]) {
+    return `https://www.youtube.com/embed/${match[1]}`;
+  }
+  return url;
+}
+
+/**
+ * Extracts initials from a person's name
+ * Takes the first letter of the first two words (up to 2 initials)
+ * @param name - Full name string
+ * @returns Uppercase initials (e.g., "John Doe" -> "JD")
+ */
+export function getAvatarInitials(name: string): string {
+  return name
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((n) => n.charAt(0).toUpperCase())
+    .join("");
+}

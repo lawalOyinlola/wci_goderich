@@ -47,7 +47,7 @@ export const LEADERSHIP = {
       name: "Pastor Lungay Sellu",
       title: "Associate Pastor",
       role: LeadershipRole.ASSOCIATE_PASTOR,
-      bio: "Pastor Lungi Kamara serves as our Associate Pastor, focusing on women's ministry and family counseling. She brings a heart for nurturing and discipleship, having served in ministry for over 12 years.",
+      bio: "Pastor Lungay Sellu serves as our Associate Pastor, focusing on women's ministry and family counseling. She brings a heart for nurturing and discipleship, having served in ministry for over 12 years.",
       image:
         "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=826&h=1239&fit=crop&q=80",
       email: "pastor.lungi@wcigoderich.org",
@@ -78,7 +78,7 @@ export const LEADERSHIP = {
       ordinationDate: "2012",
       yearsInMinistry: 12,
     },
-  ],
+  ] as const,
   LEADERS: [
     {
       id: "1",
@@ -170,7 +170,7 @@ export const LEADERSHIP = {
       ],
       featured: true,
     },
-  ],
+  ] as const,
   DIRECTORS: [
     {
       id: "3",
@@ -210,5 +210,5 @@ export const LEADERSHIP = {
       ordinationDate: "2014",
       yearsInMinistry: 10,
     },
-  ],
+  ] as const,
 };
