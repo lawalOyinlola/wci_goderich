@@ -4,7 +4,8 @@ export interface Birthday {
   month: number;
   day: number;
   image: string;
-  verified?: boolean;
+  verified: boolean;
+  featured: boolean;
   created_at: string;
   updated_at: string;
 }

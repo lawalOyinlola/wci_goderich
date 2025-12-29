@@ -2,7 +2,7 @@
 export { CHURCH_INFO } from "./church";
 export { MONTHS } from "./common";
 export { DONATIONS } from "./donations";
-export { FEATURES, PAST_CELEBRATIONS, SLIDES } from "./content";
+export { FEATURES, SLIDES, SAMPLE_BIRTHDAYS } from "./content";
 export { LEADERSHIP } from "./leadership";
 export { MINISTRIES, MINISTRY_DETAILS } from "./ministries";
 export { SERVICES, SERMONS } from "./services";

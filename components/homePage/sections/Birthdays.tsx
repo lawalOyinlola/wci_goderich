@@ -5,10 +5,10 @@ import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { InputField } from "@/components/form/InputField";
-import { SelectField } from "@/components/form/SelectField";
 import AvatarCropUploader from "@/components/AvatarCropUploader";
 import CtaContainer from "@/components/CtaContainer";
+import { InputField } from "@/components/form/InputField";
+import { SelectField } from "@/components/form/SelectField";
 import { Button } from "@/components/ui/button";
 import { Highlighter } from "@/components/ui/highlighter";
 import { Separator } from "@/components/ui/separator";
@@ -19,11 +19,18 @@ import {
 } from "@/components/ui/popover";
 import { FieldError, FieldGroup } from "@/components/ui/field";
 import { AnimatedButton } from "@/components/ui/animated-button";
-import { MONTHS, PAST_CELEBRATIONS } from "@/lib/constants";
-import { submitBirthday } from "@/lib/data/birthdays";
+import type { Birthday } from "@/lib/types/birthdays";
 import { formatOrdinal } from "@/lib/utils";
+import { MONTHS, SAMPLE_BIRTHDAYS } from "@/lib/constants";
+import { submitBirthday } from "@/lib/data/birthdays";
 
-export default function MonthlyBirthdaysSection() {
+interface MonthlyBirthdaysSectionProps {
+  initialBirthdays?: Birthday[];
+}
+
+export default function MonthlyBirthdaysSection({
+  initialBirthdays = [],
+}: MonthlyBirthdaysSectionProps) {
   const [dateState, setDateState] = useState<{
     now: Date | null;
     currentMonth: string;
@@ -265,24 +272,51 @@ export default function MonthlyBirthdaysSection() {
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-          {PAST_CELEBRATIONS.map((item, idx) => (
-            <div
-              key={idx}
-              className="relative aspect-square rounded-md overflow-hidden shadow-sm"
-            >
-              <Image
-                src={item.src}
-                alt={item.alt}
-                fill
-                sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 16vw"
-                className="object-cover hover:scale-105 transition-transform duration-300"
-              />
-              <div className="absolute inset-x-0 bottom-0 p-2 text-xs text-white bg-gradient-to-t from-black/70 via-black/30 to-transparent">
-                <div className="font-semibold leading-tight">{item.name}</div>
-                <div className="opacity-80">{item.date}</div>
-              </div>
-            </div>
-          ))}
+          {initialBirthdays.length > 0
+            ? initialBirthdays.map((birthday) => (
+                <div
+                  key={birthday.id}
+                  className="relative aspect-square rounded-md overflow-hidden shadow-sm"
+                >
+                  <Image
+                    src={birthday.image}
+                    alt={`${birthday.name} - Birthday celebration`}
+                    fill
+                    sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 16vw"
+                    className="object-cover hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-x-0 bottom-0 p-2 text-xs text-white bg-gradient-to-t from-black/70 via-black/30 to-transparent">
+                    <div className="font-semibold leading-tight">
+                      {birthday.name}
+                    </div>
+                    <div className="opacity-80">
+                      {formatOrdinal(birthday.day)} {MONTHS[birthday.month - 1]}
+                    </div>
+                  </div>
+                </div>
+              ))
+            : SAMPLE_BIRTHDAYS.map((item, idx) => (
+                <div
+                  key={idx}
+                  className="relative aspect-square rounded-md overflow-hidden shadow-sm"
+                >
+                  <Image
+                    src={item.image}
+                    alt={`${item.name} - Birthday celebration`}
+                    fill
+                    sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 16vw"
+                    className="object-cover hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-x-0 bottom-0 p-2 text-xs text-white bg-gradient-to-t from-black/70 via-black/30 to-transparent">
+                    <div className="font-semibold leading-tight">
+                      {item.name}
+                    </div>
+                    <div className="opacity-80">
+                      {formatOrdinal(item.day)} {MONTHS[item.month - 1]}
+                    </div>
+                  </div>
+                </div>
+              ))}
         </div>
 
         {/* CTA */}

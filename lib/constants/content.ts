@@ -90,41 +90,59 @@ export const FEATURES = [
   },
 ] as const;
 
-export const PAST_CELEBRATIONS = [
+export const SAMPLE_BIRTHDAYS = [
   {
-    src: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=400&fit=crop&q=80",
-    alt: "Joyful birthday celebration",
     name: "Mary Johnson",
-    date: "2024-08-12",
+    month: 8,
+    day: 12,
+    image:
+      "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=400&fit=crop&q=80",
+    verified: true,
+    featured: true,
   },
   {
-    src: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop&q=80",
-    alt: "Birthday cake and candles",
     name: "Samuel Ade",
-    date: "2024-07-03",
+    month: 7,
+    day: 3,
+    image:
+      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop&q=80",
+    verified: true,
+    featured: true,
   },
   {
-    src: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop&q=80",
-    alt: "Church thanksgiving celebration",
-    name: "Grace K.",
-    date: "2024-06-25",
+    name: "Grace Kamara",
+    month: 6,
+    day: 25,
+    image:
+      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop&q=80",
+    verified: true,
+    featured: true,
   },
   {
-    src: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=400&h=400&fit=crop&q=80",
-    alt: "Group birthday thanksgiving",
     name: "Daniel Mensah",
-    date: "2024-05-18",
+    month: 5,
+    day: 18,
+    image:
+      "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=400&h=400&fit=crop&q=80",
+    verified: true,
+    featured: true,
   },
   {
-    src: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?w=400&h=400&fit=crop&q=80",
-    alt: "Smiling celebrants",
-    name: "Esther B.",
-    date: "2024-04-09",
+    name: "Esther Bangura",
+    month: 4,
+    day: 9,
+    image:
+      "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?w=400&h=400&fit=crop&q=80",
+    verified: true,
+    featured: true,
   },
   {
-    src: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&q=80",
-    alt: "Community celebration",
-    name: "Michael T.",
-    date: "2024-03-30",
+    name: "Michael Thompson",
+    month: 3,
+    day: 30,
+    image:
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&q=80",
+    verified: true,
+    featured: true,
   },
 ] as const;
