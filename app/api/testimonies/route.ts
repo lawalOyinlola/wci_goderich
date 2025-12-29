@@ -15,11 +15,21 @@ export async function GET(request: NextRequest) {
     const category = searchParams.get("category"); // Optional filter by category
     const featured = searchParams.get("featured"); // Optional filter for featured only
     const limit = searchParams.get("limit"); // Optional limit
+    const verified = searchParams.get("verified"); // Optional filter by verified status (defaults to true)
 
     let query = supabaseServer
       .from("testimonies")
       .select("*")
       .order("date", { ascending: false });
+
+    // Default to showing only verified testimonies unless explicitly requested
+    if (verified === "false" || verified === "0") {
+      // Show unverified if explicitly requested
+      query = query.eq("verified", false);
+    } else {
+      // Default: show only verified testimonies
+      query = query.eq("verified", true);
+    }
 
     if (type && ["written", "video", "audio"].includes(type)) {
       query = query.eq("type", type);

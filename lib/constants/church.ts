@@ -124,7 +124,7 @@ export const CHURCH_INFO = {
       },
     ],
   },
-  FOUNDED: "2010",
+  FOUNDED: "2013",
   DENOMINATION: "Living Faith Church Worldwide",
   LOGO: "/lfc_logo.png",
   HERO_IMAGE: "/images/2025_theme.png",

@@ -26,10 +26,11 @@ export const MINISTRIES = {
       href: "/ministries",
       ageRange: "Ages 13-18",
       activities: [
-        "Sunday School",
-        "Vacation Bible School",
-        "Children's Choir",
-        "Bible Games",
+        "Youth Group",
+        "Youth Bible Study",
+        "Mentorship Program",
+        "Youth Retreats",
+        "Worship Nights",
       ],
     },
     {
