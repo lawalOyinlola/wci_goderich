@@ -3,13 +3,13 @@ import { HeroCarouselWrapper } from "../HeroCarouselWrapper";
 import { CarouselItem } from "@/components/ui/carousel";
 import { Separator } from "@/components/ui/separator";
 import { AnimatedButton } from "@/components/ui/animated-button";
-import { slides } from "@/lib/slides";
+import { SLIDES } from "@/lib/constants";
 
 export default function HeroCarousel() {
   return (
     <main className="relative overflow-hidden">
       <HeroCarouselWrapper>
-        {slides.map((slide, index) => (
+        {SLIDES.map((slide, index) => (
           <CarouselItem key={index} className="h-full p-0">
             <div className="relative h-full">
               {/* Background */}

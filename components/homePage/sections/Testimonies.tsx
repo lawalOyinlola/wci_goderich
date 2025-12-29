@@ -19,7 +19,7 @@ import { TESTIMONIES } from "@/lib/constants";
 
 export default function Testimonies() {
   const [isHovered, setIsHovered] = useState(false);
-  const [hoveredItemId, setHoveredItemId] = useState<number | null>(null);
+  const [hoveredItemId, setHoveredItemId] = useState<string | null>(null);
   const { testimonies } = TESTIMONIES;
 
   return (
