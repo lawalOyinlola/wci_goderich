@@ -153,7 +153,7 @@ export default function Testimonies({
                                 </AvatarFallback>
                               </Avatar>
                               <div className="flex-1 min-w-0">
-                                <p className="font-great-vibes font-semibold text-sm tracking-wider truncate">
+                                <p className="font-semibold text-sm tracking-wider truncate">
                                   {testifier.name}
                                 </p>
                                 <div className="text-xs text-muted-foreground truncate">
@@ -208,7 +208,7 @@ export default function Testimonies({
                             </blockquote>
                             <div className="flex items-center gap-3">
                               <div className="flex-1 min-w-0">
-                                <p className="font-great-vibes font-semibold text-sm tracking-wider truncate">
+                                <p className="font-semibold text-sm tracking-wider truncate">
                                   {testifier.name}
                                 </p>
                                 <div className="text-xs text-muted-foreground truncate">
@@ -242,7 +242,7 @@ export default function Testimonies({
                               </AvatarFallback>
                             </Avatar>
                             <div className="flex-1 min-w-0">
-                              <p className="font-great-vibes font-semibold text-sm tracking-wider truncate">
+                              <p className="font-semibold text-sm tracking-wider truncate">
                                 {testifier.name}
                               </p>
                               <div className="text-xs text-muted-foreground truncate">
@@ -265,7 +265,7 @@ export default function Testimonies({
                             )}
                           >
                             <Button variant="link" size="sm">
-                              Read more
+                              Scroll down to read more
                             </Button>
                           </div>
                         </>

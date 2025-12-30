@@ -43,8 +43,13 @@ export async function getTestimoniesServer(
       .select("*")
       .order("date", { ascending: false });
 
-    // Default to showing only verified testimonies
-    query = query.eq("verified", true);
+    // Default to showing only verified testimonies unless explicitly requested
+    if (filters?.verified === false) {
+      query = query.eq("verified", false);
+    } else {
+      // Default: show only verified testimonies
+      query = query.eq("verified", true);
+    }
 
     if (filters?.type && ["written", "video", "audio"].includes(filters.type)) {
       query = query.eq("type", filters.type);

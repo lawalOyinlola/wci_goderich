@@ -5,6 +5,7 @@ export interface TestimonyFilters {
   category?: string;
   featured?: boolean;
   limit?: number;
+  verified?: boolean;
 }
 
 /**
@@ -91,6 +92,9 @@ export async function getTestimonies(
     if (filters?.category) params.append("category", filters.category);
     if (filters?.featured) params.append("featured", "true");
     if (filters?.limit) params.append("limit", filters.limit.toString());
+    if (filters?.verified !== undefined) {
+      params.append("verified", filters.verified ? "true" : "false");
+    }
 
     const queryString = params.toString();
     const url = `/api/testimonies${queryString ? `?${queryString}` : ""}`;

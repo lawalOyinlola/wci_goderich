@@ -9,16 +9,37 @@ export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
     const month = searchParams.get("month"); // Optional filter by month (1-12)
+    const featured = searchParams.get("featured"); // Optional filter for featured only
+    const limit = searchParams.get("limit"); // Optional limit
+    const verified = searchParams.get("verified"); // Optional filter by verified status (defaults to true)
 
     let query = supabaseServer
       .from("birthdays")
       .select("*")
       .order("day", { ascending: true });
 
+    // Default to showing only verified birthdays unless explicitly requested
+    if (verified === "false" || verified === "0") {
+      query = query.eq("verified", false);
+    } else {
+      query = query.eq("verified", true);
+    }
+
     if (month) {
       const monthNum = parseInt(month, 10);
       if (monthNum >= 1 && monthNum <= 12) {
         query = query.eq("month", monthNum);
+      }
+    }
+
+    if (featured === "true") {
+      query = query.eq("featured", true);
+    }
+
+    if (limit) {
+      const limitNum = parseInt(limit, 10);
+      if (limitNum > 0) {
+        query = query.limit(limitNum);
       }
     }
 

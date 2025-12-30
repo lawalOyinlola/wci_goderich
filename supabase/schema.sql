@@ -67,6 +67,7 @@ CREATE TABLE IF NOT EXISTS birthdays (
   day INTEGER NOT NULL CHECK (is_valid_date(month, day)),
   image TEXT NOT NULL, -- Cloudinary URL
   verified BOOLEAN DEFAULT false,
+  featured BOOLEAN DEFAULT false,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   CONSTRAINT unique_birthday UNIQUE (name, month, day)
@@ -76,6 +77,7 @@ CREATE TABLE IF NOT EXISTS birthdays (
 CREATE INDEX IF NOT EXISTS idx_birthdays_month ON birthdays(month);
 CREATE INDEX IF NOT EXISTS idx_birthdays_month_day ON birthdays(month, day);
 CREATE INDEX IF NOT EXISTS idx_birthdays_verified ON birthdays(verified);
+CREATE INDEX IF NOT EXISTS idx_birthdays_featured ON birthdays(featured);
 
 -- Function to update updated_at timestamp
 CREATE OR REPLACE FUNCTION update_updated_at_column()

@@ -10,12 +10,19 @@ import Birthdays from "@/components/homePage/sections/Birthdays";
 import Testimonies from "@/components/homePage/sections/Testimonies";
 import ChurchLocation from "@/components/homePage/sections/ChurchLocation";
 import { getTestimoniesServer } from "@/lib/data/testimonies.server";
+import { getBirthdaysServer } from "@/lib/data/birthdays.server";
 
 export default async function Home() {
   // Fetch featured testimonies on the server
   const featuredTestimonies = await getTestimoniesServer({
     featured: true,
     limit: 10,
+  });
+
+  // Fetch featured birthdays on the server (limit 6)
+  const featuredBirthdays = await getBirthdaysServer({
+    featured: true,
+    limit: 6,
   });
 
   return (
@@ -28,7 +35,7 @@ export default async function Home() {
       <Sermons />
       <Donation />
       <Gallery />
-      <Birthdays />
+      <Birthdays initialBirthdays={featuredBirthdays} />
       <Testimonies initialTestimonies={featuredTestimonies} />
       <ChurchLocation />
     </>
