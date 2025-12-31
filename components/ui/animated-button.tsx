@@ -64,7 +64,7 @@ const AnimatedButton = React.forwardRef<HTMLButtonElement, AnimatedButtonProps>(
           </span>
         )}
         {isLoading && (
-          <span className="inline-block size-3 animate-spin rounded-full border-2 border-current border-t-transparent mr-2" />
+          <span className="inline-block size-3 animate-spin rounded-full border-2 border-current border-t-transparent" />
         )}
 
         <div className="relative overflow-hidden inline-flex items-center">

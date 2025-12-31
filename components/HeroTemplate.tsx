@@ -1,5 +1,3 @@
-"use client";
-
 import { cn } from "@/lib/utils";
 
 interface HeroTemplateProps {
@@ -21,12 +19,12 @@ export default function HeroTemplate({
     <>
       <main
         className={cn(
-          "overflow-hidden relative",
+          "overflow-hidden relative min-h-screen",
           backgroundImage && `bg-[url(${backgroundImage})] bg-cover bg-center`,
           className
         )}
       >
-        <div className="bg-background/50 absolute inset-y-0 h-2/1 w-1/2 rounded-r-full backdrop-blur-[2px]" />
+        <div className="bg-background/50 absolute inset-y-0 h-[200%] w-1/2 rounded-r-full backdrop-blur-[2px]" />
         <div className="bg-background/50 absolute inset-y-0 w-4/7 rounded-r-full backdrop-blur-[2px]" />
         <section>
           <div className="pb-24 pt-12">

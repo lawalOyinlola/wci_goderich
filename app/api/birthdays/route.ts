@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseServer } from "@/lib/supabase/server";
 import { uploadImage, deleteImage } from "@/lib/cloudinary";
+import { checkRateLimit } from "@/lib/utils/rate-limit";
+import { checkAuth } from "@/lib/utils/auth";
 
 export const runtime = "nodejs";
 
@@ -66,7 +68,35 @@ export async function GET(request: NextRequest) {
 // POST - Create new birthday
 export async function POST(request: NextRequest) {
   try {
+    // Rate limiting: 3 requests per 30 minutes per IP
+    const rateLimitResult = checkRateLimit(request, {
+      maxRequests: 3,
+      windowMs: 30 * 60 * 1000, // 30 minutes
+    });
+
+    if (!rateLimitResult.allowed) {
+      return rateLimitResult.response!;
+    }
+
     const formData = await request.formData();
+    
+    // Extract CAPTCHA token from form data for authentication
+    const hcaptchaToken = formData.get("hcaptchaToken") as string | null;
+    const recaptchaToken = formData.get("recaptchaToken") as string | null;
+    const bodyForAuth = {
+      hcaptchaToken,
+      recaptchaToken,
+    };
+
+    // Authentication: Require CAPTCHA verification
+    const authResult = await checkAuth(request, bodyForAuth, {
+      requireCaptcha: true,
+    });
+
+    if (!authResult.allowed) {
+      return authResult.response!;
+    }
+
     const name = formData.get("name") as string;
     const month = formData.get("month") as string;
     const day = formData.get("day") as string;

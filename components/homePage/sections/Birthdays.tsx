@@ -274,48 +274,10 @@ export default function MonthlyBirthdaysSection({
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
           {initialBirthdays.length > 0
             ? initialBirthdays.map((birthday) => (
-                <div
-                  key={birthday.id}
-                  className="relative aspect-square rounded-md overflow-hidden shadow-sm"
-                >
-                  <Image
-                    src={birthday.image}
-                    alt={`${birthday.name} - Birthday celebration`}
-                    fill
-                    sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 16vw"
-                    className="object-cover hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-x-0 bottom-0 p-2 text-xs text-white bg-gradient-to-t from-black/70 via-black/30 to-transparent">
-                    <div className="font-semibold leading-tight">
-                      {birthday.name}
-                    </div>
-                    <div className="opacity-80">
-                      {formatOrdinal(birthday.day)} {MONTHS[birthday.month - 1]}
-                    </div>
-                  </div>
-                </div>
+                <BirthdayCard key={birthday.id} birthday={birthday} />
               ))
             : SAMPLE_BIRTHDAYS.map((birthday) => (
-                <div
-                  key={birthday.id}
-                  className="relative aspect-square rounded-md overflow-hidden shadow-sm"
-                >
-                  <Image
-                    src={birthday.image}
-                    alt={`${birthday.name} - Birthday celebration`}
-                    fill
-                    sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 16vw"
-                    className="object-cover hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-x-0 bottom-0 p-2 text-xs text-white bg-gradient-to-t from-black/70 via-black/30 to-transparent">
-                    <div className="font-semibold leading-tight">
-                      {birthday.name}
-                    </div>
-                    <div className="opacity-80">
-                      {formatOrdinal(birthday.day)} {MONTHS[birthday.month - 1]}
-                    </div>
-                  </div>
-                </div>
+                <BirthdayCard key={birthday.id} birthday={birthday} />
               ))}
         </div>
 
@@ -428,5 +390,25 @@ export default function MonthlyBirthdaysSection({
         </CtaContainer>
       </div>
     </section>
+  );
+}
+
+export function BirthdayCard({ birthday }: { birthday: Birthday }) {
+  return (
+    <div className="relative aspect-square rounded-md overflow-hidden shadow-sm">
+      <Image
+        src={birthday.image}
+        alt={`${birthday.name} - Birthday celebration`}
+        fill
+        sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 16vw"
+        className="object-cover hover:scale-105 transition-transform duration-300"
+      />
+      <div className="absolute inset-x-0 bottom-0 p-2 text-xs text-white bg-gradient-to-t from-black/70 via-black/30 to-transparent">
+        <div className="font-semibold leading-tight">{birthday.name}</div>
+        <div className="opacity-80">
+          {formatOrdinal(birthday.day)} {MONTHS[birthday.month - 1]}
+        </div>
+      </div>
+    </div>
   );
 }

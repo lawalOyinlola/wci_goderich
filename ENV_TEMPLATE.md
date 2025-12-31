@@ -30,6 +30,26 @@ CLOUDINARY_URL=cloudinary://api_key:api_secret@cloud_name
 # If not set, code will fallback to manual transformation configuration
 CLOUDINARY_UPLOAD_PRESET_BIRTHDAYS=wci_goderich_birthdays
 CLOUDINARY_UPLOAD_PRESET_TESTIMONIES=wci_goderich_testimonies
+
+# Authentication & Rate Limiting (Optional - but recommended for production)
+# These help prevent spam and abuse on public submission endpoints
+
+# hCaptcha Configuration (Optional)
+# Get these from: https://www.hcaptcha.com/
+# If not set, CAPTCHA verification will be skipped
+NEXT_PUBLIC_HCAPTCHA_SITE_KEY=your_hcaptcha_site_key
+HCAPTCHA_SECRET_KEY=your_hcaptcha_secret_key
+
+# reCAPTCHA Configuration (Alternative to hCaptcha)
+# Get these from: https://www.google.com/recaptcha/admin
+# If not set, reCAPTCHA verification will be skipped
+NEXT_PUBLIC_RECAPTCHA_SITE_KEY=your_recaptcha_site_key
+RECAPTCHA_SECRET_KEY=your_recaptcha_secret_key
+
+# API Key for Trusted Clients (Optional)
+# If set, clients can bypass CAPTCHA by providing this key in X-API-Key header
+# Useful for automated submissions from trusted sources
+API_SUBMISSION_KEY=your_secure_api_key_here
 ```
 
 **Important**: Never commit `.env.local` to git. It's already in `.gitignore`.

@@ -45,42 +45,6 @@ export default function AnsweredPrayers() {
     fetchTestimonies();
   }, []);
 
-  if (loading) {
-    return (
-      <section className="py-16 bg-muted">
-        <div className="small-container">
-          <SectionHeader
-            title="Answered Prayers"
-            subtitle="Testimonies of God's Faithfulness"
-            description="See how God has answered prayers in the lives of our members. These testimonies serve as encouragement and proof that prayer works."
-          />
-          <div className="mt-12">
-            <TestimoniesSkeleton />
-          </div>
-        </div>
-      </section>
-    );
-  }
-
-  if (testimonies.length === 0) {
-    return (
-      <section className="py-16 bg-muted">
-        <div className="small-container">
-          <SectionHeader
-            title="Answered Prayers"
-            subtitle="Testimonies of God's Faithfulness"
-            description="See how God has answered prayers in the lives of our members. These testimonies serve as encouragement and proof that prayer works."
-          />
-          <div className="mt-12 text-center py-12">
-            <p className="text-muted-foreground">
-              No answered prayers to display yet. Check back soon!
-            </p>
-          </div>
-        </div>
-      </section>
-    );
-  }
-
   return (
     <section className="py-16 bg-muted">
       <div className="small-container">
@@ -90,7 +54,17 @@ export default function AnsweredPrayers() {
           description="See how God has answered prayers in the lives of our members. These testimonies serve as encouragement and proof that prayer works."
         />
         <div className="mt-12">
-          <TestimonialCarousel testimonials={testimonies} />
+          {loading ? (
+            <TestimoniesSkeleton />
+          ) : testimonies.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-muted-foreground">
+                No answered prayers to display yet. Check back soon!
+              </p>
+            </div>
+          ) : (
+            <TestimonialCarousel testimonials={testimonies} />
+          )}
         </div>
       </div>
     </section>

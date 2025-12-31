@@ -1,4 +1,3 @@
-import { Suspense } from "react";
 import Hero from "./Hero";
 import PrayerInspiration from "./PrayerInspiration";
 import PrayerRequestForm from "./PrayerRequestForm";

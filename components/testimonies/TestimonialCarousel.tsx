@@ -15,11 +15,108 @@ import { cn } from "@/lib/utils";
 import type { Testimony } from "@/lib/types/testimonies";
 import { getAvatarInitials } from "@/lib/utils";
 
+interface AutoplayApi {
+  play(jump?: boolean): void;
+  stop(): void;
+  reset(): void;
+  isPlaying(): boolean;
+  timeUntilNext(): number | null;
+}
+
 interface TestimonialCarouselProps {
   testimonials: Testimony[];
   autoPlayInterval?: number; // in milliseconds
   onClose?: () => void;
   className?: string;
+}
+
+interface CardPosition {
+  zIndex: number;
+  transform: string;
+  opacity: number;
+}
+
+/**
+ * Calculates the position, transform, opacity, and z-index for a card
+ * in the testimonial carousel based on its position relative to the active card.
+ */
+function calculateCardPosition(
+  index: number,
+  current: number,
+  totalCards: number,
+  isActive: boolean,
+  isPrev: boolean,
+  isNext: boolean
+): CardPosition {
+  let zIndex = 1;
+  let transformParts: string[] = [];
+  let opacity = 0.3;
+  let scaleValue = 0.85;
+
+  if (isActive) {
+    zIndex = 10;
+    transformParts = [
+      "translateX(0)",
+      "translateY(0)",
+      "rotate(0deg)",
+    ];
+    opacity = 1;
+    scaleValue = 1;
+  } else if (isPrev) {
+    zIndex = 5;
+    transformParts = [
+      "translateX(-25px)",
+      "translateY(15px)",
+      "rotate(-3deg)",
+    ];
+    opacity = 0.6;
+    scaleValue = 0.95;
+  } else if (isNext) {
+    zIndex = 5;
+    transformParts = [
+      "translateX(25px)",
+      "translateY(15px)",
+      "rotate(3deg)",
+    ];
+    opacity = 0.6;
+    scaleValue = 0.95;
+  } else {
+    // Cards further away
+    const distance = Math.min(
+      Math.abs(index - current),
+      Math.abs(index - current + totalCards),
+      Math.abs(index - current - totalCards)
+    );
+    if (distance === 2) {
+      zIndex = 2;
+      transformParts =
+        index < current
+          ? ["translateX(-50px)", "translateY(25px)", "rotate(-5deg)"]
+          : ["translateX(50px)", "translateY(25px)", "rotate(5deg)"];
+      opacity = 0.4;
+      scaleValue = 0.9;
+    } else {
+      zIndex = 1;
+      transformParts =
+        index < current
+          ? ["translateX(-75px)", "translateY(35px)", "rotate(-7deg)"]
+          : ["translateX(75px)", "translateY(35px)", "rotate(7deg)"];
+      opacity = 0.2;
+      scaleValue = 0.85;
+    }
+  }
+
+  // Combine all transforms including scale
+  const fullTransform = [
+    ...transformParts,
+    `scale(${scaleValue})`,
+  ].join(" ");
+
+  return {
+    zIndex,
+    transform: fullTransform,
+    opacity,
+  };
 }
 
 export function TestimonialCarousel({
@@ -43,10 +140,13 @@ export function TestimonialCarousel({
 
   // Track progress using plugin's timeUntilNext() method
   useEffect(() => {
-    if (!api || !autoplayPlugin.current) return;
+    if (!api) return;
+
+    const autoplay = api.plugins().autoplay as AutoplayApi | undefined;
+    if (!autoplay) return;
 
     const updateProgress = () => {
-      const timeLeft = (autoplayPlugin.current as any).timeUntilNext();
+      const timeLeft = autoplay.timeUntilNext();
       if (timeLeft !== null && timeLeft !== undefined) {
         const progressPercent =
           ((autoPlayInterval - timeLeft) / autoPlayInterval) * 100;
@@ -97,7 +197,8 @@ export function TestimonialCarousel({
     if (!api) return;
 
     // Use plugin's reset() method to reset the timer
-    autoplayPlugin.current.reset();
+    const autoplay = api.plugins().autoplay as AutoplayApi | undefined;
+    autoplay?.reset();
 
     // Navigate
     if (direction === "prev") {
@@ -144,79 +245,24 @@ export function TestimonialCarousel({
               current ===
               (index - 1 + testimonials.length) % testimonials.length;
 
-            // Calculate z-index and transform for stacked effect
-            let zIndex = 1;
-            let transformParts: string[] = [];
-            let opacity = 0.3;
-            let scaleValue = 0.85;
-
-            if (isActive) {
-              zIndex = 10;
-              transformParts = [
-                "translateX(0)",
-                "translateY(0)",
-                "rotate(0deg)",
-              ];
-              opacity = 1;
-              scaleValue = 1;
-            } else if (isPrev) {
-              zIndex = 5;
-              transformParts = [
-                "translateX(-25px)",
-                "translateY(15px)",
-                "rotate(-3deg)",
-              ];
-              opacity = 0.6;
-              scaleValue = 0.95;
-            } else if (isNext) {
-              zIndex = 5;
-              transformParts = [
-                "translateX(25px)",
-                "translateY(15px)",
-                "rotate(3deg)",
-              ];
-              opacity = 0.6;
-              scaleValue = 0.95;
-            } else {
-              // Cards further away
-              const distance = Math.min(
-                Math.abs(index - current),
-                Math.abs(index - current + testimonials.length),
-                Math.abs(index - current - testimonials.length)
-              );
-              if (distance === 2) {
-                zIndex = 2;
-                transformParts =
-                  index < current
-                    ? ["translateX(-50px)", "translateY(25px)", "rotate(-5deg)"]
-                    : ["translateX(50px)", "translateY(25px)", "rotate(5deg)"];
-                opacity = 0.4;
-                scaleValue = 0.9;
-              } else {
-                zIndex = 1;
-                transformParts =
-                  index < current
-                    ? ["translateX(-75px)", "translateY(35px)", "rotate(-7deg)"]
-                    : ["translateX(75px)", "translateY(35px)", "rotate(7deg)"];
-                opacity = 0.2;
-                scaleValue = 0.85;
-              }
-            }
-
-            // Combine all transforms including scale
-            const fullTransform = [
-              ...transformParts,
-              `scale(${scaleValue})`,
-            ].join(" ");
+            // Calculate card position using helper function
+            const cardPosition = calculateCardPosition(
+              index,
+              current,
+              testimonials.length,
+              isActive,
+              isPrev,
+              isNext
+            );
 
             return (
               <div
                 key={testimonial.id}
                 className="absolute w-full max-w-sm sm:max-w-xl md:max-w-2xl transition-all duration-500 ease-out"
                 style={{
-                  zIndex,
-                  transform: fullTransform,
-                  opacity,
+                  zIndex: cardPosition.zIndex,
+                  transform: cardPosition.transform,
+                  opacity: cardPosition.opacity,
                   pointerEvents: "none",
                 }}
               >

@@ -1,23 +1,52 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseServer } from "@/lib/supabase/server";
+import { PRAYER_GROUPS } from "@/lib/constants/prayer";
+import { checkRateLimit } from "@/lib/utils/rate-limit";
+import { checkAuth } from "@/lib/utils/auth";
 
 export async function POST(request: NextRequest) {
   try {
+    // Rate limiting: 3 requests per 30 minutes per IP
+    const rateLimitResult = checkRateLimit(request, {
+      maxRequests: 3,
+      windowMs: 30 * 60 * 1000, // 30 minutes
+    });
+
+    if (!rateLimitResult.allowed) {
+      return rateLimitResult.response!;
+    }
+
     const body = await request.json();
-    const {
-      name,
-      email,
-      phone,
-      prayerGroup,
-      reason,
-      previousExperience,
-    } = body;
+
+    // Authentication: Require CAPTCHA verification
+    const authResult = await checkAuth(request, body, {
+      requireCaptcha: true,
+    });
+
+    if (!authResult.allowed) {
+      return authResult.response!;
+    }
+    const { name, email, phone, prayerGroup, reason, previousExperience } =
+      body;
 
     // Validation
     if (!name || !email || !phone || !prayerGroup || !reason) {
       return NextResponse.json(
         { error: "Name, email, phone, prayer group, and reason are required" },
         { status: 400 }
+      );
+    }
+
+    // Verify prayer group exists
+    const trimmedGroupId = prayerGroup.trim();
+    const groupExists = PRAYER_GROUPS.some(
+      (group) => group.id === trimmedGroupId
+    );
+
+    if (!groupExists) {
+      return NextResponse.json(
+        { error: "Invalid prayer group. Please select a valid prayer group." },
+        { status: 404 }
       );
     }
 
@@ -28,7 +57,7 @@ export async function POST(request: NextRequest) {
         name: name.trim(),
         email: email.trim(),
         phone: phone.trim(),
-        prayer_group_id: prayerGroup.trim(),
+        prayer_group_id: trimmedGroupId,
         reason: reason.trim(),
         previous_experience: previousExperience?.trim() || null,
         status: "pending", // Admin will approve
@@ -60,4 +89,3 @@ export async function POST(request: NextRequest) {
     );
   }
 }
-

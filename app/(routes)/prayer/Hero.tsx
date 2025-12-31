@@ -2,7 +2,7 @@
 
 import HeroTemplate from "@/components/HeroTemplate";
 import { AnimatedButton } from "@/components/ui/animated-button";
-import { ArrowDownIcon, HandsPrayingIcon } from "@phosphor-icons/react";
+import { ArrowDownIcon } from "@phosphor-icons/react";
 
 export default function Hero() {
   return (
@@ -10,7 +10,7 @@ export default function Hero() {
       title="Prayer & Intercession"
       description="Experience the power of prayer. Join our prayer community, submit your prayer requests, and discover prayer points to strengthen your prayer life."
       backgroundImage="/images/prayer-hero.jpeg"
-      className="h-screen bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900"
+      className="bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900"
     >
       <AnimatedButton
         href="#prayer-request"

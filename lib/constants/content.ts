@@ -100,6 +100,8 @@ export const SAMPLE_BIRTHDAYS = [
       "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=400&fit=crop&q=80",
     verified: true,
     featured: true,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
   },
   {
     id: "sample-2",
@@ -110,6 +112,8 @@ export const SAMPLE_BIRTHDAYS = [
       "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop&q=80",
     verified: true,
     featured: true,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
   },
   {
     id: "sample-3",
@@ -120,6 +124,8 @@ export const SAMPLE_BIRTHDAYS = [
       "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop&q=80",
     verified: true,
     featured: true,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
   },
   {
     id: "sample-4",
@@ -130,6 +136,8 @@ export const SAMPLE_BIRTHDAYS = [
       "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=400&h=400&fit=crop&q=80",
     verified: true,
     featured: true,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
   },
   {
     id: "sample-5",
@@ -140,6 +148,8 @@ export const SAMPLE_BIRTHDAYS = [
       "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?w=400&h=400&fit=crop&q=80",
     verified: true,
     featured: true,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
   },
   {
     id: "sample-6",
@@ -150,5 +160,7 @@ export const SAMPLE_BIRTHDAYS = [
       "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&q=80",
     verified: true,
     featured: true,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
   },
 ] as const;

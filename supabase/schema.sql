@@ -192,10 +192,14 @@ CREATE TRIGGER update_prayer_group_members_updated_at
 ALTER TABLE prayer_requests ENABLE ROW LEVEL SECURITY;
 ALTER TABLE prayer_group_members ENABLE ROW LEVEL SECURITY;
 
--- Policies for prayer_requests: Allow public read and insert, restrict update/delete to service role
-CREATE POLICY "Allow public read access on prayer_requests"
+
+-- Policies for prayer_requests: Restrict public read to service role (PII protection), allow public insert, restrict update/delete to service role
+-- Public reads are restricted to prevent PII exposure (email, phone, and name when is_anonymous=true)
+-- The API endpoint uses service_role and sanitizes data before returning
+CREATE POLICY "Allow service role read on prayer_requests"
   ON prayer_requests FOR SELECT
-  USING (true);
+  -- USING (true);
+  USING (auth.role() = 'service_role');
 
 CREATE POLICY "Allow public insert on prayer_requests" 
   ON prayer_requests FOR INSERT

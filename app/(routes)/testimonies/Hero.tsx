@@ -17,12 +17,7 @@ export default function Hero() {
         icon={<ArrowDownIcon weight="bold" />}
         size="lg"
       />
-      <AnimatedButton
-        variant="outline"
-        text="Share Your Testimony"
-        // icon={<CirclesThreePlusIcon weight="duotone" />}
-        size="lg"
-      />
+      <AnimatedButton variant="outline" text="Share Your Testimony" size="lg" />
     </HeroTemplate>
   );
 }

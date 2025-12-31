@@ -74,8 +74,7 @@ export default function PrayerRequestForm() {
     mode: "onTouched",
   });
 
-  const emailValue = form.watch("email");
-  const phoneValue = form.watch("phone");
+
 
   const onSubmit = async (data: PrayerRequestFormValues) => {
     const hasEmail = data.email && data.email.trim().length > 0;

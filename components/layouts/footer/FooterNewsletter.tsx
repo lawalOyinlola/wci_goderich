@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -19,6 +19,7 @@ import { AnimatedButton } from "@/components/ui/animated-button";
 export function FooterNewsletter() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const EMAIL_REGEX = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
   const newsletterSchema: yup.ObjectSchema<{ email: string }> = yup.object({
@@ -35,6 +36,15 @@ export function FooterNewsletter() {
     mode: "onTouched",
   });
 
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
+
   const handleSubmit = async (values: { email: string }) => {
     try {
       setIsSubmitting(true);
@@ -47,9 +57,15 @@ export function FooterNewsletter() {
       setIsSuccess(true);
       form.reset();
 
+      // Clear any existing timeout
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+
       // Reset success message after 5 seconds
-      setTimeout(() => {
+      timeoutRef.current = setTimeout(() => {
         setIsSuccess(false);
+        timeoutRef.current = null;
       }, 5000);
     } catch (error) {
       console.error("Error subscribing to newsletter:", error);

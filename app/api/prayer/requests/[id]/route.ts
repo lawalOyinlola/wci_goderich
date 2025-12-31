@@ -51,13 +51,6 @@ export async function PUT(
       );
     }
 
-    if (!data) {
-      return NextResponse.json(
-        { error: "Prayer request not found" },
-        { status: 404 }
-      );
-    }
-
     return NextResponse.json(
       { data, success: true, message: "Prayer request updated successfully" },
       { status: 200 }
@@ -111,4 +104,3 @@ export async function GET(
     );
   }
 }
-

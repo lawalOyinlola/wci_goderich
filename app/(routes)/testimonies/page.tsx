@@ -1,8 +1,6 @@
-import { Suspense } from "react";
 import Hero from "./Hero";
 import TestimoniesContent from "./TestimoniesContent";
 import CtaSection from "@/components/CtaSection";
-import { TestimoniesSkeleton } from "@/components/testimonies/TestimoniesSkeleton";
 import { getTestimoniesServer } from "@/lib/data/testimonies.server";
 
 interface TestimoniesPageProps {
@@ -21,9 +19,8 @@ export default async function TestimoniesPage({
   return (
     <>
       <Hero />
-      <Suspense fallback={<TestimoniesSkeleton />}>
-        <TestimoniesContent testimonies={testimonies} initialType={typeParam} />
-      </Suspense>
+      <TestimoniesContent testimonies={testimonies} initialType={typeParam} />
+
       <CtaSection
         title="Share Your Testimony"
         description="Have you experienced God's faithfulness in your life? We'd love to hear about it and share it with our church family."
