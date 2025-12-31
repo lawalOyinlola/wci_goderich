@@ -1,7 +1,7 @@
 "use client";
 
 import { Controller, Control, FieldValues, Path } from "react-hook-form";
-import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Field,
   FieldError,
@@ -10,35 +10,27 @@ import {
 } from "@/components/ui/field";
 import { cn } from "@/lib/utils";
 
-interface InputFieldProps<T extends FieldValues> {
+interface CheckboxFieldProps<T extends FieldValues> {
   name: Path<T>;
   control: Control<T>;
   label?: string;
-  placeholder?: string;
   id?: string;
-  type?: string;
-  autoComplete?: string;
   description?: string;
-  orientation?: "vertical" | "horizontal" | "responsive";
   disabled?: boolean;
   className?: string;
   showError?: boolean;
 }
 
-export function InputField<T extends FieldValues>({
+export function CheckboxField<T extends FieldValues>({
   name,
   control,
   label,
-  placeholder,
   id,
-  type = "text",
-  autoComplete,
   description,
-  orientation = "vertical",
   disabled,
   className,
   showError = true,
-}: InputFieldProps<T>) {
+}: CheckboxFieldProps<T>) {
   const fieldId = id || `field-${name}`;
 
   return (
@@ -49,20 +41,29 @@ export function InputField<T extends FieldValues>({
         <Field
           data-invalid={fieldState.invalid}
           data-disabled={disabled}
-          orientation={orientation}
+          orientation="vertical"
           className={cn(className, "gap-1")}
         >
-          {label && <FieldLabel htmlFor={fieldId}>{label}</FieldLabel>}
-          <Input
-            {...field}
-            id={fieldId}
-            type={type}
-            placeholder={placeholder}
-            aria-invalid={fieldState.invalid}
-            autoComplete={autoComplete}
-            disabled={disabled}
-          />
-          {description && <FieldDescription>{description}</FieldDescription>}
+          <div className="flex items-center gap-3">
+            <Checkbox
+              id={fieldId}
+              checked={Boolean(field.value)}
+              onCheckedChange={(checked) => field.onChange(checked === true)}
+              disabled={disabled}
+              aria-invalid={fieldState.invalid}
+            />
+            {label && (
+              <FieldLabel
+                htmlFor={fieldId}
+                className="cursor-pointer font-normal text-sm text-foreground"
+              >
+                {label}
+              </FieldLabel>
+            )}
+          </div>
+          {description && (
+            <FieldDescription className="ml-7">{description}</FieldDescription>
+          )}
           {showError && fieldState.invalid && (
             <FieldError errors={[fieldState.error]} />
           )}
