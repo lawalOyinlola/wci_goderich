@@ -18,7 +18,10 @@ async function verifyHcaptcha(token: string | null): Promise<boolean> {
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
       },
-      body: `secret=${secretKey}&response=${token}`,
+      body: new URLSearchParams({
+        secret: secretKey,
+        response: token,
+      }).toString(),
     });
 
     const data = await response.json();
@@ -42,13 +45,19 @@ async function verifyRecaptcha(token: string | null): Promise<boolean> {
   }
 
   try {
-    const response = await fetch("https://www.google.com/recaptcha/api/siteverify", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: `secret=${secretKey}&response=${token}`,
-    });
+    const response = await fetch(
+      "https://www.google.com/recaptcha/api/siteverify",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: new URLSearchParams({
+          secret: secretKey,
+          response: token,
+        }).toString(),
+      }
+    );
 
     const data = await response.json();
     return data.success === true;
@@ -118,16 +127,17 @@ export async function verifyRequest(
       }
     } else {
       // CAPTCHA required but not provided
-      const hcaptchaSiteKey = process.env.NEXT_PUBLIC_HCAPTCHA_SITE_KEY;
-      const recaptchaSiteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
+      // Check for secret keys (server-side) to determine if CAPTCHA is configured
+      const hcaptchaSecretKey = process.env.HCAPTCHA_SECRET_KEY;
+      const recaptchaSecretKey = process.env.RECAPTCHA_SECRET_KEY;
 
-      if (hcaptchaSiteKey || recaptchaSiteKey) {
+      if (hcaptchaSecretKey || recaptchaSecretKey) {
         return {
           verified: false,
           error: "CAPTCHA verification required",
         };
       }
-      // CAPTCHA not configured, allow request
+      // CAPTCHA not configured (no secret keys), allow request
     }
   }
 
@@ -156,4 +166,3 @@ export async function checkAuth(
 
   return { allowed: true };
 }
-

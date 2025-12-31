@@ -2,13 +2,18 @@
 
 import { Controller, Control, FieldValues, Path } from "react-hook-form";
 import { Textarea } from "@/components/ui/textarea";
-import { Field, FieldError, FieldLabel, FieldDescription } from "@/components/ui/field";
+import {
+  Field,
+  FieldError,
+  FieldLabel,
+  FieldDescription,
+} from "@/components/ui/field";
 import { cn } from "@/lib/utils";
 
 interface TextAreaFieldProps<T extends FieldValues> {
   name: Path<T>;
   control: Control<T>;
-  label: string;
+  label?: string;
   placeholder?: string;
   id?: string;
   rows?: number;
@@ -16,6 +21,7 @@ interface TextAreaFieldProps<T extends FieldValues> {
   orientation?: "vertical" | "horizontal" | "responsive";
   disabled?: boolean;
   className?: string;
+  showError?: boolean;
 }
 
 export function TextAreaField<T extends FieldValues>({
@@ -29,6 +35,7 @@ export function TextAreaField<T extends FieldValues>({
   orientation = "vertical",
   disabled,
   className,
+  showError = true,
 }: TextAreaFieldProps<T>) {
   const fieldId = id || `field-${name}`;
 
@@ -43,7 +50,7 @@ export function TextAreaField<T extends FieldValues>({
           orientation={orientation}
           className={cn(className, "gap-1")}
         >
-          <FieldLabel htmlFor={fieldId}>{label}</FieldLabel>
+          {label && <FieldLabel htmlFor={fieldId}>{label}</FieldLabel>}
           <Textarea
             {...field}
             id={fieldId}
@@ -53,10 +60,11 @@ export function TextAreaField<T extends FieldValues>({
             disabled={disabled}
           />
           {description && <FieldDescription>{description}</FieldDescription>}
-          {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+          {showError && fieldState.invalid && (
+            <FieldError errors={[fieldState.error]} />
+          )}
         </Field>
       )}
     />
   );
 }
-

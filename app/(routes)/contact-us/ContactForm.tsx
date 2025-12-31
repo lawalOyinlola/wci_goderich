@@ -8,6 +8,7 @@ import SectionHeader from "@/components/SectionHeader";
 import { InputField } from "@/components/form/InputField";
 import { SelectField } from "@/components/form/SelectField";
 import { TextAreaField } from "@/components/form/TextAreaField";
+import { CheckboxField } from "@/components/form/CheckboxField";
 import * as yup from "yup";
 import { Card } from "@/components/ui/card";
 import { AnimatedButton } from "@/components/ui/animated-button";
@@ -28,6 +29,7 @@ type ContactFormValues = {
   phone?: string;
   subject: string;
   message: string;
+  isAnonymous: boolean;
 };
 
 const contactSchema: yup.ObjectSchema<ContactFormValues> = yup.object({
@@ -59,6 +61,7 @@ const contactSchema: yup.ObjectSchema<ContactFormValues> = yup.object({
     .required("Message is required")
     .min(10, "Message must be at least 10 characters")
     .max(2000, "Message must not exceed 2000 characters"),
+  isAnonymous: yup.boolean().default(false),
 });
 
 const subjectOptions = [
@@ -94,20 +97,22 @@ export default function ContactForm() {
       phone: "",
       subject: "",
       message: "",
+      isAnonymous: false,
     },
     mode: "onTouched",
   });
 
-  // Watch email and phone fields to clear errors when one is filled
+  // Watch email, phone, and isAnonymous fields to clear errors
   const emailValue = form.watch("email");
   const phoneValue = form.watch("phone");
+  const isAnonymous = form.watch("isAnonymous");
 
   useEffect(() => {
     const hasEmail = emailValue && emailValue.trim().length > 0;
     const hasPhone = phoneValue && phoneValue.trim().length > 0;
 
-    // If at least one is filled, clear errors on both fields
-    if (hasEmail || hasPhone) {
+    // If no response needed is checked OR at least one contact method is filled, clear errors
+    if (isAnonymous || hasEmail || hasPhone) {
       if (form.formState.errors.email?.type === "manual") {
         form.clearErrors("email");
       }
@@ -115,14 +120,15 @@ export default function ContactForm() {
         form.clearErrors("phone");
       }
     }
-  }, [emailValue, phoneValue, form]);
+  }, [emailValue, phoneValue, isAnonymous, form]);
 
   const onSubmit = async (data: ContactFormValues) => {
     // Check if at least one contact method is provided
     const hasEmail = data.email && data.email.trim().length > 0;
     const hasPhone = data.phone && data.phone.trim().length > 0;
 
-    if (!hasEmail && !hasPhone) {
+    // If response is needed, require at least one contact method
+    if (!data.isAnonymous && !hasEmail && !hasPhone) {
       // Set errors on both fields to show error states
       form.setError("email", {
         type: "manual",
@@ -156,8 +162,8 @@ export default function ContactForm() {
           subtitle="Contact Us"
           description="We'd love to hear from you. Whether you have a question, prayer request, or just want to connect, we're here to help."
         />
-        <div className="mt-12 grid gap-12 lg:grid-cols-5">
-          <div className="grid grid-cols-2 lg:col-span-2 lg:block lg:space-y-12">
+        <div className="mt-12 grid gap-12 lg:grid-cols-3">
+          <div className="grid grid-cols-2 lg:block lg:space-y-12">
             <div className="flex flex-col justify-between space-y-6">
               <div>
                 <h2 className="mb-3 text-lg font-semibold">Church Office</h2>
@@ -188,7 +194,7 @@ export default function ContactForm() {
 
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="@container lg:col-span-3"
+            className="@container lg:col-span-2"
           >
             <Card className="p-8 sm:p-12">
               <div className="flex flex-col gap-4">
@@ -213,6 +219,7 @@ export default function ContactForm() {
                   <FieldLegend variant="label">Contact Information</FieldLegend>
                   <FieldDescription className="-mb-2">
                     Please provide at least one way for us to reach you
+                    (optional if submitting anonymously)
                   </FieldDescription>
                   <div className="@md:grid-cols-2 grid gap-6">
                     <InputField
@@ -222,6 +229,14 @@ export default function ContactForm() {
                       type="email"
                       placeholder="Enter your email address"
                       autoComplete="email"
+                      showError={
+                        !(
+                          form.formState.errors.email?.message &&
+                          form.formState.errors.phone?.message &&
+                          form.formState.errors.email.message ===
+                            form.formState.errors.phone.message
+                        )
+                      }
                     />
                     <InputField
                       name="phone"
@@ -230,6 +245,14 @@ export default function ContactForm() {
                       type="tel"
                       placeholder="Enter your phone number"
                       autoComplete="tel"
+                      showError={
+                        !(
+                          form.formState.errors.email?.message &&
+                          form.formState.errors.phone?.message &&
+                          form.formState.errors.email.message ===
+                            form.formState.errors.phone.message
+                        )
+                      }
                     />
                   </div>
                   {/* Show error if both fields have the same error (from manual setError) */}
@@ -258,6 +281,13 @@ export default function ContactForm() {
                   label="Message"
                   placeholder="Tell us how we can help you..."
                   rows={6}
+                />
+
+                <CheckboxField
+                  name="isAnonymous"
+                  control={form.control}
+                  label="Submit anonymously (you will not receive a response from us)"
+                  description="If checked, we will not be able to reach you if we need to follow up."
                 />
 
                 <AnimatedButton

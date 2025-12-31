@@ -19,7 +19,7 @@ interface SelectOption {
 interface SelectFieldProps<T extends FieldValues> {
   name: Path<T>;
   control: Control<T>;
-  label: string;
+  label?: string;
   placeholder?: string;
   id?: string;
   options: SelectOption[];
@@ -28,6 +28,7 @@ interface SelectFieldProps<T extends FieldValues> {
   disabled?: boolean;
   className?: string;
   onValueChange?: (value: string) => void;
+  showError?: boolean;
   /**
    * Transform the string value before passing to field.onChange
    * Useful for converting strings to numbers or other types
@@ -48,6 +49,7 @@ export function SelectField<T extends FieldValues>({
   className,
   onValueChange,
   transformValue,
+  showError = true,
 }: SelectFieldProps<T>) {
   const fieldId = id || `field-${name}`;
 
@@ -62,7 +64,7 @@ export function SelectField<T extends FieldValues>({
           orientation={orientation}
           className={cn(className, "gap-1")}
         >
-          <FieldLabel htmlFor={fieldId}>{label}</FieldLabel>
+          {label && <FieldLabel htmlFor={fieldId}>{label}</FieldLabel>}
           <Select
             value={field.value ? String(field.value) : ""}
             onValueChange={(val) => {
@@ -90,7 +92,9 @@ export function SelectField<T extends FieldValues>({
             </SelectContent>
           </Select>
           {description && <FieldDescription>{description}</FieldDescription>}
-          {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+          {showError && fieldState.invalid && (
+            <FieldError errors={[fieldState.error]} />
+          )}
         </Field>
       )}
     />
