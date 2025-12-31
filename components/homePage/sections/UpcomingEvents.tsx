@@ -22,7 +22,7 @@ export default function UpcomingEvents() {
             return (
               <div
                 key={event.id}
-                className="cursor-pointer flex h-[300px] w-full flex-row items-stretch sm:w-[calc(50%-theme(spacing.8)/2)] lg:w-[calc(33.333%-theme(spacing.8)/1.5)] max-w-[560px]"
+                className="cursor-pointer flex h-[300px] w-full flex-row items-stretch sm:w-[calc(50%-(--spacing(8))/2)] lg:w-[calc(33.333%-(--spacing(8))/1.5)] max-w-[560px]"
               >
                 <div className="relative h-15/16 w-3/7 self-end rounded-l-sm overflow-hidden">
                   <Image

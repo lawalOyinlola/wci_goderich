@@ -55,8 +55,8 @@ const Leadership = () => {
                   <Image
                     className={cn(
                       "h-96 w-full rounded-md object-cover object-top grayscale transition-all duration-500",
-                      "hover:grayscale-0 group-hover:h-[22.5rem] group-hover:rounded-xl",
-                      isActive && "grayscale-0 h-[22.5rem] rounded-xl"
+                      "hover:grayscale-0 group-hover:h-90 group-hover:rounded-xl",
+                      isActive && "grayscale-0 h-90 rounded-xl"
                     )}
                     src={leader.image}
                     alt={`${leader.title} - ${leader.name}`}

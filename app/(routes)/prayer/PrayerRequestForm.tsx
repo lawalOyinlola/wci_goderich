@@ -66,7 +66,7 @@ const categoryOptions = PRAYER_CATEGORIES.map((cat) => ({
   label: cat.label,
 }));
 
-export default function PrayerRequestFormTwo() {
+export default function PrayerRequestForm() {
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const { CONTACT } = CHURCH_INFO;
   const {
@@ -207,12 +207,10 @@ export default function PrayerRequestFormTwo() {
             </div>
             <div>
               <h2 className="mb-3 text-lg font-semibold">Church Premises</h2>
-              <Link
-                href={`mailto:${churchEmail}`}
-                className="text-primary text-lg hover:underline"
-              >
+              {/* NOTE: Fix to open directions in Google Maps */}
+              <p className="text-primary text-lg hover:underline">
                 {churchAddress}
-              </Link>
+              </p>
               <p className="mt-3 text-sm">
                 You can submit your prayer request to the ushers during any of
                 our services.

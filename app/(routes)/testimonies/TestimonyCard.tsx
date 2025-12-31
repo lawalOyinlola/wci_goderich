@@ -70,7 +70,7 @@ function AudioTestimonyContent({
       <blockquote className="text-sm leading-relaxed line-clamp-3">
         &quot;{testimony.testimony}&quot;
       </blockquote>
-      <div className="relative aspect-video rounded-lg overflow-hidden bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20">
+      <div className="relative aspect-video rounded-lg overflow-hidden bg-linear-to-br from-primary/10 to-primary/5 border border-primary/20">
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 p-6">
           <div className="relative w-24 h-24 rounded-full overflow-hidden">
             <Avatar className="size-24">

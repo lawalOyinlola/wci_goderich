@@ -41,7 +41,7 @@ export default function YouthAlivePage() {
         }}
       >
         <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-white/20 to-transparent"></div>
+          <div className="absolute top-0 left-0 w-full h-full bg-linear-to-br from-white/20 to-transparent"></div>
         </div>
         <div className="relative small-container text-center">
           <div className="flex justify-center mb-4">
@@ -70,12 +70,21 @@ export default function YouthAlivePage() {
             subtitle="About"
             description={ministry.description}
           />
-          <div className="mt-8 p-6 rounded-lg" style={{ backgroundColor: `${ministry.colors.accent}20` }}>
+          <div
+            className="mt-8 p-6 rounded-lg"
+            style={{ backgroundColor: `${ministry.colors.accent}20` }}
+          >
             <p className="text-lg text-foreground/80 italic flex items-center justify-center gap-2">
-              <Heart className="h-5 w-5" style={{ color: ministry.colors.primary }} />
-              &quot;Don't let anyone despise your youth, but set an example...&quot;
+              <Heart
+                className="h-5 w-5"
+                style={{ color: ministry.colors.primary }}
+              />
+              &quot;Don't let anyone despise your youth, but set an
+              example...&quot;
             </p>
-            <p className="text-sm text-muted-foreground mt-2">- 1 Timothy 4:12</p>
+            <p className="text-sm text-muted-foreground mt-2">
+              - 1 Timothy 4:12
+            </p>
           </div>
         </div>
       </section>
@@ -84,10 +93,16 @@ export default function YouthAlivePage() {
       <section className="py-20 bg-muted/30">
         <div className="small-container max-w-4xl">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <Card className="border-2" style={{ borderColor: ministry.colors.primary }}>
+            <Card
+              className="border-2"
+              style={{ borderColor: ministry.colors.primary }}
+            >
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Target className="h-5 w-5" style={{ color: ministry.colors.primary }} />
+                  <Target
+                    className="h-5 w-5"
+                    style={{ color: ministry.colors.primary }}
+                  />
                   Our Mission
                 </CardTitle>
               </CardHeader>
@@ -95,10 +110,16 @@ export default function YouthAlivePage() {
                 <p className="text-foreground/70">{ministry.mission}</p>
               </CardContent>
             </Card>
-            <Card className="border-2" style={{ borderColor: ministry.colors.secondary }}>
+            <Card
+              className="border-2"
+              style={{ borderColor: ministry.colors.secondary }}
+            >
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <TrendingUp className="h-5 w-5" style={{ color: ministry.colors.secondary }} />
+                  <TrendingUp
+                    className="h-5 w-5"
+                    style={{ color: ministry.colors.secondary }}
+                  />
                   Our Vision
                 </CardTitle>
               </CardHeader>
@@ -129,7 +150,10 @@ export default function YouthAlivePage() {
                 <CardHeader>
                   <div className="flex items-start justify-between">
                     <CardTitle className="text-xl">{program.name}</CardTitle>
-                    <Rocket className="h-5 w-5" style={{ color: ministry.colors.primary }} />
+                    <Rocket
+                      className="h-5 w-5"
+                      style={{ color: ministry.colors.primary }}
+                    />
                   </div>
                   <CardDescription className="flex items-center gap-2 mt-2">
                     <Users className="h-4 w-4" />
@@ -137,7 +161,9 @@ export default function YouthAlivePage() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-foreground/70 mb-4">{program.description}</p>
+                  <p className="text-foreground/70 mb-4">
+                    {program.description}
+                  </p>
                   <div className="flex items-center gap-2 text-sm text-muted-foreground">
                     <Clock className="h-4 w-4" />
                     <span>{program.time}</span>
@@ -164,20 +190,37 @@ export default function YouthAlivePage() {
                 key={index}
                 className="text-center hover:shadow-lg transition-all hover:scale-105"
                 style={{
-                  borderColor: index % 3 === 0 ? ministry.colors.primary : index % 3 === 1 ? ministry.colors.secondary : ministry.colors.accent,
+                  borderColor:
+                    index % 3 === 0
+                      ? ministry.colors.primary
+                      : index % 3 === 1
+                      ? ministry.colors.secondary
+                      : ministry.colors.accent,
                   borderWidth: "2px",
                 }}
               >
                 <CardContent className="pt-6">
                   <div className="flex justify-center mb-2">
                     {index % 4 === 0 ? (
-                      <Rocket className="h-8 w-8" style={{ color: ministry.colors.primary }} />
+                      <Rocket
+                        className="h-8 w-8"
+                        style={{ color: ministry.colors.primary }}
+                      />
                     ) : index % 4 === 1 ? (
-                      <Briefcase className="h-8 w-8" style={{ color: ministry.colors.secondary }} />
+                      <Briefcase
+                        className="h-8 w-8"
+                        style={{ color: ministry.colors.secondary }}
+                      />
                     ) : index % 4 === 2 ? (
-                      <Award className="h-8 w-8" style={{ color: ministry.colors.accent }} />
+                      <Award
+                        className="h-8 w-8"
+                        style={{ color: ministry.colors.accent }}
+                      />
                     ) : (
-                      <Zap className="h-8 w-8" style={{ color: ministry.colors.primary }} />
+                      <Zap
+                        className="h-8 w-8"
+                        style={{ color: ministry.colors.primary }}
+                      />
                     )}
                   </div>
                   <p className="font-medium">{activity}</p>
@@ -229,31 +272,51 @@ export default function YouthAlivePage() {
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center gap-4">
-                <Calendar className="h-5 w-5" style={{ color: ministry.colors.primary }} />
+                <Calendar
+                  className="h-5 w-5"
+                  style={{ color: ministry.colors.primary }}
+                />
                 <div>
                   <p className="font-semibold">Sunday Service</p>
-                  <p className="text-sm text-muted-foreground">{ministry.schedule.sunday}</p>
+                  <p className="text-sm text-muted-foreground">
+                    {ministry.schedule.sunday}
+                  </p>
                 </div>
               </div>
               <div className="flex items-center gap-4">
-                <Calendar className="h-5 w-5" style={{ color: ministry.colors.secondary }} />
+                <Calendar
+                  className="h-5 w-5"
+                  style={{ color: ministry.colors.secondary }}
+                />
                 <div>
                   <p className="font-semibold">Midweek Bible Study</p>
-                  <p className="text-sm text-muted-foreground">{ministry.schedule.midweek}</p>
+                  <p className="text-sm text-muted-foreground">
+                    {ministry.schedule.midweek}
+                  </p>
                 </div>
               </div>
               <div className="flex items-center gap-4">
-                <Calendar className="h-5 w-5" style={{ color: ministry.colors.accent }} />
+                <Calendar
+                  className="h-5 w-5"
+                  style={{ color: ministry.colors.accent }}
+                />
                 <div>
                   <p className="font-semibold">Prayer Meeting</p>
-                  <p className="text-sm text-muted-foreground">{ministry.schedule.prayer}</p>
+                  <p className="text-sm text-muted-foreground">
+                    {ministry.schedule.prayer}
+                  </p>
                 </div>
               </div>
               <div className="flex items-center gap-4">
-                <Calendar className="h-5 w-5" style={{ color: ministry.colors.primary }} />
+                <Calendar
+                  className="h-5 w-5"
+                  style={{ color: ministry.colors.primary }}
+                />
                 <div>
                   <p className="font-semibold">Special Events</p>
-                  <p className="text-sm text-muted-foreground">{ministry.schedule.specialEvents}</p>
+                  <p className="text-sm text-muted-foreground">
+                    {ministry.schedule.specialEvents}
+                  </p>
                 </div>
               </div>
             </CardContent>
@@ -273,7 +336,10 @@ export default function YouthAlivePage() {
           <Card>
             <CardContent className="pt-6 space-y-4">
               <div className="flex items-center gap-4">
-                <Mail className="h-5 w-5" style={{ color: ministry.colors.primary }} />
+                <Mail
+                  className="h-5 w-5"
+                  style={{ color: ministry.colors.primary }}
+                />
                 <a
                   href={`mailto:${ministry.contact.email}`}
                   className="text-primary hover:underline"
@@ -282,7 +348,10 @@ export default function YouthAlivePage() {
                 </a>
               </div>
               <div className="flex items-center gap-4">
-                <Phone className="h-5 w-5" style={{ color: ministry.colors.secondary }} />
+                <Phone
+                  className="h-5 w-5"
+                  style={{ color: ministry.colors.secondary }}
+                />
                 <a
                   href={`tel:${ministry.contact.phone}`}
                   className="text-primary hover:underline"
@@ -308,4 +377,3 @@ export default function YouthAlivePage() {
     </div>
   );
 }
-

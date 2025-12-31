@@ -5,7 +5,7 @@ export default function PrayerLoading() {
   return (
     <>
       {/* Hero Skeleton */}
-      <main className="overflow-hidden relative bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900">
+      <main className="overflow-hidden relative bg-linear-to-br from-blue-900 via-purple-900 to-indigo-900">
         <div className="bg-black/20 absolute inset-0" />
         <section>
           <div className="pb-24 pt-12">
@@ -46,4 +46,3 @@ export default function PrayerLoading() {
     </>
   );
 }
-
