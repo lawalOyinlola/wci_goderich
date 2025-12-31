@@ -1,3 +1,5 @@
+"use client";
+
 import SectionHeader from "@/components/SectionHeader";
 import { Card } from "@/components/ui/card";
 import { QuotesIcon, HeartIcon, LightbulbIcon } from "@phosphor-icons/react";
