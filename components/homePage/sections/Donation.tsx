@@ -23,7 +23,7 @@ export default function Donation() {
             <WordRotate
               words={DONATIONS}
               animationStyle="fade"
-              className="text-4xl md:text-5xl font-bold leading-tight mb-6 bg-gradient-to-br from-[#f59e0b] via-primary to-accent bg-clip-text text-transparent"
+              className="text-4xl md:text-5xl font-bold leading-tight mb-6 bg-linear-to-br from-[#f59e0b] via-primary to-accent bg-clip-text text-transparent"
               duration={3000}
               pauseDuration={500}
               loop={true}

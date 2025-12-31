@@ -54,20 +54,22 @@ export function calculateCardPosition(
       Math.abs(index - current + totalCards),
       Math.abs(index - current - totalCards)
     );
+    // Calculate circular distance to determine direction with wraparound
+    const circularDistance = (index - current + totalCards) % totalCards;
+    const isBackward = circularDistance > totalCards / 2;
+
     if (distance === 2) {
       zIndex = 2;
-      transformParts =
-        index < current
-          ? ["translateX(-50px)", "translateY(25px)", "rotate(-5deg)"]
-          : ["translateX(50px)", "translateY(25px)", "rotate(5deg)"];
+      transformParts = isBackward
+        ? ["translateX(-50px)", "translateY(25px)", "rotate(-5deg)"]
+        : ["translateX(50px)", "translateY(25px)", "rotate(5deg)"];
       opacity = 0.4;
       scaleValue = 0.9;
     } else {
       zIndex = 1;
-      transformParts =
-        index < current
-          ? ["translateX(-75px)", "translateY(35px)", "rotate(-7deg)"]
-          : ["translateX(75px)", "translateY(35px)", "rotate(7deg)"];
+      transformParts = isBackward
+        ? ["translateX(-75px)", "translateY(35px)", "rotate(-7deg)"]
+        : ["translateX(75px)", "translateY(35px)", "rotate(7deg)"];
       opacity = 0.2;
       scaleValue = 0.85;
     }

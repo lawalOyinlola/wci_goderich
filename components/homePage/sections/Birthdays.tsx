@@ -233,7 +233,7 @@ export default function MonthlyBirthdaysSection({
       {showCelebration && (
         <div className="fixed inset-0 z-50 flex items-center justify-center pointer-events-none">
           <div className="animate-in fade-in zoom-in duration-500">
-            <div className="flex-center flex-col gap-2 bg-gradient-to-r from-accent via-primary to-accent text-white px-10 py-4 rounded-2xl shadow-2xl transform -rotate-4">
+            <div className="flex-center flex-col gap-2 bg-linear-to-r from-accent via-primary to-accent text-white px-10 py-4 rounded-2xl shadow-2xl transform -rotate-4">
               <h2 className="text-4xl md:text-6xl font-bold">
                 🎉 Happy Birthday!
               </h2>
@@ -403,7 +403,7 @@ export function BirthdayCard({ birthday }: { birthday: Birthday }) {
         sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 16vw"
         className="object-cover hover:scale-105 transition-transform duration-300"
       />
-      <div className="absolute inset-x-0 bottom-0 p-2 text-xs text-white bg-gradient-to-t from-black/70 via-black/30 to-transparent">
+      <div className="absolute inset-x-0 bottom-0 p-2 text-xs text-white bg-linear-to-t from-black/70 via-black/30 to-transparent">
         <div className="font-semibold leading-tight">{birthday.name}</div>
         <div className="opacity-80">
           {formatOrdinal(birthday.day)} {MONTHS[birthday.month - 1]}

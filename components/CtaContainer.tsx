@@ -25,7 +25,7 @@ export default function CtaContainer({
     <div className={cn("text-center", className)}>
       <div
         className={cn(
-          "text-primary-foreground bg-gradient-to-br from-[#f59e0b] via-primary to-accent rounded-xl p-8 mx-auto max-w-2xl relative overflow-hidden",
+          "text-primary-foreground bg-linear-to-br from-[#f59e0b] via-primary to-accent rounded-xl p-8 mx-auto max-w-2xl relative overflow-hidden",
           containerClassName
         )}
       >

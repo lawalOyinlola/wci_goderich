@@ -64,7 +64,7 @@ function MobileNav() {
           side="right"
           className="w-full sm:max-w-[400px] p-0 bg-foreground/30 dark:bg-background/30 border-none dark:border-slate-700/20 rounded-l-2xl shadow-2xl backdrop-blur-sm"
         >
-          <SheetHeader className="px-6 py-6 border-b border-border/20 bg-gradient-to-r from-accent/10 via-accent/5 to-transparent">
+          <SheetHeader className="px-6 py-6 border-b border-border/20 bg-linear-to-r from-accent/10 via-accent/5 to-transparent">
             <SheetTitle
               className="text-left text-[#f8fafc]!"
               onClick={() => setIsMenuOpen(false)}
@@ -93,7 +93,7 @@ function MobileNav() {
                           </span>
                         </span>
                       </AccordionTrigger>
-                      <AccordionContent className="px-5 pb-4 bg-gradient-to-b from-transparent to-accent/5">
+                      <AccordionContent className="px-5 pb-4 bg-linear-to-b from-transparent to-accent/5">
                         <div className="space-y-1.5 pt-2">
                           {item.items.map((subItem, index) => (
                             <Link
@@ -134,7 +134,7 @@ function MobileNav() {
             </nav>
 
             {/* Action Buttons */}
-            <div className="flex flex-col gap-2 px-6 py-6 border-t border-border/20 bg-gradient-to-r from-accent/10 via-accent/5 to-transparent space-y-3">
+            <div className="flex flex-col gap-2 px-6 py-6 border-t border-border/20 bg-linear-to-r from-accent/10 via-accent/5 to-transparent space-y-3">
               <Button
                 variant="outline"
                 size="lg"

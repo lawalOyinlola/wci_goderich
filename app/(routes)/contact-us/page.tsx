@@ -6,13 +6,13 @@ import CtaSection from "@/components/CtaSection";
 const ContactUsPage = () => {
   return (
     <>
-      <section className="relative bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white py-40">
+      <section className="relative bg-linear-to-br from-slate-900 via-slate-800 to-slate-900 text-white py-40">
         <Spotlight
           className="-top-1/5 -left-1/7 md:-top-1/4 md:left-1/6"
           fill="#fdfcfb"
         />
         <div className="relative max-w-7xl mx-auto px-4 text-center">
-          <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-white to-slate-200 bg-clip-text text-transparent">
+          <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-linear-to-r from-white to-slate-200 bg-clip-text text-transparent">
             Get in Touch
           </h1>
           <p className="text-xl md:text-2xl max-w-3xl mx-auto text-slate-300">

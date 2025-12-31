@@ -76,7 +76,7 @@ export const VideoDialog = forwardRef<VideoDialogRef, VideoDialogProps>(
             />
             <div className="absolute inset-0 flex scale-[0.9] items-center justify-center rounded-2xl transition-all duration-200 ease-out group-hover:scale-100">
               <div className="bg-primary/10 flex size-28 items-center justify-center rounded-full backdrop-blur-md pointer-events-auto">
-                <div className="from-primary/30 to-primary relative flex size-20 scale-100 items-center justify-center rounded-full bg-gradient-to-b shadow-md transition-all duration-200 ease-out group-hover:scale-[1.2]">
+                <div className="from-primary/30 to-primary relative flex size-20 scale-100 items-center justify-center rounded-full bg-linear-to-b shadow-md transition-all duration-200 ease-out group-hover:scale-[1.2]">
                   <Play
                     className="size-8 scale-100 fill-white text-white transition-transform duration-200 ease-out group-hover:scale-105 pointer-events-none"
                     style={{

@@ -34,7 +34,7 @@ export default function Testimonies({
 
   if (testimonies.length === 0) {
     return (
-      <section className="py-20 bg-gradient-to-br from-slate-100 to-slate-50 dark:from-slate-900 dark:to-slate-800">
+      <section className="py-20 bg-linear-to-br from-slate-100 to-slate-50 dark:from-slate-900 dark:to-slate-800">
         <div className="max-w-500 w-full mx-auto">
           <div className="px-4">
             <SectionHeader
@@ -52,7 +52,7 @@ export default function Testimonies({
   }
 
   return (
-    <section className="py-20 bg-gradient-to-br from-slate-100 to-slate-50 dark:from-slate-900 dark:to-slate-800">
+    <section className="py-20 bg-linear-to-br from-slate-100 to-slate-50 dark:from-slate-900 dark:to-slate-800">
       <div className="max-w-500 w-full mx-auto">
         <div className="px-4">
           <SectionHeader
@@ -173,7 +173,7 @@ export default function Testimonies({
                       {/* Audio Testimony */}
                       {isAudio && "audioUrl" in testifier && (
                         <div className="flex flex-col h-full">
-                          <div className="flex-1 relative rounded-lg overflow-hidden bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20 mb-4">
+                          <div className="flex-1 relative rounded-lg overflow-hidden bg-linear-to-br from-primary/10 to-primary/5 border border-primary/20 mb-4">
                             <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 p-6">
                               <Avatar className="size-20">
                                 <AvatarImage src={testifier.image} />
@@ -258,7 +258,7 @@ export default function Testimonies({
 
                           <div
                             className={cn(
-                              "absolute bottom-0 left-0 right-0 flex justify-end bg-gradient-to-t from-accent/10 via-card/40 to-transparent p-4 transition-all duration-600",
+                              "absolute bottom-0 left-0 right-0 flex justify-end bg-linear-to-t from-accent/10 via-card/40 to-transparent p-4 transition-all duration-600",
                               hoveredItemId === testifier.id
                                 ? "opacity-100"
                                 : "opacity-0"

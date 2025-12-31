@@ -67,7 +67,7 @@ export function ErrorBoundary({
               <p className="font-semibold text-destructive mb-2">
                 {variant === "fullscreen" ? "Error Details:" : "Error:"}
               </p>
-              <p className="text-muted-foreground break-words">
+              <p className="text-muted-foreground wrap-break-word">
                 {error.message}
               </p>
               {error.digest && (
