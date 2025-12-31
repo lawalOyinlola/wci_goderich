@@ -141,3 +141,90 @@ CREATE POLICY "Allow service role delete on birthdays"
   ON birthdays FOR DELETE
   USING (auth.role() = 'service_role'); -- Only service role can delete
 
+-- Prayer Requests Table
+CREATE TABLE IF NOT EXISTS prayer_requests (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  name TEXT NOT NULL,
+  email TEXT,
+  phone TEXT,
+  category TEXT NOT NULL,
+  request TEXT NOT NULL,
+  is_anonymous BOOLEAN DEFAULT false,
+  status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'praying', 'answered')),
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Prayer Group Members Table
+CREATE TABLE IF NOT EXISTS prayer_group_members (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  name TEXT NOT NULL,
+  email TEXT NOT NULL,
+  phone TEXT NOT NULL,
+  prayer_group_id TEXT NOT NULL,
+  reason TEXT NOT NULL,
+  previous_experience TEXT,
+  status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'approved', 'rejected')),
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Indexes for prayer tables
+CREATE INDEX IF NOT EXISTS idx_prayer_requests_status ON prayer_requests(status);
+CREATE INDEX IF NOT EXISTS idx_prayer_requests_category ON prayer_requests(category);
+CREATE INDEX IF NOT EXISTS idx_prayer_requests_created_at ON prayer_requests(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_prayer_group_members_status ON prayer_group_members(status);
+CREATE INDEX IF NOT EXISTS idx_prayer_group_members_group_id ON prayer_group_members(prayer_group_id);
+CREATE INDEX IF NOT EXISTS idx_prayer_group_members_created_at ON prayer_group_members(created_at DESC);
+
+-- Triggers to automatically update updated_at for prayer tables
+CREATE TRIGGER update_prayer_requests_updated_at 
+  BEFORE UPDATE ON prayer_requests 
+  FOR EACH ROW 
+  EXECUTE FUNCTION update_updated_at_column();
+
+CREATE TRIGGER update_prayer_group_members_updated_at 
+  BEFORE UPDATE ON prayer_group_members 
+  FOR EACH ROW 
+  EXECUTE FUNCTION update_updated_at_column();
+
+-- Enable Row Level Security (RLS) for prayer tables
+ALTER TABLE prayer_requests ENABLE ROW LEVEL SECURITY;
+ALTER TABLE prayer_group_members ENABLE ROW LEVEL SECURITY;
+
+-- Policies for prayer_requests: Allow public read and insert, restrict update/delete to service role
+CREATE POLICY "Allow public read access on prayer_requests"
+  ON prayer_requests FOR SELECT
+  USING (true);
+
+CREATE POLICY "Allow public insert on prayer_requests" 
+  ON prayer_requests FOR INSERT
+  WITH CHECK (true);
+
+CREATE POLICY "Allow service role update on prayer_requests"
+  ON prayer_requests FOR UPDATE
+  USING (auth.role() = 'service_role')
+  WITH CHECK (auth.role() = 'service_role');
+
+CREATE POLICY "Allow service role delete on prayer_requests"
+  ON prayer_requests FOR DELETE
+  USING (auth.role() = 'service_role');
+
+-- Policies for prayer_group_members: Allow public insert, restrict read/update/delete to service role
+CREATE POLICY "Allow public insert on prayer_group_members"
+  ON prayer_group_members FOR INSERT
+  WITH CHECK (true);
+
+CREATE POLICY "Allow service role read on prayer_group_members"
+  ON prayer_group_members FOR SELECT
+  USING (auth.role() = 'service_role');
+
+CREATE POLICY "Allow service role update on prayer_group_members"
+  ON prayer_group_members FOR UPDATE
+  USING (auth.role() = 'service_role')
+  WITH CHECK (auth.role() = 'service_role');
+
+CREATE POLICY "Allow service role delete on prayer_group_members"
+  ON prayer_group_members FOR DELETE
+  USING (auth.role() = 'service_role');
+

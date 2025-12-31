@@ -36,7 +36,13 @@ export async function GET(request: NextRequest) {
     }
 
     if (category) {
-      query = query.eq("category", category);
+      // Support comma-separated categories or single category
+      const categories = category.split(",").map((c) => c.trim());
+      if (categories.length === 1) {
+        query = query.eq("category", categories[0]);
+      } else {
+        query = query.in("category", categories);
+      }
     }
 
     if (featured === "true") {

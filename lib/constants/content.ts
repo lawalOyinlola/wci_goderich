@@ -92,6 +92,7 @@ export const FEATURES = [
 
 export const SAMPLE_BIRTHDAYS = [
   {
+    id: "sample-1",
     name: "Mary Johnson",
     month: 8,
     day: 12,
@@ -101,6 +102,7 @@ export const SAMPLE_BIRTHDAYS = [
     featured: true,
   },
   {
+    id: "sample-2",
     name: "Samuel Ade",
     month: 7,
     day: 3,
@@ -110,6 +112,7 @@ export const SAMPLE_BIRTHDAYS = [
     featured: true,
   },
   {
+    id: "sample-3",
     name: "Grace Kamara",
     month: 6,
     day: 25,
@@ -119,6 +122,7 @@ export const SAMPLE_BIRTHDAYS = [
     featured: true,
   },
   {
+    id: "sample-4",
     name: "Daniel Mensah",
     month: 5,
     day: 18,
@@ -128,6 +132,7 @@ export const SAMPLE_BIRTHDAYS = [
     featured: true,
   },
   {
+    id: "sample-5",
     name: "Esther Bangura",
     month: 4,
     day: 9,
@@ -137,6 +142,7 @@ export const SAMPLE_BIRTHDAYS = [
     featured: true,
   },
   {
+    id: "sample-6",
     name: "Michael Thompson",
     month: 3,
     day: 30,

@@ -14,6 +14,7 @@ interface AnimatedButtonProps
   href?: string;
   icon?: React.ReactNode;
   iconPosition?: "left" | "right";
+  isLoading?: boolean;
   children?: React.ReactNode;
 }
 
@@ -25,6 +26,7 @@ const AnimatedButton = React.forwardRef<HTMLButtonElement, AnimatedButtonProps>(
       href,
       icon,
       iconPosition = "left",
+      isLoading,
       children,
       className,
       ...props
@@ -57,10 +59,14 @@ const AnimatedButton = React.forwardRef<HTMLButtonElement, AnimatedButtonProps>(
     const animatedContent = (
       <div className="inline-flex items-center gap-2">
         {icon && iconPosition === "left" && (
-          <span className="transition-transform duration-300 ease-out group-hover/btn:scale-110">
+          <span className="transition-transform duration-300 ease-out group-hover/btn:scale-105">
             {icon}
           </span>
         )}
+        {isLoading && (
+          <span className="inline-block size-3 animate-spin rounded-full border-2 border-current border-t-transparent mr-2" />
+        )}
+
         <div className="relative overflow-hidden inline-flex items-center">
           <span className="transition-all duration-300 ease-out group-hover/btn:-translate-y-full">
             {text}
@@ -70,7 +76,7 @@ const AnimatedButton = React.forwardRef<HTMLButtonElement, AnimatedButtonProps>(
           </span>
         </div>
         {icon && iconPosition === "right" && (
-          <span className="transition-transform duration-300 ease-out group-hover/btn:scale-110">
+          <span className="transition-transform duration-300 ease-out group-hover/btn:scale-105">
             {icon}
           </span>
         )}
