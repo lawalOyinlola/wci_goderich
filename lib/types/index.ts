@@ -20,3 +20,11 @@ export {
 
 // Education types
 export type { School, WofbiProgram } from "./education";
+
+// Prayer types
+export type {
+  PrayerRequest,
+  PrayerGroup,
+  PrayerPoint,
+  PrayerSession,
+} from "./prayer";

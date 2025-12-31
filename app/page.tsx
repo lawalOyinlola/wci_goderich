@@ -13,17 +13,11 @@ import { getTestimoniesServer } from "@/lib/data/testimonies.server";
 import { getBirthdaysServer } from "@/lib/data/birthdays.server";
 
 export default async function Home() {
-  // Fetch featured testimonies on the server
-  const featuredTestimonies = await getTestimoniesServer({
-    featured: true,
-    limit: 10,
-  });
-
-  // Fetch featured birthdays on the server (limit 6)
-  const featuredBirthdays = await getBirthdaysServer({
-    featured: true,
-    limit: 6,
-  });
+  // Fetch featured data
+  const [featuredTestimonies, featuredBirthdays] = await Promise.all([
+    getTestimoniesServer({ featured: true, limit: 10 }),
+    getBirthdaysServer({ featured: true, limit: 6 }),
+  ]);
 
   return (
     <>

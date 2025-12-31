@@ -20,6 +20,7 @@ export default async function TestimoniesPage({
     <>
       <Hero />
       <TestimoniesContent testimonies={testimonies} initialType={typeParam} />
+
       <CtaSection
         title="Share Your Testimony"
         description="Have you experienced God's faithfulness in your life? We'd love to hear about it and share it with our church family."

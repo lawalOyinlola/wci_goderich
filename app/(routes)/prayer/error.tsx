@@ -2,7 +2,7 @@
 
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 
-export default function Error({
+export default function PrayerError({
   error,
   reset,
 }: {
@@ -13,8 +13,8 @@ export default function Error({
     <ErrorBoundary
       error={error}
       reset={reset}
-      errorContext="Application"
-      variant="fullscreen"
+      description="We encountered an error while loading the prayer page. Please try again."
+      errorContext="Prayer page"
     />
   );
 }

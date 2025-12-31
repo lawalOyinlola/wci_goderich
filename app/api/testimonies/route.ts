@@ -4,6 +4,8 @@ import {
   transformTestimonies,
   transformTestimony,
 } from "@/lib/data/testimonies";
+import { checkRateLimit } from "@/lib/utils/rate-limit";
+import { checkAuth } from "@/lib/utils/auth";
 
 export const runtime = "nodejs";
 
@@ -36,7 +38,25 @@ export async function GET(request: NextRequest) {
     }
 
     if (category) {
-      query = query.eq("category", category);
+      // Support comma-separated categories or single category
+      const categories = category
+        .split(",")
+        .map((c) => c.trim())
+        .filter((c) => c.length > 0);
+      if (categories.length === 0) {
+        // Skip filtering if no valid categories after trimming
+        return NextResponse.json(
+          {
+            error:
+              "No valid categories provided. Please provide at least one category.",
+          },
+          { status: 400 }
+        );
+      } else if (categories.length === 1) {
+        query = query.eq("category", categories[0]);
+      } else {
+        query = query.in("category", categories);
+      }
     }
 
     if (featured === "true") {
@@ -79,7 +99,26 @@ export async function GET(request: NextRequest) {
 // POST - Create new testimony
 export async function POST(request: NextRequest) {
   try {
+    // Rate limiting: 3 requests per 30 minutes per IP
+    const rateLimitResult = checkRateLimit(request, {
+      maxRequests: 3,
+      windowMs: 30 * 60 * 1000, // 30 minutes
+    });
+
+    if (!rateLimitResult.allowed) {
+      return rateLimitResult.response!;
+    }
+
     const body = await request.json();
+
+    // Authentication: Require CAPTCHA verification
+    const authResult = await checkAuth(request, body, {
+      requireCaptcha: true,
+    });
+
+    if (!authResult.allowed) {
+      return authResult.response!;
+    }
     const {
       name,
       role,

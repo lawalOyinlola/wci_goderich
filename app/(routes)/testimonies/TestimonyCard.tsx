@@ -130,7 +130,7 @@ export default function TestimonyCard({
       <CardHeader>
         <div className="flex items-start gap-4">
           <div className="relative w-10 h-10 rounded-full overflow-hidden shrink-0">
-            <Avatar className="size-10">
+            <Avatar className="size-10 border-2 border-gray-200 dark:border-gray-700">
               <AvatarImage src={testimony.image} />
               <AvatarFallback>
                 {getAvatarInitials(testimony.name)}
@@ -138,10 +138,12 @@ export default function TestimonyCard({
             </Avatar>
           </div>
           <div className="flex-1 min-w-0">
-            <CardTitle className="text-lg leading-tight">
+            <CardTitle className="text-base leading-tight">
               {testimony.name}
             </CardTitle>
-            <CardDescription>{testimony.role}</CardDescription>
+            <CardDescription className="text-xs">
+              {testimony.role}
+            </CardDescription>
           </div>
         </div>
       </CardHeader>

@@ -37,7 +37,7 @@ export const MINISTRIES = {
       id: "3",
       title: "Youth Alive",
       description:
-        "Empowering young adults and adults to walk in victory through practical Word-based teachings, mentorship, and impactful service.",
+        "Empowering young adults to walk in victory through practical Word-based teachings, mentorship, and impactful service.",
       href: "/ministries",
       ageRange: "Ages 18-60",
       activities: [

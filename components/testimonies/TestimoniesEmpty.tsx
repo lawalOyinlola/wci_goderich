@@ -1,8 +1,6 @@
 "use client";
 
-import Link from "next/link";
 import { HeartIcon } from "@phosphor-icons/react";
-import { Button } from "@/components/ui/button";
 import {
   Empty,
   EmptyContent,
