@@ -30,10 +30,35 @@ export type PrayerPoint = {
   id: string;
   title: string;
   description: string;
-  category: "general" | "midnight" | "weekly" | "special";
+  category: "midnight" | "general" | "special";
   points: string[];
   scripture?: string;
   date?: string;
+  // For midnight prayer groups (1-6)
+  groupNumber?: number;
+  intercessions?: PrayerWithScripture[];
+  personalThanksgiving?: PrayerWithScripture;
+  // For general prayers
+  subcategory?:
+    | "personal-growth"
+    | "family-relationships"
+    | "church-community"
+    | "global-concerns";
+};
+
+export interface PrayerWithScripture {
+  prayer: string;
+  scripture: string;
+}
+
+export interface MidnightPrayerGroup {
+  intercessions: PrayerWithScripture[];
+  personalThanksgiving: PrayerWithScripture;
+}
+
+// Structure for all midnight prayer groups (object with groupNumber as key)
+export type MidnightPrayerGroups = {
+  [groupNumber: number]: MidnightPrayerGroup;
 };
 
 export type PrayerSession = {
@@ -46,4 +71,3 @@ export type PrayerSession = {
   type: "service" | "prayer" | "group";
   isSpecial?: boolean;
 };
-

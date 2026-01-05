@@ -2,9 +2,9 @@
 
 import Image from "next/image";
 import { useState, forwardRef, useImperativeHandle } from "react";
+import { VideoModal } from "./video-modal";
 import { Play } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { VideoModal } from "./video-modal";
 
 interface VideoDialogProps {
   videoSrc: string;
