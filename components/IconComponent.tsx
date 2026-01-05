@@ -42,8 +42,10 @@ const iconMap: Record<string, Icon> = {
   PlayCircleIcon,
 };
 
+export type ValidIconName = keyof typeof iconMap;
+
 interface IconComponentProps {
-  iconName: string;
+  iconName: ValidIconName;
   weight?: "duotone" | "fill" | "light" | "regular" | "thin";
   size?: number;
   className?: string;

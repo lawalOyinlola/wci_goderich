@@ -1,13 +1,13 @@
 "use client";
 
-import { IconComponent } from "@/components/IconComponent";
+import { IconComponent, type ValidIconName } from "@/components/IconComponent";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 
 export interface TabConfig {
   value: string;
   label: string;
-  icon?: "FileTextIcon" | "VideoCameraIcon" | "MusicNotesIcon" | string;
+  icon?: ValidIconName;
   count?: number;
 }
 
@@ -63,7 +63,7 @@ export function FilterTabs({
           >
             {tab.icon && (
               <IconComponent
-                iconName={tab.icon as any}
+                iconName={tab.icon}
                 weight={activeTab === tab.value ? "duotone" : "regular"}
                 size={16}
                 className={cn(

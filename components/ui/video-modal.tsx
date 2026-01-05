@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { createPortal } from "react-dom";
-import { XIcon } from "lucide-react";
+import { XIcon } from "@phosphor-icons/react";
 import { AnimatePresence, motion } from "motion/react";
 
 type AnimationStyle =
@@ -120,7 +120,7 @@ export function VideoModal({
               className="absolute -top-16 right-0 rounded-full bg-neutral-900/50 p-2 text-xl text-white ring-1 backdrop-blur-md dark:bg-neutral-100/50 dark:text-black hover:bg-neutral-800/50 dark:hover:bg-neutral-200/50 transition-colors"
               aria-label="Close video"
             >
-              <XIcon className="size-5" />
+              <XIcon weight="bold" size={20} />
             </motion.button>
             <div className="relative isolate z-1 size-full overflow-hidden rounded-2xl border-2 border-white">
               <iframe
