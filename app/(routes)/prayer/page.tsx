@@ -7,13 +7,20 @@ import PrayerSessions from "./PrayerSessions";
 import AnsweredPrayers from "./AnsweredPrayers";
 import CtaSection from "@/components/CtaSection";
 
-export default function PrayerPage() {
+interface PrayerPageProps {
+  searchParams: Promise<{ category?: string }>;
+}
+
+export default async function PrayerPage({ searchParams }: PrayerPageProps) {
+  const params = await searchParams;
+  const categoryParam = params.category;
+
   return (
     <>
       <Hero />
       <PrayerInspiration />
       <PrayerRequestForm />
-      <PrayerPoints />
+      <PrayerPoints initialCategory={categoryParam} />
       <PrayerSessions />
       <JoinPrayerGroup />
       <AnsweredPrayers />

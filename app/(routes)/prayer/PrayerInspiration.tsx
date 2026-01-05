@@ -46,7 +46,10 @@ export default function PrayerInspiration() {
         />
         <div className="@min-4xl:max-w-full @min-4xl:grid-cols-3 mx-auto mt-8 grid max-w-sm gap-6 [--color-background:var(--color-muted)] [--color-card:var(--color-muted)] *:text-center md:mt-16 dark:[--color-muted:var(--color-zinc-900)]">
           {inspirations.map((inspiration, index) => (
-            <Card key={index} className="group border-0 shadow-none">
+            <Card
+              key={index}
+              className="group border-0 shadow-none bg-background"
+            >
               <CardHeader>
                 <CardDecorator>
                   <Zap className="size-6" aria-hidden />
