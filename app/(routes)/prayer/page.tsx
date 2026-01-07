@@ -3,6 +3,7 @@ import PrayerInspiration from "./PrayerInspiration";
 import PrayerRequestForm from "./PrayerRequestForm";
 import PrayerPoints from "./PrayerPoints";
 import JoinPrayerGroup from "./JoinPrayerGroup";
+import JoinPrayerGroupTwo from "./JoinPrayerGroupTwo";
 import PrayerSessions from "./PrayerSessions";
 import AnsweredPrayers from "./AnsweredPrayers";
 import CtaSection from "@/components/CtaSection";
@@ -23,6 +24,7 @@ export default async function PrayerPage({ searchParams }: PrayerPageProps) {
       <PrayerPoints initialCategory={categoryParam} />
       <PrayerSessions />
       <JoinPrayerGroup />
+      <JoinPrayerGroupTwo />
       <AnsweredPrayers />
       <CtaSection
         title="Join Us in Prayer"

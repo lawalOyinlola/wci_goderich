@@ -6,14 +6,46 @@ import SectionHeader from "@/components/SectionHeader";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { FilterTabs, type TabConfig } from "@/components/ui/filter-tabs";
-import { PRAYER_POINTS } from "@/lib/constants/prayer";
 import { BookOpenIcon } from "@phosphor-icons/react";
+import { PRAYER_POINTS } from "@/lib/constants";
+import { formatOrdinal } from "@/lib/utils";
 
 interface PrayerPointsProps {
   initialCategory?: string;
 }
 
 export default function PrayerPoints({ initialCategory }: PrayerPointsProps) {
+  // Footer label for midnight groups: "Week {cycleWeek} • Monday 5th 2026"
+  const getMidnightWeekLabel = (groupNumber: number) => {
+    const now = new Date();
+    const startOfYear = new Date(now.getFullYear(), 0, 1);
+    const daysSinceStart = Math.floor(
+      (now.getTime() - startOfYear.getTime()) / (1000 * 60 * 60 * 24)
+    );
+    const currentWeekOfYear = Math.floor(daysSinceStart / 7);
+    const cycleWeekNumber = (currentWeekOfYear % 6) + 1;
+
+    // Start of current week, then adjust to Monday
+    const weekStart = new Date(startOfYear);
+    weekStart.setDate(startOfYear.getDate() + currentWeekOfYear * 7);
+    const dayOfWeek = weekStart.getDay(); // 0=Sun,1=Mon,...6=Sat
+    const mondayOffset = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+    weekStart.setDate(weekStart.getDate() + mondayOffset);
+
+    // Calculate the specific day for this group (0 = Monday, 1 = Tuesday, etc.)
+    const groupDayOffset = groupNumber - 1; // Group 1 = Monday (0), Group 2 = Tuesday (1), etc.
+    const groupDate = new Date(weekStart);
+    groupDate.setDate(weekStart.getDate() + groupDayOffset);
+
+    const weekday = groupDate.toLocaleDateString("en-US", {
+      weekday: "long",
+    });
+    const day = formatOrdinal(groupDate.getDate());
+    const year = groupDate.getFullYear();
+
+    return `Week ${cycleWeekNumber} • ${weekday} ${day} ${year}`;
+  };
+
   const searchParams = useSearchParams();
   const router = useRouter();
   const categoryParam = searchParams.get("category") || initialCategory;
@@ -133,7 +165,7 @@ export default function PrayerPoints({ initialCategory }: PrayerPointsProps) {
             activeTab={activeTab}
             onTabChange={handleTabChange}
           >
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mt-6">
+            <div className="grid gap-6 md:grid-cols-2 mt-6">
               {filteredPoints.map((point) => (
                 <Card
                   key={point.id}
@@ -179,13 +211,13 @@ export default function PrayerPoints({ initialCategory }: PrayerPointsProps) {
                                 <span>{intercession.prayer}</span>
                               </p>
                               {intercession.scripture && (
-                                <div className="p-2 bg-muted rounded-lg">
+                                <div className="p-2 bg-muted dark:bg-background/40 rounded-lg">
                                   <div className="flex items-start gap-2">
                                     <BookOpenIcon
                                       size={16}
                                       className="text-primary mt-0.5 shrink-0"
                                     />
-                                    <p className="text-xs italic text-primary font-medium">
+                                    <p className="text-xs italic text-primary font-medium line-clamp-3">
                                       {intercession.scripture}
                                     </p>
                                   </div>
@@ -207,13 +239,13 @@ export default function PrayerPoints({ initialCategory }: PrayerPointsProps) {
                               {point.personalThanksgiving.prayer}
                             </p>
                             {point.personalThanksgiving.scripture && (
-                              <div className="p-2 bg-muted rounded-lg">
+                              <div className="p-2 bg-muted dark:bg-background/40 rounded-lg">
                                 <div className="flex items-start gap-2">
                                   <BookOpenIcon
                                     size={16}
                                     className="text-primary mt-0.5 shrink-0"
                                   />
-                                  <p className="text-xs italic text-primary font-medium">
+                                  <p className="text-xs italic text-primary font-medium line-clamp-3">
                                     {point.personalThanksgiving.scripture}
                                   </p>
                                 </div>
@@ -228,7 +260,7 @@ export default function PrayerPoints({ initialCategory }: PrayerPointsProps) {
                   {/* Display general/special prayers as list */}
                   {point.category !== "midnight" && (
                     <ul className="space-y-2">
-                      {point.points.slice(0, 4).map((prayerPoint, index) => (
+                      {point.points.map((prayerPoint, index) => (
                         <li key={index} className="flex items-start gap-2">
                           <span className="text-primary font-bold mt-1 text-xs">
                             •
@@ -236,20 +268,15 @@ export default function PrayerPoints({ initialCategory }: PrayerPointsProps) {
                           <span className="text-sm">{prayerPoint}</span>
                         </li>
                       ))}
-                      {point.points.length > 4 && (
-                        <li className="text-xs text-muted-foreground">
-                          +{point.points.length - 4} more points
-                        </li>
-                      )}
                       {point.scripture && (
                         <li className="mt-3">
-                          <div className="p-2 bg-muted rounded-lg">
+                          <div className="p-2 bg-muted dark:bg-background/40 rounded-lg">
                             <div className="flex items-start gap-2">
                               <BookOpenIcon
                                 size={16}
                                 className="text-primary mt-0.5 shrink-0"
                               />
-                              <p className="text-xs italic text-primary font-medium">
+                              <p className="text-xs italic text-primary font-medium line-clamp-3">
                                 {point.scripture}
                               </p>
                             </div>
@@ -258,11 +285,16 @@ export default function PrayerPoints({ initialCategory }: PrayerPointsProps) {
                       )}
                     </ul>
                   )}
-                  {point.date && (
-                    <p className="text-xs text-muted-foreground mt-4">
-                      {new Date(point.date).toLocaleDateString()}
-                    </p>
-                  )}
+                  {point.date &&
+                    (point.category === "midnight" && point.groupNumber ? (
+                      <p className="text-xs text-muted-foreground mt-4">
+                        {getMidnightWeekLabel(point.groupNumber)}
+                      </p>
+                    ) : (
+                      <p className="text-xs text-muted-foreground mt-4">
+                        {new Date(point.date).toLocaleDateString()}
+                      </p>
+                    ))}
                 </Card>
               ))}
             </div>

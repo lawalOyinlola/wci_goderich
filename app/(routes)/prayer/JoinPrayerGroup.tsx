@@ -10,17 +10,15 @@ import { SelectField } from "@/components/form/SelectField";
 import { TextAreaField } from "@/components/form/TextAreaField";
 import { Card } from "@/components/ui/card";
 import { AnimatedButton } from "@/components/ui/animated-button";
-import { FieldSet, FieldLegend, FieldSeparator } from "@/components/ui/field";
 import { UserPlusIcon } from "@phosphor-icons/react";
-import { PRAYER_GROUPS } from "@/lib/constants/prayer";
+import { MIDNIGHT_PRAYER_GROUPS } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
 type JoinPrayerGroupFormValues = {
   name: string;
-  email: string;
   phone: string;
   prayerGroup: string;
-  reason: string;
+  reason?: string;
   previousExperience?: string;
 };
 
@@ -31,10 +29,6 @@ const joinGroupSchema: yup.ObjectSchema<JoinPrayerGroupFormValues> = yup.object(
       .required("Name is required")
       .min(2, "Name must be at least 2 characters")
       .max(100, "Name must not exceed 100 characters"),
-    email: yup
-      .string()
-      .required("Email is required")
-      .email("Please enter a valid email address"),
     phone: yup
       .string()
       .required("Phone number is required")
@@ -45,8 +39,7 @@ const joinGroupSchema: yup.ObjectSchema<JoinPrayerGroupFormValues> = yup.object(
     prayerGroup: yup.string().required("Please select a prayer group"),
     reason: yup
       .string()
-      .required("Please tell us why you want to join")
-      .min(10, "Please provide at least 10 characters")
+      .optional()
       .max(500, "Reason must not exceed 500 characters"),
     previousExperience: yup
       .string()
@@ -55,10 +48,13 @@ const joinGroupSchema: yup.ObjectSchema<JoinPrayerGroupFormValues> = yup.object(
   }
 );
 
-const prayerGroupOptions = PRAYER_GROUPS.map((group) => ({
-  value: group.id,
-  label: `${group.name} (${group.day} at ${group.time})`,
-}));
+// Convert MIDNIGHT_PRAYER_GROUPS to format needed for the form
+const prayerGroupOptions = Object.entries(MIDNIGHT_PRAYER_GROUPS).map(
+  ([groupNumber, group]) => ({
+    value: `midnight-${groupNumber}`,
+    label: `${group.name} (${group.day}s at ${group.time})`,
+  })
+);
 
 export default function JoinPrayerGroup() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -68,7 +64,6 @@ export default function JoinPrayerGroup() {
     resolver: yupResolver(joinGroupSchema),
     defaultValues: {
       name: "",
-      email: "",
       phone: "",
       prayerGroup: "",
       reason: "",
@@ -78,7 +73,11 @@ export default function JoinPrayerGroup() {
   });
 
   const selectedGroupId = form.watch("prayerGroup");
-  const selectedGroup = PRAYER_GROUPS.find((g) => g.id === selectedGroupId);
+  const selectedGroup = selectedGroupId
+    ? Object.entries(MIDNIGHT_PRAYER_GROUPS).find(
+        ([groupNumber]) => `midnight-${groupNumber}` === selectedGroupId
+      )?.[1]
+    : undefined;
 
   const onSubmit = async (data: JoinPrayerGroupFormValues) => {
     setIsSubmitting(true);
@@ -157,32 +156,36 @@ export default function JoinPrayerGroup() {
             <Card className="p-6 sticky top-4">
               <h3 className="text-xl font-semibold mb-4">Available Groups</h3>
               <div className="space-y-4">
-                {PRAYER_GROUPS.map((group) => (
-                  <div
-                    key={group.id}
-                    className={cn(
-                      "p-4 rounded-lg border transition-colors",
-                      selectedGroupId === group.id
-                        ? "border-primary bg-primary/5"
-                        : "border-gray-200 dark:border-gray-700"
-                    )}
-                  >
-                    <h4 className="font-semibold mb-1">{group.name}</h4>
-                    <p className="text-sm text-muted-foreground mb-2">
-                      {group.day} at {group.time}
-                    </p>
-                    {group.isSpecial && (
-                      <span className="inline-block text-xs bg-primary/10 text-primary px-2 py-1 rounded">
-                        Special Group
-                      </span>
-                    )}
-                    {group.maxMembers && group.currentMembers !== undefined && (
-                      <p className="text-xs text-muted-foreground mt-2">
-                        {group.currentMembers}/{group.maxMembers} members
-                      </p>
-                    )}
-                  </div>
-                ))}
+                {Object.entries(MIDNIGHT_PRAYER_GROUPS).map(
+                  ([groupNumber, group]) => {
+                    const groupId = `midnight-${groupNumber}`;
+                    return (
+                      <div
+                        key={groupId}
+                        className={cn(
+                          "p-4 rounded-lg border transition-colors",
+                          selectedGroupId === groupId
+                            ? "border-primary bg-primary/5"
+                            : "border-gray-200 dark:border-gray-700"
+                        )}
+                      >
+                        <h4 className="font-semibold mb-1">{group.name}</h4>
+                        <p className="text-sm text-muted-foreground mb-2">
+                          {group.day} at {group.time}
+                        </p>
+                        <span className="inline-block text-xs bg-primary/10 text-primary px-2 py-1 rounded">
+                          Special Group
+                        </span>
+                        {group.maxMembers &&
+                          group.currentMembers !== undefined && (
+                            <p className="text-xs text-muted-foreground mt-2">
+                              {group.currentMembers}/{group.maxMembers} members
+                            </p>
+                          )}
+                      </div>
+                    );
+                  }
+                )}
               </div>
             </Card>
           </div>
@@ -227,24 +230,14 @@ export default function JoinPrayerGroup() {
                     autoComplete="name"
                   />
 
-                  <div className="grid gap-6 md:grid-cols-2">
-                    <InputField
-                      name="email"
-                      control={form.control}
-                      label="Email"
-                      type="email"
-                      placeholder="Enter your email address"
-                      autoComplete="email"
-                    />
-                    <InputField
-                      name="phone"
-                      control={form.control}
-                      label="Phone Number"
-                      type="tel"
-                      placeholder="Enter your phone number"
-                      autoComplete="tel"
-                    />
-                  </div>
+                  <InputField
+                    name="phone"
+                    control={form.control}
+                    label="Phone Number"
+                    type="tel"
+                    placeholder="Enter your phone number"
+                    autoComplete="tel"
+                  />
 
                   <SelectField
                     name="prayerGroup"
@@ -257,7 +250,7 @@ export default function JoinPrayerGroup() {
                   <TextAreaField
                     name="reason"
                     control={form.control}
-                    label="Why do you want to join this prayer group?"
+                    label="Why do you want to join this prayer group? (Optional)"
                     placeholder="Tell us about your desire to join..."
                     rows={4}
                   />

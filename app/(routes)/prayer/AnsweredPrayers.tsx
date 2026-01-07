@@ -53,7 +53,7 @@ export default function AnsweredPrayers() {
           subtitle="Testimonies of God's Faithfulness"
           description="See how God has answered prayers in the lives of our members. These testimonies serve as encouragement and proof that prayer works."
         />
-        <div className="mt-12">
+        <div>
           {loading ? (
             <TestimoniesSkeleton />
           ) : testimonies.length === 0 ? (

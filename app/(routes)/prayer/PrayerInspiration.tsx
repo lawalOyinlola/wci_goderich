@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import SectionHeader from "@/components/SectionHeader";
 import {
   Card,
@@ -5,35 +6,8 @@ import {
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
-import { Settings2, Sparkles, Zap } from "lucide-react";
-import { ReactNode } from "react";
-
-const inspirations = [
-  {
-    icon: "QuotesIcon",
-    title: "Prayer Changes Things",
-    description:
-      "Prayer is not asking for what you think you want, but asking to be changed in ways you can't imagine. It's the key that unlocks God's power in your life.",
-    verse:
-      "James 5:16 - The prayer of a righteous person is powerful and effective.",
-  },
-  {
-    icon: "HeartIcon",
-    title: "Prayer Connects Us",
-    description:
-      "When we pray together, we create a powerful bond of unity and faith. Corporate prayer amplifies our individual prayers and brings us closer to God and each other.",
-    verse:
-      "Matthew 18:20 - For where two or three gather in my name, there am I with them.",
-  },
-  {
-    icon: "LightbulbIcon",
-    title: "Prayer Brings Clarity",
-    description:
-      "In the quiet moments of prayer, God speaks to our hearts, provides direction, and reveals His will for our lives. Prayer is our direct line to heaven.",
-    verse:
-      "Jeremiah 33:3 - Call to me and I will answer you and tell you great and unsearchable things you do not know.",
-  },
-];
+import { PRAYER_INSPIRATIONS } from "@/lib/constants";
+import { Zap } from "lucide-react";
 
 export default function PrayerInspiration() {
   return (
@@ -45,7 +19,7 @@ export default function PrayerInspiration() {
           description="Prayer is far more than a religious ritual or a spiritual practice—it is the very heartbeat of our relationship with God. Through prayer, we open ourselves to divine transformation, inviting God's wisdom, peace, and power into every aspect of our lives. Whether we come before Him with thanksgiving, petition, or simply to be still in His presence, prayer becomes the bridge that connects our finite human experience with His infinite grace and love. It is in these sacred moments of communion that we find strength for our journey, clarity for our decisions, and the comfort of knowing we are never alone. Prayer changes not only our circumstances but, more importantly, it changes us—molding our hearts, refining our character, and drawing us ever closer to the One who hears and answers according to His perfect will."
         />
         <div className="@min-4xl:max-w-full @min-4xl:grid-cols-3 mx-auto mt-8 grid max-w-sm gap-6 [--color-background:var(--color-muted)] [--color-card:var(--color-muted)] *:text-center md:mt-16 dark:[--color-muted:var(--color-zinc-900)]">
-          {inspirations.map((inspiration, index) => (
+          {PRAYER_INSPIRATIONS.map((inspiration, index) => (
             <Card
               key={index}
               className="group border-0 shadow-none bg-background"

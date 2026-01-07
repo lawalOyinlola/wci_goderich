@@ -126,7 +126,7 @@ export function TestimonialCarousel({
   return (
     <div
       className={cn(
-        "relative flex flex-col items-center justify-center min-h-[500px] py-12 px-4",
+        "relative flex flex-col items-center justify-center min-h-[500px] px-4",
         className
       )}
       onMouseEnter={() => setIsHovered(true)}
@@ -253,7 +253,7 @@ export function TestimonialCarousel({
       </div>
 
       {/* Navigation Arrows */}
-      <div className="flex items-center justify-center gap-4 mt-8">
+      <div className="flex items-center justify-center gap-4">
         <Button
           variant="ghost"
           size="icon"
