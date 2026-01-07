@@ -52,6 +52,16 @@ export interface PrayerWithScripture {
 }
 
 export interface MidnightPrayerGroup {
+  name: string;
+  description: string;
+  day: string; // e.g., "Monday", "Tuesday", etc.
+  time: string; // e.g., "12:00 AM"
+  location: string;
+  contactPerson?: string;
+  contactEmail?: string;
+  contactPhone?: string;
+  maxMembers?: number;
+  currentMembers?: number;
   intercessions: PrayerWithScripture[];
   personalThanksgiving: PrayerWithScripture;
 }

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseServer } from "@/lib/supabase/server";
-import { PRAYER_GROUPS } from "@/lib/constants/prayer";
+import { MIDNIGHT_PRAYER_GROUPS } from "@/lib/constants/prayer";
 import { checkRateLimit } from "@/lib/utils/rate-limit";
 import { checkAuth } from "@/lib/utils/auth";
 
@@ -39,8 +39,8 @@ export async function POST(request: NextRequest) {
 
     // Verify prayer group exists
     const trimmedGroupId = prayerGroup.trim();
-    const groupExists = PRAYER_GROUPS.some(
-      (group) => group.id === trimmedGroupId
+    const groupExists = Object.keys(MIDNIGHT_PRAYER_GROUPS).some(
+      (groupNumber) => `midnight-${groupNumber}` === trimmedGroupId
     );
 
     if (!groupExists) {

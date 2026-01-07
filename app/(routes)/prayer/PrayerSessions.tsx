@@ -3,14 +3,13 @@
 import SectionHeader from "@/components/SectionHeader";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { PRAYER_SESSIONS } from "@/lib/constants/prayer";
 import {
   ClockIcon,
   MapPinIcon,
   CalendarIcon,
   UsersIcon,
 } from "@phosphor-icons/react";
-import { cn } from "@/lib/utils";
+import { PRAYER_SESSIONS } from "@/lib/constants";
 
 export default function PrayerSessions() {
   const specialSessions = PRAYER_SESSIONS.filter(
@@ -88,7 +87,7 @@ export default function PrayerSessions() {
           </div>
         )}
 
-        {/* Regular Prayer Sessions */}
+        {/* Regular Prayer Sessions (including adapted services) */}
         <div className="mt-12">
           <h3 className="text-2xl font-semibold mb-6">All Prayer Sessions</h3>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">

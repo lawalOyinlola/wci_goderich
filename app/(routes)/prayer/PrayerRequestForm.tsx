@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -19,9 +20,7 @@ import {
   FieldDescription,
 } from "@/components/ui/field";
 import { PaperPlaneTiltIcon } from "@phosphor-icons/react";
-import { PRAYER_CATEGORIES } from "@/lib/constants/prayer";
-import { CHURCH_INFO } from "@/lib/constants";
-import Link from "next/link";
+import { CHURCH_INFO, PRAYER_CATEGORIES } from "@/lib/constants";
 
 type PrayerRequestFormValues = {
   name: string;

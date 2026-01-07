@@ -1,111 +1,45 @@
 import type {
-  PrayerGroup,
   PrayerPoint,
   PrayerSession,
   MidnightPrayerGroups,
 } from "@/lib/types/prayer";
+import { SERVICES } from "./services";
 
-export const PRAYER_GROUPS: PrayerGroup[] = [
-  {
-    id: "midnight-1",
-    name: "Midnight Prayer Warriors",
+// Helper function to convert midnight prayer groups to PrayerPoint[]
+function convertMidnightGroupsToPrayerPoints(
+  groups: MidnightPrayerGroups
+): PrayerPoint[] {
+  return Object.entries(groups).map(([groupNumberStr, group]) => {
+    const groupNumber = parseInt(groupNumberStr, 10);
+    return {
+      id: `midnight-group-${groupNumber}`,
+      title: `Midnight Prayer Group ${groupNumber}`,
+      description: `Complete prayer guide for ${group.name} with all intercessions and personal thanksgiving`,
+      category: "midnight" as const,
+      groupNumber,
+      intercessions: group.intercessions,
+      personalThanksgiving: group.personalThanksgiving,
+      points: [],
+      date: new Date().toISOString().split("T")[0],
+    };
+  });
+}
+
+// Midnight Prayer Groups Data - Object with groupNumber as key
+// Each group is assigned to a specific day of the week (Group 1 = Monday, Group 2 = Tuesday, etc.)
+export const MIDNIGHT_PRAYER_GROUPS: MidnightPrayerGroups = {
+  1: {
+    name: "Midnight Prayer Group 1",
     description:
-      "A dedicated group that meets weekly at midnight for intensive intercessory prayer. We pray for the church, community, and breakthrough in various areas of life.",
-    day: "Fridays",
+      "A weekly prayer program divided into rotating groups; each group is assigned a specific day of the week to pray. Group 1 meets on Mondays.",
+    day: "Monday",
     time: "12:00 AM",
-    location: "Church Auditorium",
-    isSpecial: true,
+    location: "Online (WhatsApp Group)",
     contactPerson: "Pastor John Doe",
     contactEmail: "prayer@wcigoderich.org",
     contactPhone: "+232 88 123 456",
     maxMembers: 50,
     currentMembers: 32,
-  },
-  {
-    id: "midnight-2",
-    name: "Dawn Intercessors",
-    description:
-      "Early morning prayer group meeting at midnight to usher in the new day with prayer and worship.",
-    day: "Tuesdays",
-    time: "12:00 AM",
-    location: "Online (Zoom)",
-    isSpecial: true,
-    contactPerson: "Sister Mary Smith",
-    contactEmail: "dawn@wcigoderich.org",
-    maxMembers: 30,
-    currentMembers: 18,
-  },
-  {
-    id: "weekly-1",
-    name: "Women's Prayer Circle",
-    description:
-      "A weekly prayer gathering for women to intercede for families, children, and the community.",
-    day: "Wednesdays",
-    time: "10:00 AM",
-    location: "Church Fellowship Hall",
-    contactPerson: "Sister Jane Doe",
-    contactEmail: "women@wcigoderich.org",
-    maxMembers: 40,
-    currentMembers: 25,
-  },
-  {
-    id: "weekly-2",
-    name: "Men's Prayer Fellowship",
-    description:
-      "Men gathering weekly to pray for strength, wisdom, and breakthrough in their lives and families.",
-    day: "Thursdays",
-    time: "07:00 PM",
-    location: "Church Auditorium",
-    contactPerson: "Brother James Wilson",
-    contactEmail: "men@wcigoderich.org",
-    maxMembers: 35,
-    currentMembers: 20,
-  },
-  {
-    id: "weekly-3",
-    name: "Youth Prayer Force",
-    description:
-      "Young adults and youth coming together to pray for their generation, education, and future.",
-    day: "Saturdays",
-    time: "04:00 PM",
-    location: "Youth Hall",
-    contactPerson: "Pastor Youth Leader",
-    contactEmail: "youth@wcigoderich.org",
-    maxMembers: 60,
-    currentMembers: 45,
-  },
-];
-
-// Helper function to convert midnight prayer groups object to PrayerPoint[]
-// Creates one card per group with all intercessions and personal thanksgiving
-const convertMidnightGroupsToPrayerPoints = (
-  groups: MidnightPrayerGroups
-): PrayerPoint[] => {
-  const prayerPoints: PrayerPoint[] = [];
-
-  Object.entries(groups).forEach(([groupNumberStr, group]) => {
-    const groupNumber = parseInt(groupNumberStr, 10);
-
-    // Create one card per group with all intercessions and personal thanksgiving
-    prayerPoints.push({
-      id: `midnight-group-${groupNumber}`,
-      title: `Midnight Prayer Group ${groupNumber}`,
-      description: `Complete prayer guide for Midnight Prayer Group ${groupNumber} with all intercessions and personal thanksgiving`,
-      category: "midnight",
-      groupNumber,
-      intercessions: group.intercessions,
-      personalThanksgiving: group.personalThanksgiving,
-      points: [], // Not used for midnight groups, we use intercessions and personalThanksgiving instead
-      date: new Date().toISOString().split("T")[0],
-    });
-  });
-
-  return prayerPoints;
-};
-
-// Midnight Prayer Groups Data - Object with groupNumber as key
-const MIDNIGHT_PRAYER_GROUPS: MidnightPrayerGroups = {
-  1: {
     intercessions: [
       {
         prayer:
@@ -146,6 +80,16 @@ const MIDNIGHT_PRAYER_GROUPS: MidnightPrayerGroups = {
     },
   },
   2: {
+    name: "Midnight Prayer Group 2",
+    description:
+      "Part of the rotating midnight prayer program where each group intercedes on its assigned weekday. Group 2 meets on Tuesdays.",
+    day: "Tuesday",
+    time: "12:00 AM",
+    location: "Online (WhatsApp Group)",
+    contactPerson: "Sister Mary Smith",
+    contactEmail: "dawn@wcigoderich.org",
+    maxMembers: 30,
+    currentMembers: 18,
     intercessions: [
       {
         prayer:
@@ -185,6 +129,17 @@ const MIDNIGHT_PRAYER_GROUPS: MidnightPrayerGroups = {
     },
   },
   3: {
+    name: "Midnight Prayer Group 3",
+    description:
+      "Part of the rotating midnight prayer program where each group intercedes on its assigned weekday. Group 3 meets on Wednesdays.",
+    day: "Wednesday",
+    time: "12:00 AM",
+    location: "Online (WhatsApp Group)",
+    contactPerson: "Pastor John Doe",
+    contactEmail: "prayer@wcigoderich.org",
+    contactPhone: "+232 88 123 456",
+    maxMembers: 50,
+    currentMembers: 28,
     intercessions: [
       {
         prayer:
@@ -225,6 +180,17 @@ const MIDNIGHT_PRAYER_GROUPS: MidnightPrayerGroups = {
     },
   },
   4: {
+    name: "Midnight Prayer Group 4",
+    description:
+      "Part of the rotating midnight prayer program where each group intercedes on its assigned weekday. Group 4 meets on Thursdays.",
+    day: "Thursday",
+    time: "12:00 AM",
+    location: "Online (WhatsApp Group)",
+    contactPerson: "Pastor John Doe",
+    contactEmail: "prayer@wcigoderich.org",
+    contactPhone: "+232 88 123 456",
+    maxMembers: 50,
+    currentMembers: 25,
     intercessions: [
       {
         prayer:
@@ -265,6 +231,17 @@ const MIDNIGHT_PRAYER_GROUPS: MidnightPrayerGroups = {
     },
   },
   5: {
+    name: "Midnight Prayer Group 5",
+    description:
+      "Part of the rotating midnight prayer program where each group intercedes on its assigned weekday. Group 5 meets on Fridays.",
+    day: "Friday",
+    time: "12:00 AM",
+    location: "Online (WhatsApp Group)",
+    contactPerson: "Pastor John Doe",
+    contactEmail: "prayer@wcigoderich.org",
+    contactPhone: "+232 88 123 456",
+    maxMembers: 50,
+    currentMembers: 30,
     intercessions: [
       {
         prayer:
@@ -305,6 +282,17 @@ const MIDNIGHT_PRAYER_GROUPS: MidnightPrayerGroups = {
     },
   },
   6: {
+    name: "Midnight Prayer Group 6",
+    description:
+      "Part of the rotating midnight prayer program where each group intercedes on its assigned weekday. Group 6 meets on Saturdays.",
+    day: "Saturday",
+    time: "12:00 AM",
+    location: "Online (WhatsApp Group)",
+    contactPerson: "Pastor John Doe",
+    contactEmail: "prayer@wcigoderich.org",
+    contactPhone: "+232 88 123 456",
+    maxMembers: 50,
+    currentMembers: 22,
     intercessions: [
       {
         prayer:
@@ -576,31 +564,79 @@ export const PRAYER_POINTS: PrayerPoint[] = [
   ...specialPrayerPoints,
 ];
 
-export const PRAYER_SESSIONS: PrayerSession[] = [
-  {
-    id: "covenant-hour",
-    name: "Covenant Hour of Prayer",
-    description:
-      "Daily prayer sessions to intercede for the church, community, and personal spiritual growth.",
-    day: "Weekdays",
-    times: ["06:00 AM"],
-    location: "Church Auditorium",
-    type: "prayer",
-  },
-  {
-    id: "saturday-prayer",
-    name: "Saturday Prayer",
-    description: "Weekly Saturday morning prayer session.",
-    day: "Saturday",
-    times: ["07:00 AM"],
-    location: "Church Auditorium",
-    type: "prayer",
-  },
+// Prayer-specific descriptions for services (overrides for prayer context)
+const PRAYER_SERVICE_DESCRIPTIONS: Record<string, string> = {
+  "Sunday Worship":
+    "Join us for corporate worship with times of united prayer and intercession.",
+  "90 Min with Jesus":
+    "A focused time of prayer and the Word; intercede for personal and church needs.",
+  "Communion Service":
+    "Prayerful preparation and thanksgiving around the Lord's table.",
+  "Covenant Hour of Prayer":
+    "Daily intercession for the church, community, and personal growth.",
+  "Spiritual Week of Emphasis":
+    "Three days set apart for prayer, fasting, and focused intercession.",
+  "Satellite Fellowship":
+    "Home fellowships gather for prayer, the Word, and community care.",
+};
+
+// Convert SERVICES to PrayerSession format with prayer-specific descriptions
+function adaptServicesToPrayerSessions(): PrayerSession[] {
+  return SERVICES.map((service) => {
+    const allTimes =
+      "additionalSchedule" in service && service.additionalSchedule
+        ? [...service.times, ...service.additionalSchedule.times]
+        : [...service.times];
+
+    // Handle Covenant Hour of Prayer with additional schedule
+    if (
+      service.title === "Covenant Hour of Prayer" &&
+      "additionalSchedule" in service &&
+      service.additionalSchedule
+    ) {
+      return [
+        {
+          id: `service-${service.id}`,
+          name: service.title,
+          description:
+            PRAYER_SERVICE_DESCRIPTIONS[service.title] ?? service.description,
+          day: service.day,
+          times: [...service.times],
+          location: "Church Auditorium",
+          type: "prayer" as const,
+        },
+        {
+          id: `service-${service.id}-saturday`,
+          name: `${service.title} - Saturday`,
+          description: `Weekly Saturday morning prayer session - Part of the ${service.title} program.`,
+          day: service.additionalSchedule.day,
+          times: [...service.additionalSchedule.times],
+          location: "Church Auditorium",
+          type: "prayer" as const,
+        },
+      ];
+    }
+
+    return {
+      id: `service-${service.id}`,
+      name: service.title,
+      description:
+        PRAYER_SERVICE_DESCRIPTIONS[service.title] ?? service.description,
+      day: service.day,
+      times: allTimes,
+      location: "Church Auditorium",
+      type: "service" as const,
+    };
+  }).flat();
+}
+
+// Unique prayer sessions NOT found in SERVICES
+export const UNIQUE_PRAYER_SESSIONS: PrayerSession[] = [
   {
     id: "midnight-warriors",
     name: "Midnight Prayer Warriors",
     description:
-      "Weekly midnight prayer session for intensive intercessory prayer.",
+      "A weekly prayer program divided into rotating groups; each group is assigned a specific day of the week to pray.",
     day: "Fridays",
     times: ["12:00 AM"],
     location: "Church Auditorium",
@@ -610,21 +646,13 @@ export const PRAYER_SESSIONS: PrayerSession[] = [
   {
     id: "dawn-intercessors",
     name: "Dawn Intercessors",
-    description: "Early morning prayer group meeting at midnight.",
+    description:
+      "Part of the rotating midnight prayer program where each group intercedes on its assigned weekday.",
     day: "Tuesdays",
     times: ["12:00 AM"],
     location: "Online (Zoom)",
     type: "group",
     isSpecial: true,
-  },
-  {
-    id: "women-prayer",
-    name: "Women's Prayer Circle",
-    description: "Weekly prayer gathering for women.",
-    day: "Wednesdays",
-    times: ["10:00 AM"],
-    location: "Church Fellowship Hall",
-    type: "group",
   },
   {
     id: "men-prayer",
@@ -645,6 +673,39 @@ export const PRAYER_SESSIONS: PrayerSession[] = [
     type: "group",
   },
 ];
+
+// Combined list: unique prayer sessions + adapted services
+export const PRAYER_SESSIONS: PrayerSession[] = [
+  ...UNIQUE_PRAYER_SESSIONS,
+  ...adaptServicesToPrayerSessions(),
+];
+
+export const PRAYER_INSPIRATIONS = [
+  {
+    icon: "QuotesIcon",
+    title: "Prayer Changes Things",
+    description:
+      "Prayer is not asking for what you think you want, but asking to be changed in ways you can't imagine. It's the key that unlocks God's power in your life.",
+    verse:
+      "James 5:16 - The prayer of a righteous person is powerful and effective.",
+  },
+  {
+    icon: "HeartIcon",
+    title: "Prayer Connects Us",
+    description:
+      "When we pray together, we create a powerful bond of unity and faith. Corporate prayer amplifies our individual prayers and brings us closer to God and each other.",
+    verse:
+      "Matthew 18:20 - For where two or three gather in my name, there am I with them.",
+  },
+  {
+    icon: "LightbulbIcon",
+    title: "Prayer Brings Clarity",
+    description:
+      "In the quiet moments of prayer, God speaks to our hearts, provides direction, and reveals His will for our lives. Prayer is our direct line to heaven.",
+    verse:
+      "Jeremiah 33:3 - Call to me and I will answer you and tell you great and unsearchable things you do not know.",
+  },
+] as const;
 
 export const PRAYER_CATEGORIES = [
   { value: "healing", label: "Healing" },
