@@ -4,8 +4,6 @@ import { uploadImage, deleteImage } from "@/lib/cloudinary";
 import { checkRateLimit } from "@/lib/utils/rate-limit";
 import { checkAuth } from "@/lib/utils/auth";
 
-export const runtime = "nodejs";
-
 // GET - Fetch birthdays
 export async function GET(request: NextRequest) {
   try {
@@ -79,7 +77,7 @@ export async function POST(request: NextRequest) {
     }
 
     const formData = await request.formData();
-    
+
     // Extract CAPTCHA token from form data for authentication
     const hcaptchaToken = formData.get("hcaptchaToken") as string | null;
     const recaptchaToken = formData.get("recaptchaToken") as string | null;
@@ -182,7 +180,11 @@ export async function POST(request: NextRequest) {
     if (error) {
       // Clean up orphaned image
       if (imageUrl) {
-        await deleteImage(imageUrl).catch(() => {});
+        try {
+          await deleteImage(imageUrl);
+        } catch (deleteError) {
+          console.error("Error deleting image during cleanup:", deleteError);
+        }
       }
       console.error("Error creating birthday:", error);
       return NextResponse.json(

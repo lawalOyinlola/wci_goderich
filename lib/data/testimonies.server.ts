@@ -56,7 +56,17 @@ export async function getTestimoniesServer(
     }
 
     if (filters?.category) {
-      query = query.eq("category", filters.category);
+      // Support comma-separated categories or single category
+      const categories = filters.category
+        .split(",")
+        .map((c) => c.trim())
+        .filter((c) => c.length > 0);
+
+      if (categories.length === 1) {
+        query = query.eq("category", categories[0]);
+      } else if (categories.length > 1) {
+        query = query.in("category", categories);
+      }
     }
 
     if (filters?.featured) {

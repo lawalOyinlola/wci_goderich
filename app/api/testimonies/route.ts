@@ -7,8 +7,6 @@ import {
 import { checkRateLimit } from "@/lib/utils/rate-limit";
 import { checkAuth } from "@/lib/utils/auth";
 
-export const runtime = "nodejs";
-
 // GET - Fetch testimonies
 export async function GET(request: NextRequest) {
   try {
@@ -182,6 +180,30 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (error) {
+      // Clean up uploaded files if database insert fails
+      const { deleteImage, deleteMedia } = await import("@/lib/cloudinary");
+      if (image) {
+        try {
+          await deleteImage(image);
+        } catch (deleteError) {
+          console.error("Error deleting image during cleanup:", deleteError);
+        }
+      }
+      if (videoUrl) {
+        try {
+          await deleteMedia(videoUrl);
+        } catch (deleteError) {
+          console.error("Error deleting video during cleanup:", deleteError);
+        }
+      }
+      if (audioUrl) {
+        try {
+          await deleteMedia(audioUrl);
+        } catch (deleteError) {
+          console.error("Error deleting audio during cleanup:", deleteError);
+        }
+      }
+
       console.error("Error creating testimony:", error);
       return NextResponse.json(
         { error: "Failed to create testimony record" },

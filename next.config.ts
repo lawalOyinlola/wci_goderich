@@ -1,16 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // cacheComponents: true,
-  // experimental: {
-  //   useCache: true,
-  //   turbopackFileSystemCacheForDev: true,
-  //   optimizePackageImports: ["lucide-react"],
-  // },
-  // Turbopack temporarily disabled due to Google Fonts compatibility issue
-  // turbopack: {
-  //   root: __dirname,
-  // },
+  cacheComponents: true,
   images: {
     remotePatterns: [
       {

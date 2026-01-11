@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { uploadImage } from "@/lib/cloudinary";
 
-export const runtime = "nodejs";
 export const maxDuration = 30; // 30 seconds for image upload
 
 export async function POST(request: NextRequest) {

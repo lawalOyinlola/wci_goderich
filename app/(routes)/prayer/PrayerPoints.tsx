@@ -172,7 +172,7 @@ export default function PrayerPoints({ initialCategory }: PrayerPointsProps) {
                   className="p-6 hover:shadow-lg transition-shadow"
                 >
                   <div className="flex items-start justify-between mb-4">
-                    <h4 className="text-lg font-semibold">{point.title}</h4>
+                    <h4 className="text-lg">{point.title}</h4>
                     <Badge variant="outline" className="ml-2">
                       {point.category === "midnight" && point.groupNumber
                         ? `Group ${point.groupNumber}`

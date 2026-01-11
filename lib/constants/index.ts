@@ -6,7 +6,7 @@ export { FEATURES, SLIDES, SAMPLE_BIRTHDAYS } from "./content";
 export { LEADERSHIP } from "./leadership";
 export { MINISTRIES, MINISTRY_DETAILS } from "./ministries";
 export { SERVICES, SERMONS } from "./services";
-export { TESTIMONIES } from "./testimonies";
+export { TESTIMONIES, TESTIMONY_CATEGORIES } from "./testimonies";
 export { FAQS } from "./faqs";
 export { SCHOOLS, WOFBI } from "./education";
 export { UPCOMING_EVENTS } from "./events";

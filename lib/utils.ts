@@ -7,6 +7,25 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 /**
+ * Format bytes to human readable string
+ * @param bytes - File size in bytes
+ * @returns Formatted string (e.g., "1.5 MB")
+ */
+export function formatBytes(bytes: number): string {
+  if (bytes === 0) return "0 Bytes";
+  if (bytes < 0) return "0 Bytes";
+
+  const k = 1024;
+  const sizes = ["Bytes", "KB", "MB", "GB"];
+  const i = Math.min(
+    Math.floor(Math.log(bytes) / Math.log(k)),
+    sizes.length - 1
+  );
+
+  return Math.round((bytes / Math.pow(k, i)) * 100) / 100 + " " + sizes[i];
+}
+
+/**
  * Formats an array of time strings by joining them with " | "
  * @param times - Array of time strings (e.g., ["07:00AM", "09:00AM"])
  * @returns Formatted string (e.g., "07:00AM | 09:00AM")

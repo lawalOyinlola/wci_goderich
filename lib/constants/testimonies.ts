@@ -14,7 +14,7 @@ export const TESTIMONIES = {
         "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&q=80",
       testimony:
         "God has been so faithful in my life. Through the ministry of WCI Goderich, I have experienced healing, breakthrough, and divine favor. The Word of Faith has transformed my family and brought us closer to God. I am forever grateful for this church family and the impact it has made in our lives. The prayers, teachings, and fellowship have been a source of strength and encouragement.",
-      category: "Healing & Breakthrough",
+      category: "Healing & Restoration",
       date: "2024-12-15",
       type: "written" as const,
       featured: true,
@@ -28,7 +28,7 @@ export const TESTIMONIES = {
         "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&q=80",
       testimony:
         "The power of prayer I have experienced in this church is beyond words. God has answered countless prayers and shown His faithfulness in miraculous ways.",
-      category: "Prayer & Miracles",
+      category: "Prayer",
       date: "2024-10-10",
       type: "video" as const,
       videoUrl: "https://www.youtube.com/watch?v=example1",
@@ -58,7 +58,7 @@ export const TESTIMONIES = {
         "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=100&h=100&fit=crop&q=80",
       testimony:
         "The women's ministry has been a source of strength and encouragement for me. Through the fellowship and teachings, I have grown in faith and learned to trust God for all my needs. The church has provided a safe space for women to grow and serve God together.",
-      category: "Women's Ministry",
+      category: "Ministry",
       date: "2024-04-22",
       type: "audio" as const,
       audioUrl: "https://example.com/audio/testimony9.mp3",
@@ -102,7 +102,7 @@ export const TESTIMONIES = {
         "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&q=80",
       testimony:
         "The Word of Faith teachings have revolutionized my business and personal life. I have learned to apply biblical principles in all my endeavors, and God has blessed the work of my hands. The church's emphasis on faith and excellence has helped me achieve success beyond my expectations. I am grateful for the spiritual foundation this church has provided.",
-      category: "Business & Prosperity",
+      category: "Faith & Prosperity",
       date: "2024-09-25",
       type: "written" as const,
       featured: true,
@@ -130,7 +130,7 @@ export const TESTIMONIES = {
         "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=100&h=100&fit=crop&q=80",
       testimony:
         "The Word of Faith has changed my perspective on life completely. I have learned to see challenges as opportunities for God to show His power. Through the teachings and prayers of this church, I have experienced breakthrough in my health, finances, and relationships. I am forever grateful for WCI Goderich.",
-      category: "Breakthrough",
+      category: "Miracles",
       date: "2024-05-05",
       type: "written" as const,
       featured: true,
@@ -172,7 +172,7 @@ export const TESTIMONIES = {
         "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&q=80",
       testimony:
         "God delivered me from a life-threatening illness through the prayers of this church. The doctors had given up, but God showed His power and I am here today to testify. The support and love I received from this church family was overwhelming.",
-      category: "Healing & Miracles",
+      category: "Miracles",
       date: "2024-01-20",
       type: "video" as const,
       videoUrl: "https://www.youtube.com/watch?v=example3",
@@ -196,3 +196,21 @@ export const TESTIMONIES = {
     },
   ] satisfies Testimony[],
 };
+
+export const TESTIMONY_CATEGORIES = [
+  { value: "Family", label: "Family" },
+  { value: "Deliverance", label: "Deliverance" },
+  { value: "Prophetic", label: "Prophetic" },
+  { value: "Prayer", label: "Prayer" },
+  { value: "Worship", label: "Worship" },
+  { value: "Miracles", label: "Miracles" },
+  { value: "Salvation", label: "Salvation" },
+  { value: "Healing & Restoration", label: "Healing & Restoration" },
+  { value: "Faith & Prosperity", label: "Faith & Prosperity" },
+  { value: "Financial Breakthrough", label: "Financial Breakthrough" },
+  { value: "Leadership", label: "Leadership" },
+  { value: "Ministry", label: "Ministry" },
+  { value: "Transformation", label: "Transformation" },
+  { value: "deliverance", label: "Deliverance" },
+  { value: "Other", label: "Other" },
+] as const;

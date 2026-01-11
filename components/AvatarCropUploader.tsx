@@ -30,12 +30,16 @@ type Props = {
   onImageChange?: (blob: Blob | null) => void;
   className?: string;
   resetToken?: number;
+  disabled?: boolean;
+  id?: string;
 };
 
 export default function AvatarCropUploader({
   onImageChange,
   className,
   resetToken,
+  disabled = false,
+  id,
 }: Props) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [zoom, setZoom] = useState(1);
@@ -62,6 +66,7 @@ export default function AvatarCropUploader({
   // Handle file input change
   const handleFileChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
+      if (disabled) return;
       const file = event.target.files?.[0];
       if (file && file.type.startsWith("image/")) {
         const source = URL.createObjectURL(file);
@@ -72,13 +77,14 @@ export default function AvatarCropUploader({
         fileInputRef.current.value = "";
       }
     },
-    []
+    [disabled]
   );
 
   // Trigger file input click
   const uploadFile = useCallback(() => {
+    if (disabled) return;
     fileInputRef.current?.click();
-  }, []);
+  }, [disabled]);
 
   // Reset crop area when preview changes
   useEffect(() => {
@@ -189,42 +195,54 @@ export default function AvatarCropUploader({
     <div className={className}>
       <input
         ref={fileInputRef}
+        id={id}
         type="file"
         accept="image/*"
         onChange={handleFileChange}
+        disabled={disabled}
         className="hidden"
         aria-hidden="true"
       />
-      <div className="flex items-center gap-3">
-        <div className="flex-center flex-col gap-2">
+      <div className="flex flex-wrap items-center gap-3">
+        <div className="flex-center flex-col gap-2 min-w-0 shrink">
           <Button
             type="button"
             variant="outline"
             onClick={uploadFile}
+            disabled={disabled}
             aria-label={displayUrl ? "Change image" : "Upload image"}
+            className="whitespace-nowrap"
           >
-            <UploadSimpleIcon size={32} />
-            {displayUrl ? "Change image" : "Select image"}
+            <UploadSimpleIcon size={32} className="shrink-0" />
+            <span className="hidden sm:inline">
+              {displayUrl ? "Change image" : "Select image"}
+            </span>
+            <span className="sm:hidden">
+              {displayUrl ? "Change" : "Select"}
+            </span>
           </Button>
 
-          <div className="space-y-1 text-muted-foreground text-xs text-center">
+          <div className="space-y-1 text-muted-foreground text-xs text-center w-full min-w-0">
             {selectedName ? (
-              <p className="max-w-52 truncate">{selectedName}</p>
+              <p className="max-w-full truncate px-1" title={selectedName}>
+                {selectedName}
+              </p>
             ) : (
-              <p aria-live="polite" role="region">
+              <p aria-live="polite" role="region" className="px-1 line-clamp-2">
                 Upload a clear square photo
               </p>
             )}
           </div>
         </div>
 
-        <div className="relative inline-flex">
+        <div className="relative inline-flex shrink-0">
           {displayUrl && (
             <>
               <button
                 type="button"
-                className="border-card bg-background hover:bg-accent/50 relative flex size-18 items-center justify-center overflow-hidden rounded-md border border-dashed transition-colors"
+                className="border-card bg-background hover:bg-accent/50 relative flex size-18 items-center justify-center overflow-hidden rounded-md border border-dashed transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 onClick={uploadFile}
+                disabled={disabled}
                 aria-label={displayUrl ? "Change image" : "Upload image"}
               >
                 {displayUrl ? (
@@ -246,6 +264,7 @@ export default function AvatarCropUploader({
                   type="button"
                   onClick={handleRemove}
                   size="icon"
+                  disabled={disabled}
                   className="border-background focus-visible:border-background absolute -top-2 -right-2 size-6 rounded-full border-2 shadow-none"
                   aria-label="Remove image"
                 >

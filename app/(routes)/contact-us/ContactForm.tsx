@@ -4,12 +4,12 @@ import Link from "next/link";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 import SectionHeader from "@/components/SectionHeader";
 import { InputField } from "@/components/form/InputField";
 import { SelectField } from "@/components/form/SelectField";
 import { TextAreaField } from "@/components/form/TextAreaField";
 import { CheckboxField } from "@/components/form/CheckboxField";
-import * as yup from "yup";
 import { Card } from "@/components/ui/card";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import {
@@ -19,9 +19,9 @@ import {
   FieldSeparator,
   FieldDescription,
 } from "@/components/ui/field";
-import { CHURCH_INFO, LEADERSHIP } from "@/lib/constants";
-import { LeadershipRole } from "@/lib/types/leadership";
 import { PaperPlaneTiltIcon } from "@phosphor-icons/react";
+import { LeadershipRole } from "@/lib/types/leadership";
+import { CHURCH_INFO, LEADERSHIP } from "@/lib/constants";
 
 type ContactFormValues = {
   name: string;
@@ -166,7 +166,7 @@ export default function ContactForm() {
           <div className="grid grid-cols-2 lg:block lg:space-y-12">
             <div className="flex flex-col justify-between space-y-6">
               <div>
-                <h2 className="mb-3 text-lg font-semibold">Church Office</h2>
+                <h2 className="mb-3 text-lg">Church Office</h2>
                 <Link
                   href={`mailto:${churchEmail}`}
                   className="text-primary text-lg hover:underline"
@@ -179,7 +179,7 @@ export default function ContactForm() {
             {pastorEmail && (
               <div className="flex flex-col justify-between space-y-6">
                 <div>
-                  <h3 className="mb-3 text-lg font-semibold">{pastorTitle}</h3>
+                  <h3 className="mb-3 text-lg">{pastorTitle}</h3>
                   <Link
                     href={`mailto:${pastorEmail}`}
                     className="text-primary text-lg hover:underline"
@@ -198,7 +198,7 @@ export default function ContactForm() {
           >
             <Card className="p-8 sm:p-12">
               <div className="flex flex-col gap-4">
-                <h3 className="text-xl font-semibold">Send us a message</h3>
+                <h4>Send us a message</h4>
                 <p className="text-sm text-muted-foreground">
                   Fill out the form below and we&apos;ll get back to you as soon
                   as possible.
