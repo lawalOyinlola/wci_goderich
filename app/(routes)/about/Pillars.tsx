@@ -19,7 +19,7 @@ const Pillars = () => {
           title={title}
           subtitle={subtitle}
           description={description[0]}
-          descriptionClassName="mb-8"
+          descriptionClassName="mb-8 max-w-5xl"
           additionalText={description[1]}
         />
 

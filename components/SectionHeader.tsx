@@ -38,7 +38,12 @@ const SectionHeader = ({
       )}
       <h1 className={cn("mb-8 capitalize", titleClassName)}>{title}</h1>
       {description && (
-        <p className={cn("text-muted-foreground", descriptionClassName)}>
+        <p
+          className={cn(
+            "text-muted-foreground max-w-2xl mx-auto",
+            descriptionClassName
+          )}
+        >
           {description}
         </p>
       )}

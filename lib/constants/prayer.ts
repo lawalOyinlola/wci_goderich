@@ -29,7 +29,7 @@ function convertMidnightGroupsToPrayerPoints(
 // Each group is assigned to a specific day of the week (Group 1 = Monday, Group 2 = Tuesday, etc.)
 export const MIDNIGHT_PRAYER_GROUPS: MidnightPrayerGroups = {
   1: {
-    name: "Midnight Prayer Group 1",
+    name: "Prayer Group 1",
     description:
       "A weekly prayer program divided into rotating groups; each group is assigned a specific day of the week to pray. Group 1 meets on Mondays.",
     day: "Monday",
@@ -80,7 +80,7 @@ export const MIDNIGHT_PRAYER_GROUPS: MidnightPrayerGroups = {
     },
   },
   2: {
-    name: "Midnight Prayer Group 2",
+    name: "Prayer Group 2",
     description:
       "Part of the rotating midnight prayer program where each group intercedes on its assigned weekday. Group 2 meets on Tuesdays.",
     day: "Tuesday",
@@ -129,7 +129,7 @@ export const MIDNIGHT_PRAYER_GROUPS: MidnightPrayerGroups = {
     },
   },
   3: {
-    name: "Midnight Prayer Group 3",
+    name: "Prayer Group 3",
     description:
       "Part of the rotating midnight prayer program where each group intercedes on its assigned weekday. Group 3 meets on Wednesdays.",
     day: "Wednesday",
@@ -180,7 +180,7 @@ export const MIDNIGHT_PRAYER_GROUPS: MidnightPrayerGroups = {
     },
   },
   4: {
-    name: "Midnight Prayer Group 4",
+    name: "Prayer Group 4",
     description:
       "Part of the rotating midnight prayer program where each group intercedes on its assigned weekday. Group 4 meets on Thursdays.",
     day: "Thursday",
@@ -231,7 +231,7 @@ export const MIDNIGHT_PRAYER_GROUPS: MidnightPrayerGroups = {
     },
   },
   5: {
-    name: "Midnight Prayer Group 5",
+    name: "Prayer Group 5",
     description:
       "Part of the rotating midnight prayer program where each group intercedes on its assigned weekday. Group 5 meets on Fridays.",
     day: "Friday",
@@ -282,7 +282,7 @@ export const MIDNIGHT_PRAYER_GROUPS: MidnightPrayerGroups = {
     },
   },
   6: {
-    name: "Midnight Prayer Group 6",
+    name: "Prayer Group 6",
     description:
       "Part of the rotating midnight prayer program where each group intercedes on its assigned weekday. Group 6 meets on Saturdays.",
     day: "Saturday",
@@ -636,21 +636,10 @@ export const UNIQUE_PRAYER_SESSIONS: PrayerSession[] = [
     id: "midnight-warriors",
     name: "Midnight Prayer Warriors",
     description:
-      "A weekly prayer program divided into rotating groups; each group is assigned a specific day of the week to pray.",
-    day: "Fridays",
-    times: ["12:00 AM"],
-    location: "Church Auditorium",
-    type: "group",
-    isSpecial: true,
-  },
-  {
-    id: "dawn-intercessors",
-    name: "Dawn Intercessors",
-    description:
-      "Part of the rotating midnight prayer program where each group intercedes on its assigned weekday.",
-    day: "Tuesdays",
-    times: ["12:00 AM"],
-    location: "Online (Zoom)",
+      "Join our weekly Midnight Prayer Warriors program, where members are organized into rotating groups. Each group is assigned a specific day of the week to pray, so you'll participate just once a week on your chosen day. Feel free to join any group that fits your schedule. Each session lasts for one hour, from 12:00 AM to 1:00 AM.",
+    day: "Mondays to Fridays",
+    times: ["12:00 AM to 01:00 AM`"],
+    location: "Online (WhatsApp)",
     type: "group",
     isSpecial: true,
   },

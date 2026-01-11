@@ -4,15 +4,26 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import SectionHeader from "@/components/SectionHeader";
 import { InputField } from "@/components/form/InputField";
 import { SelectField } from "@/components/form/SelectField";
 import { TextAreaField } from "@/components/form/TextAreaField";
+import { FieldSeparator } from "@/components/ui/field";
 import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { BorderBeam } from "@/components/ui/border-beam";
 import { AnimatedButton } from "@/components/ui/animated-button";
-import { UserPlusIcon } from "@phosphor-icons/react";
-import { MIDNIGHT_PRAYER_GROUPS } from "@/lib/constants";
+import {
+  CalendarIcon,
+  ClockIcon,
+  MapPinIcon,
+  UserPlusIcon,
+  UsersIcon,
+} from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
+import {
+  MIDNIGHT_PRAYER_GROUPS,
+  UNIQUE_PRAYER_SESSIONS,
+} from "@/lib/constants";
 
 type JoinPrayerGroupFormValues = {
   name: string;
@@ -52,8 +63,13 @@ const joinGroupSchema: yup.ObjectSchema<JoinPrayerGroupFormValues> = yup.object(
 const prayerGroupOptions = Object.entries(MIDNIGHT_PRAYER_GROUPS).map(
   ([groupNumber, group]) => ({
     value: `midnight-${groupNumber}`,
-    label: `${group.name} (${group.day}s at ${group.time})`,
+    label: `Midnight ${group.name} (${group.day}s at ${group.time})`,
   })
+);
+
+// write a constant that checks the UNIQUE_PRAYER_SESSIONS and returns the one with id = midnight-warriors
+const midnightWarriorsSession = UNIQUE_PRAYER_SESSIONS.find(
+  (session) => session.id === "midnight-warriors"
 );
 
 export default function JoinPrayerGroup() {
@@ -142,140 +158,185 @@ export default function JoinPrayerGroup() {
   }
 
   return (
-    <section id="join-group" className="py-16 bg-background">
-      <div className="small-container max-w-4xl">
-        <SectionHeader
-          title="Join a Prayer Group"
-          subtitle="Connect With Fellow Believers"
-          description="Join one of our prayer groups and experience the power of corporate prayer. We have groups for different schedules and needs, including special midnight prayer groups."
-        />
-
-        <div className="mt-12 grid gap-8 lg:grid-cols-3">
-          {/* Prayer Groups Info */}
-          <div className="lg:col-span-1">
-            <Card className="p-6 sticky top-4">
-              <h3 className="text-xl font-semibold mb-4">Available Groups</h3>
-              <div className="space-y-4">
-                {Object.entries(MIDNIGHT_PRAYER_GROUPS).map(
-                  ([groupNumber, group]) => {
-                    const groupId = `midnight-${groupNumber}`;
-                    return (
-                      <div
-                        key={groupId}
-                        className={cn(
-                          "p-4 rounded-lg border transition-colors",
-                          selectedGroupId === groupId
-                            ? "border-primary bg-primary/5"
-                            : "border-gray-200 dark:border-gray-700"
-                        )}
-                      >
-                        <h4 className="font-semibold mb-1">{group.name}</h4>
-                        <p className="text-sm text-muted-foreground mb-2">
-                          {group.day} at {group.time}
-                        </p>
-                        <span className="inline-block text-xs bg-primary/10 text-primary px-2 py-1 rounded">
-                          Special Group
-                        </span>
-                        {group.maxMembers &&
-                          group.currentMembers !== undefined && (
-                            <p className="text-xs text-muted-foreground mt-2">
-                              {group.currentMembers}/{group.maxMembers} members
-                            </p>
-                          )}
-                      </div>
-                    );
-                  }
-                )}
-              </div>
-            </Card>
+    <div className="grid gap-12 lg:grid-cols-4 items-start">
+      <div className="grid min-[400px]:grid-cols-2 gap-4 lg:col-span-2">
+        <div className="mb-8 col-span-2">
+          <div className="flex items-center gap-2 mb-6">
+            <ClockIcon size={24} weight="duotone" className="text-primary" />
+            <h3 className="text-2xl font-semibold">
+              Special Midnight Prayer Groups
+            </h3>
+            <Badge variant="default" className="ml-2">
+              Weekly
+            </Badge>
           </div>
-
-          {/* Join Form */}
-          <div className="lg:col-span-2">
-            <Card className="p-8 sm:p-12">
-              {selectedGroup && (
-                <div className="mb-6 p-4 bg-primary/5 rounded-lg border border-primary/20">
-                  <h4 className="font-semibold mb-2">
-                    Selected Group: {selectedGroup.name}
-                  </h4>
-                  <p className="text-sm text-muted-foreground mb-2">
-                    {selectedGroup.description}
-                  </p>
-                  <div className="text-sm">
-                    <p>
-                      <strong>Day:</strong> {selectedGroup.day}
-                    </p>
-                    <p>
-                      <strong>Time:</strong> {selectedGroup.time}
-                    </p>
-                    <p>
-                      <strong>Location:</strong> {selectedGroup.location}
-                    </p>
-                    {selectedGroup.contactPerson && (
-                      <p>
-                        <strong>Contact:</strong> {selectedGroup.contactPerson}
-                      </p>
-                    )}
+          <div>
+            {midnightWarriorsSession && (
+              <Card
+                key={midnightWarriorsSession.id}
+                className="relative p-6 transition-all duration-300 shadow-sm hover:shadow-primary/20 hover:shadow-md overflow-hidden"
+              >
+                <BorderBeam size={200} colorFrom="var(--accent)" />
+                <p className="text-muted-foreground mb-4">
+                  {midnightWarriorsSession.description}
+                </p>
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2">
+                    <CalendarIcon size={18} className="text-primary" />
+                    <span className="text-sm font-medium">
+                      {midnightWarriorsSession.day}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <ClockIcon size={18} className="text-primary" />
+                    <div className="flex flex-wrap gap-2">
+                      {midnightWarriorsSession.times.map((time, index) => (
+                        <Badge
+                          key={index}
+                          variant="outline"
+                          className="text-xs"
+                        >
+                          {time}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <MapPinIcon size={18} className="text-primary" />
+                    <span className="text-sm">
+                      {midnightWarriorsSession.location}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <UsersIcon size={18} className="text-primary" />
+                    <span className="text-sm capitalize">
+                      {midnightWarriorsSession.type}
+                    </span>
                   </div>
                 </div>
-              )}
-
-              <form onSubmit={form.handleSubmit(onSubmit)}>
-                <div className="space-y-6">
-                  <InputField
-                    name="name"
-                    control={form.control}
-                    label="Full Name"
-                    placeholder="Enter your full name"
-                    autoComplete="name"
-                  />
-
-                  <InputField
-                    name="phone"
-                    control={form.control}
-                    label="Phone Number"
-                    type="tel"
-                    placeholder="Enter your phone number"
-                    autoComplete="tel"
-                  />
-
-                  <SelectField
-                    name="prayerGroup"
-                    control={form.control}
-                    label="Select Prayer Group"
-                    placeholder="Choose a prayer group"
-                    options={prayerGroupOptions}
-                  />
-
-                  <TextAreaField
-                    name="reason"
-                    control={form.control}
-                    label="Why do you want to join this prayer group? (Optional)"
-                    placeholder="Tell us about your desire to join..."
-                    rows={4}
-                  />
-
-                  <TextAreaField
-                    name="previousExperience"
-                    control={form.control}
-                    label="Previous Prayer Group Experience (Optional)"
-                    placeholder="Have you been part of a prayer group before? Share your experience..."
-                    rows={3}
-                  />
-
-                  <AnimatedButton
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="w-full"
-                    text={isSubmitting ? "Submitting..." : "Join Prayer Group"}
-                    icon={<UserPlusIcon />}
-                  />
-                </div>
-              </form>
-            </Card>
+              </Card>
+            )}
           </div>
         </div>
+
+        {Object.entries(MIDNIGHT_PRAYER_GROUPS).map(([groupNumber, group]) => {
+          const groupId = `midnight-${groupNumber}`;
+          return (
+            <div
+              key={groupId}
+              className={cn(
+                "p-4 rounded-lg border transition-colors",
+                selectedGroupId === groupId
+                  ? "border-primary bg-primary/5"
+                  : "border-gray-200 dark:border-gray-700"
+              )}
+            >
+              <h4 className="mb-1">{group.name}</h4>
+              <p className="text-sm text-muted-foreground mb-2">
+                {group.day}s at {group.time}
+              </p>
+
+              {group.maxMembers && group.currentMembers !== undefined && (
+                <p className="text-xs text-muted-foreground mt-2">
+                  {group.currentMembers}/{group.maxMembers} members
+                </p>
+              )}
+            </div>
+          );
+        })}
       </div>
-    </section>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="@container lg:col-span-2"
+      >
+        <Card className="p-8">
+          <div className="flex flex-col gap-4">
+            <h4>Join a Midnight Prayer Group</h4>
+            <p className="text-sm text-muted-foreground">
+              Fill out the form below so we can add you to a prayer group.
+            </p>
+          </div>
+          {/* {selectedGroup ? (
+            <div className="mb-6 p-4 bg-primary/5 rounded-lg border border-primary/20">
+              <h4 className="text-lg mb-2">Selected: {selectedGroup.name}</h4>
+              <p className="text-sm text-muted-foreground mb-2">
+                {selectedGroup.description}
+              </p>
+              <div className="text-sm">
+                <p>
+                  <strong>Day:</strong> {selectedGroup.day}
+                </p>
+                <p>
+                  <strong>Time:</strong> {selectedGroup.time}
+                </p>
+                <p>
+                  <strong>Location:</strong> {selectedGroup.location}
+                </p>
+                {selectedGroup.contactPerson && (
+                  <p>
+                    <strong>Contact:</strong> {selectedGroup.contactPerson}
+                  </p>
+                )}
+              </div>
+            </div>
+          ) : (
+            <FieldSeparator />
+          )} */}
+
+          <FieldSeparator />
+
+          <div className="space-y-6">
+            <InputField
+              name="name"
+              control={form.control}
+              label="Your Name"
+              placeholder="Enter your full name"
+              autoComplete="name"
+            />
+
+            <InputField
+              name="phone"
+              control={form.control}
+              label="Phone Number"
+              type="tel"
+              placeholder="Enter your phone number"
+              autoComplete="tel"
+            />
+
+            <SelectField
+              name="prayerGroup"
+              control={form.control}
+              label="Select Prayer Group"
+              placeholder="Choose a prayer group"
+              options={prayerGroupOptions}
+            />
+
+            <TextAreaField
+              name="reason"
+              control={form.control}
+              label="Why do you want to join this prayer group? (Optional)"
+              placeholder="Tell us about your desire to join..."
+              rows={4}
+            />
+
+            <TextAreaField
+              name="previousExperience"
+              control={form.control}
+              label="Previous Prayer Group Experience (Optional)"
+              placeholder="Have you been part of a prayer group before? Share your experience..."
+              rows={3}
+            />
+
+            <AnimatedButton
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full"
+              text={isSubmitting ? "Submitting..." : "Join Prayer Group"}
+              icon={<UserPlusIcon />}
+            />
+          </div>
+        </Card>
+      </form>
+    </div>
   );
 }
