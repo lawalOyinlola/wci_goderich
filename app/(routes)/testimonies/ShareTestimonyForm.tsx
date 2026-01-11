@@ -428,7 +428,7 @@ export default function ShareTestimonyForm() {
                   <FieldSeparator />
                   <Field orientation="responsive">
                     <FieldContent>
-                      <FieldLabel htmlFor="name">Profile Image</FieldLabel>
+                      <FieldLabel htmlFor="image">Profile Image</FieldLabel>
                       <FieldDescription>
                         Upload a photo of yourself to be displayed with your
                         testimony
@@ -437,6 +437,7 @@ export default function ShareTestimonyForm() {
 
                     <div className="flex-center">
                       <AvatarCropUploader
+                        id="image"
                         onImageChange={(blob) => {
                           setImageBlob(blob);
                           form.setValue("image", blob);

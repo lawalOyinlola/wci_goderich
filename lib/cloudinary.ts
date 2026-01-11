@@ -140,42 +140,32 @@ function extractPublicId(url: string): string | null {
  * Deletes an image from Cloudinary by URL
  * Handles the folder structure: WCI_Goderich/birthdays/filename or WCI_Goderich/testimonies/filename
  * @param imageUrl - The full URL of the image to delete
+ * @throws Error if the URL is invalid or deletion fails
  * @returns Promise with deletion result
  */
 export async function deleteImage(imageUrl: string): Promise<void> {
-  try {
-    const publicId = extractPublicId(imageUrl);
-    if (!publicId) {
-      console.error("Invalid Cloudinary URL format");
-      return;
-    }
-
-    await cloudinary.uploader.destroy(publicId, { resource_type: "image" });
-  } catch (error) {
-    console.error("Error deleting image from Cloudinary:", error);
-    // Don't throw - deletion failures shouldn't break the app
+  const publicId = extractPublicId(imageUrl);
+  if (!publicId) {
+    throw new Error("Invalid Cloudinary URL format");
   }
+
+  await cloudinary.uploader.destroy(publicId, { resource_type: "image" });
 }
 
 /**
  * Deletes a video or audio file from Cloudinary by URL
  * Note: Cloudinary uses resource_type "video" for both video and audio files
  * @param mediaUrl - The full URL of the video/audio file to delete
+ * @throws Error if the URL is invalid or deletion fails
  * @returns Promise with deletion result
  */
 export async function deleteMedia(mediaUrl: string): Promise<void> {
-  try {
-    const publicId = extractPublicId(mediaUrl);
-    if (!publicId) {
-      console.error("Invalid Cloudinary URL format");
-      return;
-    }
-
-    await cloudinary.uploader.destroy(publicId, { resource_type: "video" });
-  } catch (error) {
-    console.error("Error deleting media from Cloudinary:", error);
-    // Don't throw - deletion failures shouldn't break the app
+  const publicId = extractPublicId(mediaUrl);
+  if (!publicId) {
+    throw new Error("Invalid Cloudinary URL format");
   }
+
+  await cloudinary.uploader.destroy(publicId, { resource_type: "video" });
 }
 
 export { cloudinary };

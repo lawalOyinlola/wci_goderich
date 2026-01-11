@@ -30,7 +30,11 @@ export async function POST(request: NextRequest) {
           await deleteMedia(url);
         } else {
           // Try image first, then media
-          await deleteImage(url).catch(() => deleteMedia(url));
+          try {
+            await deleteImage(url);
+          } catch {
+            await deleteMedia(url);
+          }
         }
       } catch (error) {
         console.error(`Error deleting file ${url}:`, error);

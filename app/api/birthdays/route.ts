@@ -180,7 +180,11 @@ export async function POST(request: NextRequest) {
     if (error) {
       // Clean up orphaned image
       if (imageUrl) {
-        await deleteImage(imageUrl).catch(() => {});
+        try {
+          await deleteImage(imageUrl);
+        } catch (deleteError) {
+          console.error("Error deleting image during cleanup:", deleteError);
+        }
       }
       console.error("Error creating birthday:", error);
       return NextResponse.json(

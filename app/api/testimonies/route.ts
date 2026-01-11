@@ -183,13 +183,25 @@ export async function POST(request: NextRequest) {
       // Clean up uploaded files if database insert fails
       const { deleteImage, deleteMedia } = await import("@/lib/cloudinary");
       if (image) {
-        await deleteImage(image).catch(() => {});
+        try {
+          await deleteImage(image);
+        } catch (deleteError) {
+          console.error("Error deleting image during cleanup:", deleteError);
+        }
       }
       if (videoUrl) {
-        await deleteMedia(videoUrl).catch(() => {});
+        try {
+          await deleteMedia(videoUrl);
+        } catch (deleteError) {
+          console.error("Error deleting video during cleanup:", deleteError);
+        }
       }
       if (audioUrl) {
-        await deleteMedia(audioUrl).catch(() => {});
+        try {
+          await deleteMedia(audioUrl);
+        } catch (deleteError) {
+          console.error("Error deleting audio during cleanup:", deleteError);
+        }
       }
 
       console.error("Error creating testimony:", error);

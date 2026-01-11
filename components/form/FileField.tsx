@@ -1,12 +1,7 @@
 "use client";
 
 import { Controller, Control, FieldValues, Path } from "react-hook-form";
-import {
-  Field,
-  FieldError,
-  FieldLabel,
-  FieldDescription,
-} from "@/components/ui/field";
+import { FieldError } from "@/components/ui/field";
 import { SingleFileUpload } from "./SingleFileUpload";
 import { cn } from "@/lib/utils";
 
@@ -17,7 +12,6 @@ interface FileFieldProps<T extends FieldValues> {
   accept?: string;
   id?: string;
   description?: string;
-  orientation?: "vertical" | "horizontal" | "responsive";
   disabled?: boolean;
   className?: string;
   showError?: boolean;
@@ -32,15 +26,12 @@ export function FileField<T extends FieldValues>({
   accept,
   id,
   description,
-  orientation = "vertical",
   disabled,
   className,
   showError = true,
   uploadProgress,
   maxSize,
 }: FileFieldProps<T>) {
-  const fieldId = id || `field-${name}`;
-
   return (
     <Controller
       name={name}

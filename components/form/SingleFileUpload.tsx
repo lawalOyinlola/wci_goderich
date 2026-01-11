@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState, useCallback } from "react";
+import { Button } from "@/components/ui/button";
 import {
   FileIcon,
   VideoIcon,
@@ -9,9 +10,7 @@ import {
   XIcon,
   TrashIcon,
 } from "@phosphor-icons/react";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import { formatBytes } from "@/lib/utils";
+import { cn, formatBytes } from "@/lib/utils";
 
 interface SingleFileUploadProps {
   file: File | null;

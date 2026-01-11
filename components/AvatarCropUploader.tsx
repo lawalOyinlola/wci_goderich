@@ -31,6 +31,7 @@ type Props = {
   className?: string;
   resetToken?: number;
   disabled?: boolean;
+  id?: string;
 };
 
 export default function AvatarCropUploader({
@@ -38,6 +39,7 @@ export default function AvatarCropUploader({
   className,
   resetToken,
   disabled = false,
+  id,
 }: Props) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [zoom, setZoom] = useState(1);
@@ -193,6 +195,7 @@ export default function AvatarCropUploader({
     <div className={className}>
       <input
         ref={fileInputRef}
+        id={id}
         type="file"
         accept="image/*"
         onChange={handleFileChange}
