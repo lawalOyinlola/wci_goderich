@@ -194,7 +194,7 @@ export default function PrayerRequestForm() {
           <div className="grid grid-cols-2 lg:block lg:space-y-12">
             <div className="flex flex-col justify-between space-y-6">
               <div>
-                <h2 className="mb-3 text-lg font-semibold">Church Office</h2>
+                <h2 className="mb-3 text-lg">Church Office</h2>
                 <Link
                   href={`mailto:${churchEmail}`}
                   className="text-primary text-lg hover:underline"
@@ -205,7 +205,7 @@ export default function PrayerRequestForm() {
               </div>
             </div>
             <div>
-              <h2 className="mb-3 text-lg font-semibold">Church Premises</h2>
+              <h2 className="mb-3 text-lg">Church Premises</h2>
               {/* NOTE: Fix to open directions in Google Maps */}
               <p className="text-primary text-lg hover:underline">
                 {churchAddress}
@@ -222,9 +222,7 @@ export default function PrayerRequestForm() {
           >
             <Card className="p-8 sm:p-12">
               <div className="flex flex-col gap-4">
-                <h3 className="text-xl font-semibold">
-                  Send us your prayer request
-                </h3>
+                <h4>Send us your prayer request</h4>
                 <p className="text-sm text-muted-foreground">
                   Fill out the form below and our prayer team will intercede on
                   your behalf.

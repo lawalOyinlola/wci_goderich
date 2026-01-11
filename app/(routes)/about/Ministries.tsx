@@ -19,6 +19,7 @@ export default function Ministries() {
           title={title}
           subtitle={subtitle}
           description={description}
+          descriptionClassName="max-w-5xl"
         />
 
         <Image

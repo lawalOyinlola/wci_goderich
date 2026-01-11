@@ -126,7 +126,7 @@ export function TestimonialCarousel({
   return (
     <div
       className={cn(
-        "relative flex flex-col items-center justify-center min-h-[500px] px-4",
+        "relative flex flex-col items-center justify-center min-h-[400px]",
         className
       )}
       onMouseEnter={() => setIsHovered(true)}
@@ -146,7 +146,7 @@ export function TestimonialCarousel({
       )}
 
       {/* Carousel Container with Stacked Cards */}
-      <div className="relative w-full max-w-4xl h-[500px] md:h-[550px] flex items-center justify-center overflow-hidden">
+      <div className="relative w-full max-w-4xl h-[500px] flex items-center justify-center overflow-hidden">
         {/* Visible Stacked Cards */}
         <div className="relative w-full h-full flex items-center justify-center">
           {testimonials.map((testimonial, index) => {
