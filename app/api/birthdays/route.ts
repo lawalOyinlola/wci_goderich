@@ -4,8 +4,6 @@ import { uploadImage, deleteImage } from "@/lib/cloudinary";
 import { checkRateLimit } from "@/lib/utils/rate-limit";
 import { checkAuth } from "@/lib/utils/auth";
 
-export const runtime = "nodejs";
-
 // GET - Fetch birthdays
 export async function GET(request: NextRequest) {
   try {
@@ -79,7 +77,7 @@ export async function POST(request: NextRequest) {
     }
 
     const formData = await request.formData();
-    
+
     // Extract CAPTCHA token from form data for authentication
     const hcaptchaToken = formData.get("hcaptchaToken") as string | null;
     const recaptchaToken = formData.get("recaptchaToken") as string | null;

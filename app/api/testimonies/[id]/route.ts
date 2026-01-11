@@ -3,8 +3,6 @@ import { supabaseServer } from "@/lib/supabase/server";
 import { transformTestimony } from "@/lib/data/testimonies";
 import { isValidUrl } from "@/lib/utils";
 
-export const runtime = "nodejs";
-
 // GET - Fetch single testimony by ID
 export async function GET(
   request: NextRequest,

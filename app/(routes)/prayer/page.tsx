@@ -1,9 +1,11 @@
+import { Suspense } from "react";
 import Hero from "./Hero";
 import PrayerInspiration from "./PrayerInspiration";
 import PrayerRequestForm from "./PrayerRequestForm";
 import PrayerPoints from "./PrayerPoints";
 import PrayerSessions from "./PrayerSessions";
 import AnsweredPrayers from "./AnsweredPrayers";
+import { AnsweredPrayersSkeleton } from "./AnsweredPrayersSkeleton";
 import CtaSection from "@/components/CtaSection";
 
 interface PrayerPageProps {
@@ -21,14 +23,17 @@ export default async function PrayerPage({ searchParams }: PrayerPageProps) {
       <PrayerRequestForm />
       <PrayerPoints initialCategory={categoryParam} />
       <PrayerSessions />
-      <AnsweredPrayers />
+      <Suspense fallback={<AnsweredPrayersSkeleton />}>
+        <AnsweredPrayers />
+      </Suspense>
+
       <CtaSection
-        title="Join Us in Prayer"
-        description="Prayer is powerful and effective. Join our prayer community and experience the power of corporate prayer."
-        mainText="Whether you're looking for a prayer group, want to submit a prayer request, or need prayer points for your personal prayer time, we're here to support you in your prayer journey."
+        title="Be Encouraged by Others"
+        description="Read more testimonies from our church family and see how God is moving in our community."
+        mainText="Every testimony is a testament to God's faithfulness. Explore more stories of transformation, healing, and breakthrough from our church family."
         buttons={[
-          { text: "Join a Prayer Group", href: "#join-group" },
-          { text: "Submit Prayer Request", href: "#prayer-request" },
+          { text: "View All Testimonies", href: "#" },
+          { text: "Learn More About Us", href: "/about" },
         ]}
       />
     </>

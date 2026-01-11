@@ -196,3 +196,21 @@ export const TESTIMONIES = {
     },
   ] satisfies Testimony[],
 };
+
+export const TESTIMONY_CATEGORIES = [
+  { value: "healing-breakthrough", label: "Healing & Breakthrough" },
+  { value: "prayer", label: "Prayer" },
+  { value: "miracles", label: "Miracles" },
+  { value: "transformation", label: "Transformation" },
+  { value: "salvation", label: "Salvation" },
+  { value: "financial-breakthrough", label: "Financial Breakthrough" },
+  { value: "healing-restoration", label: "Healing & Restoration" },
+  { value: "faith-prosperity", label: "Faith & Prosperity" },
+  { value: "ministry", label: "Ministry" },
+  { value: "leadership", label: "Leadership" },
+  { value: "family", label: "Family" },
+  { value: "business-prosperity", label: "Business & Prosperity" },
+  { value: "deliverance", label: "Deliverance" },
+  { value: "prophetic", label: "Prophetic" },
+  { value: "other", label: "Other" },
+] as const;

@@ -67,7 +67,7 @@ const prayerGroupOptions = Object.entries(MIDNIGHT_PRAYER_GROUPS).map(
   })
 );
 
-// write a constant that checks the UNIQUE_PRAYER_SESSIONS and returns the one with id = midnight-warriors
+// Extract the midnight-warriors session for special display
 const midnightWarriorsSession = UNIQUE_PRAYER_SESSIONS.find(
   (session) => session.id === "midnight-warriors"
 );
@@ -89,11 +89,6 @@ export default function JoinPrayerGroup() {
   });
 
   const selectedGroupId = form.watch("prayerGroup");
-  const selectedGroup = selectedGroupId
-    ? Object.entries(MIDNIGHT_PRAYER_GROUPS).find(
-        ([groupNumber]) => `midnight-${groupNumber}` === selectedGroupId
-      )?.[1]
-    : undefined;
 
   const onSubmit = async (data: JoinPrayerGroupFormValues) => {
     setIsSubmitting(true);
@@ -163,9 +158,7 @@ export default function JoinPrayerGroup() {
         <div className="mb-8 col-span-2">
           <div className="flex items-center gap-2 mb-6">
             <ClockIcon size={24} weight="duotone" className="text-primary" />
-            <h3 className="text-2xl font-semibold">
-              Special Midnight Prayer Groups
-            </h3>
+            <h3>Special Midnight Prayer Groups</h3>
             <Badge variant="default" className="ml-2">
               Weekly
             </Badge>
@@ -256,32 +249,6 @@ export default function JoinPrayerGroup() {
               Fill out the form below so we can add you to a prayer group.
             </p>
           </div>
-          {/* {selectedGroup ? (
-            <div className="mb-6 p-4 bg-primary/5 rounded-lg border border-primary/20">
-              <h4 className="text-lg mb-2">Selected: {selectedGroup.name}</h4>
-              <p className="text-sm text-muted-foreground mb-2">
-                {selectedGroup.description}
-              </p>
-              <div className="text-sm">
-                <p>
-                  <strong>Day:</strong> {selectedGroup.day}
-                </p>
-                <p>
-                  <strong>Time:</strong> {selectedGroup.time}
-                </p>
-                <p>
-                  <strong>Location:</strong> {selectedGroup.location}
-                </p>
-                {selectedGroup.contactPerson && (
-                  <p>
-                    <strong>Contact:</strong> {selectedGroup.contactPerson}
-                  </p>
-                )}
-              </div>
-            </div>
-          ) : (
-            <FieldSeparator />
-          )} */}
 
           <FieldSeparator />
 

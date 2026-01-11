@@ -109,6 +109,34 @@ export async function uploadImage(
 }
 
 /**
+ * Extracts public_id from a Cloudinary URL
+ * @param url - The Cloudinary URL
+ * @returns The public_id or null if invalid
+ */
+function extractPublicId(url: string): string | null {
+  const urlParts = url.split("/");
+  const uploadIndex = urlParts.findIndex((part) => part === "upload");
+
+  if (uploadIndex === -1 || uploadIndex >= urlParts.length - 1) {
+    return null;
+  }
+
+  // Get the parts after "upload" (skip version if present)
+  const afterUpload = urlParts.slice(uploadIndex + 1);
+
+  // Skip version number if present (starts with 'v' followed by digits)
+  const startIndex = afterUpload[0]?.match(/^v\d+$/) ? 1 : 0;
+  const pathParts = afterUpload.slice(startIndex);
+
+  // Join all remaining parts (folder/filename) to get the full public_id
+  // Remove file extension
+  const publicIdWithExt = pathParts.join("/");
+  const publicId = publicIdWithExt.replace(/\.[^.]+$/, "");
+
+  return publicId;
+}
+
+/**
  * Deletes an image from Cloudinary by URL
  * Handles the folder structure: WCI_Goderich/birthdays/filename or WCI_Goderich/testimonies/filename
  * @param imageUrl - The full URL of the image to delete
@@ -116,31 +144,36 @@ export async function uploadImage(
  */
 export async function deleteImage(imageUrl: string): Promise<void> {
   try {
-    // Extract public_id from Cloudinary URL
-    // URL format: https://res.cloudinary.com/[cloud_name]/image/upload/v[version]/[folder]/[filename]
-    const urlParts = imageUrl.split("/");
-    const uploadIndex = urlParts.findIndex((part) => part === "upload");
-
-    if (uploadIndex === -1 || uploadIndex >= urlParts.length - 1) {
+    const publicId = extractPublicId(imageUrl);
+    if (!publicId) {
       console.error("Invalid Cloudinary URL format");
       return;
     }
 
-    // Get the parts after "upload" (skip version if present)
-    const afterUpload = urlParts.slice(uploadIndex + 1);
-
-    // Skip version number if present (starts with 'v' followed by digits)
-    const startIndex = afterUpload[0]?.match(/^v\d+$/) ? 1 : 0;
-    const pathParts = afterUpload.slice(startIndex);
-
-    // Join all remaining parts (folder/filename) to get the full public_id
-    // Remove file extension
-    const publicIdWithExt = pathParts.join("/");
-    const publicId = publicIdWithExt.replace(/\.[^.]+$/, "");
-
-    await cloudinary.uploader.destroy(publicId);
+    await cloudinary.uploader.destroy(publicId, { resource_type: "image" });
   } catch (error) {
     console.error("Error deleting image from Cloudinary:", error);
+    // Don't throw - deletion failures shouldn't break the app
+  }
+}
+
+/**
+ * Deletes a video or audio file from Cloudinary by URL
+ * Note: Cloudinary uses resource_type "video" for both video and audio files
+ * @param mediaUrl - The full URL of the video/audio file to delete
+ * @returns Promise with deletion result
+ */
+export async function deleteMedia(mediaUrl: string): Promise<void> {
+  try {
+    const publicId = extractPublicId(mediaUrl);
+    if (!publicId) {
+      console.error("Invalid Cloudinary URL format");
+      return;
+    }
+
+    await cloudinary.uploader.destroy(publicId, { resource_type: "video" });
+  } catch (error) {
+    console.error("Error deleting media from Cloudinary:", error);
     // Don't throw - deletion failures shouldn't break the app
   }
 }

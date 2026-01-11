@@ -24,8 +24,8 @@ export default function HeroTemplate({
           className
         )}
       >
-        <div className="bg-background/50 absolute inset-y-0 h-[200%] w-1/2 rounded-r-full backdrop-blur-[2px]" />
-        <div className="bg-background/50 absolute inset-y-0 w-4/7 rounded-r-full backdrop-blur-[2px]" />
+        <div className="bg-background/50 absolute inset-y-0 h-[200%] w-full md:w-1/2 rounded-r-full backdrop-blur-[2px]" />
+        <div className="bg-background/50 absolute inset-y-0 w-full lg:w-4/7 rounded-r-full backdrop-blur-[2px]" />
         <section>
           <div className="pb-24 pt-12">
             <div className="relative small-container flex flex-col lg:flex-center">

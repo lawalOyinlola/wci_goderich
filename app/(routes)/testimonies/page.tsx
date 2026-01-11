@@ -1,5 +1,6 @@
 import Hero from "./Hero";
 import TestimoniesContent from "./TestimoniesContent";
+import ShareTestimonyForm from "./ShareTestimonyForm";
 import CtaSection from "@/components/CtaSection";
 import { getTestimoniesServer } from "@/lib/data/testimonies.server";
 
@@ -20,14 +21,15 @@ export default async function TestimoniesPage({
     <>
       <Hero />
       <TestimoniesContent testimonies={testimonies} initialType={typeParam} />
+      <ShareTestimonyForm />
 
       <CtaSection
-        title="Share Your Testimony"
-        description="Have you experienced God's faithfulness in your life? We'd love to hear about it and share it with our church family."
-        mainText="Your testimony can be a source of encouragement, hope and inspiration for others and it brings glory to God. Whether it's a story of healing, provision, salvation, or any other blessing, every testimony matters."
+        title="Join Us in Prayer"
+        description="Prayer is powerful and effective. Join our prayer community and experience the power of praying in agreement."
+        mainText="Whether you're looking for a prayer group, want to submit a prayer request, or need prayer points for your personal prayer time, we're here to support you in your prayer journey."
         buttons={[
-          { text: "Share Your Story", href: "/contact-us" },
-          { text: "Learn More", href: "/about" },
+          { text: "Join a Prayer Group", href: "/services" },
+          { text: "Submit Prayer Request", href: "#prayer-request" },
         ]}
       />
     </>

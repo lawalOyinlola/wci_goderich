@@ -638,7 +638,7 @@ export const UNIQUE_PRAYER_SESSIONS: PrayerSession[] = [
     description:
       "Join our weekly Midnight Prayer Warriors program, where members are organized into rotating groups. Each group is assigned a specific day of the week to pray, so you'll participate just once a week on your chosen day. Feel free to join any group that fits your schedule. Each session lasts for one hour, from 12:00 AM to 1:00 AM.",
     day: "Mondays to Fridays",
-    times: ["12:00 AM to 01:00 AM`"],
+    times: ["12:00 AM to 01:00 AM"],
     location: "Online (WhatsApp)",
     type: "group",
     isSpecial: true,

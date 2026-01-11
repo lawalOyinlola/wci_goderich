@@ -1,11 +1,11 @@
 "use client";
 
+import JoinPrayerGroup from "./JoinPrayerGroup";
 import SectionHeader from "@/components/SectionHeader";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ClockIcon, MapPinIcon, CalendarIcon } from "@phosphor-icons/react";
 import { PRAYER_SESSIONS } from "@/lib/constants";
-import JoinPrayerGroup from "./JoinPrayerGroup";
 
 export default function PrayerSessions() {
   const regularSessions = PRAYER_SESSIONS.filter(
@@ -24,9 +24,10 @@ export default function PrayerSessions() {
           description="Find a prayer session that fits your schedule. We have various prayer groups and services throughout the week, including special midnight prayer groups."
         />
         <JoinPrayerGroup />
+
         {/* Regular Prayer Sessions (including adapted services) */}
         <div className="mt-12">
-          <h3 className="text-2xl font-semibold mb-6">All Prayer Sessions</h3>
+          <h3 className="mb-6">All Prayer Sessions</h3>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {regularSessions.map((session) => (
               <Card
@@ -34,7 +35,7 @@ export default function PrayerSessions() {
                 className="p-6 transition-all duration-300 shadow-sm hover:shadow-primary/20 hover:shadow-md overflow-hidden"
               >
                 <div className="flex items-start justify-between mb-4">
-                  <h4 className="text-lg font-semibold">{session.name}</h4>
+                  <h4 className="text-lg">{session.name}</h4>
                   <Badge variant="outline" className="capitalize">
                     {session.type}
                   </Badge>
