@@ -211,6 +211,5 @@ export const TESTIMONY_CATEGORIES = [
   { value: "Leadership", label: "Leadership" },
   { value: "Ministry", label: "Ministry" },
   { value: "Transformation", label: "Transformation" },
-  { value: "deliverance", label: "Deliverance" },
   { value: "Other", label: "Other" },
 ] as const;

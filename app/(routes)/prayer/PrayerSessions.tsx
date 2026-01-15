@@ -34,13 +34,13 @@ export default function PrayerSessions() {
                 key={session.id}
                 className="p-6 transition-all duration-300 shadow-sm hover:shadow-primary/20 hover:shadow-md overflow-hidden"
               >
-                <div className="flex items-start justify-between mb-4">
+                <div className="flex items-start justify-between">
                   <h4 className="text-lg">{session.name}</h4>
                   <Badge variant="outline" className="capitalize">
                     {session.type}
                   </Badge>
                 </div>
-                <p className="text-sm text-muted-foreground mb-4">
+                <p className="text-sm text-muted-foreground">
                   {session.description}
                 </p>
                 <div className="space-y-2">

@@ -232,3 +232,51 @@ CREATE POLICY "Allow service role delete on prayer_group_members"
   ON prayer_group_members FOR DELETE
   USING (auth.role() = 'service_role');
 
+-- Gallery Table
+CREATE TABLE IF NOT EXISTS gallery (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  title TEXT NOT NULL,
+  description TEXT,
+  image_url TEXT NOT NULL, -- Cloudinary URL
+  alt_text TEXT NOT NULL,
+  orientation TEXT NOT NULL CHECK (orientation IN ('portrait', 'landscape', 'square')),
+  category TEXT,
+  featured BOOLEAN DEFAULT false,
+  display_order INTEGER DEFAULT 0,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Indexes for gallery
+CREATE INDEX IF NOT EXISTS idx_gallery_orientation ON gallery(orientation);
+CREATE INDEX IF NOT EXISTS idx_gallery_featured ON gallery(featured);
+CREATE INDEX IF NOT EXISTS idx_gallery_category ON gallery(category);
+CREATE INDEX IF NOT EXISTS idx_gallery_display_order ON gallery(display_order DESC, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_gallery_created_at ON gallery(created_at DESC);
+
+-- Trigger to automatically update updated_at for gallery
+CREATE TRIGGER update_gallery_updated_at 
+  BEFORE UPDATE ON gallery 
+  FOR EACH ROW 
+  EXECUTE FUNCTION update_updated_at_column();
+
+-- Enable Row Level Security (RLS) for gallery
+ALTER TABLE gallery ENABLE ROW LEVEL SECURITY;
+
+-- Policies for gallery: Allow public read, restrict insert/update/delete to service role
+CREATE POLICY "Allow public read access on gallery"
+  ON gallery FOR SELECT
+  USING (true);
+
+CREATE POLICY "Allow service role insert on gallery"
+  ON gallery FOR INSERT
+  WITH CHECK (auth.role() = 'service_role');
+
+CREATE POLICY "Allow service role update on gallery"
+  ON gallery FOR UPDATE
+  USING (auth.role() = 'service_role')
+  WITH CHECK (auth.role() = 'service_role');
+
+CREATE POLICY "Allow service role delete on gallery"
+  ON gallery FOR DELETE
+  USING (auth.role() = 'service_role');

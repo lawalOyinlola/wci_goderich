@@ -70,6 +70,7 @@ const subjectOptions = [
   { value: "visitor", label: "New Visitor Information" },
   { value: "ministry", label: "Ministry Information" },
   { value: "event", label: "Event Information" },
+  { value: "gallery", label: "Gallery/Picture Upload" },
   { value: "donation", label: "Donation Inquiry" },
   { value: "counseling", label: "Pastoral Counseling" },
   { value: "other", label: "Other" },
