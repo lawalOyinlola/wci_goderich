@@ -120,7 +120,7 @@ export async function POST(request: NextRequest) {
     const {
       name,
       role,
-      image, // Should be a Cloudinary URL (uploaded separately)
+      image, // Should be a Cloudinary URL (uploaded separately, optional)
       testimony,
       category,
       date,
@@ -132,12 +132,23 @@ export async function POST(request: NextRequest) {
     } = body;
 
     // Validation
-    if (!name || !role || !image || !testimony || !category || !date || !type) {
+    if (!testimony || !category || !date || !type) {
       return NextResponse.json(
-        { error: "Missing required fields" },
+        {
+          error:
+            "Missing required fields: testimony, category, date, and type are required",
+        },
         { status: 400 }
       );
     }
+
+    // Use default values for optional fields
+    // Database requires NOT NULL, so provide defaults
+    const submissionName = (name && name.trim()) || "Anonymous";
+    const submissionRole = (role && role.trim()) || "";
+    // For image, use empty string if not provided (database allows empty strings)
+    // You may want to use a default placeholder image URL instead
+    const submissionImage = image || "";
 
     if (!["written", "video", "audio"].includes(type)) {
       return NextResponse.json(
@@ -164,9 +175,9 @@ export async function POST(request: NextRequest) {
     const { data, error } = await supabaseServer
       .from("testimonies")
       .insert({
-        name: name.trim(),
-        role: role.trim(),
-        image,
+        name: submissionName.trim(),
+        role: submissionRole.trim(),
+        image: submissionImage,
         testimony: testimony.trim(),
         category: category.trim(),
         date,
@@ -182,9 +193,9 @@ export async function POST(request: NextRequest) {
     if (error) {
       // Clean up uploaded files if database insert fails
       const { deleteImage, deleteMedia } = await import("@/lib/cloudinary");
-      if (image) {
+      if (submissionImage) {
         try {
-          await deleteImage(image);
+          await deleteImage(submissionImage);
         } catch (deleteError) {
           console.error("Error deleting image during cleanup:", deleteError);
         }

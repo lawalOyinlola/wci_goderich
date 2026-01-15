@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { deleteImage, deleteMedia } from "@/lib/cloudinary";
+import { checkRateLimit } from "@/lib/utils/rate-limit";
 
 /**
  * POST /api/upload/cleanup
@@ -7,6 +8,15 @@ import { deleteImage, deleteMedia } from "@/lib/cloudinary";
  * Body: { files: string[] } - Array of Cloudinary URLs to delete
  */
 export async function POST(request: NextRequest) {
+  // Add rate limiting to prevent abuse
+  const rateLimitResult = checkRateLimit(request, {
+    maxRequests: 10,
+    windowMs: 60 * 1000, // 1 minute
+  });
+
+  if (!rateLimitResult.allowed) {
+    return rateLimitResult.response!;
+  }
   try {
     const body = await request.json();
     const { files } = body;

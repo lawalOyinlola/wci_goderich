@@ -1,14 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
+import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import SectionHeader from "@/components/SectionHeader";
+import AvatarCropUploader from "@/components/AvatarCropUploader";
 import { InputField } from "@/components/form/InputField";
 import { SelectField } from "@/components/form/SelectField";
 import { TextAreaField } from "@/components/form/TextAreaField";
 import { FileField } from "@/components/form/FileField";
+import { CheckboxField } from "@/components/form/CheckboxField";
 import { Card } from "@/components/ui/card";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import {
@@ -22,12 +25,10 @@ import {
 } from "@/components/ui/field";
 import { PaperPlaneTiltIcon } from "@phosphor-icons/react";
 import { CHURCH_INFO, TESTIMONY_CATEGORIES } from "@/lib/constants";
-import AvatarCropUploader from "@/components/AvatarCropUploader";
-import Link from "next/link";
 
 type TestimonyFormValues = {
-  name: string;
-  role: string;
+  name?: string;
+  role?: string;
   image: Blob | null;
   type: "written" | "video" | "audio";
   testimony?: string;
@@ -35,27 +36,35 @@ type TestimonyFormValues = {
   date: string;
   videoFile?: File | null;
   audioFile?: File | null;
+  isAnonymous: boolean;
 };
 
 const testimonySchema: yup.ObjectSchema<TestimonyFormValues> = yup.object({
   name: yup
     .string()
-    .required("Name is required")
-    .min(2, "Name must be at least 2 characters")
-    .max(100, "Name must not exceed 100 characters"),
+    .optional()
+    .when("isAnonymous", {
+      is: false,
+      then: (schema) =>
+        schema
+          .required("Name is required when not submitting anonymously")
+          .min(2, "Name must be at least 2 characters")
+          .max(100, "Name must not exceed 100 characters"),
+      otherwise: (schema) => schema.optional(),
+    }),
   role: yup
     .string()
-    .required("Role is required")
-    .min(2, "Role must be at least 2 characters")
-    .max(100, "Role must not exceed 100 characters"),
-  image: yup
-    .mixed()
-    .required("Profile image is required")
-    .test(
-      "is-blob",
-      "Please upload a profile image",
-      (value) => value !== null && value !== undefined
-    ),
+    .optional()
+    .when("isAnonymous", {
+      is: false,
+      then: (schema) =>
+        schema
+          .required("Role is required when not submitting anonymously")
+          .min(2, "Role must be at least 2 characters")
+          .max(100, "Role must not exceed 100 characters"),
+      otherwise: (schema) => schema.optional(),
+    }),
+  image: yup.mixed().nullable().optional(),
   type: yup
     .string()
     .oneOf(["written", "video", "audio"], "Invalid testimony type")
@@ -89,6 +98,7 @@ const testimonySchema: yup.ObjectSchema<TestimonyFormValues> = yup.object({
         schema.required("Audio file is required for audio testimonies"),
       otherwise: (schema) => schema.nullable(),
     }),
+  isAnonymous: yup.boolean().default(false),
 }) as yup.ObjectSchema<TestimonyFormValues>;
 
 const typeOptions = [
@@ -127,11 +137,21 @@ export default function ShareTestimonyForm() {
       date: new Date().toISOString().split("T")[0],
       videoFile: null,
       audioFile: null,
+      isAnonymous: false,
     },
     mode: "onTouched",
   });
 
   const testimonyType = form.watch("type");
+  const isAnonymous = form.watch("isAnonymous");
+
+  // Clear name/role errors when anonymous is checked
+  const previousIsAnonymous = useRef(isAnonymous);
+  if (isAnonymous && !previousIsAnonymous.current) {
+    form.clearErrors("name");
+    form.clearErrors("role");
+  }
+  previousIsAnonymous.current = isAnonymous;
 
   const uploadFileWithProgress = async (
     file: File,
@@ -153,12 +173,16 @@ export default function ShareTestimonyForm() {
       });
 
       xhr.addEventListener("load", () => {
-        if (xhr.status === 200) {
-          const response = JSON.parse(xhr.responseText);
-          resolve(response.url);
-        } else {
-          const error = JSON.parse(xhr.responseText);
-          reject(new Error(error.error || "Upload failed"));
+        try {
+          if (xhr.status === 200) {
+            const response = JSON.parse(xhr.responseText);
+            resolve(response.url);
+          } else {
+            const error = JSON.parse(xhr.responseText);
+            reject(new Error(error.error || "Upload failed"));
+          }
+        } catch {
+          reject(new Error(`Upload failed with status ${xhr.status}`));
         }
       });
 
@@ -166,7 +190,12 @@ export default function ShareTestimonyForm() {
         reject(new Error("Upload failed"));
       });
 
+      xhr.addEventListener("timeout", () => {
+        reject(new Error("Upload timed out"));
+      });
+
       xhr.open("POST", "/api/upload/media");
+      xhr.timeout = 300000; // 5 minute timeout for large uploads
       xhr.send(formData);
     });
   };
@@ -195,14 +224,6 @@ export default function ShareTestimonyForm() {
   };
 
   const onSubmit = async (data: TestimonyFormValues) => {
-    if (!imageBlob) {
-      form.setError("image", {
-        type: "manual",
-        message: "Please upload a profile image",
-      });
-      return;
-    }
-
     setIsSubmitting(true);
     setUploadProgress(0);
 
@@ -210,11 +231,16 @@ export default function ShareTestimonyForm() {
     const uploadedFiles: string[] = [];
 
     try {
-      // Upload profile image (0-20%)
-      setUploadProgress(5);
-      const imageUrl = await uploadImage(imageBlob);
-      uploadedFiles.push(imageUrl);
-      setUploadProgress(20);
+      // Upload profile image if provided (0-20%)
+      let imageUrl: string | null = null;
+      if (imageBlob) {
+        setUploadProgress(5);
+        imageUrl = await uploadImage(imageBlob);
+        uploadedFiles.push(imageUrl);
+        setUploadProgress(20);
+      } else {
+        setUploadProgress(20);
+      }
 
       // Upload media file if needed (20-70%)
       let videoUrl: string | null = null;
@@ -253,6 +279,12 @@ export default function ShareTestimonyForm() {
           ? data.testimony
           : data.testimony || "No description provided";
 
+      // Use "Anonymous" for name/role if submitting anonymously
+      const submissionName = data.isAnonymous
+        ? "Anonymous"
+        : data.name || "Anonymous";
+      const submissionRole = data.isAnonymous ? "" : data.role || "";
+
       // Submit testimony
       const response = await fetch("/api/testimonies", {
         method: "POST",
@@ -260,8 +292,8 @@ export default function ShareTestimonyForm() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          name: data.name,
-          role: data.role,
+          name: submissionName,
+          role: submissionRole,
           image: imageUrl,
           testimony: testimonyText,
           category: data.category,
@@ -402,8 +434,6 @@ export default function ShareTestimonyForm() {
           >
             <Card className="p-8">
               <div className="space-y-6">
-                {/* <div className="grid gap-6 md:grid-cols-2"> */}
-
                 <FieldGroup>
                   <FieldGroup className="grid gap-6 md:grid-cols-2">
                     <InputField
@@ -428,7 +458,9 @@ export default function ShareTestimonyForm() {
                   <FieldSeparator />
                   <Field orientation="responsive">
                     <FieldContent>
-                      <FieldLabel htmlFor="image">Profile Image</FieldLabel>
+                      <FieldLabel htmlFor="image">
+                        Profile Image (Optional)
+                      </FieldLabel>
                       <FieldDescription>
                         Upload a photo of yourself to be displayed with your
                         testimony
@@ -540,6 +572,14 @@ export default function ShareTestimonyForm() {
                     />
                   </FieldGroup>
                 </FieldSet>
+
+                <CheckboxField
+                  name="isAnonymous"
+                  control={form.control}
+                  label="Submit anonymously"
+                  description="Your name and role will not be displayed publicly"
+                  disabled={isSubmitting}
+                />
 
                 <AnimatedButton
                   type="submit"

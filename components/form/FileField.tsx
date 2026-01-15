@@ -10,7 +10,6 @@ interface FileFieldProps<T extends FieldValues> {
   control: Control<T>;
   label?: string;
   accept?: string;
-  id?: string;
   description?: string;
   disabled?: boolean;
   className?: string;
@@ -24,7 +23,6 @@ export function FileField<T extends FieldValues>({
   control,
   label,
   accept,
-  id,
   description,
   disabled,
   className,

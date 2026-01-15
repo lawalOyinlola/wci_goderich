@@ -28,3 +28,13 @@ export type {
   PrayerPoint,
   PrayerSession,
 } from "./prayer";
+
+// Gallery types
+export type {
+  GalleryOrientation,
+  GalleryImage,
+  PaginationMeta,
+  PaginatedGalleryResponse,
+  GalleryFilters,
+  DatabaseGalleryImage,
+} from "./gallery";

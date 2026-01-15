@@ -114,7 +114,7 @@ export default function MonthlyBirthdaysSection({
     // @ts-expect-error - canvas-confetti types
     const confetti = (await import("canvas-confetti")).default;
 
-    const duration = 3000;
+    const duration = 4000;
     const animationEnd = Date.now() + duration;
     const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
 
@@ -193,7 +193,7 @@ export default function MonthlyBirthdaysSection({
           setTimeout(() => {
             setShowCelebration(false);
             setCelebrantName("");
-          }, 2000);
+          }, 3000);
         }, 500);
       } catch (error) {
         console.error("Error submitting birthday:", error);
@@ -220,7 +220,7 @@ export default function MonthlyBirthdaysSection({
               <p>Birthdays</p>
               <Separator className="shrink sm:w-40!" />
             </div>
-            <h1 className="mb-8">Loading...</h1>
+            <h1 className="mb-8">XOXOXOXO...</h1>
           </div>
         </div>
       </section>
@@ -237,7 +237,9 @@ export default function MonthlyBirthdaysSection({
               <h2 className="text-4xl md:text-6xl font-bold">
                 🎉 Happy Birthday!
               </h2>
-              <p className="text-xl md:text-2xl opacity-90">{celebrantName}</p>
+              <p className="text-xl md:text-2xl opacity-90 truncate">
+                {celebrantName}
+              </p>
               <em className="self-end">Details received</em>
             </div>
           </div>
