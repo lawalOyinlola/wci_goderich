@@ -47,7 +47,8 @@ export interface GalleryFilters {
   category?: string;
   orientation?: GalleryOrientation;
   featured?: boolean;
-  month?: number; // 1-12 for January-December
+  month?: number; // 1-12 for January-December (current year only)
+  pastYears?: boolean; // Filter for images from previous years (not current year)
   page?: number;
   limit?: number;
 }

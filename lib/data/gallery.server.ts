@@ -73,9 +73,14 @@ export async function getGalleryImagesServer(
       query = query.eq("featured", filters.featured);
     }
 
-    // Filter by month (based on created_at)
-    // Filters images by the month they were added (created_at)
-    if (filters?.month && filters.month >= 1 && filters.month <= 12) {
+    // Filter by past years (excludes current year)
+    if (filters?.pastYears) {
+      const currentYear = new Date().getFullYear();
+      const startOfCurrentYear = new Date(currentYear, 0, 1);
+      query = query.lt("created_at", startOfCurrentYear.toISOString());
+    } else if (filters?.month && filters.month >= 1 && filters.month <= 12) {
+      // Filter by month (based on created_at) - current year only
+      // Filters images by the month they were added (created_at)
       const currentYear = new Date().getFullYear();
       const startDate = new Date(currentYear, filters.month - 1, 1);
       const endDate = new Date(currentYear, filters.month, 1);

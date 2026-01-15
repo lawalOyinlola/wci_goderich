@@ -769,13 +769,53 @@ const SAMPLE_GALLERY_IMAGES: SampleGalleryImage[] = [
   },
 ];
 
+/**
+ * Verify request is authorized to run migration
+ * - Blocked in production environment
+ * - Requires API key in non-production (if configured)
+ */
+function verifyMigrationAuth(request: NextRequest): {
+  allowed: boolean;
+  error?: string;
+} {
+  // Block migration in production environment
+  if (process.env.NODE_ENV === "production") {
+    return {
+      allowed: false,
+      error: "Migration endpoint is disabled in production environment",
+    };
+  }
+
+  // Optional: Require API key if configured
+  const migrationApiKey = process.env.MIGRATION_API_KEY;
+  if (migrationApiKey) {
+    const providedKey = request.headers.get("x-migration-api-key");
+    if (providedKey !== migrationApiKey) {
+      return {
+        allowed: false,
+        error: "Invalid or missing migration API key",
+      };
+    }
+  }
+
+  return { allowed: true };
+}
+
 export async function POST(request: NextRequest) {
   try {
-    // Check if gallery table is empty
-    const { data: existingData, error: checkError } = await supabaseServer
+    // Verify authorization
+    const authCheck = verifyMigrationAuth(request);
+    if (!authCheck.allowed) {
+      return NextResponse.json(
+        { error: authCheck.error || "Unauthorized" },
+        { status: 403 }
+      );
+    }
+
+    // Check if gallery table is empty and get actual count
+    const { count: existingCount, error: checkError } = await supabaseServer
       .from("gallery")
-      .select("id")
-      .limit(1);
+      .select("*", { count: "exact", head: true });
 
     if (checkError) {
       console.error("Error checking gallery:", checkError);
@@ -785,12 +825,12 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (existingData && existingData.length > 0) {
+    if (existingCount && existingCount > 0) {
       return NextResponse.json(
         {
           message:
             "Gallery already contains data. Clear existing data first if you want to re-migrate.",
-          existingCount: existingData.length,
+          existingCount: existingCount,
         },
         { status: 200 }
       );
@@ -828,8 +868,16 @@ export async function POST(request: NextRequest) {
 }
 
 // GET - Check migration status
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
+    // Verify authorization
+    const authCheck = verifyMigrationAuth(request);
+    if (!authCheck.allowed) {
+      return NextResponse.json(
+        { error: authCheck.error || "Unauthorized" },
+        { status: 403 }
+      );
+    }
     const { count, error } = await supabaseServer
       .from("gallery")
       .select("*", { count: "exact", head: true });

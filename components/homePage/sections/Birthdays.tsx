@@ -220,7 +220,7 @@ export default function MonthlyBirthdaysSection({
               <p>Birthdays</p>
               <Separator className="shrink sm:w-40!" />
             </div>
-            <h1 className="mb-8">XOXOXOXO...</h1>
+            <h1 className="mb-8">Loading...</h1>
           </div>
         </div>
       </section>
