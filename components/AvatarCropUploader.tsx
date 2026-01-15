@@ -224,7 +224,7 @@ export default function AvatarCropUploader({
 
           <div className="space-y-1 text-muted-foreground text-xs text-center w-full min-w-0">
             {selectedName ? (
-              <p className="max-w-full truncate px-1" title={selectedName}>
+              <p className="max-w-[20ch] truncate px-1" title={selectedName}>
                 {selectedName}
               </p>
             ) : (

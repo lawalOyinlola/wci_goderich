@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { toast } from "sonner";
 import { InputField } from "@/components/form/InputField";
 import { SelectField } from "@/components/form/SelectField";
 import { TextAreaField } from "@/components/form/TextAreaField";
@@ -106,12 +107,28 @@ export default function JoinPrayerGroup() {
         throw new Error(error.error || "Failed to join prayer group");
       }
 
+      // Show success toast
+      toast.success("Application Submitted!", {
+        description:
+          "Thank you for your interest in joining a prayer group. We'll contact you soon with more information. God bless you!",
+        duration: 8000,
+      });
+
       setSubmitSuccess(true);
       form.reset();
       setTimeout(() => setSubmitSuccess(false), 5000);
     } catch (error) {
-      console.error("Error joining prayer group:", error);
-      alert("An error occurred. Please try again later.");
+      // Log for debugging (only in development)
+      if (process.env.NODE_ENV === "development") {
+        console.error("Error joining prayer group:", error);
+      }
+      toast.error("Failed to join prayer group", {
+        description:
+          error instanceof Error
+            ? error.message
+            : "An error occurred. Please try again later.",
+        duration: 8000,
+      });
     } finally {
       setIsSubmitting(false);
     }
@@ -239,7 +256,20 @@ export default function JoinPrayerGroup() {
         })}
       </div>
       <form
-        onSubmit={form.handleSubmit(onSubmit)}
+        onSubmit={form.handleSubmit(onSubmit, (errors) => {
+          // Show toast when form validation fails
+          const errorCount = Object.keys(errors).length;
+          if (errorCount > 0) {
+            toast.error("Please fix the form errors", {
+              description: `There ${
+                errorCount === 1 ? "is" : "are"
+              } ${errorCount} error${
+                errorCount === 1 ? "" : "s"
+              } in the form. Please check the fields below.`,
+              duration: 8000,
+            });
+          }
+        })}
         className="@container lg:col-span-2"
       >
         <Card className="p-8">

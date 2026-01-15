@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { toast } from "sonner";
 import SectionHeader from "@/components/SectionHeader";
 import AvatarCropUploader from "@/components/AvatarCropUploader";
 import { InputField } from "@/components/form/InputField";
@@ -190,11 +191,21 @@ export default function ShareTestimonyForm() {
       });
 
       xhr.addEventListener("error", () => {
-        reject(new Error("Upload failed"));
+        const error = new Error("Upload failed");
+        // Log for debugging (only in development)
+        if (process.env.NODE_ENV === "development") {
+          console.error("Upload error:", error);
+        }
+        reject(error);
       });
 
       xhr.addEventListener("timeout", () => {
-        reject(new Error("Upload timed out"));
+        const error = new Error("Upload timed out");
+        // Log for debugging (only in development)
+        if (process.env.NODE_ENV === "development") {
+          console.error("Upload timeout:", error);
+        }
+        reject(error);
       });
 
       xhr.open("POST", "/api/upload/media");
@@ -320,6 +331,13 @@ export default function ShareTestimonyForm() {
 
       setUploadProgress(100);
 
+      // Show success toast
+      toast.success("Testimony Submitted!", {
+        description:
+          "Thank you for sharing your testimony. Our team will review it and it will be published soon. God bless you!",
+        duration: 8000,
+      });
+
       // Show success state
       setSubmitSuccess(true);
       form.reset();
@@ -334,7 +352,10 @@ export default function ShareTestimonyForm() {
 
       setTimeout(() => setSubmitSuccess(false), 5000);
     } catch (error) {
-      console.error("Error submitting testimony:", error);
+      // Log for debugging (only in development)
+      if (process.env.NODE_ENV === "development") {
+        console.error("Error submitting testimony:", error);
+      }
 
       // Clean up uploaded files if submission failed
       if (uploadedFiles.length > 0) {
@@ -347,17 +368,24 @@ export default function ShareTestimonyForm() {
             body: JSON.stringify({ files: uploadedFiles }),
           });
         } catch (cleanupError) {
-          console.error("Error cleaning up uploaded files:", cleanupError);
+          // Log for debugging (only in development)
+          if (process.env.NODE_ENV === "development") {
+            console.error("Error cleaning up uploaded files:", cleanupError);
+          }
           // Don't block user from seeing the error
         }
       }
 
       setUploadProgress(0);
       setIsSubmitting(false);
-      alert(
+      toast.error(
         error instanceof Error
           ? error.message
-          : "An error occurred. Please try again later."
+          : "An error occurred. Please try again later.",
+        {
+          description: "An error occurred. Please try again later.",
+          duration: 8000,
+        }
       );
     }
   };
@@ -432,7 +460,20 @@ export default function ShareTestimonyForm() {
             </div>
           </div>
           <form
-            onSubmit={form.handleSubmit(onSubmit)}
+            onSubmit={form.handleSubmit(onSubmit, (errors) => {
+              // Show toast when form validation fails
+              const errorCount = Object.keys(errors).length;
+              if (errorCount > 0) {
+                toast.error("Please fix the form errors", {
+                  description: `There ${
+                    errorCount === 1 ? "is" : "are"
+                  } ${errorCount} error${
+                    errorCount === 1 ? "" : "s"
+                  } in the form. Please check the fields below.`,
+                  duration: 5000,
+                });
+              }
+            })}
             className="@container lg:col-span-2"
           >
             <Card className="p-8">

@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { toast } from "sonner";
 import AvatarCropUploader from "@/components/AvatarCropUploader";
 import CtaContainer from "@/components/CtaContainer";
 import { InputField } from "@/components/form/InputField";
@@ -149,7 +150,12 @@ export default function MonthlyBirthdaysSection({
     async (values: BirthdayFormValues) => {
       // Validate image upload
       if (!imageBlob) {
-        setImageError("Please upload a clear photo.");
+        const errorMessage = "Please upload a clear photo.";
+        setImageError(errorMessage);
+        toast.warning("Photo Required", {
+          description: errorMessage,
+          duration: 8000,
+        });
         return;
       }
 
@@ -173,8 +179,15 @@ export default function MonthlyBirthdaysSection({
         );
         formData.append("image", imageFile);
 
-        // Submit to API
-        await submitBirthday(formData);
+        // Submit to API with promise toast
+        await toast.promise(submitBirthday(formData), {
+          loading: "Submitting your birthday details...",
+          success: "Birthday details received!",
+          error: (err) =>
+            err instanceof Error
+              ? err.message
+              : "Failed to submit. Please try again.",
+        });
 
         // Show celebration message
         setCelebrantName(values.name);
@@ -196,12 +209,19 @@ export default function MonthlyBirthdaysSection({
           }, 3000);
         }, 500);
       } catch (error) {
-        console.error("Error submitting birthday:", error);
-        setImageError(
+        // Log for debugging (only in development)
+        if (process.env.NODE_ENV === "development") {
+          console.error("Error submitting birthday:", error);
+        }
+        const errorMessage =
           error instanceof Error
             ? error.message
-            : "Failed to submit. Please try again."
-        );
+            : "Failed to submit. Please try again.";
+        setImageError(errorMessage);
+        toast.error("Submission Failed", {
+          description: errorMessage,
+          duration: 8000,
+        });
       } finally {
         setIsSubmitting(false);
       }
@@ -325,7 +345,20 @@ export default function MonthlyBirthdaysSection({
               <form
                 id="birthday-form"
                 className="space-y-3"
-                onSubmit={form.handleSubmit(handleFormSubmit)}
+                onSubmit={form.handleSubmit(handleFormSubmit, (errors) => {
+                  // Show toast when form validation fails
+                  const errorCount = Object.keys(errors).length;
+                  if (errorCount > 0) {
+                    toast.error("Please fix the form errors", {
+                      description: `There ${
+                        errorCount === 1 ? "is" : "are"
+                      } ${errorCount} error${
+                        errorCount === 1 ? "" : "s"
+                      } in the form. Please check the fields below.`,
+                      duration: 8000,
+                    });
+                  }
+                })}
               >
                 <FieldGroup>
                   <div className="flex gap-4 justify-between">
