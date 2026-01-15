@@ -1,6 +1,12 @@
 "use client";
 
-import { useState, useEffect, useMemo, startTransition } from "react";
+import {
+  useState,
+  useEffect,
+  useMemo,
+  useCallback,
+  startTransition,
+} from "react";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -56,31 +62,25 @@ export default function GalleryContent({
   const orientation = searchParams.get("orientation") || initialOrientation;
   const monthParam = searchParams.get("month");
   const month = monthParam ? parseInt(monthParam, 10) : initialMonth;
+  const pastYears = searchParams.get("pastYears") === "true";
+
+  const hasActiveFilter = !!category || !!orientation || !!month || pastYears;
 
   const form = useForm({
     defaultValues: {
-      month: month ? String(month) : "all",
+      month: pastYears ? "past-years" : month ? String(month) : "all",
     },
   });
 
-  // Update form when month changes from URL
+  // Update form when month/pastYears changes from URL
   useEffect(() => {
-    form.setValue("month", month ? String(month) : "all");
-  }, [month, form]);
+    form.setValue(
+      "month",
+      pastYears ? "past-years" : month ? String(month) : "all"
+    );
+  }, [month, pastYears, form]);
 
-  useEffect(() => {
-    fetchImages();
-  }, [currentPage, category, orientation, month]);
-
-  const handleMonthChange = (value: string) => {
-    if (value && value !== "all") {
-      updateSearchParams({ month: parseInt(value, 10), page: 1 });
-    } else {
-      updateSearchParams({ month: null, page: 1 });
-    }
-  };
-
-  const fetchImages = async () => {
+  const fetchImages = useCallback(async () => {
     setLoading(true);
     try {
       const params = new URLSearchParams();
@@ -89,7 +89,11 @@ export default function GalleryContent({
       params.append("featured", "true"); // Only show featured images
       if (category) params.append("category", category);
       if (orientation) params.append("orientation", orientation);
-      if (month) params.append("month", String(month));
+      if (pastYears) {
+        params.append("pastYears", "true");
+      } else if (month) {
+        params.append("month", String(month));
+      }
 
       const response = await fetch(`/api/gallery?${params.toString()}`);
       const data = await response.json();
@@ -103,15 +107,40 @@ export default function GalleryContent({
     } finally {
       setLoading(false);
     }
+  }, [currentPage, category, orientation, month, pastYears]);
+
+  useEffect(() => {
+    fetchImages();
+  }, [fetchImages]);
+
+  const handleMonthChange = (value: string) => {
+    if (value === "past-years") {
+      updateSearchParams({ month: null, pastYears: "true", page: 1 });
+    } else if (value && value !== "all") {
+      updateSearchParams({
+        month: parseInt(value, 10),
+        pastYears: null,
+        page: 1,
+      });
+    } else {
+      updateSearchParams({ month: null, pastYears: null, page: 1 });
+    }
   };
 
+  // Get available months (only up to current month for current year)
+  const availableMonths = useMemo(() => {
+    const now = new Date();
+    const currentMonth = now.getMonth() + 1; // 1-12
+    return MONTHS.slice(0, currentMonth);
+  }, []);
+
   const updateSearchParams = (
-    updates: Record<string, string | number | null>
+    updates: Record<string, string | number | null | undefined>
   ) => {
     const params = new URLSearchParams(searchParams.toString());
 
     Object.entries(updates).forEach(([key, value]) => {
-      if (value === null || value === "") {
+      if (value === null || value === undefined || value === "") {
         params.delete(key);
       } else {
         params.set(key, String(value));
@@ -155,18 +184,19 @@ export default function GalleryContent({
           description="Browse through our collection of memorable moments"
         />
 
-        {/* Month Filter */}
+        {/* Month/Year Filter */}
         <div className="flex justify-end mb-8">
           <div className="w-full sm:w-64">
             <SelectField
               name="month"
               control={form.control}
-              label="Filter by Month"
-              placeholder="All Months"
+              label="Filter by Time Period"
+              placeholder="All Time Periods"
               onValueChange={handleMonthChange}
               options={[
-                { value: "all", label: "All Months" },
-                ...MONTHS.map((monthName, index) => ({
+                { value: "all", label: "All Time Periods" },
+                { value: "past-years", label: "Past Years" },
+                ...availableMonths.map((monthName, index) => ({
                   value: String(index + 1),
                   label: monthName,
                 })),
@@ -177,7 +207,7 @@ export default function GalleryContent({
 
         {/* Gallery Masonry Layout or Empty State */}
         {images.length === 0 ? (
-          <GalleryEmptyState />
+          <GalleryEmptyState hasFilter={hasActiveFilter} />
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
             {groupedImages?.map((column, colIndex) => (

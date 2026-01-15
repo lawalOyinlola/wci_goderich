@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -12,6 +12,7 @@ import { SelectField } from "@/components/form/SelectField";
 import { TextAreaField } from "@/components/form/TextAreaField";
 import { FileField } from "@/components/form/FileField";
 import { CheckboxField } from "@/components/form/CheckboxField";
+import { DatePickerField } from "@/components/form/DatePickerField";
 import { Card } from "@/components/ui/card";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import {
@@ -147,11 +148,13 @@ export default function ShareTestimonyForm() {
 
   // Clear name/role errors when anonymous is checked
   const previousIsAnonymous = useRef(isAnonymous);
-  if (isAnonymous && !previousIsAnonymous.current) {
-    form.clearErrors("name");
-    form.clearErrors("role");
-  }
-  previousIsAnonymous.current = isAnonymous;
+  useEffect(() => {
+    if (isAnonymous && !previousIsAnonymous.current) {
+      form.clearErrors("name");
+      form.clearErrors("role");
+    }
+    previousIsAnonymous.current = isAnonymous;
+  }, [isAnonymous, form]);
 
   const uploadFileWithProgress = async (
     file: File,
@@ -562,11 +565,11 @@ export default function ShareTestimonyForm() {
                       disabled={isSubmitting}
                     />
 
-                    <InputField
+                    <DatePickerField
                       name="date"
                       control={form.control}
                       label="Date"
-                      type="date"
+                      placeholder="Pick a date"
                       description="Date when this testimony occurred"
                       disabled={isSubmitting}
                     />

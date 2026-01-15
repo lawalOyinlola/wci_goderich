@@ -18,11 +18,17 @@ export default function HeroTemplate({
   return (
     <>
       <main
-        className={cn(
-          "overflow-hidden relative min-h-screen",
-          backgroundImage && `bg-[url(${backgroundImage})] bg-cover bg-center`,
-          className
-        )}
+        className={cn("overflow-hidden relative min-h-screen", className)}
+        style={
+          backgroundImage
+            ? {
+                backgroundImage: `url(${backgroundImage})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                backgroundRepeat: "no-repeat",
+              }
+            : undefined
+        }
       >
         <div className="bg-background/50 absolute inset-y-0 h-[200%] w-full md:w-1/2 rounded-r-full backdrop-blur-[2px]" />
         <div className="bg-background/50 absolute inset-y-0 w-full lg:w-4/7 rounded-r-full backdrop-blur-[2px]" />
@@ -30,7 +36,7 @@ export default function HeroTemplate({
           <div className="pb-24 pt-12">
             <div className="relative small-container flex flex-col lg:flex-center">
               <div className="mx-auto max-w-lg text-center lg:ml-0 lg:w-1/2 lg:text-left">
-                <h1 className="mt-8 max-w-2xl text-balance text-5xl font-medium md:text-6xl lg:mt-16 xl:text-7xl">
+                <h1 className="mt-8 max-w-2xl text-balance text-5xl font-medium md:text-6xl lg:mt-16 xl:text-7xl text-shadow-md">
                   {title}
                 </h1>
                 <p className="mt-8 max-w-2xl text-pretty text-lg">

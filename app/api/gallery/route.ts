@@ -8,8 +8,8 @@ export async function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams;
 
     const filters: GalleryFilters = {
-      page: parseInt(searchParams.get("page") || "1", 10),
-      limit: parseInt(searchParams.get("limit") || "15", 10),
+      page: parseInt(searchParams.get("page") || "1", 10) || 1,
+      limit: parseInt(searchParams.get("limit") || "15", 10) || 15,
     };
 
     // Optional filters
@@ -37,6 +37,11 @@ export async function GET(request: NextRequest) {
       if (monthNum >= 1 && monthNum <= 12) {
         filters.month = monthNum;
       }
+    }
+
+    const pastYears = searchParams.get("pastYears");
+    if (pastYears === "true") {
+      filters.pastYears = true;
     }
 
     // Validate pagination

@@ -10,7 +10,7 @@ export default function GallerySkeleton() {
           description="Browse through our collection of memorable moments"
         />
 
-        {/* Masonry Layout Skeleton - 15 items */}
+        {/* Masonry Layout Skeleton - 21 items */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
           {Array.from({ length: 3 }).map((_, colIndex) => (
             <div key={colIndex} className="space-y-4">
