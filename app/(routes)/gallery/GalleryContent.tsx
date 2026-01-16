@@ -7,7 +7,6 @@ import {
   useCallback,
   startTransition,
 } from "react";
-import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import SectionHeader from "@/components/SectionHeader";
@@ -17,10 +16,14 @@ import { cn } from "@/lib/utils";
 import type { GalleryImage, PaginationMeta } from "@/lib/types/gallery";
 import { CaretLeftIcon, CaretRightIcon } from "@phosphor-icons/react";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-} from "@/components/ui/dialog";
+  MorphingDialog,
+  MorphingDialogTrigger,
+  MorphingDialogContent,
+  MorphingDialogImage,
+  MorphingDialogClose,
+  MorphingDialogContainer,
+} from "@/components/ui/morphing-dialog";
+import { XIcon } from "lucide-react";
 import GallerySkeleton from "./GallerySkeleton";
 import { MONTHS } from "@/lib/constants";
 import {
@@ -52,7 +55,6 @@ export default function GalleryContent({
   const [images, setImages] = useState<GalleryImage[]>([]);
   const [pagination, setPagination] = useState<PaginationMeta | null>(null);
   const [loading, setLoading] = useState(true);
-  const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
 
   const currentPage = parseInt(
     searchParams.get("page") || String(initialPage),
@@ -213,11 +215,7 @@ export default function GalleryContent({
             {groupedImages?.map((column, colIndex) => (
               <div key={colIndex} className="space-y-4">
                 {column.map((image) => (
-                  <GalleryImageCard
-                    key={image.id}
-                    image={image}
-                    onClick={() => setSelectedImage(image)}
-                  />
+                  <GalleryImageCard key={image.id} image={image} />
                 ))}
               </div>
             ))}
@@ -297,56 +295,11 @@ export default function GalleryContent({
           </div>
         )}
       </div>
-
-      {/* Image Modal */}
-      <Dialog
-        open={!!selectedImage}
-        onOpenChange={(open) => !open && setSelectedImage(null)}
-      >
-        <DialogContent className="max-w-4xl max-h-[90vh] p-0">
-          {selectedImage && (
-            <>
-              <div className="relative aspect-video w-full">
-                <Image
-                  src={selectedImage.imageUrl}
-                  alt={selectedImage.altText}
-                  fill
-                  className="object-contain"
-                  sizes="100vw"
-                />
-              </div>
-              <div className="p-6">
-                <h3 className="text-2xl font-bold mb-2">
-                  {selectedImage.title}
-                </h3>
-                {selectedImage.description && (
-                  <DialogDescription className="text-base">
-                    {selectedImage.description}
-                  </DialogDescription>
-                )}
-                {selectedImage.category && (
-                  <div className="mt-4">
-                    <span className="text-sm text-muted-foreground">
-                      Category: {selectedImage.category}
-                    </span>
-                  </div>
-                )}
-              </div>
-            </>
-          )}
-        </DialogContent>
-      </Dialog>
     </section>
   );
 }
 
-function GalleryImageCard({
-  image,
-  onClick,
-}: {
-  image: GalleryImage;
-  onClick: () => void;
-}) {
+function GalleryImageCard({ image }: { image: GalleryImage }) {
   const aspectRatio = useMemo(() => {
     switch (image.orientation) {
       case "portrait":
@@ -361,31 +314,60 @@ function GalleryImageCard({
   }, [image.orientation]);
 
   return (
-    <div
-      className={cn(
-        "group relative rounded-lg overflow-hidden shadow-lg cursor-pointer",
-        "hover:shadow-2xl transition-all duration-300 hover:scale-[1.02]",
-        aspectRatio
-      )}
-      onClick={onClick}
+    <MorphingDialog
+      transition={{
+        duration: 0.3,
+        ease: "easeInOut",
+      }}
     >
-      <Image
-        src={image.imageUrl}
-        alt={image.altText}
-        fill
-        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-        className="object-cover group-hover:scale-110 transition-transform duration-500"
-      />
-      <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-      <div className="absolute inset-x-0 bottom-0 p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-        <h3 className="text-white font-semibold text-lg mb-1">{image.title}</h3>
-        {image.description && (
-          <p className="text-white/90 text-sm line-clamp-2">
-            {image.description}
-          </p>
+      <MorphingDialogTrigger
+        className={cn(
+          "group relative overflow-hidden shadow-lg cursor-pointer rounded-lg",
+          "hover:shadow-2xl transition-all duration-300 hover:scale-[1.02]",
+          aspectRatio,
+          "w-full"
         )}
-      </div>
-    </div>
+      >
+        <MorphingDialogImage
+          src={image.imageUrl}
+          alt={image.altText}
+          className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-500 rounded-lg"
+        />
+        <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg" />
+        <div className="absolute inset-x-0 bottom-0 p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+          <h3 className="text-white font-semibold text-lg mb-1">
+            {image.title}
+          </h3>
+          {image.description && (
+            <p className="text-white/90 text-sm line-clamp-2">
+              {image.description}
+            </p>
+          )}
+        </div>
+      </MorphingDialogTrigger>
+      <MorphingDialogContainer>
+        <MorphingDialogContent className="relative">
+          <MorphingDialogImage
+            src={image.imageUrl}
+            alt={image.altText}
+            className="h-auto w-full max-w-[90vw] rounded-[4px] object-contain lg:h-[90vh]"
+          />
+        </MorphingDialogContent>
+        <MorphingDialogClose
+          className="fixed right-6 top-6 h-fit w-fit rounded-full bg-white p-1"
+          variants={{
+            initial: { opacity: 0 },
+            animate: {
+              opacity: 1,
+              transition: { delay: 0.3, duration: 0.1 },
+            },
+            exit: { opacity: 0, transition: { duration: 0 } },
+          }}
+        >
+          <XIcon className="h-5 w-5 text-zinc-500" />
+        </MorphingDialogClose>
+      </MorphingDialogContainer>
+    </MorphingDialog>
   );
 }
 

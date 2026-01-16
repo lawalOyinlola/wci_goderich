@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { toast } from "sonner";
 import SectionHeader from "@/components/SectionHeader";
 import { InputField } from "@/components/form/InputField";
 import { SelectField } from "@/components/form/SelectField";
@@ -138,12 +139,28 @@ export default function PrayerRequestForm() {
         throw new Error(error.error || "Failed to submit prayer request");
       }
 
+      // Show success toast
+      toast.success("Prayer Request Submitted!", {
+        description:
+          "Thank you for sharing your prayer request. Our prayer team will be praying for you. God bless you!",
+        duration: 8000,
+      });
+
       setSubmitSuccess(true);
       form.reset();
       setTimeout(() => setSubmitSuccess(false), 5000);
     } catch (error) {
-      console.error("Error submitting prayer request:", error);
-      alert("An error occurred. Please try again later.");
+      // Log for debugging (only in development)
+      if (process.env.NODE_ENV === "development") {
+        console.error("Error submitting prayer request:", error);
+      }
+      toast.error("Failed to submit prayer request", {
+        description:
+          error instanceof Error
+            ? error.message
+            : "An error occurred. Please try again later.",
+        duration: 8000,
+      });
     }
   };
 
@@ -217,7 +234,20 @@ export default function PrayerRequestForm() {
             </div>
           </div>
           <form
-            onSubmit={form.handleSubmit(onSubmit)}
+            onSubmit={form.handleSubmit(onSubmit, (errors) => {
+              // Show toast when form validation fails
+              const errorCount = Object.keys(errors).length;
+              if (errorCount > 0) {
+                toast.error("Please fix the form errors", {
+                  description: `There ${
+                    errorCount === 1 ? "is" : "are"
+                  } ${errorCount} error${
+                    errorCount === 1 ? "" : "s"
+                  } in the form. Please check the fields below.`,
+                  duration: 8000,
+                });
+              }
+            })}
             className="@container lg:col-span-2"
           >
             <Card className="p-8 sm:p-12">

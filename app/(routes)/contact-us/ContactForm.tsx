@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { toast } from "sonner";
 import SectionHeader from "@/components/SectionHeader";
 import { InputField } from "@/components/form/InputField";
 import { SelectField } from "@/components/form/SelectField";
@@ -146,12 +147,24 @@ export default function ContactForm() {
       // TODO: Implement form submission to your backend/API
       console.log("Form data:", data);
 
-      // For now, show success message
-      alert("Thank you for contacting us! We'll get back to you soon.");
+      // Show success toast
+      toast.success("Message Sent!", {
+        description: "Thank you for contacting us! We'll get back to you soon.",
+        duration: 8000,
+      });
       form.reset();
     } catch (error) {
-      console.error("Error submitting form:", error);
-      alert("An error occurred. Please try again later.");
+      // Log for debugging (only in development)
+      if (process.env.NODE_ENV === "development") {
+        console.error("Error submitting form:", error);
+      }
+      toast.error("Failed to send message", {
+        description:
+          error instanceof Error
+            ? error.message
+            : "An error occurred. Please try again later.",
+        duration: 8000,
+      });
     }
   };
 
@@ -194,7 +207,20 @@ export default function ContactForm() {
           </div>
 
           <form
-            onSubmit={form.handleSubmit(onSubmit)}
+            onSubmit={form.handleSubmit(onSubmit, (errors) => {
+              // Show toast when form validation fails
+              const errorCount = Object.keys(errors).length;
+              if (errorCount > 0) {
+                toast.error("Please fix the form errors", {
+                  description: `There ${
+                    errorCount === 1 ? "is" : "are"
+                  } ${errorCount} error${
+                    errorCount === 1 ? "" : "s"
+                  } in the form. Please check the fields below.`,
+                  duration: 8000,
+                });
+              }
+            })}
             className="@container lg:col-span-2"
           >
             <Card className="p-8 sm:p-12">

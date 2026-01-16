@@ -175,8 +175,8 @@ export async function POST(request: NextRequest) {
     const { data, error } = await supabaseServer
       .from("testimonies")
       .insert({
-        name: submissionName.trim(),
-        role: submissionRole.trim(),
+        name: submissionName,
+        role: submissionRole,
         image: submissionImage,
         testimony: testimony.trim(),
         category: category.trim(),

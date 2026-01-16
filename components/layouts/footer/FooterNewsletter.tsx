@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { toast } from "sonner";
 import {
   Field,
   FieldError,
@@ -11,7 +12,6 @@ import {
   FieldDescription,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { CheckCircle } from "lucide-react";
 import { AnimatedButton } from "@/components/ui/animated-button";
@@ -53,6 +53,13 @@ export function FooterNewsletter() {
       await new Promise((resolve) => setTimeout(resolve, 1000));
       console.log("newsletter", values);
 
+      // Show success toast
+      toast.success("Successfully subscribed!", {
+        description:
+          "Thank you for joining our newsletter. We'll keep you updated with the latest news and events.",
+        duration: 8000,
+      });
+
       // Show success state
       setIsSuccess(true);
       form.reset();
@@ -68,8 +75,17 @@ export function FooterNewsletter() {
         timeoutRef.current = null;
       }, 5000);
     } catch (error) {
-      console.error("Error subscribing to newsletter:", error);
-      // Handle error (you can add error state if needed)
+      // Log for debugging (only in development)
+      if (process.env.NODE_ENV === "development") {
+        console.error("Error subscribing to newsletter:", error);
+      }
+      toast.error("Subscription failed", {
+        description:
+          error instanceof Error
+            ? error.message
+            : "An error occurred. Please try again later.",
+        duration: 8000,
+      });
     } finally {
       setIsSubmitting(false);
     }
@@ -99,7 +115,20 @@ export function FooterNewsletter() {
   return (
     <form
       noValidate
-      onSubmit={form.handleSubmit(handleSubmit)}
+      onSubmit={form.handleSubmit(handleSubmit, (errors) => {
+        // Show toast when form validation fails
+        const errorCount = Object.keys(errors).length;
+        if (errorCount > 0) {
+          toast.error("Please fix the form errors", {
+            description: `There ${
+              errorCount === 1 ? "is" : "are"
+            } ${errorCount} error${
+              errorCount === 1 ? "" : "s"
+            } in the form. Please check the fields below.`,
+            duration: 8000,
+          });
+        }
+      })}
       className={cn("text-sm mt-8 p-4 rounded-md max-w-md w-full")}
     >
       <div className="space-y-4">
