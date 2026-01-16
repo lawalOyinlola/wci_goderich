@@ -241,7 +241,14 @@ export default function MonthlyBirthdaysSection({
         setIsSubmitting(false);
       }
     },
-    [imageBlob, currentMonthIndex, form, triggerConfetti]
+    [
+      imageBlob,
+      currentMonthIndex,
+      form,
+      triggerConfetti,
+      hcaptchaToken,
+      recaptchaToken,
+    ]
   );
 
   // Don't render until we have the date to prevent hydration mismatch

@@ -96,7 +96,8 @@ export function normalizePhoneField(value: unknown): string | null {
     return null;
   }
   // Basic phone validation (allows international formats)
-  const phoneRegex = /^[+]?[(]?[0-9]{1,4}[)]?[-\s.]?[(]?[0-9]{1,4}[)]?[-\s.]?[0-9]{1,9}$/;
+  const phoneRegex =
+    /^[+]?[(]?[0-9]{1,4}[)]?[-\s.]?[(]?[0-9]{1,4}[)]?[-\s.]?[0-9]{1,9}$/;
   return phoneRegex.test(phone) ? phone : null;
 }
 
@@ -184,7 +185,12 @@ export function extractAndNormalizeFields(
     fields[fieldName] = normalized;
 
     // Check required fields
-    if (config.required && (normalized === null || normalized === undefined)) {
+    if (
+      config.required &&
+      (config.type === "boolean"
+        ? rawValue === undefined || rawValue === null
+        : normalized === null || normalized === undefined)
+    ) {
       errors.push(`${fieldName} is required`);
     }
   }

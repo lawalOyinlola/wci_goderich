@@ -6,11 +6,21 @@ import {
 } from "@/lib/data/testimonies";
 import { checkRateLimit } from "@/lib/utils/rate-limit";
 import { checkAuth } from "@/lib/utils/auth";
-import {
-  parseRequestBody,
-  normalizeStringField,
-  normalizeBooleanField,
-} from "@/lib/utils/validation";
+import { parseRequestBody, normalizeStringField } from "@/lib/utils/validation";
+
+/**
+ * Check if the request is from an admin
+ * Currently returns false - implement admin authentication as needed
+ * Options: API key check, JWT token, session-based auth, etc.
+ */
+function isAdminRequest(request: NextRequest): boolean {
+  // TODO: Implement admin authentication
+  // Example: Check for admin API key in header
+  // const adminApiKey = process.env.ADMIN_API_KEY;
+  // const providedKey = request.headers.get("x-admin-api-key");
+  // return adminApiKey && providedKey === adminApiKey;
+  return false;
+}
 
 // GET - Fetch testimonies
 export async function GET(request: NextRequest) {
@@ -142,6 +152,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Extract and normalize fields with type checking
+    // Note: featured and verified are server-controlled and not accepted from client
     const rawName = body.name;
     const rawRole = body.role;
     const rawImage = body.image;
@@ -151,8 +162,6 @@ export async function POST(request: NextRequest) {
     const rawType = body.type;
     const rawVideoUrl = body.videoUrl;
     const rawAudioUrl = body.audioUrl;
-    const rawFeatured = body.featured;
-    const rawVerified = body.verified;
 
     // Normalize all fields (only trim strings)
     const name = normalizeStringField(rawName);
@@ -164,8 +173,12 @@ export async function POST(request: NextRequest) {
     const type = normalizeStringField(rawType);
     const videoUrl = normalizeStringField(rawVideoUrl, true); // Allow empty
     const audioUrl = normalizeStringField(rawAudioUrl, true); // Allow empty
-    const featured = normalizeBooleanField(rawFeatured);
-    const verified = normalizeBooleanField(rawVerified);
+
+    // Server-controlled fields: featured and verified
+    // These are set to false by default and can only be set to true by admins
+    const isAdmin = isAdminRequest(request);
+    const featured = isAdmin && body.featured === true ? true : false;
+    const verified = isAdmin && body.verified === true ? true : false;
 
     // Validation using normalized values
     if (!testimony || !category || !date || !type) {

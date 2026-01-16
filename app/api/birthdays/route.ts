@@ -8,6 +8,20 @@ import {
   normalizeNumberField,
 } from "@/lib/utils/validation";
 
+/**
+ * Check if the request is from an admin
+ * Currently returns false - implement admin authentication as needed
+ * Options: API key check, JWT token, session-based auth, etc.
+ */
+function isAdminRequest(request: NextRequest): boolean {
+  // TODO: Implement admin authentication
+  // Example: Check for admin API key in header
+  // const adminApiKey = process.env.ADMIN_API_KEY;
+  // const providedKey = request.headers.get("x-admin-api-key");
+  // return adminApiKey && providedKey === adminApiKey;
+  return false;
+}
+
 // GET - Fetch birthdays
 export async function GET(request: NextRequest) {
   try {
@@ -180,6 +194,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Image is required" }, { status: 400 });
     }
 
+    // Server-controlled fields: featured and verified
+    // These are set to false by default and can only be set to true by admins
+    // Note: Even if client sends these fields, we ignore them and use server defaults
+    const isAdmin = isAdminRequest(request);
+    const featured = false; // Always false for public submissions
+    const verified = false; // Always false for public submissions
+
     // Insert into database using normalized values
     const { data, error } = await supabaseServer
       .from("birthdays")
@@ -188,6 +209,8 @@ export async function POST(request: NextRequest) {
         month: monthNum,
         day: dayNum,
         image: imageUrl,
+        featured,
+        verified,
       })
       .select()
       .single();
