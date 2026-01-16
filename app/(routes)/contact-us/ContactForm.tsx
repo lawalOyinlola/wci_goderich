@@ -144,8 +144,23 @@ export default function ContactForm() {
     }
 
     try {
-      // TODO: Implement form submission to your backend/API
-      console.log("Form data:", data);
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...data,
+          // TODO: Add CAPTCHA tokens if required
+          hcaptchaToken: null,
+          recaptchaToken: null,
+        }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || "Failed to send message");
+      }
 
       // Show success toast
       toast.success("Message Sent!", {
@@ -239,6 +254,7 @@ export default function ContactForm() {
                   label="Full Name"
                   placeholder="Enter your full name"
                   autoComplete="name"
+                  disabled={form.formState.isSubmitting}
                 />
 
                 <FieldSeparator className="mb-4" />
@@ -264,6 +280,7 @@ export default function ContactForm() {
                             form.formState.errors.phone.message
                         )
                       }
+                      disabled={form.formState.isSubmitting}
                     />
                     <InputField
                       name="phone"
@@ -280,6 +297,7 @@ export default function ContactForm() {
                             form.formState.errors.phone.message
                         )
                       }
+                      disabled={form.formState.isSubmitting}
                     />
                   </div>
                   {/* Show error if both fields have the same error (from manual setError) */}
@@ -300,6 +318,7 @@ export default function ContactForm() {
                   label="Subject"
                   placeholder="Select a subject"
                   options={subjectOptions}
+                  disabled={form.formState.isSubmitting}
                 />
 
                 <TextAreaField
@@ -308,6 +327,7 @@ export default function ContactForm() {
                   label="Message"
                   placeholder="Tell us how we can help you..."
                   rows={6}
+                  disabled={form.formState.isSubmitting}
                 />
 
                 <CheckboxField
@@ -315,6 +335,7 @@ export default function ContactForm() {
                   control={form.control}
                   label="Submit anonymously (you will not receive a response from us)"
                   description="If checked, we will not be able to reach you if we need to follow up."
+                  disabled={form.formState.isSubmitting}
                 />
 
                 <AnimatedButton

@@ -378,15 +378,13 @@ export default function ShareTestimonyForm() {
 
       setUploadProgress(0);
       setIsSubmitting(false);
-      toast.error(
-        error instanceof Error
-          ? error.message
-          : "An error occurred. Please try again later.",
-        {
-          description: "An error occurred. Please try again later.",
-          duration: 8000,
-        }
-      );
+      toast.error("Submission Failed", {
+        description:
+          error instanceof Error
+            ? error.message
+            : "An error occurred. Please try again later.",
+        duration: 8000,
+      });
     }
   };
 
@@ -470,7 +468,7 @@ export default function ShareTestimonyForm() {
                   } ${errorCount} error${
                     errorCount === 1 ? "" : "s"
                   } in the form. Please check the fields below.`,
-                  duration: 5000,
+                  duration: 8000,
                 });
               }
             })}

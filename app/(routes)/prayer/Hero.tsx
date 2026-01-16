@@ -9,8 +9,7 @@ export default function Hero() {
     <HeroTemplate
       title="Prayer & Intercession"
       description="Experience the power of prayer. Join our prayer community, submit your prayer requests, and discover prayer points to strengthen your prayer life."
-      backgroundImage="/images/prayer-hero.jpeg"
-      className="bg-linear-to-br! from-blue-900 via-purple-900 to-indigo-900"
+      className="bg-linear-to-br from-blue-900 via-purple-900 to-indigo-900"
     >
       <AnimatedButton
         href="#prayer-request"
