@@ -5,6 +5,7 @@ import { Navbar } from "@/components/layouts/navbar";
 import { Footer } from "@/components/layouts/footer";
 import { Toaster } from "@/components/ui/sonner";
 import { cn } from "@/lib/utils";
+import "@/lib/utils/console"; // Suppress console in production
 import "./globals.css";
 
 const fontLora = Lora({

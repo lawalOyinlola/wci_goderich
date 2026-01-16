@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -91,6 +91,14 @@ export default function ContactForm() {
     title: pastorTitle = "",
   } = residentPastor ?? {};
 
+  // CAPTCHA tokens (will be set when CAPTCHA is configured)
+  const [hcaptchaToken, setHcaptchaToken] = useState<string | undefined>(
+    undefined
+  );
+  const [recaptchaToken, setRecaptchaToken] = useState<string | undefined>(
+    undefined
+  );
+
   const form = useForm<ContactFormValues>({
     resolver: yupResolver(contactSchema),
     defaultValues: {
@@ -144,17 +152,25 @@ export default function ContactForm() {
     }
 
     try {
+      // Build request body with conditional CAPTCHA tokens
+      const requestBody: Record<string, unknown> = {
+        ...data,
+      };
+
+      // Only include CAPTCHA tokens if they exist
+      if (hcaptchaToken) {
+        requestBody.hcaptchaToken = hcaptchaToken;
+      }
+      if (recaptchaToken) {
+        requestBody.recaptchaToken = recaptchaToken;
+      }
+
       const response = await fetch("/api/contact", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          ...data,
-          // TODO: Add CAPTCHA tokens if required
-          hcaptchaToken: null,
-          recaptchaToken: null,
-        }),
+        body: JSON.stringify(requestBody),
       });
 
       if (!response.ok) {

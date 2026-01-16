@@ -101,6 +101,12 @@ function MorphingDialogTrigger({
   } = useMorphingDialog();
   const ref = triggerRef || contextTriggerRef;
 
+  useEffect(() => {
+    if (ref.current) {
+      contextTriggerRef.current = ref.current;
+    }
+  }, [ref, contextTriggerRef]);
+
   const handleClick = useCallback(() => {
     setIsOpen(!isOpen);
   }, [isOpen, setIsOpen]);

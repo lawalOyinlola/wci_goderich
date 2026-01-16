@@ -314,9 +314,9 @@ CREATE POLICY "Allow service role read on contact_messages"
   ON contact_messages FOR SELECT
   USING (auth.role() = 'service_role');
 
-CREATE POLICY "Allow public insert on contact_messages" 
+CREATE POLICY "Allow service role insert on contact_messages" 
   ON contact_messages FOR INSERT
-  WITH CHECK (true);
+  WITH CHECK (auth.role() = 'service_role');
 
 CREATE POLICY "Allow service role update on contact_messages"
   ON contact_messages FOR UPDATE

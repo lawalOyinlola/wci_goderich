@@ -10,6 +10,36 @@ export interface ContactEmailData {
 }
 
 /**
+ * Escape HTML special characters to prevent XSS attacks
+ */
+function escapeHtml(text: string): string {
+  const map: Record<string, string> = {
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#x27;",
+    "/": "&#x2F;",
+  };
+  return text.replace(/[&<>"'/]/g, (char) => map[char] || char);
+}
+
+/**
+ * Encode a value for use in mailto: or tel: href attributes
+ * Uses encodeURIComponent to prevent injection in href attributes
+ */
+function encodeHrefValue(value: string): string {
+  return encodeURIComponent(value);
+}
+
+/**
+ * Escape HTML and preserve newlines by converting \n to <br/>
+ */
+function escapeHtmlWithNewlines(text: string): string {
+  return escapeHtml(text).replace(/\n/g, "<br/>");
+}
+
+/**
  * Generate plain text email content
  */
 export function generateContactEmailText(data: ContactEmailData): string {
@@ -131,7 +161,7 @@ export function generateContactEmailHTML(data: ContactEmailData): string {
       <div class="field">
         <span class="label">Name</span>
         <span class="value">
-          ${data.name}
+          ${escapeHtml(data.name)}
           ${
             data.isAnonymous
               ? '<span class="anonymous-badge">Anonymous</span>'
@@ -144,7 +174,11 @@ export function generateContactEmailHTML(data: ContactEmailData): string {
           ? `
       <div class="field">
         <span class="label">Email</span>
-        <span class="value"><a href="mailto:${data.email}" style="color: #4F46E5; text-decoration: none;">${data.email}</a></span>
+        <span class="value"><a href="mailto:${encodeHrefValue(
+          data.email
+        )}" style="color: #4F46E5; text-decoration: none;">${escapeHtml(
+              data.email
+            )}</a></span>
       </div>
       `
           : ""
@@ -154,18 +188,24 @@ export function generateContactEmailHTML(data: ContactEmailData): string {
           ? `
       <div class="field">
         <span class="label">Phone</span>
-        <span class="value"><a href="tel:${data.phone}" style="color: #4F46E5; text-decoration: none;">${data.phone}</a></span>
+        <span class="value"><a href="tel:${encodeHrefValue(
+          data.phone
+        )}" style="color: #4F46E5; text-decoration: none;">${escapeHtml(
+              data.phone
+            )}</a></span>
       </div>
       `
           : ""
       }
       <div class="field">
         <span class="label">Subject</span>
-        <span class="value">${data.subject}</span>
+        <span class="value">${escapeHtml(data.subject)}</span>
       </div>
       <div class="message-box">
         <div class="label">Message</div>
-        <div class="message-content">${data.message}</div>
+        <div class="message-content">${escapeHtmlWithNewlines(
+          data.message
+        )}</div>
       </div>
     </div>
     <div class="footer">

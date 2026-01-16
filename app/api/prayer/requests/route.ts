@@ -3,6 +3,13 @@ import { NextRequest, NextResponse } from "next/server";
 import { supabaseServer } from "@/lib/supabase/server";
 import { checkRateLimit } from "@/lib/utils/rate-limit";
 import { checkAuth } from "@/lib/utils/auth";
+import {
+  parseRequestBody,
+  normalizeStringField,
+  normalizeEmailField,
+  normalizePhoneField,
+  normalizeBooleanField,
+} from "@/lib/utils/validation";
 
 export async function POST(request: NextRequest) {
   try {
@@ -16,7 +23,21 @@ export async function POST(request: NextRequest) {
       return rateLimitResult.response!;
     }
 
-    const body = await request.json();
+    // Parse JSON with error handling
+    let body: Record<string, unknown>;
+    try {
+      body = await parseRequestBody(request);
+    } catch (parseError) {
+      return NextResponse.json(
+        {
+          error:
+            parseError instanceof Error
+              ? parseError.message
+              : "Invalid JSON payload",
+        },
+        { status: 400 }
+      );
+    }
 
     // Authentication: Require CAPTCHA verification
     const authResult = await checkAuth(request, body, {
@@ -26,16 +47,16 @@ export async function POST(request: NextRequest) {
     if (!authResult.allowed) {
       return authResult.response!;
     }
-    const {
-      name,
-      email,
-      phone,
-      category,
-      request: prayerRequest,
-      isAnonymous = false,
-    } = body;
 
-    // Validation
+    // Extract and normalize fields with type checking
+    const name = normalizeStringField(body.name);
+    const email = normalizeEmailField(body.email);
+    const phone = normalizePhoneField(body.phone);
+    const category = normalizeStringField(body.category);
+    const prayerRequest = normalizeStringField(body.request);
+    const isAnonymous = normalizeBooleanField(body.isAnonymous);
+
+    // Validation using normalized values
     if (!name || !category || !prayerRequest) {
       return NextResponse.json(
         { error: "Name, category, and prayer request are required" },
@@ -51,23 +72,25 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Insert into database
+    // Insert into database using normalized values
     const { data, error } = await supabaseServer
       .from("prayer_requests")
       .insert({
-        name: name.trim(),
-        email: email?.trim() || null,
-        phone: phone?.trim() || null,
-        category: category.trim(),
-        request: prayerRequest.trim(),
-        is_anonymous: Boolean(isAnonymous),
+        name,
+        email: email || null,
+        phone: phone || null,
+        category,
+        request: prayerRequest,
+        is_anonymous: isAnonymous,
         status: "pending",
       })
       .select()
       .single();
 
     if (error) {
-      console.error("Error creating prayer request:", error);
+      if (process.env.NODE_ENV === "development") {
+        console.error("Error creating prayer request:", error);
+      }
       return NextResponse.json(
         { error: "Failed to create prayer request" },
         { status: 500 }
@@ -79,7 +102,9 @@ export async function POST(request: NextRequest) {
       { status: 201 }
     );
   } catch (error) {
-    console.error("Error in POST /api/prayer/requests:", error);
+    if (process.env.NODE_ENV === "development") {
+      console.error("Error in POST /api/prayer/requests:", error);
+    }
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }
