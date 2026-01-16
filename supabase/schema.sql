@@ -280,3 +280,49 @@ CREATE POLICY "Allow service role update on gallery"
 CREATE POLICY "Allow service role delete on gallery"
   ON gallery FOR DELETE
   USING (auth.role() = 'service_role');
+
+-- Contact Messages Table
+CREATE TABLE IF NOT EXISTS contact_messages (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  name TEXT NOT NULL,
+  email TEXT,
+  phone TEXT,
+  subject TEXT NOT NULL,
+  message TEXT NOT NULL,
+  is_anonymous BOOLEAN DEFAULT false,
+  status TEXT NOT NULL DEFAULT 'new' CHECK (status IN ('new', 'read', 'replied', 'archived')),
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Indexes for contact_messages
+CREATE INDEX IF NOT EXISTS idx_contact_messages_status ON contact_messages(status);
+CREATE INDEX IF NOT EXISTS idx_contact_messages_subject ON contact_messages(subject);
+CREATE INDEX IF NOT EXISTS idx_contact_messages_created_at ON contact_messages(created_at DESC);
+
+-- Trigger to automatically update updated_at for contact_messages
+CREATE TRIGGER update_contact_messages_updated_at 
+  BEFORE UPDATE ON contact_messages 
+  FOR EACH ROW 
+  EXECUTE FUNCTION update_updated_at_column();
+
+-- Enable Row Level Security (RLS) for contact_messages
+ALTER TABLE contact_messages ENABLE ROW LEVEL SECURITY;
+
+-- Policies for contact_messages: Restrict read to service role (PII protection), allow public insert, restrict update/delete to service role
+CREATE POLICY "Allow service role read on contact_messages"
+  ON contact_messages FOR SELECT
+  USING (auth.role() = 'service_role');
+
+CREATE POLICY "Allow service role insert on contact_messages" 
+  ON contact_messages FOR INSERT
+  WITH CHECK (auth.role() = 'service_role');
+
+CREATE POLICY "Allow service role update on contact_messages"
+  ON contact_messages FOR UPDATE
+  USING (auth.role() = 'service_role')
+  WITH CHECK (auth.role() = 'service_role');
+
+CREATE POLICY "Allow service role delete on contact_messages"
+  ON contact_messages FOR DELETE
+  USING (auth.role() = 'service_role');

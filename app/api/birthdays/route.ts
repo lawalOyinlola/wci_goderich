@@ -3,6 +3,24 @@ import { supabaseServer } from "@/lib/supabase/server";
 import { uploadImage, deleteImage } from "@/lib/cloudinary";
 import { checkRateLimit } from "@/lib/utils/rate-limit";
 import { checkAuth } from "@/lib/utils/auth";
+import {
+  normalizeStringField,
+  normalizeNumberField,
+} from "@/lib/utils/validation";
+
+/**
+ * Check if the request is from an admin
+ * Currently returns false - implement admin authentication as needed
+ * Options: API key check, JWT token, session-based auth, etc.
+ */
+function isAdminRequest(request: NextRequest): boolean {
+  // TODO: Implement admin authentication
+  // Example: Check for admin API key in header
+  // const adminApiKey = process.env.ADMIN_API_KEY;
+  // const providedKey = request.headers.get("x-admin-api-key");
+  // return adminApiKey && providedKey === adminApiKey;
+  return false;
+}
 
 // GET - Fetch birthdays
 export async function GET(request: NextRequest) {
@@ -46,7 +64,9 @@ export async function GET(request: NextRequest) {
     const { data, error } = await query;
 
     if (error) {
-      console.error("Error fetching birthdays:", error);
+      if (process.env.NODE_ENV === "development") {
+        console.error("Error fetching birthdays:", error);
+      }
       return NextResponse.json(
         { error: "Failed to fetch birthdays" },
         { status: 500 }
@@ -55,7 +75,9 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({ data, success: true }, { status: 200 });
   } catch (error) {
-    console.error("Error in GET /api/birthdays:", error);
+    if (process.env.NODE_ENV === "development") {
+      console.error("Error in GET /api/birthdays:", error);
+    }
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }
@@ -95,25 +117,32 @@ export async function POST(request: NextRequest) {
       return authResult.response!;
     }
 
-    const name = formData.get("name") as string;
-    const month = formData.get("month") as string;
-    const day = formData.get("day") as string;
+    // Extract and normalize fields from FormData
+    const rawName = formData.get("name");
+    const rawMonth = formData.get("month");
+    const rawDay = formData.get("day");
     const imageFile = formData.get("image") as File | null;
 
-    // Validation
-    if (!name || !month || !day) {
+    // Normalize fields with type checking
+    const name = normalizeStringField(rawName);
+    const monthNum = normalizeNumberField(rawMonth, 1, 12);
+    const dayNum = normalizeNumberField(rawDay, 1, 31);
+
+    // Validation using normalized values
+    if (!name) {
+      return NextResponse.json({ error: "Name is required" }, { status: 400 });
+    }
+
+    if (!monthNum) {
       return NextResponse.json(
-        { error: "Name, month, and day are required" },
+        { error: "Month must be between 1 and 12" },
         { status: 400 }
       );
     }
 
-    const monthNum = parseInt(month, 10);
-    const dayNum = parseInt(day, 10);
-
-    if (monthNum < 1 || monthNum > 12) {
+    if (!dayNum) {
       return NextResponse.json(
-        { error: "Month must be between 1 and 12" },
+        { error: "Day must be between 1 and 31" },
         { status: 400 }
       );
     }
@@ -165,14 +194,23 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Image is required" }, { status: 400 });
     }
 
-    // Insert into database
+    // Server-controlled fields: featured and verified
+    // These are set to false by default and can only be set to true by admins
+    // Note: Even if client sends these fields, we ignore them and use server defaults
+    const isAdmin = isAdminRequest(request);
+    const featured = false; // Always false for public submissions
+    const verified = false; // Always false for public submissions
+
+    // Insert into database using normalized values
     const { data, error } = await supabaseServer
       .from("birthdays")
       .insert({
-        name: name.trim(),
+        name,
         month: monthNum,
         day: dayNum,
         image: imageUrl,
+        featured,
+        verified,
       })
       .select()
       .single();
@@ -183,10 +221,14 @@ export async function POST(request: NextRequest) {
         try {
           await deleteImage(imageUrl);
         } catch (deleteError) {
-          console.error("Error deleting image during cleanup:", deleteError);
+          if (process.env.NODE_ENV === "development") {
+            console.error("Error deleting image during cleanup:", deleteError);
+          }
         }
       }
-      console.error("Error creating birthday:", error);
+      if (process.env.NODE_ENV === "development") {
+        console.error("Error creating birthday:", error);
+      }
       return NextResponse.json(
         { error: "Failed to create birthday record" },
         { status: 500 }
@@ -195,7 +237,9 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ data, success: true }, { status: 201 });
   } catch (error) {
-    console.error("Error in POST /api/birthdays:", error);
+    if (process.env.NODE_ENV === "development") {
+      console.error("Error in POST /api/birthdays:", error);
+    }
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }

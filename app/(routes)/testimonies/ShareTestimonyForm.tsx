@@ -120,6 +120,13 @@ export default function ShareTestimonyForm() {
   const [uploadProgress, setUploadProgress] = useState(0);
   const [imageBlob, setImageBlob] = useState<Blob | null>(null);
   const [uploaderResetToken, setUploaderResetToken] = useState(0);
+  // CAPTCHA tokens (will be set when CAPTCHA is configured)
+  const [hcaptchaToken, setHcaptchaToken] = useState<string | undefined>(
+    undefined
+  );
+  const [recaptchaToken, setRecaptchaToken] = useState<string | undefined>(
+    undefined
+  );
   const { CONTACT } = CHURCH_INFO;
   const {
     phone: churchPhone = "",
@@ -299,26 +306,34 @@ export default function ShareTestimonyForm() {
         : data.name || "Anonymous";
       const submissionRole = data.isAnonymous ? "" : data.role || "";
 
+      // Build request body with conditional CAPTCHA tokens
+      const requestBody: Record<string, unknown> = {
+        name: submissionName,
+        role: submissionRole,
+        image: imageUrl,
+        testimony: testimonyText,
+        category: data.category,
+        date: data.date,
+        type: data.type,
+        videoUrl: videoUrl,
+        audioUrl: audioUrl,
+      };
+
+      // Only include CAPTCHA tokens if they exist
+      if (hcaptchaToken) {
+        requestBody.hcaptchaToken = hcaptchaToken;
+      }
+      if (recaptchaToken) {
+        requestBody.recaptchaToken = recaptchaToken;
+      }
+
       // Submit testimony
       const response = await fetch("/api/testimonies", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          name: submissionName,
-          role: submissionRole,
-          image: imageUrl,
-          testimony: testimonyText,
-          category: data.category,
-          date: data.date,
-          type: data.type,
-          videoUrl: videoUrl,
-          audioUrl: audioUrl,
-          // TODO: Add CAPTCHA tokens if required
-          hcaptchaToken: null,
-          recaptchaToken: null,
-        }),
+        body: JSON.stringify(requestBody),
       });
 
       if (!response.ok) {
@@ -378,15 +393,13 @@ export default function ShareTestimonyForm() {
 
       setUploadProgress(0);
       setIsSubmitting(false);
-      toast.error(
-        error instanceof Error
-          ? error.message
-          : "An error occurred. Please try again later.",
-        {
-          description: "An error occurred. Please try again later.",
-          duration: 8000,
-        }
-      );
+      toast.error("Submission Failed", {
+        description:
+          error instanceof Error
+            ? error.message
+            : "An error occurred. Please try again later.",
+        duration: 8000,
+      });
     }
   };
 
@@ -470,7 +483,7 @@ export default function ShareTestimonyForm() {
                   } ${errorCount} error${
                     errorCount === 1 ? "" : "s"
                   } in the form. Please check the fields below.`,
-                  duration: 5000,
+                  duration: 8000,
                 });
               }
             })}

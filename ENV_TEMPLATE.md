@@ -50,6 +50,29 @@ RECAPTCHA_SECRET_KEY=your_recaptcha_secret_key
 # If set, clients can bypass CAPTCHA by providing this key in X-API-Key header
 # Useful for automated submissions from trusted sources
 API_SUBMISSION_KEY=your_secure_api_key_here
+
+# Email Configuration (Optional - for contact form notifications)
+# Choose ONE of the following options:
+
+# Option 1: Resend (Recommended for Next.js)
+# Get API key from: https://resend.com/api-keys
+# Free tier: 3,000 emails/month
+# Packages: resend (already installed)
+RESEND_API_KEY=re_your_resend_api_key
+RESEND_FROM_EMAIL=contact@wcigoderich.org
+
+# Option 2: SMTP (Works with Gmail, Outlook, and any SMTP server)
+# For Gmail: Use App Password (not regular password)
+# Get App Password: https://myaccount.google.com/apppasswords
+# Packages: nodemailer (already installed)
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=your_email@gmail.com
+SMTP_PASS=your_app_password
+SMTP_FROM_EMAIL=contact@wcigoderich.org
+
+# Note: If none are configured, emails will be logged to console in development mode
+# All contact form submissions are still saved to the database regardless of email configuration
 ```
 
 **Important**: Never commit `.env.local` to git. It's already in `.gitignore`.

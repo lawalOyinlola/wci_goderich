@@ -76,6 +76,13 @@ const midnightWarriorsSession = UNIQUE_PRAYER_SESSIONS.find(
 export default function JoinPrayerGroup() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
+  // CAPTCHA tokens (will be set when CAPTCHA is configured)
+  const [hcaptchaToken, setHcaptchaToken] = useState<string | undefined>(
+    undefined
+  );
+  const [recaptchaToken, setRecaptchaToken] = useState<string | undefined>(
+    undefined
+  );
 
   const form = useForm<JoinPrayerGroupFormValues>({
     resolver: yupResolver(joinGroupSchema),
@@ -94,12 +101,25 @@ export default function JoinPrayerGroup() {
   const onSubmit = async (data: JoinPrayerGroupFormValues) => {
     setIsSubmitting(true);
     try {
+      // Build request body with conditional CAPTCHA tokens
+      const requestBody: Record<string, unknown> = {
+        ...data,
+      };
+
+      // Only include CAPTCHA tokens if they exist
+      if (hcaptchaToken) {
+        requestBody.hcaptchaToken = hcaptchaToken;
+      }
+      if (recaptchaToken) {
+        requestBody.recaptchaToken = recaptchaToken;
+      }
+
       const response = await fetch("/api/prayer/groups/join", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(requestBody),
       });
 
       if (!response.ok) {

@@ -36,6 +36,15 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  // Remove console statements in production (works with both Turbopack and Webpack)
+  compiler: {
+    removeConsole:
+      process.env.NODE_ENV === "production"
+        ? {
+            exclude: ["error", "warn"], // Keep console.error and console.warn for production monitoring
+          }
+        : false,
+  },
 };
 
 export default nextConfig;

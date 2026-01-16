@@ -68,6 +68,13 @@ const categoryOptions = PRAYER_CATEGORIES.map((cat) => ({
 
 export default function PrayerRequestForm() {
   const [submitSuccess, setSubmitSuccess] = useState(false);
+  // CAPTCHA tokens (will be set when CAPTCHA is configured)
+  const [hcaptchaToken, setHcaptchaToken] = useState<string | undefined>(
+    undefined
+  );
+  const [recaptchaToken, setRecaptchaToken] = useState<string | undefined>(
+    undefined
+  );
   const { CONTACT } = CHURCH_INFO;
   const {
     phone: churchPhone = "",
@@ -126,12 +133,25 @@ export default function PrayerRequestForm() {
     }
 
     try {
+      // Build request body with conditional CAPTCHA tokens
+      const requestBody: Record<string, unknown> = {
+        ...data,
+      };
+
+      // Only include CAPTCHA tokens if they exist
+      if (hcaptchaToken) {
+        requestBody.hcaptchaToken = hcaptchaToken;
+      }
+      if (recaptchaToken) {
+        requestBody.recaptchaToken = recaptchaToken;
+      }
+
       const response = await fetch("/api/prayer/requests", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(requestBody),
       });
 
       if (!response.ok) {

@@ -6,6 +6,21 @@ import {
 } from "@/lib/data/testimonies";
 import { checkRateLimit } from "@/lib/utils/rate-limit";
 import { checkAuth } from "@/lib/utils/auth";
+import { parseRequestBody, normalizeStringField } from "@/lib/utils/validation";
+
+/**
+ * Check if the request is from an admin
+ * Currently returns false - implement admin authentication as needed
+ * Options: API key check, JWT token, session-based auth, etc.
+ */
+function isAdminRequest(request: NextRequest): boolean {
+  // TODO: Implement admin authentication
+  // Example: Check for admin API key in header
+  // const adminApiKey = process.env.ADMIN_API_KEY;
+  // const providedKey = request.headers.get("x-admin-api-key");
+  // return adminApiKey && providedKey === adminApiKey;
+  return false;
+}
 
 // GET - Fetch testimonies
 export async function GET(request: NextRequest) {
@@ -71,7 +86,9 @@ export async function GET(request: NextRequest) {
     const { data, error } = await query;
 
     if (error) {
-      console.error("Error fetching testimonies:", error);
+      if (process.env.NODE_ENV === "development") {
+        console.error("Error fetching testimonies:", error);
+      }
       return NextResponse.json(
         { error: "Failed to fetch testimonies" },
         { status: 500 }
@@ -86,7 +103,9 @@ export async function GET(request: NextRequest) {
       { status: 200 }
     );
   } catch (error) {
-    console.error("Error in GET /api/testimonies:", error);
+    if (process.env.NODE_ENV === "development") {
+      console.error("Error in GET /api/testimonies:", error);
+    }
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }
@@ -107,7 +126,21 @@ export async function POST(request: NextRequest) {
       return rateLimitResult.response!;
     }
 
-    const body = await request.json();
+    // Parse JSON with error handling
+    let body: Record<string, unknown>;
+    try {
+      body = await parseRequestBody(request);
+    } catch (parseError) {
+      return NextResponse.json(
+        {
+          error:
+            parseError instanceof Error
+              ? parseError.message
+              : "Invalid JSON payload",
+        },
+        { status: 400 }
+      );
+    }
 
     // Authentication: Require CAPTCHA verification
     const authResult = await checkAuth(request, body, {
@@ -117,21 +150,37 @@ export async function POST(request: NextRequest) {
     if (!authResult.allowed) {
       return authResult.response!;
     }
-    const {
-      name,
-      role,
-      image, // Should be a Cloudinary URL (uploaded separately, optional)
-      testimony,
-      category,
-      date,
-      type,
-      videoUrl,
-      audioUrl,
-      featured = false,
-      verified = false,
-    } = body;
 
-    // Validation
+    // Extract and normalize fields with type checking
+    // Note: featured and verified are server-controlled and not accepted from client
+    const rawName = body.name;
+    const rawRole = body.role;
+    const rawImage = body.image;
+    const rawTestimony = body.testimony;
+    const rawCategory = body.category;
+    const rawDate = body.date;
+    const rawType = body.type;
+    const rawVideoUrl = body.videoUrl;
+    const rawAudioUrl = body.audioUrl;
+
+    // Normalize all fields (only trim strings)
+    const name = normalizeStringField(rawName);
+    const role = normalizeStringField(rawRole, true); // Allow empty
+    const image = normalizeStringField(rawImage, true); // Allow empty (Cloudinary URL)
+    const testimony = normalizeStringField(rawTestimony);
+    const category = normalizeStringField(rawCategory);
+    const date = normalizeStringField(rawDate);
+    const type = normalizeStringField(rawType);
+    const videoUrl = normalizeStringField(rawVideoUrl, true); // Allow empty
+    const audioUrl = normalizeStringField(rawAudioUrl, true); // Allow empty
+
+    // Server-controlled fields: featured and verified
+    // These are set to false by default and can only be set to true by admins
+    const isAdmin = isAdminRequest(request);
+    const featured = isAdmin && body.featured === true ? true : false;
+    const verified = isAdmin && body.verified === true ? true : false;
+
+    // Validation using normalized values
     if (!testimony || !category || !date || !type) {
       return NextResponse.json(
         {
@@ -142,14 +191,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Use default values for optional fields
-    // Database requires NOT NULL, so provide defaults
-    const submissionName = (name && name.trim()) || "Anonymous";
-    const submissionRole = (role && role.trim()) || "";
-    // For image, use empty string if not provided (database allows empty strings)
-    // You may want to use a default placeholder image URL instead
-    const submissionImage = image || "";
-
+    // Validate type enum
     if (!["written", "video", "audio"].includes(type)) {
       return NextResponse.json(
         { error: "Type must be 'written', 'video', or 'audio'" },
@@ -157,6 +199,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Validate type-specific requirements
     if (type === "video" && !videoUrl) {
       return NextResponse.json(
         { error: "videoUrl is required for video type" },
@@ -171,21 +214,28 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Insert into database
+    // Use default values for optional fields
+    // Database requires NOT NULL, so provide defaults
+    const submissionName = name || "Anonymous";
+    const submissionRole = role || "";
+    // For image, use empty string if not provided (database allows empty strings)
+    const submissionImage = image || "";
+
+    // Insert into database using normalized values
     const { data, error } = await supabaseServer
       .from("testimonies")
       .insert({
         name: submissionName,
         role: submissionRole,
         image: submissionImage,
-        testimony: testimony.trim(),
-        category: category.trim(),
+        testimony,
+        category,
         date,
         type,
-        video_url: type === "video" ? videoUrl : null,
-        audio_url: type === "audio" ? audioUrl : null,
-        featured: Boolean(featured),
-        verified: Boolean(verified),
+        video_url: type === "video" ? videoUrl || null : null,
+        audio_url: type === "audio" ? audioUrl || null : null,
+        featured,
+        verified,
       })
       .select()
       .single();
@@ -197,25 +247,33 @@ export async function POST(request: NextRequest) {
         try {
           await deleteImage(submissionImage);
         } catch (deleteError) {
-          console.error("Error deleting image during cleanup:", deleteError);
+          if (process.env.NODE_ENV === "development") {
+            console.error("Error deleting image during cleanup:", deleteError);
+          }
         }
       }
       if (videoUrl) {
         try {
           await deleteMedia(videoUrl);
         } catch (deleteError) {
-          console.error("Error deleting video during cleanup:", deleteError);
+          if (process.env.NODE_ENV === "development") {
+            console.error("Error deleting video during cleanup:", deleteError);
+          }
         }
       }
       if (audioUrl) {
         try {
           await deleteMedia(audioUrl);
         } catch (deleteError) {
-          console.error("Error deleting audio during cleanup:", deleteError);
+          if (process.env.NODE_ENV === "development") {
+            console.error("Error deleting audio during cleanup:", deleteError);
+          }
         }
       }
 
-      console.error("Error creating testimony:", error);
+      if (process.env.NODE_ENV === "development") {
+        console.error("Error creating testimony:", error);
+      }
       return NextResponse.json(
         { error: "Failed to create testimony record" },
         { status: 500 }
@@ -230,7 +288,9 @@ export async function POST(request: NextRequest) {
       { status: 201 }
     );
   } catch (error) {
-    console.error("Error in POST /api/testimonies:", error);
+    if (process.env.NODE_ENV === "development") {
+      console.error("Error in POST /api/testimonies:", error);
+    }
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }

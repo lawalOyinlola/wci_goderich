@@ -48,6 +48,13 @@ export default function MonthlyBirthdaysSection({
   const [showCelebration, setShowCelebration] = useState(false);
   const [celebrantName, setCelebrantName] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  // CAPTCHA tokens (will be set when CAPTCHA is configured)
+  const [hcaptchaToken, setHcaptchaToken] = useState<string | undefined>(
+    undefined
+  );
+  const [recaptchaToken, setRecaptchaToken] = useState<string | undefined>(
+    undefined
+  );
 
   useEffect(() => {
     // Set date on mount to prevent hydration mismatch between server and client
@@ -179,6 +186,14 @@ export default function MonthlyBirthdaysSection({
         );
         formData.append("image", imageFile);
 
+        // Only append CAPTCHA tokens if they exist
+        if (hcaptchaToken) {
+          formData.append("hcaptchaToken", hcaptchaToken);
+        }
+        if (recaptchaToken) {
+          formData.append("recaptchaToken", recaptchaToken);
+        }
+
         // Submit to API with promise toast
         await toast.promise(submitBirthday(formData), {
           loading: "Submitting your birthday details...",
@@ -226,7 +241,14 @@ export default function MonthlyBirthdaysSection({
         setIsSubmitting(false);
       }
     },
-    [imageBlob, currentMonthIndex, form, triggerConfetti]
+    [
+      imageBlob,
+      currentMonthIndex,
+      form,
+      triggerConfetti,
+      hcaptchaToken,
+      recaptchaToken,
+    ]
   );
 
   // Don't render until we have the date to prevent hydration mismatch

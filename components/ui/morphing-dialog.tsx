@@ -17,9 +17,9 @@ import {
   Variant,
 } from "motion/react";
 import { createPortal } from "react-dom";
+import useClickOutside from "@/components/useClickOutside";
 import { cn } from "@/lib/utils";
-import { XIcon } from "lucide-react";
-import useClickOutside from "../useClickOutside";
+import { XIcon } from "@phosphor-icons/react";
 
 export type MorphingDialogContextType = {
   isOpen: boolean;
@@ -43,13 +43,9 @@ function useMorphingDialog() {
 
 export type MorphingDialogProviderProps = {
   children: React.ReactNode;
-  transition?: Transition;
 };
 
-function MorphingDialogProvider({
-  children,
-  transition,
-}: MorphingDialogProviderProps) {
+function MorphingDialogProvider({ children }: MorphingDialogProviderProps) {
   const [isOpen, setIsOpen] = useState(false);
   const uniqueId = useId();
   const triggerRef = useRef<HTMLButtonElement>(null!);
@@ -66,7 +62,7 @@ function MorphingDialogProvider({
 
   return (
     <MorphingDialogContext.Provider value={contextValue}>
-      <MotionConfig transition={transition}>{children}</MotionConfig>
+      {children}
     </MorphingDialogContext.Provider>
   );
 }
@@ -97,7 +93,19 @@ function MorphingDialogTrigger({
   style,
   triggerRef,
 }: MorphingDialogTriggerProps) {
-  const { setIsOpen, isOpen, uniqueId } = useMorphingDialog();
+  const {
+    setIsOpen,
+    isOpen,
+    uniqueId,
+    triggerRef: contextTriggerRef,
+  } = useMorphingDialog();
+  const ref = triggerRef || contextTriggerRef;
+
+  useEffect(() => {
+    if (ref.current) {
+      contextTriggerRef.current = ref.current;
+    }
+  }, [ref, contextTriggerRef]);
 
   const handleClick = useCallback(() => {
     setIsOpen(!isOpen);
@@ -115,7 +123,7 @@ function MorphingDialogTrigger({
 
   return (
     <motion.button
-      ref={triggerRef}
+      ref={ref}
       layoutId={`dialog-${uniqueId}`}
       className={cn("relative cursor-pointer", className)}
       onClick={handleClick}
@@ -150,6 +158,8 @@ function MorphingDialogContent({
     useState<HTMLElement | null>(null);
 
   useEffect(() => {
+    if (!isOpen) return;
+
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         setIsOpen(false);
@@ -176,7 +186,7 @@ function MorphingDialogContent({
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [setIsOpen, firstFocusableElement, lastFocusableElement]);
+  }, [isOpen, setIsOpen, firstFocusableElement, lastFocusableElement]);
 
   useEffect(() => {
     if (isOpen) {
@@ -225,7 +235,11 @@ export type MorphingDialogContainerProps = {
   style?: React.CSSProperties;
 };
 
-function MorphingDialogContainer({ children }: MorphingDialogContainerProps) {
+function MorphingDialogContainer({
+  children,
+  className,
+  style,
+}: MorphingDialogContainerProps) {
   const { isOpen, uniqueId } = useMorphingDialog();
   const [mounted, setMounted] = useState(false);
 
@@ -242,12 +256,18 @@ function MorphingDialogContainer({ children }: MorphingDialogContainerProps) {
         <>
           <motion.div
             key={`backdrop-${uniqueId}`}
-            className="fixed inset-0 h-full w-full bg-white/40 backdrop-blur-xs dark:bg-black/40"
+            className="fixed inset-0 z-40 h-full w-full bg-white/40 backdrop-blur-xs dark:bg-black/40"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           />
-          <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div
+            className={cn(
+              "fixed inset-0 z-50 flex items-center justify-center",
+              className
+            )}
+            style={style}
+          >
             {children}
           </div>
         </>
@@ -273,6 +293,7 @@ function MorphingDialogTitle({
   return (
     <motion.div
       layoutId={`dialog-title-container-${uniqueId}`}
+      id={`motion-ui-morphing-dialog-title-${uniqueId}`}
       className={className}
       style={style}
       layout
@@ -364,7 +385,7 @@ function MorphingDialogImage({
     <motion.img
       src={src}
       alt={alt}
-      className={cn(className)}
+      className={className}
       layoutId={`dialog-img-${uniqueId}`}
       style={style}
     />
