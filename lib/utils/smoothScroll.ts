@@ -20,7 +20,7 @@ export interface SmoothScrollOptions {
   /**
    * Offset from the target element (in pixels)
    * Useful for fixed headers/navbars
-   * @default 80
+   * @default 10
    */
   offset?: number;
   /**
@@ -117,7 +117,9 @@ export function smoothScrollToTop(options: SmoothScrollOptions = {}): void {
  */
 export function parseUrl(url: string): { pathname: string; hash: string } {
   try {
-    const urlObj = new URL(url, window.location.origin);
+    const base = typeof window !== "undefined" ? window.location.href : "http://localhost";
+    const urlObj = new URL(url, base);
+
     return {
       pathname: urlObj.pathname,
       hash: urlObj.hash,
@@ -140,5 +142,5 @@ export function parseUrl(url: string): { pathname: string; hash: string } {
 export function isSamePage(url: string): boolean {
   if (typeof window === "undefined") return false;
   const { pathname } = parseUrl(url);
-  return pathname === window.location.pathname || pathname === "/";
+  return pathname === window.location.pathname;
 }

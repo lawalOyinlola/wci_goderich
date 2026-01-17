@@ -1,10 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import dynamic from "next/dynamic";
 import { useMap, useMapEvent } from "react-leaflet";
 import type { LeafletMouseEvent, Map as LeafletMap, DivIcon } from "leaflet";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { AnimatedButton } from "@/components/ui/animated-button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   ArrowCounterClockwiseIcon,
@@ -12,7 +14,6 @@ import {
 } from "@phosphor-icons/react";
 import { CHURCH_INFO } from "@/lib/constants";
 import "leaflet/dist/leaflet.css";
-import { AnimatedButton } from "../ui/animated-button";
 
 // --- Lazy Load Components ---
 const MapContainer = dynamic(
@@ -36,6 +37,11 @@ function MapController({ onReady }: { onReady: (m: LeafletMap) => void }) {
   const map = useMap();
   useEffect(() => {
     onReady(map);
+    // Cleanup: don't keep stale map reference
+    return () => {
+      // Map instance cleanup is handled by React Leaflet
+      // We just need to ensure we don't keep a stale reference
+    };
   }, [map, onReady]);
   return null;
 }
@@ -66,16 +72,23 @@ const { lat, lng } = coordinates ?? {};
 export default function ChurchLocationMap() {
   const [mapInstance, setMapInstance] = useState<LeafletMap | null>(null);
   const [customIcon, setCustomIcon] = useState<DivIcon | null>(null);
-  const [mapPosition, setMapPosition] = useState<[number, number]>([lat, lng]);
+  const DEFAULT_COORDS: [number, number] = [0, 0];
+  const [mapPosition, setMapPosition] = useState<[number, number]>(
+    lat !== undefined && lng !== undefined ? [lat, lng] : DEFAULT_COORDS
+  );
 
-  // FIXED: Use a state key to force full re-render on mount
-  const [mapKey, setMapKey] = useState<string | null>(null);
+  // Use a ref to track the map instance for cleanup
+  const mapInstanceRef = useRef<LeafletMap | null>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  
+  // Generate a unique key on mount using useRef (persists across re-renders, unique per mount)
+  const mapKeyRef = useRef<string>(
+    `map-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
+  );
+  const mapKey = mapKeyRef.current;
 
   // 1. Initialize logic on client mount
   useEffect(() => {
-    // This generates a random key. When this runs, it forces the MapContainer
-    // to discard any old DOM nodes and create a fresh one.
-    setMapKey(`map-${Date.now()}`);
 
     // Create the icon here
     import("leaflet").then((L) => {
@@ -108,7 +121,30 @@ export default function ChurchLocationMap() {
       });
       setCustomIcon(icon);
     });
+
+    // Cleanup function to properly remove map instance on unmount
+    return () => {
+      // Clean up map instance if it exists
+      if (mapInstanceRef.current) {
+        try {
+          // Check if map is still valid before removing
+          if (mapInstanceRef.current.getContainer()?.parentNode) {
+            mapInstanceRef.current.remove();
+          }
+          mapInstanceRef.current = null;
+          setMapInstance(null);
+        } catch (error) {
+          // Ignore errors during cleanup (map might already be removed)
+          // This is expected if React Leaflet already cleaned it up
+        }
+      }
+    };
   }, []); // Empty dependency array = runs once on mount
+
+  // Update ref when map instance changes
+  useEffect(() => {
+    mapInstanceRef.current = mapInstance;
+  }, [mapInstance]);
 
   const handleReset = () => {
     if (mapInstance) {
@@ -118,7 +154,11 @@ export default function ChurchLocationMap() {
   };
 
   const handleViewMyLocation = () => {
-    if (!navigator.geolocation) return;
+    if (!navigator.geolocation) {
+    toast.error("Geolocation is not supported by your browser");
+      return;
+    }
+
     navigator.geolocation.getCurrentPosition(
       (pos) => {
         const coords: [number, number] = [
@@ -127,7 +167,10 @@ export default function ChurchLocationMap() {
         ];
         setMapPosition(coords);
       },
-      (err) => console.error(err),
+      (err) => {
+        console.error(err);
+        toast.error("Unable to get your location");
+      },
       { enableHighAccuracy: true, timeout: 8000 }
     );
   };
@@ -137,25 +180,14 @@ export default function ChurchLocationMap() {
     window.open(directionsUrl, "_blank", "noopener,noreferrer");
   };
 
-  // Prevent rendering until the key is generated (Client side only)
-  if (!mapKey) {
-    return (
-      <Card className="overflow-hidden shadow-lg lg:rounded-r-none border-0">
-        <CardContent className="p-0">
-          <div className="relative h-100 md:h-144 flex items-center justify-center bg-gray-50">
-            <div className="text-muted-foreground animate-pulse flex flex-col items-center gap-2">
-              Loading Map...
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-    );
-  }
 
   return (
     <Card className="overflow-hidden shadow-lg lg:rounded-r-none border-0 relative group">
       <CardContent className="p-0">
-        <div className="relative h-100 md:h-144 w-full isolate">
+        <div 
+          ref={containerRef}
+          className="relative h-100 md:h-144 w-full isolate"
+        >
           <MapContainer
             key={mapKey}
             center={mapPosition}

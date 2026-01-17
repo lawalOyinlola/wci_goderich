@@ -24,11 +24,11 @@ export const SLIDES = [
     ],
   },
   {
-    title: "MY DEPENDABLE DESTINY HELPER",
-    subtitle: "PROPHETIC FOCUS - OCT",
-    description: "is here.",
+    title: "PRAYER AND FASTING",
+    subtitle: "PROPHETIC FOCUS - JAN",
+    description: "Empowers for Dominion.",
     background: "linear-gradient(135deg, #1a1a1a 0%, #2d3436 100%)",
-    backgroundImage: "./images/bg-prophetic_focus_jan.jpg",
+    backgroundImage: "/images/bg-prophetic_focus_jan.jpg",
     image: "/images/prophetic_focus_jan.png",
   },
   // {

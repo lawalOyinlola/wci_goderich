@@ -405,7 +405,7 @@ export default function ShareTestimonyForm() {
 
   if (submitSuccess) {
     return (
-      <section id="share-testimony" className="bg-muted py-16">
+      <section id="share-testimony" className="bg-muted">
         <div className="small-container max-w-2xl">
           <Card className="p-8 text-center">
             <div className="mb-4">

@@ -186,7 +186,7 @@ export default function PrayerRequestForm() {
 
   if (submitSuccess) {
     return (
-      <section id="prayer-request" className="bg-muted">
+     <section id="prayer-request" className="bg-linear-to-b from-muted to-background">
         <div className="small-container max-w-2xl">
           <Card className="p-8 text-center">
             <div className="mb-4">

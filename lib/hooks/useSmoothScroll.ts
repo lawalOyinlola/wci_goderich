@@ -51,9 +51,12 @@ export function useSmoothScroll(defaultOptions?: SmoothScrollOptions) {
 
         // Store hash if present (for scrolling to section)
         // If no hash, SmoothScrollProvider will scroll to top
-        if (hash) {
+       if (hash) {
           sessionStorage.setItem("smoothScrollTarget", hash);
         }
+        // Navigate to new page (preserve hash for shareable URLs)
+        const nextUrl = hash ? `${targetPath}${hash}` : targetPath;
+        router.push(nextUrl, { scroll: false });
 
         // Navigate to new page
         router.push(targetPath);
