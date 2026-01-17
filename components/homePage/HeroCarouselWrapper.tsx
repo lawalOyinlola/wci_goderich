@@ -71,8 +71,8 @@ export function HeroCarouselWrapper({ children }: HeroCarouselWrapperProps) {
       <CarouselContent className="h-screen">{children}</CarouselContent>
 
       {/* Navigation Buttons */}
-      <CarouselPrevious className="carousel-btn left-4!" />
-      <CarouselNext className="carousel-btn right-4!" />
+      <CarouselPrevious variant="default" className="carousel-btn left-4!" />
+      <CarouselNext variant="default" className="carousel-btn right-4!" />
 
       {/* Slide Indicators */}
       <div className="absolute bottom-8 left-0 right-0 flex justify-center gap-2 z-20">
@@ -80,13 +80,12 @@ export function HeroCarouselWrapper({ children }: HeroCarouselWrapperProps) {
           <Button
             key={index}
             onClick={() => scrollTo(index)}
-            variant="ghost"
             aria-label={`Go to slide ${index + 1}`}
             aria-current={index === current - 1 ? "true" : undefined}
             className={`w-2 h-2 p-0 rounded-full transition-all duration-300 ${
               index === current - 1
-                ? "bg-white w-8 scale-110"
-                : "bg-white/50 hover:bg-white/80"
+                ? "bg-primary w-8 scale-110"
+                : "bg-primary/50 hover:bg-white/80"
             }`}
           />
         ))}

@@ -90,7 +90,7 @@ export const NAV_ITEMS: NavItem[] = [
       },
       {
         label: "Satellite Fellowship",
-        href: "/homecell",
+        href: "/wsf",
         description:
           "Connect with a small group near you for fellowship and Bible study.",
       },

@@ -19,7 +19,7 @@ export default function Hero() {
       />
       <AnimatedButton
         variant="outline"
-        href="#join-group"
+        href="#prayer-sessions"
         text="Join Prayer Group"
         size="lg"
       />

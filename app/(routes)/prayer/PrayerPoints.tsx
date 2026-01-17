@@ -151,7 +151,7 @@ export default function PrayerPoints({ initialCategory }: PrayerPointsProps) {
   };
 
   return (
-    <section className="py-16 bg-background">
+    <section>
       <div className="small-container">
         <SectionHeader
           title="Prayer Points"

@@ -339,8 +339,8 @@ export async function sendContactEmail(
     console.log("📧 Email would be sent to:", CHURCH_INFO.CONTACT.email);
     console.log("📧 Email content:", {
       subject: `New Contact Form: ${data.subject}`,
-      from: data.email || "anonymous",
-      body: generateContactEmailText(data),
+      from: data.email ? "[email provided]" : "anonymous",
+      messageLength: data.message.length,
     });
     console.log("💡 To enable email sending, configure one of:");
     console.log("   - RESEND_API_KEY (recommended)");

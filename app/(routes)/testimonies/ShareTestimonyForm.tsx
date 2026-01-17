@@ -439,7 +439,7 @@ export default function ShareTestimonyForm() {
   }
 
   return (
-    <section id="share-testimony" className="bg-muted py-16">
+    <section id="share-testimony" className="bg-muted">
       <div className="small-container max-w-4xl">
         <SectionHeader
           title="Share Your Testimony"

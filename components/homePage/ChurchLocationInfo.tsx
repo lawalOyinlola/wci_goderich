@@ -27,11 +27,11 @@ const { phone, email, officeHours } = CONTACT;
 
 export default function ChurchLocationInfo() {
   return (
-    <Card className="shadow-lg lg:rounded-l-none 2xl:gap-9">
+    <Card className="shadow-lg lg:rounded-l-none xl:gap-7">
       <CardHeader>
-        <div className="flex items-start gap-3">
-          <MapPinIcon weight="duotone" className="size-8 text-primary" />
-          <div className="flex-1 space-y-3">
+        <div className="flex items-start gap-2">
+          <MapPinIcon weight="duotone" className="size-6 text-primary" />
+          <div className="flex-1 space-y-2">
             <h3 className="font-semibold text-lg">Church Address</h3>
             <p className="text-muted-foreground">
               {`${street}, ${city}, ${province}, SL`}
@@ -40,7 +40,6 @@ export default function ChurchLocationInfo() {
               text="Get Directions"
               href="/location"
               className="w-full"
-              size="lg"
               icon={<NavigationArrowIcon weight="bold" className="rotate-90" />}
             />
           </div>
@@ -63,7 +62,7 @@ export default function ChurchLocationInfo() {
           })}
         </div>
       </CardContent>
-      <CardFooter className="flex-col items-start">
+      <CardFooter className="flex-col items-start md:pt-1">
         <h3 className="font-semibold text-lg mb-4">Contact Info</h3>
         <div className="space-y-3">
           <div className="flex justify-between gap-1">

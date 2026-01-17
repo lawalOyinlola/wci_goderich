@@ -156,7 +156,7 @@ export default function JoinPrayerGroup() {
 
   if (submitSuccess) {
     return (
-      <section id="join-group" className="py-16 bg-background">
+      <section className="py-16 bg-muted">
         <div className="small-container max-w-2xl">
           <Card className="p-8 text-center">
             <div className="mb-4">
@@ -190,7 +190,7 @@ export default function JoinPrayerGroup() {
   }
 
   return (
-    <div className="grid gap-12 lg:grid-cols-4 items-start">
+    <div id="join-group" className="grid gap-12 lg:grid-cols-4 items-start">
       <div className="grid min-[400px]:grid-cols-2 gap-4 lg:col-span-2">
         <div className="mb-8 col-span-2">
           <div className="flex items-center gap-2 mb-6">

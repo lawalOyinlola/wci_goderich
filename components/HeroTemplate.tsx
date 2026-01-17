@@ -18,6 +18,7 @@ export default function HeroTemplate({
   return (
     <>
       <main
+        id="hero"
         className={cn("overflow-hidden relative min-h-screen", className)}
         style={
           backgroundImage

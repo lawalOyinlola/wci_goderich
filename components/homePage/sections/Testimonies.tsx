@@ -292,8 +292,8 @@ export default function Testimonies({
           title="Share Your Testimony"
           description="Has God worked in your life? We'd love to hear your story and share it with our community."
           buttons={[
-            { text: "View Testimonies", href: "/testimonies" },
-            { text: "Share Your Story", href: "/testimonies" },
+            { text: "View Testimonies", href: "/testimonies#testimonies" },
+            { text: "Share Your Story", href: "/testimonies#share-testimony" },
           ]}
         />
       </div>

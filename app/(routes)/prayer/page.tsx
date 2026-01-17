@@ -20,9 +20,9 @@ export default async function PrayerPage({ searchParams }: PrayerPageProps) {
     <>
       <Hero />
       <PrayerInspiration />
-      <PrayerRequestForm />
-      <PrayerPoints initialCategory={categoryParam} />
       <PrayerSessions />
+      <PrayerPoints initialCategory={categoryParam} />
+      <PrayerRequestForm />
       <Suspense fallback={<AnsweredPrayersSkeleton />}>
         <AnsweredPrayers />
       </Suspense>
@@ -32,7 +32,10 @@ export default async function PrayerPage({ searchParams }: PrayerPageProps) {
         description="Read more testimonies from our church family and see how God is moving in our community."
         mainText="Every testimony is a testament to God's faithfulness. Explore more stories of transformation, healing, and breakthrough from our church family."
         buttons={[
-          { text: "View All Testimonies", href: "#" },
+          {
+            text: "View All Testimonies",
+            href: "/testimonies#testimonies",
+          },
           { text: "Learn More About Us", href: "/about" },
         ]}
       />

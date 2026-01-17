@@ -3,8 +3,8 @@
 import { useState } from "react";
 import Image from "next/image";
 import SectionHeader from "@/components/SectionHeader";
-import { LEADERSHIP } from "@/lib/constants";
 import { LeadershipRole } from "@/lib/types/leadership";
+import { LEADERSHIP } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
 const Leadership = () => {
@@ -24,7 +24,7 @@ const Leadership = () => {
   const leaders = [...filteredPastors, ...filteredDirectors];
 
   return (
-    <section className="bg-muted/30">
+    <section id="leadership" className="bg-muted/30">
       <div className="small-container">
         <SectionHeader
           title={title}

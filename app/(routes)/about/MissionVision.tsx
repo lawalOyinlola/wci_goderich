@@ -8,7 +8,7 @@ export default function MissionVision() {
   const { MISSION, VISION, MANDATE, ABOUT_US } = CHURCH_INFO;
 
   return (
-    <section className="bg-background">
+    <section id="mission-vision" className="bg-background">
       <div className="@container small-container max-w-5xl">
         <SectionHeader
           title="Mission, Vision and Mandate"
