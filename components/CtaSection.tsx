@@ -1,10 +1,12 @@
 import SectionHeader from "@/components/SectionHeader";
 import CtaContainer from "./CtaContainer";
 import { cn } from "@/lib/utils";
+import { SmoothScrollOptions } from "@/lib/utils/smoothScroll";
 
 interface CtaButton {
   text: string;
   href: string;
+  smoothScrollOptions?: SmoothScrollOptions;
 }
 
 interface CtaSectionProps {

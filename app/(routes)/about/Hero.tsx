@@ -11,7 +11,7 @@ export default function HeroSection() {
   const videoDialogRef = useRef<VideoDialogRef>(null);
 
   return (
-    <main className="overflow-hidden">
+    <main id="hero" className="overflow-hidden">
       <section className="bg-linear-to-b to-muted from-background">
         <div className="relative min-h-screen flex-center">
           <div className="relative z-10 small-container">
@@ -27,7 +27,7 @@ export default function HeroSection() {
 
                 <div className="flex items-center gap-3">
                   <AnimatedButton
-                    href="#"
+                    href="#ministries"
                     text="Our Ministries"
                     icon={<ArrowDownIcon weight="bold" />}
                     size="lg"

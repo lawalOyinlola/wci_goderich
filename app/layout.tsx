@@ -4,6 +4,7 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import { Navbar } from "@/components/layouts/navbar";
 import { Footer } from "@/components/layouts/footer";
 import { Toaster } from "@/components/ui/sonner";
+import { SmoothScrollProvider } from "@/components/SmoothScrollProvider";
 import { cn } from "@/lib/utils";
 import "@/lib/utils/console"; // Suppress console in production
 import "./globals.css";
@@ -50,10 +51,12 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Navbar />
-          {children}
-          <Footer />
-          <Toaster />
+          <SmoothScrollProvider>
+            <Navbar />
+            {children}
+            <Footer />
+            <Toaster />
+          </SmoothScrollProvider>
         </ThemeProvider>
       </body>
     </html>

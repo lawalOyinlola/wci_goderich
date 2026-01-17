@@ -1,3 +1,4 @@
+import { SmoothScrollOptions } from "@/lib/utils/smoothScroll";
 import { AnimatedButton } from "./ui/animated-button";
 import { cn } from "@/lib/utils";
 
@@ -7,6 +8,7 @@ interface GradientCtaSectionProps {
   buttons?: {
     text: string;
     href: string;
+    smoothScrollOptions?: SmoothScrollOptions;
   }[];
   children?: React.ReactNode;
   className?: string;
@@ -41,6 +43,7 @@ export default function CtaContainer({
                 className={`${index !== 0 ? "bg-background!" : ""} `}
                 href={button.href}
                 text={button.text}
+                smoothScrollOptions={button.smoothScrollOptions}
               />
             ))}
           {children}

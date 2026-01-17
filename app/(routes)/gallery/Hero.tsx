@@ -19,6 +19,7 @@ export default function Hero() {
       />
       <AnimatedButton
         variant="outline"
+        href="#gallery"
         text="Browse Collections"
         icon={<ImagesIcon weight="bold" />}
         size="lg"

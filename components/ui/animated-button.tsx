@@ -1,10 +1,11 @@
 "use client";
 
 import * as React from "react";
-import Link from "next/link";
 import { Button, buttonVariants } from "./button";
 import { type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
+import { SmoothLink } from "../SmoothLink";
+import { SmoothScrollOptions } from "@/lib/utils/smoothScroll";
 
 interface AnimatedButtonProps
   extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children">,
@@ -16,6 +17,7 @@ interface AnimatedButtonProps
   iconPosition?: "left" | "right";
   isLoading?: boolean;
   children?: React.ReactNode;
+  smoothScrollOptions?: SmoothScrollOptions;
 }
 
 const AnimatedButton = React.forwardRef<HTMLButtonElement, AnimatedButtonProps>(
@@ -29,6 +31,7 @@ const AnimatedButton = React.forwardRef<HTMLButtonElement, AnimatedButtonProps>(
       isLoading,
       children,
       className,
+      smoothScrollOptions,
       ...props
     },
     ref
@@ -50,7 +53,13 @@ const AnimatedButton = React.forwardRef<HTMLButtonElement, AnimatedButtonProps>(
           asChild={!!href}
           {...props}
         >
-          {href ? <Link href={href}>{content}</Link> : content}
+          {href ? (
+            <SmoothLink href={href} smoothScrollOptions={smoothScrollOptions}>
+              {content}
+            </SmoothLink>
+          ) : (
+            content
+          )}
         </Button>
       );
     }
@@ -93,7 +102,13 @@ const AnimatedButton = React.forwardRef<HTMLButtonElement, AnimatedButtonProps>(
         asChild={!!href}
         {...props}
       >
-        {href ? <Link href={href}>{animatedContent}</Link> : animatedContent}
+        {href ? (
+          <SmoothLink href={href} smoothScrollOptions={smoothScrollOptions}>
+            {animatedContent}
+          </SmoothLink>
+        ) : (
+          animatedContent
+        )}
       </Button>
     );
   }

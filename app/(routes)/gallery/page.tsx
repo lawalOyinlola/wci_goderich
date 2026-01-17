@@ -38,7 +38,7 @@ export default async function GalleryPage({ searchParams }: GalleryPageProps) {
         mainText="Share your captured moments with our community and help us build a beautiful collection of memories together."
         buttons={[
           { text: "Contact Us", href: "/contact-us" },
-          { text: "View All Events", href: "/about" },
+          { text: "View All Events", href: "/events#events" },
         ]}
       />
     </>

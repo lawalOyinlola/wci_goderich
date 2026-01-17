@@ -1,7 +1,7 @@
 "use client";
 
-import Link from "next/link";
 import { Button } from "./button";
+import { SmoothLink } from "../SmoothLink";
 import { CaretDoubleRightIcon } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
 
@@ -19,10 +19,10 @@ const CaretButton = ({ href, text, className }: CaretButtonProps) => {
       className={cn("group w-fit flex items-center gap-1", className)}
       asChild
     >
-      <Link href={href}>
+      <SmoothLink href={href}>
         {text}
         <CaretDoubleRightIcon className="opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-150 size-3" />
-      </Link>
+      </SmoothLink>
     </Button>
   );
 };

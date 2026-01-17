@@ -6,7 +6,10 @@ import CtaSection from "@/components/CtaSection";
 const ContactUsPage = () => {
   return (
     <>
-      <section className="relative bg-linear-to-br from-slate-900 via-slate-800 to-slate-900 text-white py-40">
+      <section
+        id="hero"
+        className="relative bg-linear-to-br from-slate-900 via-slate-800 to-slate-900 text-white py-40"
+      >
         <Spotlight
           className="-top-1/5 -left-1/7 md:-top-1/4 md:left-1/6"
           fill="#fdfcfb"

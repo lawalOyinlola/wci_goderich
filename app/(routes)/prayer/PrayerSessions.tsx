@@ -13,10 +13,7 @@ export default function PrayerSessions() {
   );
 
   return (
-    <section
-      id="prayer-sessions"
-      className="py-16 bg-linear-to-b from-muted to-background"
-    >
+    <section id="prayer-sessions" className="bg-muted">
       <div className="small-container">
         <SectionHeader
           title="Prayer Sessions & Services"

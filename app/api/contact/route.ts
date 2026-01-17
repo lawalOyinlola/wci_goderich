@@ -51,8 +51,11 @@ export async function POST(request: NextRequest) {
     // Extract and normalize fields with type checking
     // Use email/phone validators for better validation
     const name = normalizeStringField(body.name);
+    const emailRaw = normalizeStringField(body.email, true);
+    const phoneRaw = normalizeStringField(body.phone, true);
     const email = normalizeEmailField(body.email); // Validates email format
     const phone = normalizePhoneField(body.phone); // Validates phone format
+
     const subject = normalizeStringField(body.subject);
     const message = normalizeStringField(body.message);
     const isAnonymous = normalizeBooleanField(body.isAnonymous);
@@ -61,6 +64,20 @@ export async function POST(request: NextRequest) {
     if (!name || !subject || !message) {
       return NextResponse.json(
         { error: "Name, subject, and message are required" },
+        { status: 400 }
+      );
+    }
+
+    if (emailRaw && !email) {
+      return NextResponse.json(
+        { error: "Invalid email address" },
+        { status: 400 }
+      );
+    }
+
+    if (phoneRaw && !phone) {
+      return NextResponse.json(
+        { error: "Invalid phone number" },
         { status: 400 }
       );
     }

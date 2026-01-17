@@ -14,7 +14,7 @@ export default function Ministries() {
 
   return (
     <section>
-      <div className="small-container space-y-8 md:space-y-12">
+      <div className="small-container space-y-8 md:space-y-12" id="ministries">
         <SectionHeader
           title={title}
           subtitle={subtitle}

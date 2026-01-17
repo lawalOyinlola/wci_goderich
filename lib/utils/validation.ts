@@ -110,6 +110,9 @@ export async function parseRequestBody(
 ): Promise<Record<string, unknown>> {
   try {
     const body = await request.json();
+    if (body === null || typeof body !== "object" || Array.isArray(body)) {
+      throw new Error("Invalid JSON payload");
+    }
     return body as Record<string, unknown>;
   } catch (error) {
     throw new Error("Invalid JSON payload");

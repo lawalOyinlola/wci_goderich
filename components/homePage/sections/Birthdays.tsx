@@ -335,7 +335,7 @@ export default function MonthlyBirthdaysSection({
           <AnimatedButton
             size="lg"
             variant="outline"
-            href="/contact"
+            href="/contact-us"
             text="Contact Church Admin"
           />
 

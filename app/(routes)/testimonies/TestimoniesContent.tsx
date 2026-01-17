@@ -48,7 +48,10 @@ export default function TestimoniesContent({
   };
 
   return (
-    <section className="py-16 sm:py-24 lg:py-32 bg-background z-20">
+    <section
+      className="py-16 sm:py-24 lg:py-32 bg-background z-20"
+      id="testimonies"
+    >
       <div className="container mx-auto px-4">
         <SectionHeader
           title="God's Faithfulness in Our Lives"
