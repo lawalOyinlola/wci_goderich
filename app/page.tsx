@@ -6,19 +6,11 @@ import UpcomingEvents from "@/components/homePage/sections/UpcomingEvents";
 import Sermons from "@/components/homePage/sections/Sermons";
 import Donation from "@/components/homePage/sections/Donation";
 import Gallery from "@/components/homePage/sections/Gallery";
-import Birthdays from "@/components/homePage/sections/Birthdays";
-import Testimonies from "@/components/homePage/sections/Testimonies";
+import BirthdaysWrapper from "@/components/homePage/sections/BirthdaysWrapper";
+import TestimoniesWrapper from "@/components/homePage/sections/TestimoniesWrapper";
 import ChurchLocation from "@/components/homePage/sections/ChurchLocation";
-import { getTestimoniesServer } from "@/lib/data/testimonies.server";
-import { getBirthdaysServer } from "@/lib/data/birthdays.server";
 
 export default async function Home() {
-  // Fetch featured data
-  const [featuredTestimonies, featuredBirthdays] = await Promise.all([
-    getTestimoniesServer({ featured: true, limit: 10 }),
-    getBirthdaysServer({ featured: true, limit: 6 }),
-  ]);
-
   return (
     <>
       <HeroCarousel />
@@ -29,8 +21,8 @@ export default async function Home() {
       <Sermons />
       <Donation />
       <Gallery />
-      <Birthdays initialBirthdays={featuredBirthdays} />
-      <Testimonies initialTestimonies={featuredTestimonies} />
+      <BirthdaysWrapper />
+      <TestimoniesWrapper />
       <ChurchLocation />
     </>
   );

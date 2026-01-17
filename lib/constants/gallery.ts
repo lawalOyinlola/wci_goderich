@@ -1,4 +1,4 @@
-export const GALLERY_IMAGES = [
+export const SAMPLE_IMAGES = [
   {
     src: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=800&fit=crop&q=80",
     alt: "Church Interior",

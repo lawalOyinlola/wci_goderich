@@ -25,13 +25,13 @@ import { formatOrdinal } from "@/lib/utils";
 import { MONTHS, SAMPLE_BIRTHDAYS } from "@/lib/constants";
 import { submitBirthday } from "@/lib/data/birthdays";
 
-interface MonthlyBirthdaysSectionProps {
+interface MonthlyBirthdaysProps {
   initialBirthdays?: Birthday[];
 }
 
-export default function MonthlyBirthdaysSection({
+export default function MonthlyBirthdays({
   initialBirthdays = [],
-}: MonthlyBirthdaysSectionProps) {
+}: MonthlyBirthdaysProps) {
   const [dateState, setDateState] = useState<{
     now: Date | null;
     currentMonth: string;

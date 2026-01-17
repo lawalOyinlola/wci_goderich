@@ -57,9 +57,6 @@ export function useSmoothScroll(defaultOptions?: SmoothScrollOptions) {
         // Navigate to new page (preserve hash for shareable URLs)
         const nextUrl = hash ? `${targetPath}${hash}` : targetPath;
         router.push(nextUrl, { scroll: false });
-
-        // Navigate to new page
-        router.push(targetPath);
         // router.push(targetPath + hash);
       }
     },
