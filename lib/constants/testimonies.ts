@@ -1,6 +1,6 @@
 import type { Testimony } from "@/lib/types/testimonies";
 
-export const TESTIMONIES = {
+export const SAMPLE_TESTIMONIES = {
   title: "Stories of Faith and Transformation",
   subtitle: "Testimonies",
   description:

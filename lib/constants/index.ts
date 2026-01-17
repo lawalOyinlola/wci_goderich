@@ -6,11 +6,11 @@ export { FEATURES, SLIDES, SAMPLE_BIRTHDAYS } from "./content";
 export { LEADERSHIP } from "./leadership";
 export { MINISTRIES, MINISTRY_DETAILS } from "./ministries";
 export { SERVICES, SERMONS } from "./services";
-export { TESTIMONIES, TESTIMONY_CATEGORIES } from "./testimonies";
+export { SAMPLE_TESTIMONIES, TESTIMONY_CATEGORIES } from "./testimonies";
 export { FAQS } from "./faqs";
 export { SCHOOLS, WOFBI } from "./education";
 export { UPCOMING_EVENTS } from "./events";
-export { GALLERY_IMAGES } from "./gallery";
+export { SAMPLE_IMAGES } from "./gallery";
 export {
   MIDNIGHT_PRAYER_GROUPS,
   PRAYER_POINTS,

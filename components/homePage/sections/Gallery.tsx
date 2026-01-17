@@ -2,17 +2,33 @@ import Image from "next/image";
 import SectionHeader from "@/components/SectionHeader";
 import { InfiniteSlider } from "@/components/ui/infinite-slider";
 import { ProgressiveBlur } from "@/components/ui/progressive-blur";
-import { GALLERY_IMAGES } from "@/lib/constants";
+import { getGalleryImagesServer } from "@/lib/data/gallery.server";
+import { SAMPLE_IMAGES } from "@/lib/constants/gallery";
 
 interface GalleryImage {
+  id?: string;
   src: string;
   alt: string;
   title?: string;
 }
 
-export default function Gallery() {
-  // Convert readonly array to mutable for proper type inference
-  const galleryImages: GalleryImage[] = [...GALLERY_IMAGES];
+export default async function Gallery() {
+  // Fetch gallery images from database
+  const { images: dbImages } = await getGalleryImagesServer({ limit: 30 });
+
+  // Transform database images to component format, with fallback to static images
+  const galleryImages: GalleryImage[] =
+    dbImages.length > 0
+      ? dbImages.map((image) => ({
+          id: image.id,
+          src: image.imageUrl,
+          alt: image.altText,
+          title: image.title,
+        }))
+      : SAMPLE_IMAGES.map((img, idx) => ({
+          id: `static-${idx}`,
+          ...img,
+        }));
   const count = galleryImages.length;
   const moreThanSeven = count > 7;
   const isOdd = count % 2 === 1;
@@ -44,7 +60,7 @@ export default function Gallery() {
             <InfiniteSlider speed={100} speedOnHover={40} gap={16}>
               {topImages.map((image, index) => (
                 <div
-                  key={`row1-${index}`}
+                  key={image.id || `row1-${index}`}
                   className="group relative w-64 md:w-80 aspect-square rounded-xl overflow-hidden shadow-lg"
                 >
                   <Image
@@ -71,7 +87,7 @@ export default function Gallery() {
                   .reverse()
                   .map((image, index) => (
                     <div
-                      key={`row2-${index}`}
+                      key={image.id || `row2-${index}`}
                       className="group relative w-64 md:w-80 aspect-square rounded-xl overflow-hidden shadow-lg"
                     >
                       <Image

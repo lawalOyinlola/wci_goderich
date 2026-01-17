@@ -1,9 +1,7 @@
 import Hero from "./Hero";
-import TestimoniesContent from "./TestimoniesContent";
+import TestimoniesContentWrapper from "./TestimoniesContentWrapper";
 import ShareTestimonyForm from "./ShareTestimonyForm";
 import CtaSection from "@/components/CtaSection";
-import { getTestimoniesServer } from "@/lib/data/testimonies.server";
-import { TESTIMONIES } from "@/lib/constants";
 
 interface TestimoniesPageProps {
   searchParams: Promise<{ type?: string }>;
@@ -12,13 +10,6 @@ interface TestimoniesPageProps {
 export default async function TestimoniesPage({
   searchParams,
 }: TestimoniesPageProps) {
-  let testimonies = await getTestimoniesServer();
-
-  // Fallback to static testimonies if database is empty
-  if (testimonies.length === 0) {
-    testimonies = TESTIMONIES.testimonies;
-  }
-
   // Get type filter from search params
   const params = await searchParams;
   const typeParam = params.type;
@@ -26,7 +17,7 @@ export default async function TestimoniesPage({
   return (
     <>
       <Hero />
-      <TestimoniesContent testimonies={testimonies} initialType={typeParam} />
+      <TestimoniesContentWrapper initialType={typeParam} />
       <ShareTestimonyForm />
 
       <CtaSection

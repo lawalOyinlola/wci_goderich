@@ -25,7 +25,7 @@ interface TestimoniesProps {
   initialTestimonies?: Testimony[];
 }
 
-export default function Testimonies({
+export default function TestimoniesSection({
   initialTestimonies = [],
 }: TestimoniesProps) {
   const [isHovered, setIsHovered] = useState(false);

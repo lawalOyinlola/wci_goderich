@@ -7,7 +7,6 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import SectionHeader from "@/components/SectionHeader";
-import { TESTIMONIES } from "@/lib/constants";
 
 export default function TestimoniesLoading() {
   return (
@@ -38,7 +37,7 @@ export default function TestimoniesLoading() {
         <div className="container mx-auto px-4">
           <SectionHeader
             title="God's Faithfulness in Our Lives"
-            subtitle={TESTIMONIES.subtitle}
+            subtitle="Testimonies"
             description="Hear from our church family about how God has worked in their lives"
           />
 
