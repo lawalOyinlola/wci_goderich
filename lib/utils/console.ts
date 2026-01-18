@@ -11,6 +11,7 @@ if (process.env.NODE_ENV === "production") {
   const noop = () => {};
 
   // Client-side: Override console methods
+  // Suppress all console output including errors/warnings for better UX
   if (typeof window !== "undefined") {
     // Remove non-critical console methods
     // Keep console.error and console.warn for debugging critical issues
@@ -18,9 +19,8 @@ if (process.env.NODE_ENV === "production") {
     console.info = noop;
     console.debug = noop;
     console.trace = noop;
-    // Uncomment below to also remove errors/warnings:
-    // console.error = noop;
-    // console.warn = noop;
+    console.error = noop; // Suppress client-side errors in production
+    console.warn = noop; // Suppress client-side warnings in production
   }
 
   // Server-side: Override console methods
@@ -31,7 +31,7 @@ if (process.env.NODE_ENV === "production") {
     console.debug = noop;
     console.trace = noop;
     // Uncomment below to also remove server errors/warnings:
-    // console.error = noop;
-    // console.warn = noop;
+    console.error = noop;
+    console.warn = noop;
   }
 }

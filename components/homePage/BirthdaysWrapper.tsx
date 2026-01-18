@@ -1,4 +1,4 @@
-import MonthlyBirthdays from "./Birthdays";
+import MonthlyBirthdays from "./sections/Birthdays";
 import { getBirthdaysServer } from "@/lib/data";
 import { SAMPLE_BIRTHDAYS } from "@/lib/constants";
 import type { Birthday } from "@/lib/types";

@@ -199,7 +199,7 @@ export default function ChurchLocationMap() {
 
             <TileLayer
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              url="/api/map-tiles/{z}/{x}/{y}.png"
             />
 
             <ChangeCenter position={mapPosition} />
@@ -257,7 +257,7 @@ export default function ChurchLocationMap() {
               <ArrowCounterClockwiseIcon
                 weight="bold"
                 size={20}
-                className="text-foreground"
+                className="text-foreground dark:text-primary-foreground"
               />
             </Button>
           </div>
