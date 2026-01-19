@@ -37,9 +37,9 @@ export default function Sermons() {
                     <p className="text-xs uppercase tracking-[0.2em]">
                       BY PASTOR:
                     </p>
-                    <p className="font-outfit italic text-2xl -tracking-tight font-medium my-1">
+                    <h3 className="italic -tracking-tight font-medium my-1">
                       {sermon.pastor}
-                    </p>
+                    </h3>
                   </div>
 
                   <SermonBtn />
@@ -47,7 +47,7 @@ export default function Sermons() {
               </div>
 
               <div className="p-6">
-                <h3 className="text-2xl font-normal mb-1">{sermon.title}</h3>
+                <h3 className="font-normal mb-1">{sermon.title}</h3>
                 <p className="text-xs text-muted-foreground uppercase tracking-[0.2em]">
                   {sermon.date}
                 </p>

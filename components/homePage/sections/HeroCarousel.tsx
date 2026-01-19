@@ -33,6 +33,7 @@ export default function HeroCarousel() {
                       height={566}
                       className="mx-auto"
                       priority={true}
+                      loading="eager"
                     />
                   ) : (
                     <>

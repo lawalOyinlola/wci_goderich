@@ -18,7 +18,7 @@ export default function Welcome() {
           />
         </div>
         <article className="md:w-1/2 py-20 flex flex-col gap-6 items-start px-4">
-          <h2 className="uppercase text-sm text-gray-400 font-light tracking-[0.4em]">
+          <h2 className="uppercase text-sm text-foreground/90 font-light tracking-[0.4em]">
             Welcome to WCI Goderich
           </h2>
 
@@ -33,7 +33,7 @@ export default function Welcome() {
             ))}
           </div>
 
-          <CaretButton href="/about" text="Read More" />
+          <CaretButton href="/about" text="Read More" aria-label="Find out more about our church" />
         </article>
       </div>
     </section>

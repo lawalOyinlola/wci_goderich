@@ -2,6 +2,8 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   cacheComponents: true,
+  // Disable source maps in production to fix Lighthouse warnings and improve performance
+  productionBrowserSourceMaps: false,
   images: {
     remotePatterns: [
       {
@@ -41,7 +43,7 @@ const nextConfig: NextConfig = {
     removeConsole:
       process.env.NODE_ENV === "production"
         ? {
-            exclude: ["error", "warn"], // Keep console.error and console.warn for production monitoring
+            // exclude: ["error", "warn"], // Keep console.error and console.warn for production monitoring
           }
         : false,
   },

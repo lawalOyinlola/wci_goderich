@@ -1,4 +1,4 @@
-import TestimoniesSection from "./Testimonies";
+import TestimoniesSection from "./sections/Testimonies";
 import { getTestimoniesServer } from "@/lib/data";
 import { SAMPLE_TESTIMONIES } from "@/lib/constants";
 import type { Testimony } from "@/lib/types";

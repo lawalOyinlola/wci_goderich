@@ -69,7 +69,7 @@ export function LogoTitle({
     >
       <Logo size={logoSize} className={logoClassName} alt={alt} />
       <div className={textClassName}>
-        <h6 className="font-bold text-sm font-lora leading-none">{title}</h6>
+        <p className="font-bold text-sm font-lora leading-none">{title}</p>
         <p className="text-xs font-open-sans text-muted-foreground font-normal">
           {subtitle}
         </p>

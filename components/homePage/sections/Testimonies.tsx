@@ -147,7 +147,7 @@ export default function TestimoniesSection({
                             </blockquote>
                             <div className="flex items-center gap-3">
                               <Avatar className="size-8">
-                                <AvatarImage src={testifier.image} />
+                                <AvatarImage src={testifier.image} alt={`${testifier.name}'s image`}/>
                                 <AvatarFallback>
                                   {getAvatarInitials(testifier.name)}
                                 </AvatarFallback>
@@ -176,7 +176,7 @@ export default function TestimoniesSection({
                           <div className="flex-1 relative rounded-lg overflow-hidden bg-linear-to-br from-primary/10 to-primary/5 border border-primary/20 mb-4">
                             <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 p-6">
                               <Avatar className="size-20">
-                                <AvatarImage src={testifier.image} />
+                                <AvatarImage src={testifier.image} alt={`${testifier.name}'s image`} />
                                 <AvatarFallback>
                                   {getAvatarInitials(testifier.name)}
                                 </AvatarFallback>
@@ -236,7 +236,7 @@ export default function TestimoniesSection({
 
                           <div className="flex items-center gap-3">
                             <Avatar className="size-10">
-                              <AvatarImage src={testifier.image} />
+                              <AvatarImage src={testifier.image} alt={`${testifier.name}'s image`} />
                               <AvatarFallback>
                                 {getAvatarInitials(testifier.name)}
                               </AvatarFallback>
