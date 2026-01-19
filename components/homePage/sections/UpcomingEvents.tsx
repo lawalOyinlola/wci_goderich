@@ -50,7 +50,7 @@ export default function UpcomingEvents() {
                   <p className="text-sm text-gray-500 line-clamp-2 min-h-10 grow">
                     {event.address}
                   </p>
-                  <CaretButton href="/events" text="View Event" aria-label="Find out more about this event" />
+                  <CaretButton href="/events" text="View Event" aria-label={`Find out more about ${event.title} event`} />
                 </div>
               </div>
             );

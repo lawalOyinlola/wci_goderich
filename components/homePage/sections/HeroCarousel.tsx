@@ -32,8 +32,8 @@ export default function HeroCarousel() {
                       width={1006}
                       height={566}
                       className="mx-auto"
-                      priority={true}
-                      loading="eager"
+                      preload={index === 0 || index === 1}
+                      loading={index === 0 || index === 1 ? "eager" : "lazy"}
                     />
                   ) : (
                     <>
