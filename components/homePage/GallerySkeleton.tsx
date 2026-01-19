@@ -9,7 +9,7 @@ export default function GallerySkeleton() {
           <SectionHeader
             title="Photo Collections"
             subtitle="Gallery"
-            description="Pictures from documented events,special occasions and during service"
+            description="Pictures from documented events, special occasions and during service"
           />
         </div>
 

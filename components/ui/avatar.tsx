@@ -28,22 +28,22 @@ function AvatarImage({
   alt,
   ...props
 }: React.ComponentProps<typeof AvatarPrimitive.Image>) {
+  const [hasError, setHasError] = React.useState(false);
+
   // Check if the image is from Cloudinary (or other external sources that should use Next.js Image)
   const isCloudinaryImage = src && typeof src === "string" && (
     src.includes("res.cloudinary.com") ||
     src.includes("cloudinary.com")
   );
 
+  // If image fails, return null to trigger Radix UI's fallback mechanism
+  if (hasError) {
+    return null;
+  }
+
   // If it's a Cloudinary image, use Next.js Image to prevent third-party cookies
   // Next.js Image optimization proxies images through its own API, preventing third-party cookies
   if (isCloudinaryImage) {
-    const [hasError, setHasError] = React.useState(false);
-    
-    // If image fails, return null to trigger Radix UI's fallback mechanism
-    if (hasError) {
-      return null;
-    }
-
     return (
       <AvatarPrimitive.Image
         data-slot="avatar-image"
