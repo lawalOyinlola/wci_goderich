@@ -15,6 +15,8 @@ export default function Welcome() {
             width={400}
             height={400}
             className="h-full w-full object-fill"
+            sizes="(max-width: 768px) 100vw, 50vw"
+            priority
           />
         </div>
         <article className="md:w-1/2 py-20 flex flex-col gap-6 items-start px-4">

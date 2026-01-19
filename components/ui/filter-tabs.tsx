@@ -45,7 +45,7 @@ export function FilterTabs({
       <TabsList
         className={cn(
           isDefaultVariant
-            ? "justify-center mb-12 bg-slate-100 dark:bg-slate-800 p-1 border border-slate-200 dark:border-slate-700"
+            ? "justify-start sm:justify-center flex-wrap mb-12 bg-slate-100 dark:bg-slate-800 p-1 border border-slate-200 dark:border-slate-700 gap-1.5"
             : "grid w-full",
           tabsListClassName
         )}
@@ -56,7 +56,7 @@ export function FilterTabs({
             value={tab.value}
             className={cn(
               isDefaultVariant
-                ? "flex items-center gap-2 pl-4 pr-1.5 py-1 rounded-md text-slate-600 dark:text-slate-400 bg-white dark:bg-slate-700 shadow-sm border border-slate-200 dark:border-slate-600 data-[state=active]:bg-primary/30 data-[state=active]:text-primary data-[state=active]:shadow-sm data-[state=active]:border data-[state=active]:border-primary dark:data-[state=active]:bg-primary/30 dark:data-[state=active]:text-primary dark:data-[state=active]:border-primary transition-all duration-200 hover:text-primary hover:border-primary group"
+                ? "flex items-center gap-1.5 sm:gap-2 pl-3 sm:pl-4 pr-1.5 py-1 rounded-md text-xs sm:text-sm text-slate-600 dark:text-slate-400 bg-white dark:bg-slate-700 shadow-sm border border-slate-200 dark:border-slate-600 data-[state=active]:bg-primary/30 data-[state=active]:text-primary data-[state=active]:shadow-sm data-[state=active]:border data-[state=active]:border-primary dark:data-[state=active]:bg-primary/30 dark:data-[state=active]:text-primary dark:data-[state=active]:border-primary transition-all duration-200 hover:text-primary hover:border-primary group shrink-0"
                 : "",
               tabsTriggerClassName
             )}
@@ -75,7 +75,7 @@ export function FilterTabs({
 
             <span
               className={cn(
-                isDefaultVariant && "group-hover:text-primary transition-colors"
+                isDefaultVariant && "group-hover:text-primary transition-colors whitespace-nowrap"
               )}
             >
               {tab.label}
@@ -83,7 +83,7 @@ export function FilterTabs({
             {showCount && tab.count !== undefined && (
               <span
                 className={cn(
-                  "ml-2 rounded-sm px-2.5 py-1.5 text-xs font-medium",
+                  "ml-1 sm:ml-2 rounded-sm px-1.5 sm:px-2.5 py-1 sm:py-1.5 text-[10px] sm:text-xs font-medium shrink-0",
                   isDefaultVariant
                     ? activeTab === tab.value
                       ? "bg-primary text-primary-foreground"

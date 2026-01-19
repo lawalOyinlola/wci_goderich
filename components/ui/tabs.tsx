@@ -6,7 +6,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { Tabs as TabsPrimitive } from "radix-ui";
 
 // Variants for TabsList
-const tabsListVariants = cva("flex items-center shrink-0", {
+const tabsListVariants = cva("flex items-center shrink-0 flex-wrap", {
   variants: {
     variant: {
       default: "bg-accent p-1",

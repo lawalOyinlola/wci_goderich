@@ -32,8 +32,9 @@ export default function HeroCarousel() {
                       width={1006}
                       height={566}
                       className="mx-auto"
-                      preload={index === 0 || index === 1}
-                      loading={index === 0 || index === 1 ? "eager" : "lazy"}
+                      priority={index === 0}
+                      fetchPriority={index === 0 ? "high" : "auto"}
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1006px"
                     />
                   ) : (
                     <>

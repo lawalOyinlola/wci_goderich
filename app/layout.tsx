@@ -12,17 +12,23 @@ import "./globals.css";
 const fontLora = Lora({
   subsets: ["latin"],
   variable: "--font-lora",
+  display: "swap",
+  preload: true,
 });
 
 const fontGreatVibes = Great_Vibes({
   subsets: ["latin"],
   weight: "400",
   variable: "--font-great-vibes",
+  display: "swap",
+  preload: false, // Less critical, can load later
 });
 
 const fontOutfit = Outfit({
   subsets: ["latin"],
   variable: "--font-outfit",
+  display: "swap",
+  preload: true,
 });
 
 export const metadata: Metadata = {

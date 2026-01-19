@@ -182,7 +182,7 @@ export default function ChurchLocationMap() {
 
 
   return (
-    <Card className="overflow-hidden shadow-lg lg:rounded-r-none border-0 relative group">
+    <Card className="overflow-hidden shadow-lg max-lg:rounded-b-none lg:rounded-r-none border-0 relative group">
       <CardContent className="p-0">
         <div 
           ref={containerRef}

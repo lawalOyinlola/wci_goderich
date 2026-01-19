@@ -35,11 +35,13 @@ export interface SmoothScrollOptions {
  * @param target - CSS selector, element, or pixel value
  * @param options - Scroll animation options
  */
-export function smoothScrollTo(
+export async function smoothScrollTo(
   target: string | HTMLElement | number,
   options: SmoothScrollOptions = {}
-): void {
+): Promise<void> {
   if (typeof window === "undefined") return;
+  
+  if (!gsap) return;
 
   const {
     duration = 1.2,
@@ -93,21 +95,21 @@ export function smoothScrollTo(
  * @param sectionId - The ID of the section (with or without #)
  * @param options - Scroll animation options
  */
-export function smoothScrollToSection(
+export async function smoothScrollToSection(
   sectionId: string,
   options: SmoothScrollOptions = {}
-): void {
+): Promise<void> {
   // Remove # if present
   const cleanId = sectionId.replace(/^#/, "");
-  smoothScrollTo(`#${cleanId}`, options);
+  await smoothScrollTo(`#${cleanId}`, options);
 }
 
 /**
  * Smoothly scrolls to the top of the page
  * @param options - Scroll animation options
  */
-export function smoothScrollToTop(options: SmoothScrollOptions = {}): void {
-  smoothScrollTo(0, options);
+export async function smoothScrollToTop(options: SmoothScrollOptions = {}): Promise<void> {
+  await smoothScrollTo(0, options);
 }
 
 /**

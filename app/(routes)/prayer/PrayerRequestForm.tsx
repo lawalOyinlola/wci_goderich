@@ -226,18 +226,18 @@ export default function PrayerRequestForm() {
     >
       <div className="small-container max-w-4xl">
         <SectionHeader
-          title="Submit Your Prayer Request"
-          subtitle="We're Here to Pray With You"
+          title="We're Here to Pray With You"
+          subtitle="Prayer Request"
           description="Share your prayer needs with us. Our prayer team is committed to interceding on your behalf. Your request will be handled with care and confidentiality."
         />
         <div className="mt-12 grid gap-12 lg:grid-cols-3">
-          <div className="grid grid-cols-2 lg:block lg:space-y-12">
+          <div className="grid grid-cols-2 gap-6 lg:block lg:space-y-12">
             <div className="flex flex-col justify-between space-y-6">
               <div>
                 <h2 className="mb-3 text-lg">Church Office</h2>
                 <Link
                   href={`mailto:${churchEmail}`}
-                  className="text-primary text-lg hover:underline"
+                  className="text-primary text-lg hover:underline break-all"
                 >
                   {churchEmail}
                 </Link>

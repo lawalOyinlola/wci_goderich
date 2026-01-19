@@ -27,7 +27,7 @@ const { phone, email, officeHours } = CONTACT;
 
 export default function ChurchLocationInfo() {
   return (
-    <Card className="shadow-lg lg:rounded-l-none xl:gap-7">
+    <Card className="shadow-lg max-lg:rounded-t-none lg:rounded-l-none xl:gap-7">
       <CardHeader>
         <div className="flex items-start gap-2">
           <MapPinIcon weight="duotone" className="size-6 text-primary" />
