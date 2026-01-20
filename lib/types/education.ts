@@ -1,5 +1,5 @@
 export interface School {
-  id: number;
+  id: string | number;
   name: string;
   location: string;
   type: "primary" | "secondary" | "university";

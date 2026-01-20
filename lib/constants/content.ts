@@ -53,14 +53,14 @@ export const SLIDES = [
       },
     ],
   },
-  // {
-  //   title: "GREAT THINGS SHALL CONTINUE TO HAPPEN",
-  //   subtitle: "PRAISE GOD 2025 IS MY NEW ERA",
-  //   description: "on their own accord in my life this year.",
-  //   background: "linear-gradient(135deg, #2d3436 0%, #000428 100%)",
-  //   backgroundImage: "/images/bg-covenant_exchange.jpg",
-  //   image: "/images/2025_covenant_exchange.png",
-  // },
+  {
+    title: "MY YEAR OF OPEN DOORS",
+    subtitle: "PRAISE GOD! 2026 IS MY YEAR OF OPEN DOORS",
+    description: "supernatural doors shall be opening to me.",
+    background: "linear-gradient(135deg, #2d3436 0%, #000428 100%)",
+    backgroundImage: "/images/bg-covenant_greetings_2026.jpg",
+    image: "/images/covenant_greetings_2026.png",
+  },
 ];
 
 export const FEATURES = [
