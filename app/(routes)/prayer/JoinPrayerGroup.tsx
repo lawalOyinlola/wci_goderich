@@ -255,7 +255,7 @@ export default function JoinPrayerGroup() {
             <div
               key={groupId}
               className={cn(
-                "p-4 rounded-lg border transition-colors",
+                "p-4 rounded-lg border transition-colors w-full",
                 selectedGroupId === groupId
                   ? "border-primary bg-primary/5"
                   : "border-gray-200 dark:border-gray-700"

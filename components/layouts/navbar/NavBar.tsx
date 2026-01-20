@@ -187,7 +187,7 @@ function MobileNav() {
 
 function DesktopNav() {
   return (
-    <div className="hidden lg:flex items-center justify-between w-full">
+    <div className="hidden lg:flex items-center justify-between w-full min-w-0">
       {/* Left Section - Logo */}
       <div className="flex-1 flex justify-start ml-2">
         <Logo linkToHome size={40} />

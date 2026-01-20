@@ -52,7 +52,7 @@ export default function TestimoniesSection({
   }
 
   return (
-    <section className="py-20 bg-linear-to-br from-slate-100 to-slate-50 dark:from-slate-900 dark:to-slate-800">
+    <section className="py-20 bg-linear-to-br from-foreground/5 to-background">
       <div className="max-w-500 w-full mx-auto">
         <div className="px-4">
           <SectionHeader

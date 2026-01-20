@@ -74,7 +74,7 @@ function AudioTestimonyContent({
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 p-6">
           <div className="relative w-24 h-24 rounded-full overflow-hidden">
             <Avatar className="size-24">
-              <AvatarImage src={testimony.image} />
+              <AvatarImage src={testimony.image} alt={`${testimony.name}'s image`}/>
               <AvatarFallback>
                 {getAvatarInitials(testimony.name)}
               </AvatarFallback>
@@ -131,7 +131,7 @@ export default function TestimonyCard({
         <div className="flex items-start gap-4">
           <div className="relative w-10 h-10 rounded-full overflow-hidden shrink-0">
             <Avatar className="size-10 border-2 border-gray-200 dark:border-gray-700">
-              <AvatarImage src={testimony.image} />
+              <AvatarImage src={testimony.image} alt={`${testimony.name}'s image`}/>
               <AvatarFallback>
                 {getAvatarInitials(testimony.name)}
               </AvatarFallback>

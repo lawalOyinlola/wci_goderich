@@ -180,6 +180,13 @@
     @apply border-border outline-ring/50 caret-primary font-outfit selection:bg-accent/15;
     /* @apply border border-red-500!; */
   }
+  html {
+    /* Reserve space for scrollbar to prevent layout shift when dropdowns open */
+    /* scrollbar-gutter: stable; */
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent) var(--background);
+   
+  }
   body {
     @apply bg-background text-foreground overflow-x-hidden font-normal;
   }

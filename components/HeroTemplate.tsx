@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import { preload } from "react-dom";
 
 interface HeroTemplateProps {
   title?: string;

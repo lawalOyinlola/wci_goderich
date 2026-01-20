@@ -99,8 +99,10 @@ export function DatePickerField<T extends FieldValues>({
                         variant="ghost"
                         size="icon-xs"
                         disabled={disabled}
+                        title="Open calendar"
+                        aria-label="Open calendar"
                       >
-                        <CalendarBlankIcon size={24} />
+                        <CalendarBlankIcon size={24} aria-label="Open calendar" />
                       </InputGroupButton>
                     </PopoverTrigger>
                   </InputGroupAddon>

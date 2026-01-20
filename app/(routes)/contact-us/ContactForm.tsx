@@ -208,13 +208,13 @@ export default function ContactForm() {
           description="We'd love to hear from you. Whether you have a question, prayer request, or just want to connect, we're here to help."
         />
         <div className="mt-12 grid gap-12 lg:grid-cols-3">
-          <div className="grid grid-cols-2 lg:block lg:space-y-12">
+          <div className="grid grid-cols-2 gap-6 lg:block lg:space-y-12">
             <div className="flex flex-col justify-between space-y-6">
               <div>
                 <h2 className="mb-3 text-lg">Church Office</h2>
                 <Link
                   href={`mailto:${churchEmail}`}
-                  className="text-primary text-lg hover:underline"
+                  className="text-primary text-lg hover:underline break-all"
                 >
                   {churchEmail}
                 </Link>
@@ -227,7 +227,7 @@ export default function ContactForm() {
                   <h3 className="mb-3 text-lg">{pastorTitle}</h3>
                   <Link
                     href={`mailto:${pastorEmail}`}
-                    className="text-primary text-lg hover:underline"
+                    className="text-primary text-lg hover:underline break-all"
                   >
                     {pastorEmail}
                   </Link>
