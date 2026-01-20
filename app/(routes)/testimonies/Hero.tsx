@@ -22,7 +22,7 @@ export default function Hero() {
         href="#share-testimony"
         variant="outline"
         text="Share Your Testimony"
-        icon={<HeartHandshakeIcon />}
+        icon={<HeartHandshakeIcon strokeWidth={2.2} />}
         size="lg"
       />
     </HeroTemplate>

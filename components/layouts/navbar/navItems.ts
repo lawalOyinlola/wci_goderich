@@ -70,7 +70,7 @@ export const NAV_ITEMS: NavItem[] = [
       },
       {
         label: "Pastors",
-        href: "/pastors",
+        href: "/about#leadership",
         description: "Meet our dedicated pastoral team and leadership.",
       },
     ],
