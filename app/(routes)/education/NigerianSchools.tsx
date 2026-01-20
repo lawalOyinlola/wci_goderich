@@ -59,7 +59,7 @@ export default function NigerianSchools({ schools }: { schools: School[] }) {
                                                 {school.description}
                                             </p>
                                         )}
-                                        {school.established || school.website && <div className="flex flex-wrap justify-between gap-2 text-sm text-muted-foreground border-t pt-2">
+                                        {(school.established || school.website) && <div className="flex flex-wrap justify-between gap-2 text-sm text-muted-foreground border-t pt-2">
                                             {school.established ? (
                                                 <div className="flex items-center gap-1">
                                                     <CalendarIcon className="h-3 w-3" />
@@ -120,7 +120,7 @@ export default function NigerianSchools({ schools }: { schools: School[] }) {
                                                 {school.description}
                                             </p>
                                         )}
-                                        <div className="flex flex-wrap justify-between gap-2 text-sm text-muted-foreground border-t pt-2">
+                                        {(school.established || school.website) && <div className="flex flex-wrap justify-between gap-2 text-sm text-muted-foreground border-t pt-2">
                                             {school.established ? (
                                                 <div className="flex items-center gap-1">
                                                     <CalendarIcon className="h-3 w-3" />
@@ -146,7 +146,7 @@ export default function NigerianSchools({ schools }: { schools: School[] }) {
                                                     </Link>
                                                 </Button>
                                             )}
-                                        </div>
+                                        </div>}
                                     </CardContent>
                                 </Card>
                             ))}
@@ -182,7 +182,7 @@ export default function NigerianSchools({ schools }: { schools: School[] }) {
                                                 {school.description}
                                             </p>
                                         )}
-                                        <div className="flex flex-wrap justify-between gap-2 text-sm text-muted-foreground border-t pt-2">
+                                        {(school.established || school.website) && <div className="flex flex-wrap justify-between gap-2 text-sm text-muted-foreground border-t pt-2">
                                             {school.established ? (
                                                 <div className="flex items-center gap-1">
                                                     <CalendarIcon className="h-3 w-3" />
@@ -208,7 +208,7 @@ export default function NigerianSchools({ schools }: { schools: School[] }) {
                                                     </Link>
                                                 </Button>
                                             )}
-                                        </div>
+                                        </div>}
                                     </CardContent>
                                 </Card>
                             ))}

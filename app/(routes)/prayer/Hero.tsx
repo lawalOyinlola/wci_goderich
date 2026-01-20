@@ -2,7 +2,7 @@
 
 import HeroTemplate from "@/components/HeroTemplate";
 import { AnimatedButton } from "@/components/ui/animated-button";
-import { ArrowDownIcon } from "@phosphor-icons/react";
+import { ArrowDownIcon, UsersThreeIcon } from "@phosphor-icons/react";
 
 export default function Hero() {
   return (
@@ -21,6 +21,7 @@ export default function Hero() {
         variant="outline"
         href="#prayer-sessions"
         text="Join Prayer Group"
+        icon={<UsersThreeIcon weight="bold" />}
         size="lg"
       />
     </HeroTemplate>

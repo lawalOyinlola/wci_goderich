@@ -49,14 +49,16 @@ export default function SierraSchools({ schools }: { schools: School[] }) {
                                     <MapPinIcon size={16} />
                                     <span>{school.location}</span>
                                 </div>
-                                <div className="flex items-center gap-2">
-                                    <CalendarIcon size={16} />
-                                    <span>Est. {school.established}</span>
-                                </div>
+                                {school.established && (
+                                    <div className="flex items-center gap-2">
+                                        <CalendarIcon size={16} />
+                                        <span>Est. {school.established}</span>
+                                    </div>
+                                )}
                                 {school.website &&
                                     <div className="flex items-center gap-2">
                                         <GlobeIcon size={16} />
-                                        <Link href={school.website} target="_blank">
+                                        <Link href={school.website} target="_blank" rel="noopener noreferrer">
                                             <span>Visit Website</span>
                                         </Link>
                                     </div>}
