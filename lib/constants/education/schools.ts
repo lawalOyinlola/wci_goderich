@@ -10,32 +10,16 @@ export const SCHOOLS = {
           "A Christian primary school providing quality education with biblical values.",
         established: "2015",
       },
-      {
-        id: "2",
-        name: "Living Faith Primary School",
-        location: "Freetown",
-        type: "primary" as const,
-        description:
-          "Dedicated to nurturing young minds with excellence in academics and character.",
-      },
     ],
     secondary: [
       {
-        id: "3",
+        id: "2",
         name: "Winners Chapel International Secondary School",
         location: "Goderich, Freetown",
         type: "secondary" as const,
         description:
           "Secondary education focused on academic excellence and spiritual development.",
         established: "2016",
-      },
-      {
-        id: "4",
-        name: "Living Faith Secondary School",
-        location: "Freetown",
-        type: "secondary" as const,
-        description:
-          "Preparing students for higher education and life with Christian values.",
       },
     ],
     university: [],

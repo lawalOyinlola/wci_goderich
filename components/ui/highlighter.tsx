@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import { useInView } from "motion/react";
 import { annotate } from "rough-notation";
 import type React from "react";
+import { cn } from "@/lib/utils";
 
 type AnnotationAction =
   | "highlight"
@@ -16,6 +17,7 @@ type AnnotationAction =
 
 interface HighlighterProps {
   children: React.ReactNode;
+  className?: string;
   action?: AnnotationAction;
   color?: string;
   strokeWidth?: number;
@@ -28,6 +30,7 @@ interface HighlighterProps {
 
 export function Highlighter({
   children,
+  className,
   action = "highlight",
   color = "#fecaca",
   strokeWidth = 1.5,
@@ -81,7 +84,7 @@ export function Highlighter({
   ]);
 
   return (
-    <span ref={elementRef} className="relative inline-block bg-transparent">
+    <span ref={elementRef} className={cn("relative inline-block bg-transparent", className)}>
       {children}
     </span>
   );

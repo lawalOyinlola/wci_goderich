@@ -3,6 +3,7 @@
 import HeroTemplate from "@/components/HeroTemplate";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import { ArrowDownIcon } from "@phosphor-icons/react";
+import { HeartHandshakeIcon } from "lucide-react";
 
 export default function Hero() {
   return (
@@ -21,6 +22,7 @@ export default function Hero() {
         href="#share-testimony"
         variant="outline"
         text="Share Your Testimony"
+        icon={<HeartHandshakeIcon />}
         size="lg"
       />
     </HeroTemplate>
