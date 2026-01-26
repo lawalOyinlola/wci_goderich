@@ -9,6 +9,7 @@ interface TestimoniesTabsProps {
   activeTab: string;
   onTabChange: (value: string) => void;
   children: React.ReactNode;
+  totalCount?: number; // Optional total count for "All" tab when using pagination
 }
 
 export default function TestimoniesTabs({
@@ -16,6 +17,7 @@ export default function TestimoniesTabs({
   activeTab,
   onTabChange,
   children,
+  totalCount,
 }: TestimoniesTabsProps) {
   const testimonyTypes = useMemo<TabConfig[]>(() => {
     const counts = testimonies.reduce(
@@ -30,7 +32,7 @@ export default function TestimoniesTabs({
       {
         value: "all",
         label: "All",
-        count: testimonies.length,
+        count: totalCount !== undefined ? totalCount : testimonies.length,
       },
       {
         value: "written",
@@ -51,7 +53,7 @@ export default function TestimoniesTabs({
         count: counts.audio,
       },
     ];
-  }, [testimonies]);
+  }, [testimonies, totalCount]);
 
   return (
     <FilterTabs

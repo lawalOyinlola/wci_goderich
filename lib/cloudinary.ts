@@ -10,7 +10,7 @@ if (process.env.CLOUDINARY_URL) {
 
   if (!cloudName || !apiKey || !apiSecret) {
     throw new Error(
-      "Missing Cloudinary configuration. Please set CLOUDINARY_URL (recommended - single variable) or provide CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, and CLOUDINARY_API_SECRET in your .env.local file."
+      "Missing Cloudinary configuration. Please set CLOUDINARY_URL (recommended - single variable) or provide CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, and CLOUDINARY_API_SECRET in your .env.local file.",
     );
   }
 
@@ -42,7 +42,7 @@ export interface UploadImageOptions {
  */
 export async function uploadImage(
   file: Blob | File | Buffer,
-  options: UploadImageOptions = {}
+  options: UploadImageOptions = {},
 ): Promise<string> {
   const { folder, public_id, upload_preset, transformation } = options;
 
@@ -98,7 +98,7 @@ export async function uploadImage(
 
     const uploadResult = await cloudinary.uploader.upload(
       dataUri,
-      uploadOptions
+      uploadOptions,
     );
 
     return uploadResult.secure_url;
@@ -166,6 +166,78 @@ export async function deleteMedia(mediaUrl: string): Promise<void> {
   }
 
   await cloudinary.uploader.destroy(publicId, { resource_type: "video" });
+}
+
+/**
+ * Lists all images from a Cloudinary folder using Admin API
+ * @param folder - The folder path (e.g., "WCI_Goderich/gallery")
+ * @param options - Optional parameters for listing (max_results, next_cursor, etc.)
+ * @returns Promise with array of image resources including metadata
+ */
+export async function listImagesFromFolder(
+  folder: string,
+  options: {
+    max_results?: number;
+    next_cursor?: string;
+    resource_type?: "image" | "video" | "raw";
+  } = {},
+): Promise<{
+  resources: Array<{
+    public_id: string;
+    secure_url: string;
+    url: string;
+    width: number;
+    height: number;
+    format: string;
+    created_at: string;
+    bytes: number;
+    context?: {
+      custom?: {
+        title?: string;
+        description?: string;
+        alt?: string;
+        [key: string]: string | undefined;
+      };
+      alt?: string;
+      caption?: string;
+    };
+    tags?: string[];
+  }>;
+  next_cursor?: string;
+  total_count?: number;
+}> {
+  try {
+    // Use Admin API to list resources in folder with context and tags
+    const result = await cloudinary.api.resources({
+      type: "upload",
+      resource_type: options.resource_type || "image",
+      prefix: folder,
+      max_results: options.max_results || 500,
+      next_cursor: options.next_cursor,
+      context: true, // Include context metadata
+      tags: true, // Include tags
+    });
+
+    return {
+      resources: result.resources.map((resource: any) => ({
+        public_id: resource.public_id,
+        secure_url: resource.secure_url,
+        url: resource.url,
+        width: resource.width,
+        height: resource.height,
+        format: resource.format,
+        created_at: resource.created_at,
+        bytes: resource.bytes,
+        context: resource.context,
+        tags: resource.tags,
+      })),
+      next_cursor: result.next_cursor,
+      total_count: result.total_count,
+    };
+  } catch (error) {
+    console.error("Error listing images from Cloudinary folder:", error);
+    throw new Error(`Failed to list images from folder: ${folder}`);
+  }
 }
 
 export { cloudinary };

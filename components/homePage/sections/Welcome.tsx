@@ -6,15 +6,14 @@ export default function Welcome() {
   const { ABOUT_US } = CHURCH_INFO;
 
   return (
-    <section className="bg-muted-foreground/10 border">
-      <div className="container flex flex-col md:flex-row items-center gap-10">
-        <div className="md:w-1/2">
+    <section className="bg-muted-foreground/10">
+      <div className="container max-w-500 pl-0 flex flex-col md:flex-row items-stretch gap-10">
+        <div className="md:w-1/2 relative h-[400px] md:h-auto">
           <Image
-            src="/images/church_welcome.jpeg"
+            src="/images/church.png"
             alt="WCI Goderich Church Welcome"
-            width={400}
-            height={400}
-            className="h-full w-full object-fill"
+            fill
+            className="object-cover"
             sizes="(max-width: 768px) 100vw, 50vw"
             priority
           />

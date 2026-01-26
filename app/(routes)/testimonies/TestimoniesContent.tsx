@@ -1,24 +1,41 @@
 "use client";
 
-import { useMemo } from "react";
+import {
+  useState,
+  useEffect,
+  useCallback,
+  useMemo,
+  startTransition,
+} from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import SectionHeader from "@/components/SectionHeader";
 import TestimoniesTabs from "./TestimoniesTabs";
 import TestimonyCard from "./TestimonyCard";
 import { TestimoniesEmpty } from "@/components/testimonies/TestimoniesEmpty";
+import { Pagination } from "@/components/ui/pagination";
 import type { Testimony } from "@/lib/types";
+import type { PaginationMeta } from "@/lib/types/gallery";
+import TestimoniesLoading from "./loading";
 
 interface TestimoniesContentProps {
-  testimonies: Testimony[];
   initialType?: string;
+  initialPage?: number;
 }
 
 export default function TestimoniesContent({
-  testimonies,
   initialType,
+  initialPage = 1,
 }: TestimoniesContentProps) {
-  const searchParams = useSearchParams();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const [testimonies, setTestimonies] = useState<Testimony[]>([]);
+  const [pagination, setPagination] = useState<PaginationMeta | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  const currentPage = parseInt(
+    searchParams.get("page") || String(initialPage),
+    10
+  );
   const typeParam = searchParams.get("type") || initialType;
 
   // Validate and set active tab from URL
@@ -26,12 +43,55 @@ export default function TestimoniesContent({
   const activeTab =
     typeParam && validTypes.includes(typeParam) ? typeParam : "all";
 
-  const filteredTestimonies = useMemo(() => {
-    if (activeTab === "all") {
-      return testimonies;
+  const fetchTestimonies = useCallback(async () => {
+    setLoading(true);
+    try {
+      const params = new URLSearchParams();
+      params.append("page", String(currentPage));
+      params.append("limit", "12"); // 12 items per page
+      params.append("verified", "true"); // Only show verified testimonies
+
+      // Add type filter if not "all"
+      if (activeTab !== "all") {
+        params.append("type", activeTab);
+      }
+
+      const response = await fetch(`/api/testimonies?${params.toString()}`);
+      const data = await response.json();
+
+      if (data.success) {
+        setTestimonies(data.data || []);
+        setPagination(data.pagination);
+      }
+    } catch (error) {
+      console.error("Error fetching testimonies:", error);
+    } finally {
+      setLoading(false);
     }
-    return testimonies.filter((testimony) => testimony.type === activeTab);
-  }, [activeTab, testimonies]);
+  }, [currentPage, activeTab]);
+
+  useEffect(() => {
+    fetchTestimonies();
+  }, [fetchTestimonies]);
+
+  const updateSearchParams = (
+    updates: Record<string, string | number | null | undefined>
+  ) => {
+    const params = new URLSearchParams(searchParams.toString());
+
+    Object.entries(updates).forEach(([key, value]) => {
+      if (value === null || value === undefined || value === "") {
+        params.delete(key);
+      } else {
+        params.set(key, String(value));
+      }
+    });
+
+    // Use startTransition and replace to prevent scrolling and full re-render
+    startTransition(() => {
+      router.replace(`/testimonies?${params.toString()}`, { scroll: false });
+    });
+  };
 
   const handleTabChange = (value: string) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -40,11 +100,25 @@ export default function TestimoniesContent({
     } else {
       params.set("type", value);
     }
-    router.push(
-      `/testimonies${params.toString() ? `?${params.toString()}` : ""}`,
-      { scroll: false }
-    );
+    // Reset to page 1 when changing tabs
+    params.set("page", "1");
+    startTransition(() => {
+      router.replace(`/testimonies?${params.toString()}`, { scroll: false });
+    });
   };
+
+  const handlePageChange = (newPage: number) => {
+    updateSearchParams({ page: newPage });
+  };
+
+  // Get all testimonies count for tabs (we'll fetch a count separately or use pagination total)
+  // For now, we'll use the pagination totalItems when available
+  const allTestimoniesCount = pagination?.totalItems || 0;
+
+  // Show loading skeleton when loading (including page changes)
+  if (loading) {
+    return <TestimoniesLoading />;
+  }
 
   return (
     <section
@@ -61,19 +135,32 @@ export default function TestimoniesContent({
           testimonies={testimonies}
           activeTab={activeTab}
           onTabChange={handleTabChange}
+          totalCount={pagination?.totalItems}
         >
-          {filteredTestimonies.length > 0 ? (
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-              {filteredTestimonies.map((testimony) => (
-                <TestimonyCard
-                  key={testimony.id}
-                  testimony={testimony}
-                  className={
-                    testimony.type === "written" ? "lg:col-span-2" : ""
-                  }
+          {testimonies.length > 0 ? (
+            <>
+              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-12">
+                {testimonies.map((testimony) => (
+                  <TestimonyCard
+                    key={testimony.id}
+                    testimony={testimony}
+                    className={
+                      testimony.type === "written" ? "lg:col-span-2" : ""
+                    }
+                  />
+                ))}
+              </div>
+
+              {/* Pagination */}
+              {pagination && pagination.totalPages > 1 && (
+                <Pagination
+                  pagination={pagination}
+                  currentPage={currentPage}
+                  onPageChange={handlePageChange}
+                  itemName="testimonies"
                 />
-              ))}
-            </div>
+              )}
+            </>
           ) : (
             <TestimoniesEmpty />
           )}

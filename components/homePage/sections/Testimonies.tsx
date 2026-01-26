@@ -86,7 +86,7 @@ export default function TestimoniesSection({
             }}
           >
             <CarouselContent>
-              {testimonies.map((testifier, index) => {
+              {testimonies.map((testifier) => {
                 const isVideo = testifier.type === "video";
                 const isAudio = testifier.type === "audio";
                 const isWritten = testifier.type === "written";
@@ -147,7 +147,7 @@ export default function TestimoniesSection({
                             </blockquote>
                             <div className="flex items-center gap-3">
                               <Avatar className="size-8">
-                                <AvatarImage src={testifier.image} alt={`${testifier.name}'s image`}/>
+                                <AvatarImage src={testifier.image} alt={`${testifier.name}'s image`} />
                                 <AvatarFallback>
                                   {getAvatarInitials(testifier.name)}
                                 </AvatarFallback>
@@ -277,9 +277,8 @@ export default function TestimoniesSection({
             </CarouselContent>
 
             <div
-              className={`transition-opacity duration-300 ${
-                isHovered ? "opacity-100" : "opacity-0"
-              }`}
+              className={`transition-opacity duration-300 ${isHovered ? "opacity-100" : "opacity-0"
+                }`}
             >
               <CarouselPrevious className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/30 backdrop-blur-sm border-white/20 text-white hover:scale-110 transition-all duration-200" />
               <CarouselNext className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/30 backdrop-blur-sm border-white/20 text-white hover:scale-110 transition-all duration-200" />

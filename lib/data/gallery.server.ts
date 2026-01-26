@@ -1,121 +1,194 @@
 /**
  * Server-side data fetching functions for gallery
  * These functions run on the server and can be used in Server Components
+ * Fetches images from Cloudinary's gallery folder
  */
 
-import { supabaseServer } from "@/lib/supabase/server";
+import { listImagesFromFolder } from "@/lib/cloudinary";
+import {
+  GALLERY_FOLDER,
+  DEFAULT_GALLERY_LIMIT,
+  MAX_GALLERY_RESULTS,
+} from "@/lib/constants/gallery";
 import type {
   GalleryImage,
   GalleryFilters,
   PaginatedGalleryResponse,
-  DatabaseGalleryImage,
+  GalleryOrientation,
 } from "@/lib/types/gallery";
+import { optimizeCloudinaryUrl } from "@/lib/utils/cloudinary";
 
 /**
- * Transforms a database gallery image to the frontend format
+ * Determines image orientation based on width and height
  */
-export function transformGalleryImage(
-  dbImage: DatabaseGalleryImage
-): GalleryImage {
-  return {
-    id: dbImage.id,
-    title: dbImage.title,
-    description: dbImage.description || undefined,
-    imageUrl: dbImage.image_url,
-    altText: dbImage.alt_text,
-    orientation: dbImage.orientation,
-    category: dbImage.category || undefined,
-    featured: dbImage.featured,
-    displayOrder: dbImage.display_order,
-    createdAt: dbImage.created_at,
-    updatedAt: dbImage.updated_at,
+function getOrientation(width: number, height: number): GalleryOrientation {
+  if (width > height) {
+    return "landscape";
+  } else if (height > width) {
+    return "portrait";
+  } else {
+    return "square";
+  }
+}
+
+/**
+ * Extracts title from Cloudinary resource metadata
+ */
+function extractTitle(resource: {
+  public_id: string;
+  context?: {
+    custom?: { title?: string };
+    caption?: string;
   };
+}): string {
+  return (
+    resource.context?.custom?.title ||
+    resource.context?.caption ||
+    resource.public_id
+      .split("/")
+      .pop()
+      ?.replace(/\.[^/.]+$/, "")
+      .replace(/[-_]/g, " ") ||
+    "Gallery Image"
+  );
 }
 
 /**
- * Transforms an array of database gallery images
+ * Extracts description from Cloudinary resource metadata
  */
-export function transformGalleryImages(
-  dbImages: DatabaseGalleryImage[]
-): GalleryImage[] {
-  return dbImages.map(transformGalleryImage);
+function extractDescription(resource: {
+  context?: {
+    custom?: { description?: string; alt?: string };
+  };
+}): string | undefined {
+  return resource.context?.custom?.description || resource.context?.custom?.alt;
 }
 
 /**
- * Fetches gallery images from Supabase on the server with pagination
- * @param filters - Optional filters for gallery images
+ * Extracts alt text from Cloudinary resource metadata
+ */
+function extractAltText(resource: {
+  public_id: string;
+  context?: {
+    custom?: { alt?: string };
+    alt?: string;
+  };
+}): string {
+  return (
+    resource.context?.custom?.alt ||
+    resource.context?.alt ||
+    resource.public_id.split("/").pop() ||
+    "Gallery image"
+  );
+}
+
+/**
+ * Fetches gallery images from Cloudinary's gallery folder
+ * Transforms Cloudinary resources into GalleryImage format
+ * Uses Cloudinary metadata (context, tags) for title and description
+ * @param filters - Optional filters (pagination, etc.)
  * @returns Paginated gallery response
  */
 export async function getGalleryImagesServer(
   filters?: GalleryFilters
 ): Promise<PaginatedGalleryResponse> {
   try {
-    const page = filters?.page || 1;
-    const limit = filters?.limit || 15;
-    const offset = (page - 1) * limit;
+    const result = await listImagesFromFolder(GALLERY_FOLDER, {
+      max_results: MAX_GALLERY_RESULTS,
+    });
 
-    let query = supabaseServer
-      .from("gallery")
-      .select("*", { count: "exact" })
-      .order("display_order", { ascending: false })
-      .order("created_at", { ascending: false });
-
-    // Apply filters
-    if (filters?.category) {
-      query = query.eq("category", filters.category);
-    }
-
-    if (filters?.orientation) {
-      query = query.eq("orientation", filters.orientation);
-    }
-
-    if (filters?.featured !== undefined) {
-      query = query.eq("featured", filters.featured);
-    }
-
-    // Filter by past years (excludes current year)
-    if (filters?.pastYears) {
-      const currentYear = new Date().getFullYear();
-      const startOfCurrentYear = new Date(currentYear, 0, 1);
-      query = query.lt("created_at", startOfCurrentYear.toISOString());
-    } else if (filters?.month && filters.month >= 1 && filters.month <= 12) {
-      // Filter by month (based on created_at) - current year only
-      // Filters images by the month they were added (created_at)
-      const currentYear = new Date().getFullYear();
-      const startDate = new Date(currentYear, filters.month - 1, 1);
-      const endDate = new Date(currentYear, filters.month, 1);
-      query = query.gte("created_at", startDate.toISOString());
-      query = query.lt("created_at", endDate.toISOString());
-    }
-
-    // Apply pagination
-    query = query.range(offset, offset + limit - 1);
-
-    const { data, error, count } = await query;
-
-    if (error) {
-      console.error("Error fetching gallery images:", error);
+    if (result.resources.length === 0) {
       return {
         images: [],
         pagination: {
-          currentPage: page,
+          currentPage: filters?.page || 1,
           totalPages: 0,
           totalItems: 0,
-          itemsPerPage: limit,
+          itemsPerPage: filters?.limit || DEFAULT_GALLERY_LIMIT,
           hasNextPage: false,
           hasPreviousPage: false,
         },
       };
     }
 
-    const images = transformGalleryImages(
-      (data as DatabaseGalleryImage[]) || []
-    );
-    const totalItems = count || 0;
+    // Transform Cloudinary resources to GalleryImage format
+    let images: GalleryImage[] = result.resources.map((resource, index) => {
+      const orientation = getOrientation(resource.width, resource.height);
+      const title = extractTitle(resource);
+      const description = extractDescription(resource);
+      const altText = extractAltText(resource);
+      
+      // Extract category from tags if available
+      const category = resource.tags && resource.tags.length > 0 ? resource.tags[0] : undefined;
+      
+      // Check if featured based on tags
+      const featured = resource.tags?.includes("featured") || false;
+
+      return {
+        id: `cloudinary-${resource.public_id}`,
+        title,
+        description,
+        // Optimize Cloudinary URL to ensure proper transformations for reliability
+        imageUrl: optimizeCloudinaryUrl(resource.secure_url),
+        altText,
+        orientation,
+        category,
+        featured,
+        displayOrder: result.resources.length - index, // Newer images first
+        createdAt: resource.created_at,
+        updatedAt: resource.created_at,
+      };
+    });
+
+    // Apply filters
+    if (filters?.orientation) {
+      images = images.filter((img) => img.orientation === filters.orientation);
+    }
+
+    if (filters?.category) {
+      images = images.filter((img) => img.category === filters.category);
+    }
+
+    if (filters?.featured !== undefined) {
+      images = images.filter((img) => img.featured === filters.featured);
+    }
+
+    // Filter by month or past years
+    if (filters?.pastYears) {
+      const currentYear = new Date().getFullYear();
+      images = images.filter((img) => {
+        const imgDate = new Date(img.createdAt);
+        return imgDate.getFullYear() < currentYear;
+      });
+    } else if (filters?.month && filters.month >= 1 && filters.month <= 12) {
+      const currentYear = new Date().getFullYear();
+      images = images.filter((img) => {
+        const imgDate = new Date(img.createdAt);
+        return (
+          imgDate.getFullYear() === currentYear &&
+          imgDate.getMonth() === filters.month! - 1
+        );
+      });
+    }
+
+    // Sort by displayOrder (newer first) then by createdAt
+    images.sort((a, b) => {
+      if (b.displayOrder !== a.displayOrder) {
+        return b.displayOrder - a.displayOrder;
+      }
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    });
+
+    // Apply pagination
+    const page = filters?.page || 1;
+    const limit = filters?.limit || DEFAULT_GALLERY_LIMIT;
+    const totalItems = images.length;
     const totalPages = Math.ceil(totalItems / limit);
+    const offset = (page - 1) * limit;
+    const paginatedImages = images.slice(offset, offset + limit);
 
     return {
-      images,
+      images: paginatedImages,
       pagination: {
         currentPage: page,
         totalPages,
@@ -126,14 +199,14 @@ export async function getGalleryImagesServer(
       },
     };
   } catch (error) {
-    console.error("Error in getGalleryImagesServer:", error);
+    console.error("Error fetching gallery images from Cloudinary:", error);
     return {
       images: [],
       pagination: {
         currentPage: filters?.page || 1,
         totalPages: 0,
         totalItems: 0,
-        itemsPerPage: filters?.limit || 15,
+        itemsPerPage: filters?.limit || DEFAULT_GALLERY_LIMIT,
         hasNextPage: false,
         hasPreviousPage: false,
       },

@@ -5,7 +5,7 @@ import PrayerRequestForm from "./PrayerRequestForm";
 import PrayerPoints from "./PrayerPoints";
 import PrayerSessions from "./PrayerSessions";
 import AnsweredPrayers from "./AnsweredPrayers";
-import { AnsweredPrayersSkeleton } from "./AnsweredPrayersSkeleton";
+import AnsweredPrayersSkeleton from "./loading";
 import CtaSection from "@/components/CtaSection";
 
 interface PrayerPageProps {

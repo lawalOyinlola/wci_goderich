@@ -1,5 +1,5 @@
 import SectionHeader from "@/components/SectionHeader";
-import { TestimonialCarousel } from "@/components/testimonies/TestimonialCarousel";
+import { AnsweredPrayerCarousel } from "@/app/(routes)/prayer/AnsweredPrayerCarousel";
 import { getTestimoniesServer } from "@/lib/data/testimonies.server";
 
 export default async function AnsweredPrayers() {
@@ -19,7 +19,7 @@ export default async function AnsweredPrayers() {
   }
 
   return (
-    <section className="py-16 bg-muted">
+    <section className="bg-muted">
       <div className="small-container">
         <SectionHeader
           subtitle="Answered Prayers"
@@ -34,7 +34,7 @@ export default async function AnsweredPrayers() {
               </p>
             </div>
           ) : (
-            <TestimonialCarousel testimonials={testimonies} />
+            <AnsweredPrayerCarousel testimonials={testimonies} />
           )}
         </div>
       </div>
