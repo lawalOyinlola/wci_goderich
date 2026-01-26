@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getGalleryImagesServer } from "@/lib/data/gallery.server";
+import { DEFAULT_GALLERY_LIMIT } from "@/lib/constants/gallery";
 import type { GalleryFilters } from "@/lib/types/gallery";
 
 // GET - Fetch gallery images with pagination
@@ -9,7 +10,11 @@ export async function GET(request: NextRequest) {
 
     const filters: GalleryFilters = {
       page: parseInt(searchParams.get("page") || "1", 10) || 1,
-      limit: parseInt(searchParams.get("limit") || "15", 10) || 15,
+      limit:
+        parseInt(
+          searchParams.get("limit") || String(DEFAULT_GALLERY_LIMIT),
+          10,
+        ) || DEFAULT_GALLERY_LIMIT,
     };
 
     // Optional filters
@@ -48,14 +53,14 @@ export async function GET(request: NextRequest) {
     if (filters.page! < 1) {
       return NextResponse.json(
         { error: "Page must be greater than 0" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     if (filters.limit! < 1 || filters.limit! > 100) {
       return NextResponse.json(
         { error: "Limit must be between 1 and 100" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -63,13 +68,13 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json(
       { data: result.images, pagination: result.pagination, success: true },
-      { status: 200 }
+      { status: 200 },
     );
   } catch (error) {
     console.error("Error in GET /api/gallery:", error);
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

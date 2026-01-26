@@ -127,7 +127,7 @@ export const CHURCH_INFO = {
   FOUNDED: "2013",
   DENOMINATION: "Living Faith Church Worldwide",
   LOGO: "/lfc_logo.png",
-  HERO_IMAGE: "/images/2025_theme.png",
+  HERO_IMAGE: "/images/2026_theme.png",
   OFFICE_HOUR: "Monday - Friday: 8:00 AM - 5:00 PM",
   CONTACT: {
     phone: "+232 88 123 456",
@@ -139,7 +139,7 @@ export const CHURCH_INFO = {
   },
   CHURCH_LOCATION: {
     address: {
-      street: "Main Street",
+      street: "Femi Turner Drive",
       city: "Goderich",
       region: "Western Area",
       province: "Freetown",
@@ -147,8 +147,8 @@ export const CHURCH_INFO = {
       postalCode: "SL-001",
     },
     coordinates: {
-      lat: 8.4606,
-      lng: -13.2897,
+      lat: 8.435587,
+      lng: -13.273014,
     },
     parking:
       "Free parking available on church premises and surrounding streets",

@@ -30,8 +30,20 @@ export async function GET(request: NextRequest) {
     const category = searchParams.get("category"); // Optional filter by category
     const featured = searchParams.get("featured"); // Optional filter for featured only
     const limit = searchParams.get("limit"); // Optional limit
+    const page = searchParams.get("page"); // Optional page number for pagination
     const verified = searchParams.get("verified"); // Optional filter by verified status (defaults to true)
 
+    // Pagination defaults
+    const pageNum = page ? parseInt(page, 10) : 1;
+    const limitNum = limit ? parseInt(limit, 10) : 12; // Default 12 items per page
+    const offset = (pageNum - 1) * limitNum;
+
+    // Build base query for counting total items
+    let countQuery = supabaseServer
+      .from("testimonies")
+      .select("*", { count: "exact", head: true });
+
+    // Build query for fetching data
     let query = supabaseServer
       .from("testimonies")
       .select("*")
@@ -41,13 +53,16 @@ export async function GET(request: NextRequest) {
     if (verified === "false" || verified === "0") {
       // Show unverified if explicitly requested
       query = query.eq("verified", false);
+      countQuery = countQuery.eq("verified", false);
     } else {
       // Default: show only verified testimonies
       query = query.eq("verified", true);
+      countQuery = countQuery.eq("verified", true);
     }
 
     if (type && ["written", "video", "audio"].includes(type)) {
       query = query.eq("type", type);
+      countQuery = countQuery.eq("type", type);
     }
 
     if (category) {
@@ -67,27 +82,30 @@ export async function GET(request: NextRequest) {
         );
       } else if (categories.length === 1) {
         query = query.eq("category", categories[0]);
+        countQuery = countQuery.eq("category", categories[0]);
       } else {
         query = query.in("category", categories);
+        countQuery = countQuery.in("category", categories);
       }
     }
 
     if (featured === "true") {
       query = query.eq("featured", true);
+      countQuery = countQuery.eq("featured", true);
     }
 
-    if (limit) {
-      const limitNum = parseInt(limit, 10);
-      if (limitNum > 0) {
-        query = query.limit(limitNum);
-      }
-    }
+    // Apply pagination
+    query = query.range(offset, offset + limitNum - 1);
 
-    const { data, error } = await query;
+    // Execute both queries
+    const [{ data, error }, { count, error: countError }] = await Promise.all([
+      query,
+      countQuery,
+    ]);
 
-    if (error) {
+    if (error || countError) {
       if (process.env.NODE_ENV === "development") {
-        console.error("Error fetching testimonies:", error);
+        console.error("Error fetching testimonies:", error || countError);
       }
       return NextResponse.json(
         { error: "Failed to fetch testimonies" },
@@ -98,8 +116,20 @@ export async function GET(request: NextRequest) {
     // Transform data to match frontend expectations
     const transformedData = transformTestimonies(data || []);
 
+    // Calculate pagination metadata
+    const totalItems = count || 0;
+    const totalPages = Math.ceil(totalItems / limitNum);
+    const pagination = {
+      currentPage: pageNum,
+      totalPages,
+      totalItems,
+      itemsPerPage: limitNum,
+      hasNextPage: pageNum < totalPages,
+      hasPreviousPage: pageNum > 1,
+    };
+
     return NextResponse.json(
-      { data: transformedData, success: true },
+      { data: transformedData, pagination, success: true },
       { status: 200 }
     );
   } catch (error) {

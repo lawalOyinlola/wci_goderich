@@ -1,11 +1,14 @@
-import Image from "next/image";
 import SectionHeader from "@/components/SectionHeader";
 import { InfiniteSlider } from "@/components/ui/infinite-slider";
 import { ProgressiveBlur } from "@/components/ui/progressive-blur";
 import { getGalleryImagesServer } from "@/lib/data/gallery.server";
-import { SAMPLE_IMAGES } from "@/lib/constants/gallery";
+import {
+  SAMPLE_IMAGES,
+  HOME_GALLERY_LIMIT,
+} from "@/lib/constants/gallery";
+import { GalleryImageWithFallback } from "../GalleryImageWithFallback";
 
-interface GalleryImage {
+interface GalleryImageForComponent {
   id?: string;
   src: string;
   alt: string;
@@ -13,32 +16,34 @@ interface GalleryImage {
 }
 
 export default async function Gallery() {
-  // Fetch gallery images from database
-  const { images: dbImages } = await getGalleryImagesServer({ limit: 30 });
+  // Fetch gallery images from Cloudinary
+  const { images: dbImages } = await getGalleryImagesServer({
+    limit: HOME_GALLERY_LIMIT,
+  });
 
-  // Transform database images to component format, with fallback to static images
-  const galleryImages: GalleryImage[] =
+  // Transform Cloudinary images to component format, with fallback to static images
+  const galleryImages: GalleryImageForComponent[] =
     dbImages.length > 0
       ? dbImages.map((image) => ({
-          id: image.id,
-          src: image.imageUrl,
-          alt: image.altText,
-          title: image.title,
-        }))
+        id: image.id,
+        src: image.imageUrl,
+        alt: image.altText,
+        title: image.title,
+      }))
       : SAMPLE_IMAGES.map((img, idx) => ({
-          id: `static-${idx}`,
-          ...img,
-        }));
+        id: `static-${idx}`,
+        ...img,
+      }));
   const count = galleryImages.length;
   const moreThanSeven = count > 7;
   const isOdd = count % 2 === 1;
   const mid = Math.floor(count / 2);
-  const topImages: GalleryImage[] = moreThanSeven
+  const topImages: GalleryImageForComponent[] = moreThanSeven
     ? isOdd
       ? galleryImages.slice(0, mid + 1)
       : galleryImages.slice(0, mid)
     : galleryImages;
-  const bottomImages: GalleryImage[] = moreThanSeven
+  const bottomImages: GalleryImageForComponent[] = moreThanSeven
     ? isOdd
       ? galleryImages.slice(mid, count)
       : galleryImages.slice(mid, count)
@@ -63,12 +68,9 @@ export default async function Gallery() {
                   key={image.id || `row1-${index}`}
                   className="group relative w-64 md:w-80 aspect-square rounded-xl overflow-hidden shadow-lg"
                 >
-                  <Image
+                  <GalleryImageWithFallback
                     src={image.src}
                     alt={image.alt}
-                    fill
-                    sizes="(max-width: 768px) 256px, 320px"
-                    className="object-cover group-hover:scale-110 transition-all duration-500"
                     priority={index === 0}
                   />
                   <div className="absolute bottom-0 left-0 right-0 bg-linear-to-t from-black via-black/50 to-transparent p-4 group-hover:opacity-100 opacity-0 transition-all duration-600">
@@ -90,12 +92,9 @@ export default async function Gallery() {
                       key={image.id || `row2-${index}`}
                       className="group relative w-64 md:w-80 aspect-square rounded-xl overflow-hidden shadow-lg"
                     >
-                      <Image
+                      <GalleryImageWithFallback
                         src={image.src}
                         alt={image.alt}
-                        fill
-                        sizes="(max-width: 768px) 256px, 320px"
-                        className="object-cover group-hover:scale-110 transition-all duration-500"
                       />
                       <div className="absolute bottom-0 left-0 right-0 bg-linear-to-t from-black via-black/50 to-transparent p-4 group-hover:opacity-100 opacity-0 transition-all duration-600">
                         <h3 className="text-white text-lg font-semibold translate-y-20 transition-all duration-600 group-hover:translate-y-0">

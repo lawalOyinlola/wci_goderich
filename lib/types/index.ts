@@ -36,5 +36,4 @@ export type {
   PaginationMeta,
   PaginatedGalleryResponse,
   GalleryFilters,
-  DatabaseGalleryImage,
 } from "./gallery";

@@ -8,13 +8,12 @@ import {
   startTransition,
 } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Button } from "@/components/ui/button";
 import SectionHeader from "@/components/SectionHeader";
 import { SelectField } from "@/components/form/SelectField";
 import { useForm } from "react-hook-form";
 import { cn } from "@/lib/utils";
 import type { GalleryImage, PaginationMeta } from "@/lib/types/gallery";
-import { CaretLeftIcon, CaretRightIcon } from "@phosphor-icons/react";
+import { Pagination } from "@/components/ui/pagination";
 import {
   MorphingDialog,
   MorphingDialogTrigger,
@@ -23,9 +22,12 @@ import {
   MorphingDialogClose,
   MorphingDialogContainer,
 } from "@/components/ui/morphing-dialog";
+import { RobustGalleryImage } from "@/app/(routes)/gallery/RobustGalleryImage";
+import { GalleryThumbnailImage } from "@/app/(routes)/gallery/GalleryThumbnailImage";
 import { XIcon } from "lucide-react";
 import GallerySkeleton from "./GallerySkeleton";
 import { MONTHS } from "@/lib/constants";
+import { DEFAULT_GALLERY_LIMIT } from "@/lib/constants/gallery";
 import {
   Empty,
   EmptyContent,
@@ -36,6 +38,7 @@ import {
 } from "@/components/ui/empty";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import { ImagesIcon, CameraIcon } from "@phosphor-icons/react";
+import { AlertCircle } from "lucide-react";
 
 interface GalleryContentProps {
   initialPage?: number;
@@ -55,6 +58,7 @@ export default function GalleryContent({
   const [images, setImages] = useState<GalleryImage[]>([]);
   const [pagination, setPagination] = useState<PaginationMeta | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   const currentPage = parseInt(
     searchParams.get("page") || String(initialPage),
@@ -84,10 +88,11 @@ export default function GalleryContent({
 
   const fetchImages = useCallback(async () => {
     setLoading(true);
+    setError(null); // Clear any previous errors
     try {
       const params = new URLSearchParams();
       params.append("page", String(currentPage));
-      params.append("limit", "15");
+      params.append("limit", String(DEFAULT_GALLERY_LIMIT));
       params.append("featured", "true"); // Only show featured images
       if (category) params.append("category", category);
       if (orientation) params.append("orientation", orientation);
@@ -98,14 +103,45 @@ export default function GalleryContent({
       }
 
       const response = await fetch(`/api/gallery?${params.toString()}`);
+
+      // Check if response is ok
+      if (!response.ok) {
+        throw new Error(`Failed to load gallery: ${response.statusText}`);
+      }
+
       const data = await response.json();
 
       if (data.success) {
         setImages(data.data || []);
         setPagination(data.pagination);
+        setError(null); // Clear error on success
+      } else {
+        throw new Error(data.error || "Failed to load gallery images");
       }
     } catch (error) {
       console.error("Error fetching gallery images:", error);
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "Unable to load gallery images. Please check your connection and try again.";
+      setError(errorMessage);
+
+      // Only clear images and pagination if this is the initial load (no images yet)
+      // Use functional updates to check current state without dependency
+      setImages((prevImages) => {
+        if (prevImages.length === 0) {
+          return [];
+        }
+        return prevImages; // Keep existing images on error
+      });
+
+      setPagination((prevPagination) => {
+        // Only clear pagination if we have no images
+        if (prevPagination && prevPagination.totalItems > 0) {
+          return prevPagination; // Keep existing pagination if we have images
+        }
+        return null;
+      });
     } finally {
       setLoading(false);
     }
@@ -207,8 +243,10 @@ export default function GalleryContent({
           </div>
         </div>
 
-        {/* Gallery Masonry Layout or Empty State */}
-        {images.length === 0 ? (
+        {/* Gallery Masonry Layout, Error State, or Empty State */}
+        {error && images.length === 0 ? (
+          <GalleryErrorState error={error} onRetry={() => fetchImages()} />
+        ) : images.length === 0 ? (
           <GalleryEmptyState hasFilter={hasActiveFilter} />
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
@@ -222,77 +260,32 @@ export default function GalleryContent({
           </div>
         )}
 
-        {/* Pagination */}
-        {pagination && pagination.totalPages > 1 && (
-          <div className="flex items-center justify-center gap-2 mt-12">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => handlePageChange(currentPage - 1)}
-              disabled={!pagination.hasPreviousPage}
-              className="gap-2"
-            >
-              <CaretLeftIcon weight="bold" />
-              Previous
-            </Button>
-
-            <div className="flex items-center gap-1">
-              {Array.from({ length: pagination.totalPages }, (_, i) => i + 1)
-                .filter((page) => {
-                  // Show first page, last page, current page, and pages around current
-                  return (
-                    page === 1 ||
-                    page === pagination.totalPages ||
-                    (page >= currentPage - 1 && page <= currentPage + 1)
-                  );
-                })
-                .map((page, index, array) => {
-                  // Add ellipsis when there's a gap
-                  const showEllipsisBefore =
-                    index > 0 && page - array[index - 1] > 1;
-
-                  return (
-                    <div key={page} className="flex items-center gap-1">
-                      {showEllipsisBefore && (
-                        <span className="px-2 text-muted-foreground">...</span>
-                      )}
-                      <Button
-                        variant={page === currentPage ? "default" : "outline"}
-                        size="sm"
-                        onClick={() => handlePageChange(page)}
-                        className="min-w-10"
-                      >
-                        {page}
-                      </Button>
-                    </div>
-                  );
-                })}
+        {/* Show error banner if there's an error but we have cached images */}
+        {error && images.length > 0 && (
+          <div className="mb-6 p-4 bg-destructive/10 border border-destructive/20 rounded-lg">
+            <div className="flex items-center justify-between">
+              <p className="text-sm text-destructive">
+                {error} Some images may not be up to date.
+              </p>
+              <AnimatedButton
+                size="sm"
+                text="Retry"
+                onClick={() => fetchImages()}
+                variant="outline"
+              />
             </div>
-
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => handlePageChange(currentPage + 1)}
-              disabled={!pagination.hasNextPage}
-              className="gap-2"
-            >
-              Next
-              <CaretRightIcon weight="bold" />
-            </Button>
           </div>
         )}
 
-        {/* Image Info */}
+        {/* Pagination */}
         {pagination && (
-          <div className="text-center text-sm text-muted-foreground mt-6">
-            Showing {images.length} of {pagination.totalItems} images
-            {pagination.totalPages > 1 && (
-              <>
-                {" "}
-                • Page {pagination.currentPage} of {pagination.totalPages}
-              </>
-            )}
-          </div>
+          <Pagination
+            pagination={pagination}
+            currentPage={currentPage}
+            onPageChange={handlePageChange}
+            className="mt-12"
+            itemName="images"
+          />
         )}
       </div>
     </section>
@@ -328,7 +321,7 @@ function GalleryImageCard({ image }: { image: GalleryImage }) {
           "w-full"
         )}
       >
-        <MorphingDialogImage
+        <GalleryThumbnailImage
           src={image.imageUrl}
           alt={image.altText}
           className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-500 rounded-lg"
@@ -347,7 +340,7 @@ function GalleryImageCard({ image }: { image: GalleryImage }) {
       </MorphingDialogTrigger>
       <MorphingDialogContainer>
         <MorphingDialogContent className="relative">
-          <MorphingDialogImage
+          <RobustGalleryImage
             src={image.imageUrl}
             alt={image.altText}
             className="h-auto w-full max-w-[90vw] rounded-[4px] object-contain lg:h-[90vh]"
@@ -368,6 +361,52 @@ function GalleryImageCard({ image }: { image: GalleryImage }) {
         </MorphingDialogClose>
       </MorphingDialogContainer>
     </MorphingDialog>
+  );
+}
+
+function GalleryErrorState({
+  error,
+  onRetry,
+}: {
+  error: string;
+  onRetry: () => void;
+}) {
+  return (
+    <Empty className="border border-dashed py-20 my-12 max-w-2xl mx-auto">
+      <EmptyHeader>
+        <EmptyMedia variant="icon" className="mb-4">
+          <div className="relative">
+            <div className="absolute inset-0 bg-linear-to-br from-destructive/20 via-destructive/10 to-destructive/20 rounded-full blur-xl" />
+            <AlertCircle
+              size={64}
+              className="relative text-destructive"
+            />
+          </div>
+        </EmptyMedia>
+        <EmptyTitle className="text-3xl font-bold mb-3">
+          Unable to Load Gallery
+        </EmptyTitle>
+        <EmptyDescription className="text-base max-w-md">
+          {error || "We encountered an issue loading the gallery. This might be due to a network connection problem."}
+        </EmptyDescription>
+      </EmptyHeader>
+      <EmptyContent className="mt-6">
+        <div className="flex flex-col sm:flex-row gap-3 items-center justify-center">
+          <AnimatedButton
+            size="lg"
+            text="Try Again"
+            onClick={onRetry}
+            icon={<CameraIcon weight="bold" />}
+          />
+          <AnimatedButton
+            variant="outline"
+            size="lg"
+            text="Contact Us"
+            href="/contact-us"
+          />
+        </div>
+      </EmptyContent>
+    </Empty>
   );
 }
 
