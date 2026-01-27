@@ -47,6 +47,7 @@ export default function MissionVision() {
                   iconName={card.icon}
                   size={32}
                   weight="duotone"
+                  className="text-foreground"
                 />
               </CardDecorator>
               <h3 className="mt-4 font-medium">{card.title}</h3>

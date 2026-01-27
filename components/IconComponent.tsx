@@ -5,6 +5,7 @@ import {
   HeartIcon,
   UserIcon,
   UsersThreeIcon,
+  UsersFourIcon,
   ClockCountdownIcon,
   BreadIcon,
   HandsPrayingIcon,
@@ -25,6 +26,10 @@ import {
   BuildingIcon,
   CheckIcon,
   CopyIcon,
+  LightningIcon,
+  SparkleIcon,
+  BinocularsIcon,
+  WavesIcon,
   type Icon,
 } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
@@ -34,6 +39,7 @@ const iconMap: Record<string, Icon> = {
   HeartIcon,
   UserIcon,
   UsersThreeIcon,
+  UsersFourIcon,
   ClockCountdownIcon,
   BreadIcon,
   HandsPrayingIcon,
@@ -54,6 +60,10 @@ const iconMap: Record<string, Icon> = {
   BuildingIcon,
   CheckIcon,
   CopyIcon,
+  LightningIcon,
+  SparkleIcon,
+  BinocularsIcon,
+  WavesIcon,
 };
 
 export type ValidIconName = keyof typeof iconMap;

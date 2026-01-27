@@ -53,9 +53,7 @@ export default function GivingInfo() {
             >
               <CardHeader>
                 <CardDecorator>
-                  <IconComponent iconName={info.icon} className="text-background"
-                    size={32}
-                    weight="duotone" />
+                  <IconComponent iconName={info.icon} className="text-foreground" size={32} weight="duotone" />
                 </CardDecorator>
                 <h3 className="font-medium">{info.title}</h3>
               </CardHeader>

@@ -32,10 +32,10 @@ export default function Features() {
             </div>
           ))}
 
-          <div className="text-center bg-primary text-primary-foreground lg:px-8 p-4 lg:-mt-30 lg:pt-20 sm:py-10 sm:col-span-3 flex flex-col items-center justify-center gap-4">
+          <div className="text-center bg-primary text-primary-foreground lg:px-8 p-4 lg:-mt-30 lg:pt-20 sm:py-10 sm:col-span-3 flex flex-col items-center justify-center gap-4 group">
             <h4 className="text-2xl">THE MANDATE</h4>
 
-            <blockquote className="sm:border-l-2 border-secondary/30 sm:pl-2 text-lg mt-6 italic leading-7">
+            <blockquote className="sm:border-l-2 border-secondary/30 sm:pl-2 text-lg mt-6 italic leading-7 transition-all duration-300 group-hover:border-l-0 group-hover:pl-0">
               {MANDATE_TASK}
             </blockquote>
 
