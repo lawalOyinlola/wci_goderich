@@ -48,9 +48,9 @@ export default function LivingFaithWorldwide() {
         />
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          {worldwideGivingOptions.map((option, index) => (
+          {worldwideGivingOptions.map((option) => (
             <Card
-              key={index}
+              key={option.title}
               className="group border-0 hover:shadow-primary/20 hover:shadow-sm transition-all duration-300 flex flex-col"
             >
               <CardHeader>

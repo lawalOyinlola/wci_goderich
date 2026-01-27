@@ -21,14 +21,17 @@ import {
 } from "@phosphor-icons/react";
 import { School } from "@/lib/types";
 
-const MAX_TEXT_LENGTH = 150;
+const MAX_TEXT_LENGTH = 250;
 
 function getDisplayText(school: School): string | null {
     const text = school.summary || school.description;
     if (!text) return null;
-    return text.length > MAX_TEXT_LENGTH
-        ? `${text.slice(0, MAX_TEXT_LENGTH).trim()}...`
-        : text;
+    if (text.length <= MAX_TEXT_LENGTH) return text;
+    const truncated = text.slice(0, MAX_TEXT_LENGTH);
+    const lastSpace = truncated.lastIndexOf(" ");
+    return lastSpace > 0
+        ? `${truncated.slice(0, lastSpace)}...`
+        : `${truncated.trim()}...`;
 }
 
 function SchoolCard({ school }: { school: School }) {
@@ -85,7 +88,7 @@ function SchoolCard({ school }: { school: School }) {
 
 function SchoolSection({
     title,
-    icon: Icon,
+    icon: IconComponent,
     schools,
     className = "",
 }: {
@@ -99,7 +102,7 @@ function SchoolSection({
     return (
         <div className={`mb-12 ${className}`}>
             <h3 className="text-2xl font-semibold mb-6 flex items-center gap-2">
-                <Icon className="h-6 w-6 text-primary" />
+                <IconComponent className="h-6 w-6 text-primary" />
                 {title}
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

@@ -17,7 +17,8 @@ export interface SmoothLinkProps extends Omit<LinkProps, "href"> {
  * Checks if a URL is external (starts with http:// or https://)
  */
 function isExternalUrl(url: string): boolean {
-  return /^https?:\/\//.test(url);
+  // protocol-relative (//...) or any scheme (mailto:, tel:, etc.)
+  return url.startsWith("//") || /^[a-z][a-z0-9+.-]*:/i.test(url);
 }
 
 /**

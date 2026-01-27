@@ -78,6 +78,12 @@ export function optimizeCloudinaryUrl(
 
       // Reconstruct URL
       urlObj.pathname = pathParts.join("/");
+
+      // Apply retry parameter if provided
+      if (options.retry && options.retry > 0) {
+        urlObj.searchParams.set("_retry", String(options.retry));
+      }
+
       return urlObj.toString();
     } else {
       // Case 2: Transformations already exist - merge width/height into existing transformations
@@ -114,6 +120,11 @@ export function optimizeCloudinaryUrl(
 
         // Reconstruct URL
         urlObj.pathname = pathParts.join("/");
+        // Apply retry parameter if provided
+        if (options.retry && options.retry > 0) {
+          urlObj.searchParams.set("_retry", String(options.retry));
+        }
+
         return urlObj.toString();
       }
     }

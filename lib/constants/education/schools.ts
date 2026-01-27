@@ -66,8 +66,9 @@ export const SCHOOLS = {
         name: "Covenant University",
         location: "Ota, Ogun State",
         type: "university" as const,
-        description:
-          "A world-class university committed to raising a new generation of leaders. Ranked among the top universities in Nigeria and Africa.",
+        summary:
+          "Leading private Christian university in Africa, ranked best private university in Nigeria. Committed to raising a new generation of leaders and reinstating the black race's dignity through cutting-edge education across four colleges.",
+        description: `Covenant University is a private Christian University, which has been operating with official status since 2002 in Ota, Ogun State, Nigeria. Covenant University is one of the leading universities in Africa found on Christian mission ethos. She drives a vision to raise a new generation of leaders and reinstate the black race's dignity. The University prioritizes cutting-edge learning to make "the Total Man". The university has four colleges which includes: The College of Business and Social Sciences; College of Leadership and Development Studies; College of Engineering, and the College of Science and Technology. Covenant University has had a rapid rise in nearly two decades of its existence. The webometric ranking named Covenant University the best Private University in Nigeria in its 2021 ranking and the second best university overall.`,
         website: "https://covenantuniversity.edu.ng",
         established: "2002",
       },
@@ -76,8 +77,10 @@ export const SCHOOLS = {
         name: "Landmark University",
         location: "Omu-Aran, Kwara State",
         type: "university" as const,
+        summary:
+          "Private Christian university established by Living Faith Church Worldwide, committed to raising leaders equipped to address humanity's food needs through agricultural innovation and sustainable development.",
         description:
-          "A private Christian university focused on agricultural innovation and sustainable development.",
+          "Landmark University is a private University established by the Living Faith Church World Wide, committed to raising leaders who shall be equipped with skills and character to lead the world in meeting the needs of humanity FOOD. The focus is to assist the nation and indeed the continent of Africa in self -discovery so that she may recover her leading position in education and in civilization, as it was in the 20th century. The goal is to set the pace in making the Nigerian nation fully, competitively and profitably engage her comparative advantage in human and agricultural resource potentials and development.",
         website: "https://lmu.edu.ng",
         established: "2011",
       },
