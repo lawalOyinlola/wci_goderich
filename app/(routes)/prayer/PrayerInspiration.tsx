@@ -7,7 +7,7 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 import { PRAYER_INSPIRATIONS } from "@/lib/constants";
-import { IconComponent, ValidIconName } from "@/components/IconComponent";
+import { IconComponent } from "@/components/IconComponent";
 
 export default function PrayerInspiration() {
   return (
@@ -26,7 +26,7 @@ export default function PrayerInspiration() {
             >
               <CardHeader>
                 <CardDecorator>
-                  <IconComponent iconName={inspiration.icon as ValidIconName} size={32} weight="duotone" aria-hidden />
+                  <IconComponent iconName={inspiration.icon} size={32} weight="duotone" aria-hidden />
                 </CardDecorator>
                 <h3 className="font-medium">{inspiration.title}</h3>
               </CardHeader>

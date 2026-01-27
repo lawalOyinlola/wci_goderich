@@ -2,7 +2,8 @@ export interface School {
   id: string | number;
   name: string;
   location: string;
-  type: "primary" | "secondary" | "university";
+  type: "primary" | "secondary" | "primary_secondary" | "university";
+  summary?: string;
   description?: string;
   website?: string;
   established?: string;

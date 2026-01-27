@@ -37,7 +37,7 @@ const infoCards: Array<{
 
 export default function GivingInfo() {
   return (
-    <section className="bg-card" id="giving">
+    <section id="giving">
       <div className="@container small-container">
         <SectionHeader
           title="About Giving"

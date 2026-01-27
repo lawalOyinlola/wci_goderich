@@ -8,12 +8,14 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { WordRotate } from "@/components/ui/word-rotate";
 import SectionHeader from "@/components/SectionHeader";
+import { Badge } from "@/components/ui/badge";
 
 export default function GivingDetails() {
   const [copiedField, setCopiedField] = useState<string | null>(null);
@@ -24,6 +26,7 @@ export default function GivingDetails() {
     "Transportation",
     "Building Project",
     "Thanksgiving Offering",
+    "Shiloh Sacrifice",
     "Church Beautification",
     "Church Welfare",
     "Seed Offering",
@@ -126,12 +129,11 @@ export default function GivingDetails() {
                 className="flex items-center justify-between p-4 rounded-lg border bg-background hover:bg-muted/50 transition-colors cursor-pointer group"
               >
                 <div className="flex items-center gap-4 flex-1">
-                  <div className="p-2 rounded-lg bg-primary/10 text-primary">
+                  <div className="p-2 rounded-lg bg-muted text-foreground">
                     <IconComponent
                       iconName={item.icon}
                       size={20}
                       weight="duotone"
-                      className="text-primary"
                     />
                   </div>
                   <div className="flex-1">
@@ -161,6 +163,11 @@ export default function GivingDetails() {
               </div>
             ))}
           </CardContent>
+          <CardFooter>
+            <Badge variant="primary">
+              NOTE: Givers should specify the purpose of the giving e.g Offerings, Tithe, Shiloh Sacrifice etc
+            </Badge>
+          </CardFooter>
         </Card>
 
         <div className="text-center">

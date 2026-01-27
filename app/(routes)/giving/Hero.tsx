@@ -9,7 +9,7 @@ export default function Hero() {
         <HeroTemplate
             title="Give Cheerfully"
             description="Each of you should give what you have decided in your heart to give, not reluctantly or under compulsion, for God loves a cheerful giver. Your generous giving supports our mission and blesses lives in our community."
-            backgroundImage="/images/gallery-hero.jpeg"
+            backgroundImage="/images/giving-hero.jpeg"
         >
             <AnimatedButton
                 href="#account-details"
