@@ -13,7 +13,7 @@ export function isCloudinaryUrl(url: string): boolean {
 /**
  * Optimizes a Cloudinary URL by ensuring it has proper transformations
  * This helps prevent broken images and ensures optimal delivery
- * 
+ *
  * @param url - The Cloudinary URL
  * @param options - Optional transformation parameters
  * @returns Optimized Cloudinary URL
@@ -26,7 +26,7 @@ export function optimizeCloudinaryUrl(
     width?: number;
     height?: number;
     retry?: number;
-  } = {}
+  } = {},
 ): string {
   if (!isCloudinaryUrl(url)) {
     return url;
@@ -35,10 +35,10 @@ export function optimizeCloudinaryUrl(
   try {
     const urlObj = new URL(url);
     const pathParts = urlObj.pathname.split("/");
-    
+
     // Find the "upload" segment
     const uploadIndex = pathParts.findIndex((part) => part === "upload");
-    
+
     if (uploadIndex === -1) {
       // Not a valid Cloudinary URL structure, return as-is
       return url;
@@ -46,40 +46,78 @@ export function optimizeCloudinaryUrl(
 
     // Get the part after "upload" (should be version or transformations)
     const afterUpload = pathParts.slice(uploadIndex + 1);
-    
-    // Check if transformations already exist
-    const hasTransformations = afterUpload[0]?.includes(",") || 
-                               afterUpload[0]?.includes("w_") ||
-                               afterUpload[0]?.includes("h_") ||
-                               afterUpload[0]?.includes("q_") ||
-                               afterUpload[0]?.includes("f_");
+    const transformationSegment = afterUpload[0];
 
-    // Build transformation string
-    const transformations: string[] = [];
-    
-    if (options.width) {
-      transformations.push(`w_${options.width}`);
-    }
-    
-    if (options.height) {
-      transformations.push(`h_${options.height}`);
-    }
-    
-    // Always add quality and format for reliability
+    // Check if transformations already exist
+
+    const transformationPattern = /^(w_|h_|q_|f_|c_|e_|g_|ar_|dpr_|fl_)/;
+    const hasTransformations =
+      transformationSegment?.includes(",") ||
+      transformationPattern.test(transformationSegment || "");
+
     if (!hasTransformations) {
+      // Case 1: No existing transformations - build new transformation string
+      const transformations: string[] = [];
+
+      // Add width/height if provided
+      if (options.width) {
+        transformations.push(`w_${options.width}`);
+      }
+
+      if (options.height) {
+        transformations.push(`h_${options.height}`);
+      }
+
+      // Add quality and format for reliability (only when no transformations exist)
       transformations.push(`q_${options.quality || "auto"}`);
       transformations.push(`f_${options.format || "auto"}`);
-    }
 
-    // If we have transformations to add
-    if (transformations.length > 0 && !hasTransformations) {
-      // Insert transformations after "upload"
-      const transformationString = transformations.join(",");
-      pathParts.splice(uploadIndex + 1, 0, transformationString);
-      
-      // Reconstruct URL
-      urlObj.pathname = pathParts.join("/");
-      return urlObj.toString();
+      // Insert transformations after "upload" if we have any
+      if (transformations.length > 0) {
+        const transformationString = transformations.join(",");
+        pathParts.splice(uploadIndex + 1, 0, transformationString);
+
+        // Reconstruct URL
+        urlObj.pathname = pathParts.join("/");
+        return urlObj.toString();
+      }
+    } else {
+      // Case 2: Transformations already exist - merge width/height into existing transformations
+      if (options.width || options.height) {
+        // Parse existing transformations
+        const existingTransformations = transformationSegment.split(",");
+        const transformationMap = new Map<string, string>();
+
+        // Parse existing transformations into a map
+        existingTransformations.forEach((trans) => {
+          const match = trans.match(/^([a-z_]+)_(.+)$/);
+          if (match) {
+            const [, key, value] = match;
+            transformationMap.set(key, value);
+          }
+        });
+
+        // Update or add width/height if provided
+        if (options.width) {
+          transformationMap.set("w", String(options.width));
+        }
+
+        if (options.height) {
+          transformationMap.set("h", String(options.height));
+        }
+
+        // Rebuild transformation string from map
+        const mergedTransformations = Array.from(transformationMap.entries())
+          .map(([key, value]) => `${key}_${value}`)
+          .join(",");
+
+        // Replace the transformation segment
+        pathParts[uploadIndex + 1] = mergedTransformations;
+
+        // Reconstruct URL
+        urlObj.pathname = pathParts.join("/");
+        return urlObj.toString();
+      }
     }
 
     // If transformations exist but we want to add retry parameter
@@ -110,10 +148,10 @@ export function validateCloudinaryUrl(url: string): boolean {
   try {
     const urlObj = new URL(url);
     const pathParts = urlObj.pathname.split("/");
-    
+
     // Should have: /cloud_name/image/upload/.../path
     const uploadIndex = pathParts.findIndex((part) => part === "upload");
-    
+
     if (uploadIndex === -1 || uploadIndex === 0) {
       return false;
     }
@@ -131,7 +169,7 @@ export function validateCloudinaryUrl(url: string): boolean {
  */
 export function createCloudinaryFallbackUrl(
   publicId: string,
-  cloudName: string = "dnw48gzss"
+  cloudName: string = process.env.CLOUDINARY_CLOUD_NAME || "",
 ): string {
   return `https://res.cloudinary.com/${cloudName}/image/upload/f_auto,q_auto/${publicId}`;
 }

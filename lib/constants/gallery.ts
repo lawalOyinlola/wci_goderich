@@ -18,8 +18,8 @@ export const MAX_GALLERY_RESULTS = 200;
  */
 export const HOME_GALLERY_LIMIT = 30;
 
-export const CLOUDINARY_URL =
-  "https://res.cloudinary.com/dnw48gzss/image/upload/f_auto,q_auto";
+const CLOUDINARY_CLOUD_NAME = process.env.CLOUDINARY_CLOUD_NAME || " ";
+export const CLOUDINARY_URL = `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/image/upload/f_auto,q_auto`;
 
 export const SAMPLE_IMAGES = [
   {

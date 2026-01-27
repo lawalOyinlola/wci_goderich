@@ -61,7 +61,7 @@ export default function RootLayout({
             <Navbar />
             {children}
             <Footer />
-            <Toaster />
+            <Toaster richColors />
           </SmoothScrollProvider>
         </ThemeProvider>
       </body>

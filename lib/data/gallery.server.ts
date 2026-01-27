@@ -98,13 +98,29 @@ export async function getGalleryImagesServer(
     });
 
     if (result.resources.length === 0) {
+      // Sanitize pagination inputs even for empty results
+      let pageNum = 1;
+      let limitNum = DEFAULT_GALLERY_LIMIT;
+      
+      if (filters?.page !== undefined) {
+        const parsed = typeof filters.page === "number" ? filters.page : Number(filters.page);
+        pageNum = Number.isFinite(parsed) && parsed > 0 ? parsed : 1;
+      }
+      pageNum = Math.max(1, pageNum);
+      
+      if (filters?.limit !== undefined) {
+        const parsed = typeof filters.limit === "number" ? filters.limit : Number(filters.limit);
+        limitNum = Number.isFinite(parsed) && parsed > 0 ? parsed : DEFAULT_GALLERY_LIMIT;
+      }
+      limitNum = Math.max(1, Math.min(DEFAULT_GALLERY_LIMIT, limitNum));
+      
       return {
         images: [],
         pagination: {
-          currentPage: filters?.page || 1,
+          currentPage: pageNum,
           totalPages: 0,
           totalItems: 0,
-          itemsPerPage: filters?.limit || DEFAULT_GALLERY_LIMIT,
+          itemsPerPage: limitNum,
           hasNextPage: false,
           hasPreviousPage: false,
         },
@@ -179,34 +195,82 @@ export async function getGalleryImagesServer(
       return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
     });
 
-    // Apply pagination
-    const page = filters?.page || 1;
-    const limit = filters?.limit || DEFAULT_GALLERY_LIMIT;
+    // Sanitize and validate pagination inputs
+    // Parse page number
+    let pageNum: number;
+    if (filters?.page !== undefined) {
+      const parsed = typeof filters.page === "number" ? filters.page : Number(filters.page);
+      pageNum = Number.isFinite(parsed) && parsed > 0 ? parsed : 1;
+    } else {
+      pageNum = 1;
+    }
+    // Clamp pageNum to be at least 1
+    pageNum = Math.max(1, pageNum);
+
+    // Parse limit
+    let limitNum: number;
+    if (filters?.limit !== undefined) {
+      const parsed = typeof filters.limit === "number" ? filters.limit : Number(filters.limit);
+      limitNum = Number.isFinite(parsed) && parsed > 0 ? parsed : DEFAULT_GALLERY_LIMIT;
+    } else {
+      limitNum = DEFAULT_GALLERY_LIMIT;
+    }
+    // Clamp limitNum to be at least 1 and cap at DEFAULT_GALLERY_LIMIT
+    limitNum = Math.max(1, Math.min(DEFAULT_GALLERY_LIMIT, limitNum));
+
+    // Calculate pagination using sanitized values
     const totalItems = images.length;
-    const totalPages = Math.ceil(totalItems / limit);
-    const offset = (page - 1) * limit;
-    const paginatedImages = images.slice(offset, offset + limit);
+    // Ensure limitNum is valid before division (should be >= 1 after sanitization)
+    const safeLimitNum = Number.isFinite(limitNum) && limitNum > 0 ? limitNum : DEFAULT_GALLERY_LIMIT;
+    const totalPages = Math.ceil(totalItems / safeLimitNum);
+    // Ensure totalPages is a valid number (handle edge cases like NaN/Infinity)
+    const safeTotalPages = Number.isFinite(totalPages) && totalPages >= 0 ? totalPages : 0;
+    
+    // Calculate offset using sanitized values
+    const offset = (pageNum - 1) * safeLimitNum;
+    // Ensure offset is non-negative
+    const safeOffset = Math.max(0, offset);
+    
+    // Slice images using sanitized offset and limit
+    const paginatedImages = images.slice(safeOffset, safeOffset + safeLimitNum);
 
     return {
       images: paginatedImages,
       pagination: {
-        currentPage: page,
-        totalPages,
+        currentPage: pageNum,
+        totalPages: safeTotalPages,
         totalItems,
-        itemsPerPage: limit,
-        hasNextPage: page < totalPages,
-        hasPreviousPage: page > 1,
+        itemsPerPage: limitNum,
+        hasNextPage: pageNum < safeTotalPages,
+        hasPreviousPage: pageNum > 1,
       },
     };
   } catch (error) {
     console.error("Error fetching gallery images from Cloudinary:", error);
+    
+    // Sanitize pagination inputs even in error case
+    let pageNum = 1;
+    let limitNum = DEFAULT_GALLERY_LIMIT;
+    
+    if (filters?.page !== undefined) {
+      const parsed = typeof filters.page === "number" ? filters.page : Number(filters.page);
+      pageNum = Number.isFinite(parsed) && parsed > 0 ? parsed : 1;
+    }
+    pageNum = Math.max(1, pageNum);
+    
+    if (filters?.limit !== undefined) {
+      const parsed = typeof filters.limit === "number" ? filters.limit : Number(filters.limit);
+      limitNum = Number.isFinite(parsed) && parsed > 0 ? parsed : DEFAULT_GALLERY_LIMIT;
+    }
+    limitNum = Math.max(1, Math.min(DEFAULT_GALLERY_LIMIT, limitNum));
+    
     return {
       images: [],
       pagination: {
-        currentPage: filters?.page || 1,
+        currentPage: pageNum,
         totalPages: 0,
         totalItems: 0,
-        itemsPerPage: filters?.limit || DEFAULT_GALLERY_LIMIT,
+        itemsPerPage: limitNum,
         hasNextPage: false,
         hasPreviousPage: false,
       },

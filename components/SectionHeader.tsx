@@ -2,7 +2,7 @@ import { Separator } from "./ui/separator";
 import { cn } from "@/lib/utils";
 
 interface SectionHeaderProps {
-  title: string;
+  title: string | React.ReactNode;
   subtitle?: string;
   description?: string;
   className?: string;
@@ -36,7 +36,13 @@ const SectionHeader = ({
           <Separator className="shrink sm:w-40!" />
         </div>
       )}
-      <h1 className={cn("mb-8 capitalize", titleClassName)}>{title}</h1>
+
+      {typeof title === "string" ? (
+        <h1 className={cn("mb-8 capitalize", titleClassName)}>{title}</h1>
+      ) : (
+        title
+      )}
+
       {description && (
         <p
           className={cn(

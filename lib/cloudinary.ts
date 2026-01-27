@@ -1,4 +1,4 @@
-import { v2 as cloudinary } from "cloudinary";
+import { v2 as cloudinary, type ResourceApiResponse } from "cloudinary";
 
 if (process.env.CLOUDINARY_URL) {
   cloudinary.config();
@@ -208,7 +208,7 @@ export async function listImagesFromFolder(
 }> {
   try {
     // Use Admin API to list resources in folder with context and tags
-    const result = await cloudinary.api.resources({
+    const result = (await cloudinary.api.resources({
       type: "upload",
       resource_type: options.resource_type || "image",
       prefix: folder,
@@ -216,10 +216,16 @@ export async function listImagesFromFolder(
       next_cursor: options.next_cursor,
       context: true, // Include context metadata
       tags: true, // Include tags
-    });
+    })) as ResourceApiResponse;
 
+    // Extract the resource type from ResourceApiResponse
+    // Note: resources is typed as a tuple in the SDK but is actually an array at runtime
+    type Resource = ResourceApiResponse["resources"][number];
+
+    const resourcesArray = result.resources as Resource[];
+    
     return {
-      resources: result.resources.map((resource: any) => ({
+      resources: resourcesArray.map((resource) => ({
         public_id: resource.public_id,
         secure_url: resource.secure_url,
         url: resource.url,
@@ -232,7 +238,8 @@ export async function listImagesFromFolder(
         tags: resource.tags,
       })),
       next_cursor: result.next_cursor,
-      total_count: result.total_count,
+      // total_count is not in ResourceApiResponse type, calculate from resources length
+      total_count: resourcesArray.length,
     };
   } catch (error) {
     console.error("Error listing images from Cloudinary folder:", error);

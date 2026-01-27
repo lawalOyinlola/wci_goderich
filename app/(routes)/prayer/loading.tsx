@@ -3,7 +3,7 @@ import { AnsweredPrayersSkeleton } from "@/app/(routes)/prayer/AnsweredPrayersSk
 
 export default function AnsweredPrayersSkeletonPage() {
   return (
-    <section className="py-16 bg-muted">
+    <section className="bg-muted">
       <div className="small-container">
         <SectionHeader
           title="Answered Prayers"

@@ -1,13 +1,15 @@
-import { ReactNode } from "react";
+"use client";
+
 import SectionHeader from "@/components/SectionHeader";
+import CardDecorator from "@/components/ui/card-decorator";
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
+import { LightbulbIcon, SwapIcon, UsersFourIcon, WavesIcon } from "@phosphor-icons/react";
 import { PRAYER_INSPIRATIONS } from "@/lib/constants";
-import { Zap } from "lucide-react";
 
 export default function PrayerInspiration() {
   return (
@@ -26,7 +28,9 @@ export default function PrayerInspiration() {
             >
               <CardHeader>
                 <CardDecorator>
-                  <Zap className="size-6" aria-hidden />
+                  {index === 0 && <SwapIcon size={32} weight="duotone" aria-hidden />}
+                  {index === 1 && <UsersFourIcon size={32} weight="duotone" aria-hidden />}
+                  {index === 2 && <WavesIcon size={32} weight="duotone" aria-hidden />}
                 </CardDecorator>
 
                 <h3 className="font-medium">{inspiration.title}</h3>
@@ -48,15 +52,3 @@ export default function PrayerInspiration() {
   );
 }
 
-const CardDecorator = ({ children }: { children: ReactNode }) => (
-  <div className="mask-radial-from-40% mask-radial-to-60% relative mx-auto size-36 duration-200 [--color-border:color-mix(in_oklab,var(--color-zinc-950)10%,transparent)] group-hover:[--color-border:color-mix(in_oklab,var(--color-zinc-950)20%,transparent)] dark:[--color-border:color-mix(in_oklab,var(--color-white)15%,transparent)] dark:group-hover:[--color-border:color-mix(in_oklab,var(--color-white)20%,transparent)]">
-    <div
-      aria-hidden
-      className="absolute inset-0 bg-[linear-gradient(to_right,var(--color-border)_1px,transparent_1px),linear-gradient(to_bottom,var(--color-border)_1px,transparent_1px)] bg-size-[24px_24px] dark:opacity-50"
-    />
-
-    <div className="bg-background absolute inset-0 m-auto flex size-12 items-center justify-center border-l border-t">
-      {children}
-    </div>
-  </div>
-);

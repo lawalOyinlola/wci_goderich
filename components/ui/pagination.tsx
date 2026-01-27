@@ -98,7 +98,7 @@ export function Pagination({
           {pagination.totalPages > 1 && (
             <>
               {" "}
-              • Page {pagination.currentPage} of {pagination.totalPages}
+              • Page {currentPage} of {pagination.totalPages}
             </>
           )}
         </div>

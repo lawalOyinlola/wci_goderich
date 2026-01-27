@@ -44,9 +44,7 @@ export default async function Gallery() {
       : galleryImages.slice(0, mid)
     : galleryImages;
   const bottomImages: GalleryImageForComponent[] = moreThanSeven
-    ? isOdd
-      ? galleryImages.slice(mid, count)
-      : galleryImages.slice(mid, count)
+    ? galleryImages.slice(mid, count)
     : [];
 
   return (
