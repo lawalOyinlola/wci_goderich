@@ -32,10 +32,13 @@ export default function TestimoniesContent({
   const [pagination, setPagination] = useState<PaginationMeta | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const currentPage = parseInt(
-    searchParams.get("page") || String(initialPage),
-    10
-  );
+  const parsedPage = Number.parseInt(searchParams.get("page") ?? "", 10);
+
+  const currentPage =
+    Number.isFinite(parsedPage) && parsedPage > 0
+      ? parsedPage
+      : Math.max(1, initialPage);
+
   const typeParam = searchParams.get("type") || initialType;
 
   // Validate and set active tab from URL
@@ -43,7 +46,7 @@ export default function TestimoniesContent({
   const activeTab =
     typeParam && validTypes.includes(typeParam) ? typeParam : "all";
 
-  const fetchTestimonies = useCallback(async () => {
+  const fetchTestimonies = useCallback(async (signal: AbortSignal) => {
     setLoading(true);
     try {
       const params = new URLSearchParams();
@@ -56,22 +59,52 @@ export default function TestimoniesContent({
         params.append("type", activeTab);
       }
 
-      const response = await fetch(`/api/testimonies?${params.toString()}`);
+      const response = await fetch(`/api/testimonies?${params.toString()}`, {
+        signal,
+      });
+
+      // Check if request was aborted before processing
+      if (signal.aborted) {
+        return;
+      }
+
       const data = await response.json();
+
+      // Check again after async operation
+      if (signal.aborted) {
+        return;
+      }
 
       if (data.success) {
         setTestimonies(data.data || []);
         setPagination(data.pagination);
       }
     } catch (error) {
+      // Ignore AbortError - it's expected when requests are cancelled
+      if (error instanceof Error && error.name === "AbortError") {
+        return;
+      }
       console.error("Error fetching testimonies:", error);
     } finally {
-      setLoading(false);
+      // Only update loading state if request wasn't aborted
+      if (!signal.aborted) {
+        setLoading(false);
+      }
     }
   }, [currentPage, activeTab]);
 
   useEffect(() => {
-    fetchTestimonies();
+    // Create AbortController for this effect
+    const controller = new AbortController();
+    const signal = controller.signal;
+
+    // Fetch testimonies with abort signal
+    fetchTestimonies(signal);
+
+    // Cleanup: abort the request if component unmounts or dependencies change
+    return () => {
+      controller.abort();
+    };
   }, [fetchTestimonies]);
 
   const updateSearchParams = (

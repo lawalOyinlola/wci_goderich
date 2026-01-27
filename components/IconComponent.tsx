@@ -3,6 +3,7 @@
 import {
   ChurchIcon,
   HeartIcon,
+  UserIcon,
   UsersThreeIcon,
   ClockCountdownIcon,
   BreadIcon,
@@ -18,6 +19,12 @@ import {
   VideoCameraIcon,
   MusicNotesIcon,
   PlayCircleIcon,
+  CreditCardIcon,
+  TipJarIcon,
+  HandHeartIcon,
+  BuildingIcon,
+  CheckIcon,
+  CopyIcon,
   type Icon,
 } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
@@ -25,6 +32,7 @@ import { cn } from "@/lib/utils";
 const iconMap: Record<string, Icon> = {
   ChurchIcon,
   HeartIcon,
+  UserIcon,
   UsersThreeIcon,
   ClockCountdownIcon,
   BreadIcon,
@@ -40,13 +48,19 @@ const iconMap: Record<string, Icon> = {
   VideoCameraIcon,
   MusicNotesIcon,
   PlayCircleIcon,
+  CreditCardIcon,
+  TipJarIcon,
+  HandHeartIcon,
+  BuildingIcon,
+  CheckIcon,
+  CopyIcon,
 };
 
 export type ValidIconName = keyof typeof iconMap;
 
 interface IconComponentProps {
   iconName: ValidIconName;
-  weight?: "duotone" | "fill" | "light" | "regular" | "thin";
+  weight?: "duotone" | "fill" | "bold" | "light" | "regular" | "thin";
   size?: number;
   className?: string;
 }
@@ -60,6 +74,9 @@ export function IconComponent({
   const Icon = iconMap[iconName];
 
   if (!Icon) {
+    if (process.env.NODE_ENV === "development") {
+      console.warn(`Icon "${iconName}" not found in iconMap. Available icons:`, Object.keys(iconMap));
+    }
     return null;
   }
 
@@ -67,7 +84,7 @@ export function IconComponent({
     <Icon
       weight={weight}
       size={size || 54}
-      className={cn("text-accent transition-all duration-300", className)}
+      className={cn("transition-all duration-300", className)}
     />
   );
 }

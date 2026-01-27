@@ -7,7 +7,7 @@ import { SERVICES } from "./services";
 
 // Helper function to convert midnight prayer groups to PrayerPoint[]
 function convertMidnightGroupsToPrayerPoints(
-  groups: MidnightPrayerGroups
+  groups: MidnightPrayerGroups,
 ): PrayerPoint[] {
   return Object.entries(groups).map(([groupNumberStr, group]) => {
     const groupNumber = parseInt(groupNumberStr, 10);
@@ -336,7 +336,7 @@ export const MIDNIGHT_PRAYER_GROUPS: MidnightPrayerGroups = {
 
 // Generate all midnight prayer points from the structured data
 const midnightPrayerPoints: PrayerPoint[] = convertMidnightGroupsToPrayerPoints(
-  MIDNIGHT_PRAYER_GROUPS
+  MIDNIGHT_PRAYER_GROUPS,
 );
 
 // General Prayer Points
@@ -671,7 +671,7 @@ export const PRAYER_SESSIONS: PrayerSession[] = [
 
 export const PRAYER_INSPIRATIONS = [
   {
-    icon: "QuotesIcon",
+    icon: "LightningIcon",
     title: "Prayer Changes Things",
     description:
       "Prayer is not asking for what you think you want, but asking to be changed in ways you can't imagine. It's the key that unlocks God's power in your life.",
@@ -679,7 +679,7 @@ export const PRAYER_INSPIRATIONS = [
       "James 5:16 - The prayer of a righteous person is powerful and effective.",
   },
   {
-    icon: "HeartIcon",
+    icon: "UsersFourIcon",
     title: "Prayer Connects Us",
     description:
       "When we pray together, we create a powerful bond of unity and faith. Corporate prayer amplifies our individual prayers and brings us closer to God and each other.",
@@ -687,7 +687,7 @@ export const PRAYER_INSPIRATIONS = [
       "Matthew 18:20 - For where two or three gather in my name, there am I with them.",
   },
   {
-    icon: "LightbulbIcon",
+    icon: "WavesIcon",
     title: "Prayer Brings Clarity",
     description:
       "In the quiet moments of prayer, God speaks to our hearts, provides direction, and reveals His will for our lives. Prayer is our direct line to heaven.",

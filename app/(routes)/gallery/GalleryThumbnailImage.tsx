@@ -59,7 +59,7 @@ export function GalleryThumbnailImage({
         setImageSrc(retryUrl);
         setIsRetrying(false);
         timeoutRef.current = null;
-      }, retryDelay * nextRetry);
+      }, retryDelay * Math.pow(2, retryCount));
     } else {
       console.error(`Failed to load thumbnail after ${maxRetries} retries: ${src}`);
       setHasError(true);

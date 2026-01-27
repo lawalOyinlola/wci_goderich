@@ -1,54 +1,46 @@
 import { Skeleton } from "@/components/ui/skeleton";
+import { calculateCardPosition } from "@/lib/utils/carousel";
 
 /**
  * Skeleton component for Answered Prayers section
- * Matches the TestimonialCarousel layout with stacked cards
+ * Matches the AnsweredPrayerCarousel layout with stacked cards
+ * Uses calculateCardPosition to ensure layout consistency with the actual carousel
  */
 export function AnsweredPrayersSkeleton() {
+  // Simulate a carousel with 5 cards, with card at index 0 as the active one
+  const totalCards = 5;
+  const currentIndex = 0;
+
   return (
     <div className="relative flex flex-col items-center justify-center min-h-[400px]">
       {/* Carousel Container with Stacked Cards */}
       <div className="relative w-full max-w-4xl h-[500px] flex items-center justify-center overflow-hidden">
-        {/* Visible Stacked Cards - showing 3 cards like the carousel */}
+        {/* Visible Stacked Cards */}
         <div className="relative w-full h-full flex items-center justify-center">
-          {[0, 1, 2, 3, 4].map((index) => {
-            // Simulate the stacked card positioning
-            const isCardOne = index === 1;
-            const isCardTwo = index === 2;
-            const isCardThree = index === 3;
-            const isCardFour = index === 4;
+          {Array.from({ length: totalCards }).map((_, index) => {
+            const isActive = currentIndex === index;
+            const isPrev = currentIndex === (index + 1) % totalCards;
+            const isNext =
+              currentIndex === (index - 1 + totalCards) % totalCards;
 
-            // Calculate z-index and positioning similar to carousel
-            let zIndex = 10;
-            let transform = "translateX(0) scale(1)";
-            let opacity = 1;
-
-            if (isCardOne) {
-              zIndex = 5;
-              transform = "translate(-6%, 6%) scale(0.9) rotate(-4deg)";
-              opacity = 0.5;
-            } else if (isCardTwo) {
-              zIndex = 5;
-              transform = "translate(6%, 6%) scale(0.9) rotate(4deg)";
-              opacity = 0.5;
-            } else if (isCardThree) {
-              zIndex = 4;
-              transform = "translate(-7%, 8%) scale(0.9) rotate(-6deg)";
-              opacity = 0.4;
-            } else if (isCardFour) {
-              zIndex = 4;
-              transform = "translate(7%, 8%) scale(0.9) rotate(6deg)";
-              opacity = 0.4;
-            }
+            // Calculate card position using the same helper function as the carousel
+            const cardPosition = calculateCardPosition(
+              index,
+              currentIndex,
+              totalCards,
+              isActive,
+              isPrev,
+              isNext
+            );
 
             return (
               <div
                 key={index}
                 className="absolute w-full max-w-sm sm:max-w-xl md:max-w-2xl transition-all duration-500 ease-out"
                 style={{
-                  zIndex,
-                  transform,
-                  opacity,
+                  zIndex: cardPosition.zIndex,
+                  transform: cardPosition.transform,
+                  opacity: cardPosition.opacity,
                   pointerEvents: "none",
                 }}
               >

@@ -1,9 +1,13 @@
-
+import Hero from "./Hero";
+import GivingInfo from "./GivingInfo";
+import GivingDetails from "./GivingDetails";
 
 export default function GivingPage() {
     return (
-        <div className="pt-20">
-            <h1 className="text-4xl font-bold">Giving</h1>
-        </div>
+        <>
+            <Hero />
+            <GivingInfo />
+            <GivingDetails />
+        </>
     );
 }

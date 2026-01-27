@@ -33,9 +33,35 @@ export async function GET(request: NextRequest) {
     const page = searchParams.get("page"); // Optional page number for pagination
     const verified = searchParams.get("verified"); // Optional filter by verified status (defaults to true)
 
-    // Pagination defaults
-    const pageNum = page ? parseInt(page, 10) : 1;
-    const limitNum = limit ? parseInt(limit, 10) : 12; // Default 12 items per page
+    // Pagination parsing and validation
+    const MAX_LIMIT = 100; // Maximum items per page to prevent huge responses
+    const DEFAULT_PAGE = 1;
+    const DEFAULT_LIMIT = 12;
+
+    // Parse and validate page number
+    let pageNum: number;
+    if (page) {
+      const parsed = parseInt(page, 10);
+      pageNum = Number.isFinite(parsed) && parsed > 0 ? parsed : DEFAULT_PAGE;
+    } else {
+      pageNum = DEFAULT_PAGE;
+    }
+    // Clamp pageNum to be at least 1
+    pageNum = Math.max(1, pageNum);
+
+    // Parse and validate limit
+    let limitNum: number;
+    if (limit) {
+      const parsed = parseInt(limit, 10);
+      limitNum =
+        Number.isFinite(parsed) && parsed > 0 ? parsed : DEFAULT_LIMIT;
+    } else {
+      limitNum = DEFAULT_LIMIT;
+    }
+    // Clamp limitNum to be positive and cap at MAX_LIMIT
+    limitNum = Math.max(1, Math.min(MAX_LIMIT, limitNum));
+
+    // Calculate offset using sanitized values
     const offset = (pageNum - 1) * limitNum;
 
     // Build base query for counting total items
@@ -116,15 +142,19 @@ export async function GET(request: NextRequest) {
     // Transform data to match frontend expectations
     const transformedData = transformTestimonies(data || []);
 
-    // Calculate pagination metadata
+    // Calculate pagination metadata using sanitized limitNum
+    // limitNum is already sanitized (>= 1 and <= MAX_LIMIT), so it's safe to use
     const totalItems = count || 0;
     const totalPages = Math.ceil(totalItems / limitNum);
+    // Ensure totalPages is a valid number (handle edge cases like NaN/Infinity)
+    const safeTotalPages = Number.isFinite(totalPages) && totalPages >= 0 ? totalPages : 0;
+    
     const pagination = {
       currentPage: pageNum,
-      totalPages,
+      totalPages: safeTotalPages,
       totalItems,
       itemsPerPage: limitNum,
-      hasNextPage: pageNum < totalPages,
+      hasNextPage: pageNum < safeTotalPages,
       hasPreviousPage: pageNum > 1,
     };
 
