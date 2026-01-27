@@ -7,10 +7,13 @@ import {
   CardContent,
   CardHeader,
 } from "@/components/ui/card";
-import { CreditCardIcon, HeartIcon, TipJarIcon } from "@phosphor-icons/react";
+import { IconComponent, ValidIconName } from "@/components/IconComponent";
 
-export default function GivingInfo() {
-  const infoCards = [
+const infoCards: Array<{
+  icon: ValidIconName;
+  title: string;
+  description: string;
+}> = [
     {
       icon: "CreditCardIcon",
       title: "How to Give",
@@ -24,13 +27,15 @@ export default function GivingInfo() {
         "You can give your tithes, offerings, and special donations. Whether you're supporting our local ministry, missions work, or specific projects, every contribution makes a difference. Give at our physical location during services or transfer directly to our bank account.",
     },
     {
-      icon: "HeartIcon",
+      icon: "HandHeartIcon",
       title: "Why Give",
       description:
         "Giving is an act of worship and obedience to God. Your generous giving supports our mission to spread the Gospel, helps us serve our community, funds our various ministries, and enables us to reach more lives with the love of Christ. Every gift, no matter the size, is valuable and appreciated.",
     },
   ];
 
+
+export default function GivingInfo() {
   return (
     <section className="bg-card" id="giving">
       <div className="@container small-container">
@@ -48,32 +53,12 @@ export default function GivingInfo() {
             >
               <CardHeader>
                 <CardDecorator>
-                  {index === 0 && (
-                    <CreditCardIcon
-                      className="text-background"
-                      size={32}
-                      weight="duotone"
-                    />
-                  )}
-                  {index === 1 && (
-                    <TipJarIcon
-                      className="text-background"
-                      size={32}
-                      weight="duotone"
-                    />
-                  )}
-                  {index === 2 && (
-                    <HeartIcon
-                      className="text-background"
-                      size={32}
-                      weight="duotone"
-                    />
-                  )}
+                  <IconComponent iconName={info.icon} className="text-background"
+                    size={32}
+                    weight="duotone" />
                 </CardDecorator>
-
                 <h3 className="font-medium">{info.title}</h3>
               </CardHeader>
-
               <CardContent>
                 <p className="text-sm">{info.description}</p>
               </CardContent>

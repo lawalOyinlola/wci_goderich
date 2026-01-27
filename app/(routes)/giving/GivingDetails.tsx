@@ -1,5 +1,8 @@
 "use client";
 
+import { useState } from "react";
+import { toast } from "sonner";
+import { IconComponent, ValidIconName } from "@/components/IconComponent";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import {
   Card,
@@ -8,13 +11,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { IconComponent, ValidIconName } from "@/components/IconComponent";
-import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { WordRotate } from "@/components/ui/word-rotate";
-import { toast } from "sonner";
 import SectionHeader from "@/components/SectionHeader";
-import { CheckIcon, CopyIcon } from "@phosphor-icons/react";
 
 export default function GivingDetails() {
   const [copiedField, setCopiedField] = useState<string | null>(null);
@@ -42,12 +41,18 @@ export default function GivingDetails() {
 
   const copyToClipboard = async (text: string, field: string, label: string) => {
     try {
+      if (!navigator?.clipboard) {
+        toast.error("Clipboard not available. Please copy manually.");
+        return;
+      }
+
       await navigator.clipboard.writeText(text);
       setCopiedField(field);
       toast.success(`${label} copied to clipboard`);
       setTimeout(() => setCopiedField(null), 2000);
     } catch (err) {
       console.error("Failed to copy:", err);
+      toast.error("Failed to copy. Please try again.");
     }
   };
 
@@ -65,25 +70,25 @@ export default function GivingDetails() {
     value: string;
     field: string;
   }> = [
-    {
-      icon: "BuildingIcon",
-      label: "Bank Name",
-      value: accountDetails.bankName,
-      field: "bank",
-    },
-    {
-      icon: "UserIcon",
-      label: "Account Name",
-      value: accountDetails.accountName,
-      field: "accountName",
-    },
-    {
-      icon: "CreditCardIcon",
-      label: "Account Number",
-      value: accountDetails.accountNumber,
-      field: "accountNumber",
-    },
-  ];
+      {
+        icon: "BuildingIcon",
+        label: "Bank Name",
+        value: accountDetails.bankName,
+        field: "bank",
+      },
+      {
+        icon: "UserIcon",
+        label: "Account Name",
+        value: accountDetails.accountName,
+        field: "accountName",
+      },
+      {
+        icon: "CreditCardIcon",
+        label: "Account Number",
+        value: accountDetails.accountNumber,
+        field: "accountNumber",
+      },
+    ];
 
   return (
     <section id="account-details" className="bg-muted/30">
@@ -110,8 +115,15 @@ export default function GivingDetails() {
             {detailItems.map((item) => (
               <div
                 key={item.field}
-                className="flex items-center justify-between p-4 rounded-lg border bg-background hover:bg-muted/50 transition-colors cursor-pointer group"
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    copyToClipboard(item.value, item.field, item.label);
+                  }
+                }}
                 onClick={() => copyToClipboard(item.value, item.field, item.label)}
+                className="flex items-center justify-between p-4 rounded-lg border bg-background hover:bg-muted/50 transition-colors cursor-pointer group"
               >
                 <div className="flex items-center gap-4 flex-1">
                   <div className="p-2 rounded-lg bg-primary/10 text-primary">
@@ -130,18 +142,21 @@ export default function GivingDetails() {
                   </div>
                 </div>
                 <button
-                  className={cn(
-                    "p-1 rounded-lg transition-all",
-                    copiedField === item.field
-                      ? "bg-green-500/10 text-green-600"
-                      : "bg-muted text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary"
-                  )}
+                  type="button"
+                  aria-label={`Copy ${item.label}`}
                   onClick={(e) => {
                     e.stopPropagation();
                     copyToClipboard(item.value, item.field, item.label);
                   }}
+                  disabled={copiedField === item.field}
+                  className={cn(
+                    "p-1 rounded-md transition-all cursor-pointer",
+                    copiedField === item.field
+                      ? "bg-green-500/10 text-green-600"
+                      : "bg-muted text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary"
+                  )}
                 >
-                  {copiedField === item.field ? <CheckIcon weight="bold" /> : <CopyIcon weight="bold" />}
+                  <IconComponent iconName={copiedField === item.field ? "CheckIcon" : "CopyIcon"} weight="bold" size={18} />
                 </button>
               </div>
             ))}
@@ -153,7 +168,7 @@ export default function GivingDetails() {
             text={`${copiedField === "allDetails" ? "Details Copied" : "Copy All Details"}`}
             size="lg"
             icon={
-              copiedField === "allDetails" ? <CheckIcon weight="bold" /> : <CopyIcon weight="bold" />
+              <IconComponent iconName={copiedField === "allDetails" ? "CheckIcon" : "CopyIcon"} weight="bold" />
             }
             onClick={copyAllDetails}
             className="mb-4"

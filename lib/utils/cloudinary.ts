@@ -166,10 +166,23 @@ export function validateCloudinaryUrl(url: string): boolean {
 /**
  * Creates a fallback URL for a Cloudinary image
  * Can be used when the primary image fails to load
+ * 
+ * @param publicId - The Cloudinary public_id of the image
+ * @param cloudName - Optional Cloudinary cloud name. If not provided, uses NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME
+ * @returns Fallback Cloudinary URL
+ * @throws Error if cloudName is not provided and NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME is not set
  */
 export function createCloudinaryFallbackUrl(
   publicId: string,
-  cloudName: string = process.env.CLOUDINARY_CLOUD_NAME || "",
+  cloudName?: string,
 ): string {
-  return `https://res.cloudinary.com/${cloudName}/image/upload/f_auto,q_auto/${publicId}`;
+  const resolvedCloudName = cloudName || process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+  
+  if (!resolvedCloudName) {
+    throw new Error(
+      "Cloudinary cloud name is required. Either pass it as a parameter or set NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME environment variable."
+    );
+  }
+  
+  return `https://res.cloudinary.com/${resolvedCloudName}/image/upload/f_auto,q_auto/${publicId}`;
 }

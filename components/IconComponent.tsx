@@ -23,6 +23,8 @@ import {
   TipJarIcon,
   HandHeartIcon,
   BuildingIcon,
+  CheckIcon,
+  CopyIcon,
   type Icon,
 } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
@@ -50,6 +52,8 @@ const iconMap: Record<string, Icon> = {
   TipJarIcon,
   HandHeartIcon,
   BuildingIcon,
+  CheckIcon,
+  CopyIcon,
 };
 
 export type ValidIconName = keyof typeof iconMap;

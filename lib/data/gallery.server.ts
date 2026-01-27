@@ -83,6 +83,40 @@ function extractAltText(resource: {
 }
 
 /**
+ * Sanitizes and validates pagination inputs from filters
+ * @param filters - Optional filters containing page and limit
+ * @returns Object with sanitized pageNum and limitNum
+ */
+function sanitizePagination(filters?: GalleryFilters): {
+  pageNum: number;
+  limitNum: number;
+} {
+  // Parse page number
+  let pageNum: number;
+  if (filters?.page !== undefined) {
+    const parsed = typeof filters.page === "number" ? filters.page : Number(filters.page);
+    pageNum = Number.isFinite(parsed) && parsed > 0 ? parsed : 1;
+  } else {
+    pageNum = 1;
+  }
+  // Clamp pageNum to be at least 1
+  pageNum = Math.max(1, pageNum);
+
+  // Parse limit
+  let limitNum: number;
+  if (filters?.limit !== undefined) {
+    const parsed = typeof filters.limit === "number" ? filters.limit : Number(filters.limit);
+    limitNum = Number.isFinite(parsed) && parsed > 0 ? parsed : DEFAULT_GALLERY_LIMIT;
+  } else {
+    limitNum = DEFAULT_GALLERY_LIMIT;
+  }
+  // Clamp limitNum to be at least 1 and cap at DEFAULT_GALLERY_LIMIT
+  limitNum = Math.max(1, Math.min(DEFAULT_GALLERY_LIMIT, limitNum));
+
+  return { pageNum, limitNum };
+}
+
+/**
  * Fetches gallery images from Cloudinary's gallery folder
  * Transforms Cloudinary resources into GalleryImage format
  * Uses Cloudinary metadata (context, tags) for title and description
@@ -99,20 +133,7 @@ export async function getGalleryImagesServer(
 
     if (result.resources.length === 0) {
       // Sanitize pagination inputs even for empty results
-      let pageNum = 1;
-      let limitNum = DEFAULT_GALLERY_LIMIT;
-      
-      if (filters?.page !== undefined) {
-        const parsed = typeof filters.page === "number" ? filters.page : Number(filters.page);
-        pageNum = Number.isFinite(parsed) && parsed > 0 ? parsed : 1;
-      }
-      pageNum = Math.max(1, pageNum);
-      
-      if (filters?.limit !== undefined) {
-        const parsed = typeof filters.limit === "number" ? filters.limit : Number(filters.limit);
-        limitNum = Number.isFinite(parsed) && parsed > 0 ? parsed : DEFAULT_GALLERY_LIMIT;
-      }
-      limitNum = Math.max(1, Math.min(DEFAULT_GALLERY_LIMIT, limitNum));
+      const { pageNum, limitNum } = sanitizePagination(filters);
       
       return {
         images: [],
@@ -196,27 +217,7 @@ export async function getGalleryImagesServer(
     });
 
     // Sanitize and validate pagination inputs
-    // Parse page number
-    let pageNum: number;
-    if (filters?.page !== undefined) {
-      const parsed = typeof filters.page === "number" ? filters.page : Number(filters.page);
-      pageNum = Number.isFinite(parsed) && parsed > 0 ? parsed : 1;
-    } else {
-      pageNum = 1;
-    }
-    // Clamp pageNum to be at least 1
-    pageNum = Math.max(1, pageNum);
-
-    // Parse limit
-    let limitNum: number;
-    if (filters?.limit !== undefined) {
-      const parsed = typeof filters.limit === "number" ? filters.limit : Number(filters.limit);
-      limitNum = Number.isFinite(parsed) && parsed > 0 ? parsed : DEFAULT_GALLERY_LIMIT;
-    } else {
-      limitNum = DEFAULT_GALLERY_LIMIT;
-    }
-    // Clamp limitNum to be at least 1 and cap at DEFAULT_GALLERY_LIMIT
-    limitNum = Math.max(1, Math.min(DEFAULT_GALLERY_LIMIT, limitNum));
+    const { pageNum, limitNum } = sanitizePagination(filters);
 
     // Calculate pagination using sanitized values
     const totalItems = images.length;
@@ -249,20 +250,7 @@ export async function getGalleryImagesServer(
     console.error("Error fetching gallery images from Cloudinary:", error);
     
     // Sanitize pagination inputs even in error case
-    let pageNum = 1;
-    let limitNum = DEFAULT_GALLERY_LIMIT;
-    
-    if (filters?.page !== undefined) {
-      const parsed = typeof filters.page === "number" ? filters.page : Number(filters.page);
-      pageNum = Number.isFinite(parsed) && parsed > 0 ? parsed : 1;
-    }
-    pageNum = Math.max(1, pageNum);
-    
-    if (filters?.limit !== undefined) {
-      const parsed = typeof filters.limit === "number" ? filters.limit : Number(filters.limit);
-      limitNum = Number.isFinite(parsed) && parsed > 0 ? parsed : DEFAULT_GALLERY_LIMIT;
-    }
-    limitNum = Math.max(1, Math.min(DEFAULT_GALLERY_LIMIT, limitNum));
+    const { pageNum, limitNum } = sanitizePagination(filters);
     
     return {
       images: [],
