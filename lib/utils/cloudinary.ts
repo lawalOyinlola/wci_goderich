@@ -72,15 +72,19 @@ export function optimizeCloudinaryUrl(
       transformations.push(`q_${options.quality || "auto"}`);
       transformations.push(`f_${options.format || "auto"}`);
 
-      // Insert transformations after "upload" if we have any
-      if (transformations.length > 0) {
-        const transformationString = transformations.join(",");
-        pathParts.splice(uploadIndex + 1, 0, transformationString);
+      // Insert transformations after "upload"
+      const transformationString = transformations.join(",");
+      pathParts.splice(uploadIndex + 1, 0, transformationString);
 
-        // Reconstruct URL
-        urlObj.pathname = pathParts.join("/");
-        return urlObj.toString();
+      // Reconstruct URL
+      urlObj.pathname = pathParts.join("/");
+
+      // Apply retry parameter if provided
+      if (options.retry && options.retry > 0) {
+        urlObj.searchParams.set("_retry", String(options.retry));
       }
+
+      return urlObj.toString();
     } else {
       // Case 2: Transformations already exist - merge width/height into existing transformations
       if (options.width || options.height) {
@@ -116,6 +120,11 @@ export function optimizeCloudinaryUrl(
 
         // Reconstruct URL
         urlObj.pathname = pathParts.join("/");
+        // Apply retry parameter if provided
+        if (options.retry && options.retry > 0) {
+          urlObj.searchParams.set("_retry", String(options.retry));
+        }
+
         return urlObj.toString();
       }
     }
@@ -166,7 +175,7 @@ export function validateCloudinaryUrl(url: string): boolean {
 /**
  * Creates a fallback URL for a Cloudinary image
  * Can be used when the primary image fails to load
- * 
+ *
  * @param publicId - The Cloudinary public_id of the image
  * @param cloudName - Optional Cloudinary cloud name. If not provided, uses NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME
  * @returns Fallback Cloudinary URL
@@ -176,13 +185,14 @@ export function createCloudinaryFallbackUrl(
   publicId: string,
   cloudName?: string,
 ): string {
-  const resolvedCloudName = cloudName || process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
-  
+  const resolvedCloudName =
+    cloudName || process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+
   if (!resolvedCloudName) {
     throw new Error(
-      "Cloudinary cloud name is required. Either pass it as a parameter or set NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME environment variable."
+      "Cloudinary cloud name is required. Either pass it as a parameter or set NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME environment variable.",
     );
   }
-  
+
   return `https://res.cloudinary.com/${resolvedCloudName}/image/upload/f_auto,q_auto/${publicId}`;
 }

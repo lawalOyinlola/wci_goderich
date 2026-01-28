@@ -26,7 +26,7 @@ export default function PrayerInspiration() {
             >
               <CardHeader>
                 <CardDecorator>
-                  <IconComponent iconName={inspiration.icon as ValidIconName} size={32} weight="duotone" aria-hidden />
+                  <IconComponent iconName={inspiration.icon as ValidIconName} size={32} weight="duotone" className="text-foreground" aria-hidden />
                 </CardDecorator>
                 <h3 className="font-medium">{inspiration.title}</h3>
               </CardHeader>

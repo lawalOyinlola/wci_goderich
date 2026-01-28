@@ -14,8 +14,7 @@ export default function EducationPage() {
   ];
 
   const nigeriaSchools = [
-    ...SCHOOLS.nigeria.primary,
-    ...SCHOOLS.nigeria.secondary,
+    ...SCHOOLS.nigeria.primary_secondary,
     ...SCHOOLS.nigeria.university,
   ];
 
