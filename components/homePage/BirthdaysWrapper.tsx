@@ -1,11 +1,15 @@
 import MonthlyBirthdays from "./sections/Birthdays";
-import { getBirthdaysServer } from "@/lib/data";
+import { getBirthdaysForCurrentMonth } from "@/lib/data/birthdays.server";
 import { SAMPLE_BIRTHDAYS } from "@/lib/constants";
 import type { Birthday } from "@/lib/types";
 
 // Server component wrapper that fetches data
 export default async function BirthdaysWrapper() {
-  const dbBirthdays = await getBirthdaysServer({ featured: true, limit: 6 });
+  // Fetch birthdays for current month, filling with previous months if needed
+  const dbBirthdays = await getBirthdaysForCurrentMonth({
+    minCount: 6,
+    featured: true,
+  });
 
   // Transform database birthdays to component format, with fallback to sample birthdays
   const featuredBirthdays: Birthday[] =

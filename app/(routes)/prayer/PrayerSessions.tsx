@@ -8,9 +8,6 @@ import { ClockIcon, MapPinIcon, CalendarIcon } from "@phosphor-icons/react";
 import { PRAYER_SESSIONS } from "@/lib/constants";
 
 export default function PrayerSessions() {
-  const regularSessions = PRAYER_SESSIONS.filter(
-    (session) => !session.isSpecial
-  );
 
   return (
     <section id="prayer-sessions" className="bg-muted">
@@ -26,7 +23,7 @@ export default function PrayerSessions() {
         <div className="mt-12">
           <h3 className="mb-6">All Prayer Sessions</h3>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {regularSessions.map((session) => (
+            {PRAYER_SESSIONS.map((session) => (
               <Card
                 key={session.id}
                 className="p-6 transition-all duration-300 shadow-sm hover:shadow-primary/20 hover:shadow-md overflow-hidden"

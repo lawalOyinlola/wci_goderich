@@ -22,12 +22,12 @@ export default function Wofbi() {
                 {WOFBI.programs.map((program) => (
                     <Card
                         key={program.id}
-                        className="hover:shadow-lg transition-shadow"
+                        className="relative hover:shadow-lg transition-shadow overflow-hidden"
                     >
+                        <div className="absolute flex-center top-0 translate-y-1/2 right-0 translate-x-1/4 w-1/2 text-background dark:text-foreground bg-foreground/80 dark:bg-background/80 px-2 py-1 rotate-35">{program.level}</div>
                         <CardHeader>
                             <div className="flex items-center justify-between">
                                 <CardTitle className="text-xl">{program.title}</CardTitle>
-                                <Badge variant="outline">{program.level}</Badge>
                             </div>
                             <CardDescription>{program.duration}</CardDescription>
                         </CardHeader>

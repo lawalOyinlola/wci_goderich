@@ -1,0 +1,69 @@
+"use client";
+
+
+import Image from "next/image";
+import SectionHeader from "@/components/SectionHeader";
+import { SERMONS } from "@/lib/constants";
+import SermonBtn from "@/components/homePage/SermonBtn";
+
+const MEDIA_CENTER_URL = "https://media.faithtabernacle.org.ng/";
+
+export default function Sermons() {
+
+
+
+    return (
+        <section id="sermons" className="scroll-mt-24">
+            <div className="small-container">
+                <SectionHeader
+                    title="Recent Sermons"
+                    subtitle="Teaching & Ministry"
+                    description="Watch and listen to powerful teachings from our pastors. More content available on our live stream platform."
+                />
+
+                <div className="flex flex-wrap justify-center gap-8">
+                    {[...SERMONS].reverse().map((sermon, index) => (
+                        <div
+                            key={sermon.id}
+                            className="group relative overflow-hidden text-center flex flex-col basis-full sm:basis-[calc(50%-theme(space.8)/2)] lg:basis-[calc(33.333%-theme(space.8)/1.5)] max-w-[420px] rounded"
+                        >
+                            <div className="relative aspect-[1] shadow-lg overflow-hidden">
+                                <Image
+                                    src={sermon.image}
+                                    alt={sermon.title}
+                                    fill
+                                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                                    priority={index === 0}
+                                    className="object-cover transition-transform duration-500 group-hover:scale-110"
+                                />
+                                {/* Overlay */}
+                                <div className="absolute inset-0 bg-black/50 transition-all duration-500 group-hover:bg-black/60" />
+                                <div className="absolute inset-0 border border-[rgba(253,252,251,0.3)] m-4" />
+
+                                <div className="absolute top-1/2 left-1/2 -translate-1/2 text-white flex flex-col items-center gap-8">
+                                    <h3>{sermon.title}</h3>
+
+                                    <SermonBtn videoUrl={sermon.videoUrl} />
+                                </div>
+                            </div>
+
+                            <div className="p-6">
+                                <div>
+                                    <p className="text-xs uppercase tracking-[0.2em]">
+                                        BY PASTOR:
+                                    </p>
+                                    <p className="text-2xl italic -tracking-tight font-medium my-1">
+                                        {sermon.pastor}
+                                    </p>
+                                </div>
+                                <p className="text-xs text-muted-foreground uppercase tracking-[0.2em]">
+                                    {sermon.date}
+                                </p>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </section>
+    );
+}

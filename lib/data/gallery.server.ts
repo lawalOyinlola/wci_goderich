@@ -1,7 +1,9 @@
 /**
- * Server-side data fetching functions for gallery
- * These functions run on the server and can be used in Server Components
- * Fetches images from Cloudinary's gallery folder
+ * Gallery data – Cloudinary-only, no database.
+ * Fetches images from Cloudinary folder WCI_Goderich/gallery via Admin API.
+ * Tries prefixes: WCI_Goderich/gallery, WCI_Goderich/gallery/, gallery.
+ * When the folder is empty or fetch fails, uses SAMPLE_IMAGES as fallback.
+ * url, alt, title come from Cloudinary metadata or SAMPLE_IMAGES.
  */
 
 import { listImagesFromFolder } from "@/lib/cloudinary";
@@ -9,6 +11,7 @@ import {
   GALLERY_FOLDER,
   DEFAULT_GALLERY_LIMIT,
   MAX_GALLERY_RESULTS,
+  SAMPLE_IMAGES,
 } from "@/lib/constants/gallery";
 import type {
   GalleryImage,
@@ -18,250 +21,200 @@ import type {
 } from "@/lib/types/gallery";
 import { optimizeCloudinaryUrl } from "@/lib/utils/cloudinary";
 
-/**
- * Determines image orientation based on width and height
- */
+/** Prefixes to try when listing gallery images (Cloudinary folder structure can vary). */
+const GALLERY_PREFIXES = [
+  GALLERY_FOLDER,
+  `${GALLERY_FOLDER}/`,
+  "gallery",
+] as const;
+
 function getOrientation(width: number, height: number): GalleryOrientation {
-  if (width > height) {
-    return "landscape";
-  } else if (height > width) {
-    return "portrait";
-  } else {
-    return "square";
-  }
+  if (width > height) return "landscape";
+  if (height > width) return "portrait";
+  return "square";
 }
 
-/**
- * Extracts title from Cloudinary resource metadata
- */
-function extractTitle(resource: {
+/** Title: context.custom.title | context.caption | filename from public_id */
+function getTitle(resource: {
   public_id: string;
-  context?: {
-    custom?: { title?: string };
-    caption?: string;
-  };
+  context?: { custom?: { title?: string }; caption?: string };
 }): string {
-  return (
-    resource.context?.custom?.title ||
-    resource.context?.caption ||
-    resource.public_id
-      .split("/")
-      .pop()
-      ?.replace(/\.[^/.]+$/, "")
-      .replace(/[-_]/g, " ") ||
-    "Gallery Image"
-  );
+  const custom = resource.context?.custom?.title;
+  if (custom) return custom;
+  const caption = resource.context?.caption;
+  if (caption) return caption;
+  const name = resource.public_id.split("/").pop()?.replace(/\.[^/.]+$/, "");
+  return name?.replace(/[-_]/g, " ") ?? "Gallery image";
 }
 
-/**
- * Extracts description from Cloudinary resource metadata
- */
-function extractDescription(resource: {
-  context?: {
-    custom?: { description?: string; alt?: string };
-  };
+/** Description: context.custom.description | context.custom.alt */
+function getDescription(resource: {
+  context?: { custom?: { description?: string; alt?: string } };
 }): string | undefined {
-  return resource.context?.custom?.description || resource.context?.custom?.alt;
+  return resource.context?.custom?.description ?? resource.context?.custom?.alt;
 }
 
-/**
- * Extracts alt text from Cloudinary resource metadata
- */
-function extractAltText(resource: {
+/** Alt: context.custom.alt | context.alt | public_id basename */
+function getAlt(resource: {
   public_id: string;
-  context?: {
-    custom?: { alt?: string };
-    alt?: string;
-  };
+  context?: { custom?: { alt?: string }; alt?: string };
 }): string {
-  return (
-    resource.context?.custom?.alt ||
-    resource.context?.alt ||
-    resource.public_id.split("/").pop() ||
-    "Gallery image"
-  );
+  const custom = resource.context?.custom?.alt;
+  if (custom) return custom;
+  const ctxAlt = resource.context?.alt;
+  if (ctxAlt) return ctxAlt;
+  const name = resource.public_id.split("/").pop();
+  return name ?? "Gallery image";
 }
 
-/**
- * Sanitizes and validates pagination inputs from filters
- * @param filters - Optional filters containing page and limit
- * @returns Object with sanitized pageNum and limitNum
- */
 function sanitizePagination(filters?: GalleryFilters): {
   pageNum: number;
   limitNum: number;
 } {
-  // Parse page number
-  let pageNum: number;
+  let pageNum = 1;
   if (filters?.page !== undefined) {
-    const parsed = typeof filters.page === "number" ? filters.page : Number(filters.page);
-    pageNum = Number.isFinite(parsed) && parsed > 0 ? parsed : 1;
-  } else {
-    pageNum = 1;
+    const p = typeof filters.page === "number" ? filters.page : Number(filters.page);
+    pageNum = Number.isFinite(p) && p > 0 ? p : 1;
   }
-  // Clamp pageNum to be at least 1
   pageNum = Math.max(1, pageNum);
 
-  // Parse limit
-  let limitNum: number;
+  let limitNum = DEFAULT_GALLERY_LIMIT;
   if (filters?.limit !== undefined) {
-    const parsed = typeof filters.limit === "number" ? filters.limit : Number(filters.limit);
-    limitNum = Number.isFinite(parsed) && parsed > 0 ? parsed : DEFAULT_GALLERY_LIMIT;
-  } else {
-    limitNum = DEFAULT_GALLERY_LIMIT;
+    const l = typeof filters.limit === "number" ? filters.limit : Number(filters.limit);
+    limitNum = Number.isFinite(l) && l > 0 ? l : DEFAULT_GALLERY_LIMIT;
   }
-  // Clamp limitNum to be at least 1 and cap at DEFAULT_GALLERY_LIMIT
-  limitNum = Math.max(1, Math.min(DEFAULT_GALLERY_LIMIT, limitNum));
+  limitNum = Math.max(1, Math.min(limitNum, DEFAULT_GALLERY_LIMIT));
 
   return { pageNum, limitNum };
 }
 
+type ListResult = Awaited<ReturnType<typeof listImagesFromFolder>>;
+
+/** Fetch from Cloudinary, trying each prefix until we get resources or exhaust options. */
+async function fetchFromCloudinary(): Promise<ListResult | null> {
+  for (const prefix of GALLERY_PREFIXES) {
+    try {
+      const result = await listImagesFromFolder(prefix, {
+        max_results: MAX_GALLERY_RESULTS,
+      });
+      if (result.resources.length > 0) {
+        console.info(`Gallery: found ${result.resources.length} images for prefix "${prefix}"`);
+        return result;
+      }
+    } catch (e) {
+      console.warn(`Gallery: no images for prefix "${prefix}"`, e);
+    }
+  }
+  return null;
+}
+
+/** Map SAMPLE_IMAGES to GalleryImage[] for fallback when Cloudinary folder is empty. */
+function sampleImagesAsGallery(): GalleryImage[] {
+  const now = new Date().toISOString();
+  return SAMPLE_IMAGES.map((img, i) => ({
+    id: `sample-${i}`,
+    title: img.title,
+    description: undefined,
+    imageUrl: optimizeCloudinaryUrl(img.src),
+    altText: img.alt,
+    orientation: "square" as const,
+    category: undefined,
+    featured: false,
+    displayOrder: SAMPLE_IMAGES.length - i,
+    createdAt: now,
+    updatedAt: now,
+  }));
+}
+
 /**
- * Fetches gallery images from Cloudinary's gallery folder
- * Transforms Cloudinary resources into GalleryImage format
- * Uses Cloudinary metadata (context, tags) for title and description
- * @param filters - Optional filters (pagination, etc.)
- * @returns Paginated gallery response
+ * Fetches gallery images from Cloudinary (no DB).
+ * Maps each resource to GalleryImage using url (secure_url), alt, title from metadata.
  */
 export async function getGalleryImagesServer(
-  filters?: GalleryFilters
+  filters?: GalleryFilters,
 ): Promise<PaginatedGalleryResponse> {
-  try {
-    const result = await listImagesFromFolder(GALLERY_FOLDER, {
-      max_results: MAX_GALLERY_RESULTS,
-    });
+  const { pageNum, limitNum } = sanitizePagination(filters);
 
-    if (result.resources.length === 0) {
-      // Sanitize pagination inputs even for empty results
-      const { pageNum, limitNum } = sanitizePagination(filters);
-      
-      return {
-        images: [],
-        pagination: {
-          currentPage: pageNum,
-          totalPages: 0,
-          totalItems: 0,
-          itemsPerPage: limitNum,
-          hasNextPage: false,
-          hasPreviousPage: false,
-        },
-      };
-    }
-
-    // Transform Cloudinary resources to GalleryImage format
-    let images: GalleryImage[] = result.resources.map((resource, index) => {
-      const orientation = getOrientation(resource.width, resource.height);
-      const title = extractTitle(resource);
-      const description = extractDescription(resource);
-      const altText = extractAltText(resource);
-      
-      // Extract category from tags if available
-      const category = resource.tags && resource.tags.length > 0 ? resource.tags[0] : undefined;
-      
-      // Check if featured based on tags
-      const featured = resource.tags?.includes("featured") || false;
-
-      return {
-        id: `cloudinary-${resource.public_id}`,
-        title,
-        description,
-        // Optimize Cloudinary URL to ensure proper transformations for reliability
-        imageUrl: optimizeCloudinaryUrl(resource.secure_url),
-        altText,
-        orientation,
-        category,
-        featured,
-        displayOrder: result.resources.length - index, // Newer images first
-        createdAt: resource.created_at,
-        updatedAt: resource.created_at,
-      };
-    });
-
-    // Apply filters
-    if (filters?.orientation) {
-      images = images.filter((img) => img.orientation === filters.orientation);
-    }
-
-    if (filters?.category) {
-      images = images.filter((img) => img.category === filters.category);
-    }
-
-    if (filters?.featured !== undefined) {
-      images = images.filter((img) => img.featured === filters.featured);
-    }
-
-    // Filter by month or past years
-    if (filters?.pastYears) {
-      const currentYear = new Date().getFullYear();
-      images = images.filter((img) => {
-        const imgDate = new Date(img.createdAt);
-        return imgDate.getFullYear() < currentYear;
-      });
-    } else if (filters?.month && filters.month >= 1 && filters.month <= 12) {
-      const currentYear = new Date().getFullYear();
-      images = images.filter((img) => {
-        const imgDate = new Date(img.createdAt);
-        return (
-          imgDate.getFullYear() === currentYear &&
-          imgDate.getMonth() === filters.month! - 1
-        );
-      });
-    }
-
-    // Sort by displayOrder (newer first) then by createdAt
-    images.sort((a, b) => {
-      if (b.displayOrder !== a.displayOrder) {
-        return b.displayOrder - a.displayOrder;
-      }
-      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-    });
-
-    // Sanitize and validate pagination inputs
-    const { pageNum, limitNum } = sanitizePagination(filters);
-
-    // Calculate pagination using sanitized values
-    const totalItems = images.length;
-    // Ensure limitNum is valid before division (should be >= 1 after sanitization)
-    const safeLimitNum = Number.isFinite(limitNum) && limitNum > 0 ? limitNum : DEFAULT_GALLERY_LIMIT;
-    const totalPages = Math.ceil(totalItems / safeLimitNum);
-    // Ensure totalPages is a valid number (handle edge cases like NaN/Infinity)
-    const safeTotalPages = Number.isFinite(totalPages) && totalPages >= 0 ? totalPages : 0;
-    
-    // Calculate offset using sanitized values
-    const offset = (pageNum - 1) * safeLimitNum;
-    // Ensure offset is non-negative
-    const safeOffset = Math.max(0, offset);
-    
-    // Slice images using sanitized offset and limit
-    const paginatedImages = images.slice(safeOffset, safeOffset + safeLimitNum);
-
+  const paginate = (list: GalleryImage[]) => {
+    const totalItems = list.length;
+    const safeLimit = Math.max(1, limitNum);
+    const totalPages = Math.ceil(totalItems / safeLimit);
+    const offset = Math.max(0, (pageNum - 1) * safeLimit);
     return {
-      images: paginatedImages,
+      images: list.slice(offset, offset + safeLimit),
       pagination: {
         currentPage: pageNum,
-        totalPages: safeTotalPages,
+        totalPages,
         totalItems,
         itemsPerPage: limitNum,
-        hasNextPage: pageNum < safeTotalPages,
+        hasNextPage: pageNum < totalPages,
         hasPreviousPage: pageNum > 1,
       },
     };
-  } catch (error) {
-    console.error("Error fetching gallery images from Cloudinary:", error);
-    
-    // Sanitize pagination inputs even in error case
-    const { pageNum, limitNum } = sanitizePagination(filters);
-    
-    return {
-      images: [],
-      pagination: {
-        currentPage: pageNum,
-        totalPages: 0,
-        totalItems: 0,
-        itemsPerPage: limitNum,
-        hasNextPage: false,
-        hasPreviousPage: false,
-      },
-    };
+  };
+
+  let images: GalleryImage[];
+
+  try {
+    const result = await fetchFromCloudinary();
+
+    if (result) {
+      images = result.resources.map((r, i) => {
+        const orientation = getOrientation(r.width, r.height);
+        const title = getTitle(r);
+        const description = getDescription(r);
+        const altText = getAlt(r);
+        const category = r.tags?.[0];
+        const featured = r.tags?.includes("featured") ?? false;
+
+        return {
+          id: `cloudinary-${r.public_id}`,
+          title,
+          description,
+          imageUrl: optimizeCloudinaryUrl(r.secure_url),
+          altText,
+          orientation,
+          category,
+          featured,
+          displayOrder: result.resources.length - i,
+          createdAt: r.created_at,
+          updatedAt: r.created_at,
+        };
+      });
+    } else {
+      console.info("Gallery: Cloudinary folder empty, using SAMPLE_IMAGES");
+      images = sampleImagesAsGallery();
+    }
+
+    if (filters?.orientation) {
+      images = images.filter((img) => img.orientation === filters.orientation);
+    }
+    if (filters?.category) {
+      images = images.filter((img) => img.category === filters.category);
+    }
+    if (filters?.featured !== undefined) {
+      images = images.filter((img) => img.featured === filters.featured);
+    }
+    if (filters?.pastYears) {
+      const y = new Date().getFullYear();
+      images = images.filter((img) => new Date(img.createdAt).getFullYear() < y);
+    } else if (filters?.month != null && filters.month >= 1 && filters.month <= 12) {
+      const y = new Date().getFullYear();
+      const m = filters.month - 1;
+      images = images.filter((img) => {
+        const d = new Date(img.createdAt);
+        return d.getFullYear() === y && d.getMonth() === m;
+      });
+    }
+
+    images.sort((a, b) => {
+      if (b.displayOrder !== a.displayOrder) return b.displayOrder - a.displayOrder;
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    });
+
+    return paginate(images);
+  } catch (e) {
+    console.error("Gallery: failed to fetch from Cloudinary", e);
+    return paginate(sampleImagesAsGallery());
   }
 }

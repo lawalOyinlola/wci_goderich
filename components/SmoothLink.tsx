@@ -14,7 +14,7 @@ export interface SmoothLinkProps extends Omit<LinkProps, "href"> {
 }
 
 /**
- * Checks if a URL is external (starts with http:// or https://)
+ * Checks if a URL is external (protocol-relative //... or any scheme like https:, mailto:, tel:)
  */
 function isExternalUrl(url: string): boolean {
   // protocol-relative (//...) or any scheme (mailto:, tel:, etc.)

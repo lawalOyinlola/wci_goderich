@@ -8,7 +8,7 @@ export default function Features() {
 
   return (
     <section className="bg-card">
-      <div className="relative small-container">
+      <div className="relative small-container py-14 pb-16 md:pb-20">
         <div className="grid min-[480px]:grid-cols-2 sm:grid-cols-3 lg:grid-cols-9 gap-8 relative">
           {FEATURES.map((feature, index) => (
             <div

@@ -1,22 +1,7 @@
 /**
- * Gallery folder path in Cloudinary
+ * Gallery configuration – Cloudinary-only, no database.
+ * Images live in folder WCI_Goderich/gallery; url/alt/title come from Cloudinary metadata.
  */
-export const GALLERY_FOLDER = "WCI_Goderich/gallery";
-
-/**
- * Default pagination limit for gallery images
- */
-export const DEFAULT_GALLERY_LIMIT = 15;
-
-/**
- * Maximum number of images to fetch from Cloudinary in a single request
- */
-export const MAX_GALLERY_RESULTS = 200;
-
-/**
- * Limit for home page gallery preview
- */
-export const HOME_GALLERY_LIMIT = 30;
 
 const CLOUDINARY_CLOUD_NAME =
   process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME ?? "";
@@ -24,8 +9,36 @@ if (!CLOUDINARY_CLOUD_NAME) {
   throw new Error("Missing NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME");
 }
 
+/** Cloudinary folder for gallery images */
+export const GALLERY_FOLDER = "WCI_Goderich/gallery";
+
+/** Default pagination limit for gallery images */
+export const DEFAULT_GALLERY_LIMIT = 15;
+
+/** Max images per Cloudinary API request */
+export const MAX_GALLERY_RESULTS = 200;
+
+/** Home page gallery preview limit */
+export const HOME_GALLERY_LIMIT = 30;
+
+/** Base URL for Cloudinary delivery (f_auto, q_auto) */
 export const CLOUDINARY_URL = `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/image/upload/f_auto,q_auto`;
 
+/**
+ * Build Cloudinary image URL from public_id (optional retry for cache-busting).
+ */
+export function getCloudinaryImageUrl(
+  publicId: string,
+  retryCount?: number
+): string {
+  const base = `${CLOUDINARY_URL}/${publicId}`;
+  return retryCount && retryCount > 0 ? `${base}?_retry=${retryCount}` : base;
+}
+
+/**
+ * Fallback gallery images when Cloudinary folder WCI_Goderich/gallery is empty.
+ * Used by home Gallery and gallery page. Each has src (Cloudinary URL), alt, title.
+ */
 export const SAMPLE_IMAGES = [
   {
     src: `${CLOUDINARY_URL}/technical_camera_afn7xb.webp`,
@@ -128,3 +141,26 @@ export const SAMPLE_IMAGES = [
     title: "In the presence of the Lord",
   },
 ] as const;
+
+/** Leadership images (used by Leadership, image-with-retry, etc.) */
+export const PST_ABEL_IMG = getCloudinaryImageUrl(
+  "pst_abel_close_shot_jrplde.webp"
+);
+export const PST_LUNGI_IMG = getCloudinaryImageUrl(
+  "pst_lungi_standing_rwdbll.jpg"
+);
+export const BOARD_IMG = getCloudinaryImageUrl("open_bible_xy3r0a.webp");
+
+export function getLeadershipImagesWithRetry(retryCount: number = 1) {
+  return {
+    PST_ABEL_IMG: getCloudinaryImageUrl(
+      "pst_abel_close_shot_jrplde.webp",
+      retryCount
+    ),
+    PST_LUNGI_IMG: getCloudinaryImageUrl(
+      "pst_lungi_standing_rwdbll.jpg",
+      retryCount
+    ),
+    BOARD_IMG: getCloudinaryImageUrl("open_bible_xy3r0a.webp", retryCount),
+  };
+}

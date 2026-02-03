@@ -1,11 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import SectionHeader from "@/components/SectionHeader";
 import { LeadershipRole } from "@/lib/types/leadership";
 import { LEADERSHIP } from "@/lib/constants";
 import { cn } from "@/lib/utils";
+import { ImageWithRetry } from "@/components/ui/image-with-retry";
 
 const Leadership = () => {
   const { title, subtitle, description, PASTORS, DIRECTORS } = LEADERSHIP;
@@ -52,7 +52,7 @@ const Leadership = () => {
                     )
                   }
                 >
-                  <Image
+                  <ImageWithRetry
                     className={cn(
                       "h-96 w-full rounded-md object-cover object-top grayscale transition-all duration-500",
                       "hover:grayscale-0 group-hover:h-90 group-hover:rounded-xl",
@@ -62,6 +62,8 @@ const Leadership = () => {
                     alt={`${leader.title} - ${leader.name}`}
                     width={826}
                     height={1239}
+                    maxRetries={3}
+                    retryDelay={1000}
                   />
                   <div className="px-2 pt-2 sm:pb-0 sm:pt-4">
                     <div className="flex justify-between">
@@ -95,7 +97,7 @@ const Leadership = () => {
                             "translate-y-8 opacity-0",
                             "group-hover:text-primary-600 dark:group-hover:text-primary-400 group-hover:translate-y-0 group-hover:opacity-100 hover:underline",
                             isActive &&
-                              "text-primary-600 dark:text-primary-400 translate-y-0 opacity-100"
+                            "text-primary-600 dark:text-primary-400 translate-y-0 opacity-100"
                           )}
                         >
                           Call

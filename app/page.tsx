@@ -4,7 +4,7 @@ import Features from "@/components/homePage/sections/Features";
 import Welcome from "@/components/homePage/sections/Welcome";
 import ChurchServices from "@/components/homePage/sections/ChurchServices";
 import UpcomingEvents from "@/components/homePage/sections/UpcomingEvents";
-import Sermons from "@/components/homePage/sections/Sermons";
+import FeaturedSermons from "@/components/homePage/sections/FeaturedSermons";
 import Donation from "@/components/homePage/sections/Donation";
 import Gallery from "@/components/homePage/sections/Gallery";
 import BirthdaysWrapper from "@/components/homePage/BirthdaysWrapper";
@@ -23,7 +23,7 @@ export default async function Home() {
       <Welcome />
       <ChurchServices />
       <UpcomingEvents />
-      <Sermons />
+      <FeaturedSermons />
       <Donation />
       <Suspense fallback={<GallerySkeleton />}>
         <Gallery />
