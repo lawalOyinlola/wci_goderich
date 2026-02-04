@@ -1,9 +1,9 @@
 import Image from "next/image";
 import SermonBtn from "../SermonBtn";
 import SectionHeader from "@/components/SectionHeader";
-import { SERMONS } from "@/lib/constants";
+import { FEATURED_SERMONS } from "@/lib/constants";
 
-export default function Sermons() {
+export default function FeaturedSermons() {
   return (
     <section>
       <div className="small-container">
@@ -14,7 +14,7 @@ export default function Sermons() {
         />
 
         <div className="flex flex-wrap justify-center gap-8">
-          {SERMONS.map((sermon, index) => (
+          {FEATURED_SERMONS.map((sermon, index) => (
             <div
               key={sermon.id}
               className="group relative overflow-hidden text-center flex flex-col basis-full sm:basis-[calc(50%-theme(space.8)/2)] lg:basis-[calc(33.333%-theme(space.8)/1.5)] max-w-[420px] rounded"
@@ -32,22 +32,22 @@ export default function Sermons() {
                 <div className="absolute inset-0 bg-black/50 transition-all duration-500 group-hover:bg-black/60" />
                 <div className="absolute inset-0 border border-[rgba(253,252,251,0.3)] m-4" />
 
-                <div className="absolute top-1/2 left-1/2 -translate-1/2 text-white flex flex-col items-center gap-2">
-                  <div>
-                    <p className="text-xs uppercase tracking-[0.2em]">
-                      BY PASTOR:
-                    </p>
-                    <p className="text-2xl italic -tracking-tight font-medium my-1">
-                      {sermon.pastor}
-                    </p>
-                  </div>
-                  
-                  <SermonBtn />
+                <div className="absolute top-1/2 left-1/2 -translate-1/2 text-white flex flex-col items-center gap-8">
+                  <h3>{sermon.title}</h3>
+
+                  <SermonBtn videoUrl={sermon.videoUrl} />
                 </div>
               </div>
 
               <div className="p-6">
-                <h3 className="font-normal mb-1">{sermon.title}</h3>
+                <div>
+                  <p className="text-xs uppercase tracking-[0.2em]">
+                    BY PASTOR:
+                  </p>
+                  <p className="text-2xl italic -tracking-tight font-medium my-1">
+                    {sermon.pastor}
+                  </p>
+                </div>
                 <p className="text-xs text-muted-foreground uppercase tracking-[0.2em]">
                   {sermon.date}
                 </p>

@@ -168,9 +168,32 @@ export async function deleteMedia(mediaUrl: string): Promise<void> {
   await cloudinary.uploader.destroy(publicId, { resource_type: "video" });
 }
 
+/** Result shape from listImagesFromFolder */
+export type ListImagesResource = {
+  public_id: string;
+  secure_url: string;
+  url: string;
+  width: number;
+  height: number;
+  format: string;
+  created_at: string;
+  bytes: number;
+  context?: {
+    custom?: {
+      title?: string;
+      description?: string;
+      alt?: string;
+      [key: string]: string | undefined;
+    };
+    alt?: string;
+    caption?: string;
+  };
+  tags?: string[];
+};
+
 /**
  * Lists all images from a Cloudinary folder using Admin API
- * @param folder - The folder path (e.g., "WCI_Goderich/gallery")
+ * @param folder - The folder path (e.g., "WCI_Goderich/gallery" or "WCI_Goderich/gallery/")
  * @param options - Optional parameters for listing (max_results, next_cursor, etc.)
  * @returns Promise with array of image resources including metadata
  */
@@ -182,63 +205,38 @@ export async function listImagesFromFolder(
     resource_type?: "image" | "video" | "raw";
   } = {},
 ): Promise<{
-  resources: Array<{
-    public_id: string;
-    secure_url: string;
-    url: string;
-    width: number;
-    height: number;
-    format: string;
-    created_at: string;
-    bytes: number;
-    context?: {
-      custom?: {
-        title?: string;
-        description?: string;
-        alt?: string;
-        [key: string]: string | undefined;
-      };
-      alt?: string;
-      caption?: string;
-    };
-    tags?: string[];
-  }>;
+  resources: ListImagesResource[];
   next_cursor?: string;
-  total_count?: number;
+  total_count: number;
 }> {
   try {
-    // Use Admin API to list resources in folder with context and tags
     const result = (await cloudinary.api.resources({
       type: "upload",
       resource_type: options.resource_type || "image",
       prefix: folder,
       max_results: options.max_results || 500,
       next_cursor: options.next_cursor,
-      context: true, // Include context metadata
-      tags: true, // Include tags
+      context: true,
+      tags: true,
     })) as ResourceApiResponse;
 
-    // Extract the resource type from ResourceApiResponse
-    // Note: resources is typed as a tuple in the SDK but is actually an array at runtime
     type Resource = ResourceApiResponse["resources"][number];
-
     const resourcesArray = result.resources as Resource[];
-    
+
     return {
-      resources: resourcesArray.map((resource) => ({
-        public_id: resource.public_id,
-        secure_url: resource.secure_url,
-        url: resource.url,
-        width: resource.width,
-        height: resource.height,
-        format: resource.format,
-        created_at: resource.created_at,
-        bytes: resource.bytes,
-        context: resource.context,
-        tags: resource.tags,
+      resources: resourcesArray.map((r) => ({
+        public_id: r.public_id,
+        secure_url: r.secure_url,
+        url: r.url,
+        width: r.width,
+        height: r.height,
+        format: r.format,
+        created_at: r.created_at,
+        bytes: r.bytes,
+        context: r.context,
+        tags: r.tags,
       })),
       next_cursor: result.next_cursor,
-      // total_count is not in ResourceApiResponse type, calculate from resources length
       total_count: resourcesArray.length,
     };
   } catch (error) {

@@ -173,19 +173,6 @@ export default function PrayerPoints({ initialCategory }: PrayerPointsProps) {
                 >
                   <div className="flex items-start justify-between mb-4">
                     <h4 className="text-lg">{point.title}</h4>
-                    <Badge variant="outline" className="ml-2">
-                      {point.category === "midnight" && point.groupNumber
-                        ? `Group ${point.groupNumber}`
-                        : point.subcategory
-                        ? point.subcategory
-                            .split("-")
-                            .map(
-                              (word) =>
-                                word.charAt(0).toUpperCase() + word.slice(1)
-                            )
-                            .join(" ")
-                        : point.category}
-                    </Badge>
                   </div>
                   {point.description && (
                     <p className="text-sm text-muted-foreground mb-4">

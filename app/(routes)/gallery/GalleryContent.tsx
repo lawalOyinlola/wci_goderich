@@ -8,26 +8,19 @@ import {
   startTransition,
 } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { RobustGalleryImage } from "./RobustGalleryImage";
+import { GalleryThumbnailImage } from "./GalleryThumbnailImage";
+import GallerySkeleton from "./GallerySkeleton";
 import SectionHeader from "@/components/SectionHeader";
 import { SelectField } from "@/components/form/SelectField";
-import { useForm } from "react-hook-form";
-import { cn } from "@/lib/utils";
-import type { GalleryImage, PaginationMeta } from "@/lib/types/gallery";
 import { Pagination } from "@/components/ui/pagination";
 import {
   MorphingDialog,
   MorphingDialogTrigger,
   MorphingDialogContent,
-  MorphingDialogImage,
   MorphingDialogClose,
   MorphingDialogContainer,
 } from "@/components/ui/morphing-dialog";
-import { RobustGalleryImage } from "@/app/(routes)/gallery/RobustGalleryImage";
-import { GalleryThumbnailImage } from "@/app/(routes)/gallery/GalleryThumbnailImage";
-import { XIcon } from "lucide-react";
-import GallerySkeleton from "./GallerySkeleton";
-import { MONTHS } from "@/lib/constants";
-import { DEFAULT_GALLERY_LIMIT } from "@/lib/constants/gallery";
 import {
   Empty,
   EmptyContent,
@@ -38,7 +31,12 @@ import {
 } from "@/components/ui/empty";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import { ImagesIcon, CameraIcon } from "@phosphor-icons/react";
-import { AlertCircle } from "lucide-react";
+import { AlertCircle, XIcon } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { cn } from "@/lib/utils";
+import type { GalleryImage, PaginationMeta } from "@/lib/types/gallery";
+import { MONTHS } from "@/lib/constants";
+import { DEFAULT_GALLERY_LIMIT } from "@/lib/constants/gallery";
 
 interface GalleryContentProps {
   initialPage?: number;
@@ -93,7 +91,6 @@ export default function GalleryContent({
       const params = new URLSearchParams();
       params.append("page", String(currentPage));
       params.append("limit", String(DEFAULT_GALLERY_LIMIT));
-      params.append("featured", "true"); // Only show featured images
       if (category) params.append("category", category);
       if (orientation) params.append("orientation", orientation);
       if (pastYears) {

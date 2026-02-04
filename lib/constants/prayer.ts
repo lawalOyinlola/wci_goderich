@@ -643,31 +643,10 @@ export const UNIQUE_PRAYER_SESSIONS: PrayerSession[] = [
     type: "group",
     isSpecial: true,
   },
-  {
-    id: "men-prayer",
-    name: "Men's Prayer Fellowship",
-    description: "Men gathering weekly to pray for strength and breakthrough.",
-    day: "Thursdays",
-    times: ["07:00 PM"],
-    location: "Church Auditorium",
-    type: "group",
-  },
-  {
-    id: "youth-prayer",
-    name: "Youth Prayer Force",
-    description: "Young adults and youth coming together to pray.",
-    day: "Saturdays",
-    times: ["04:00 PM"],
-    location: "Youth Hall",
-    type: "group",
-  },
 ];
 
 // Combined list: unique prayer sessions + adapted services
-export const PRAYER_SESSIONS: PrayerSession[] = [
-  ...UNIQUE_PRAYER_SESSIONS,
-  ...adaptServicesToPrayerSessions(),
-];
+export const PRAYER_SESSIONS: PrayerSession[] = adaptServicesToPrayerSessions();
 
 export const PRAYER_INSPIRATIONS = [
   {

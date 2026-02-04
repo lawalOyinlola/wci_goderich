@@ -185,7 +185,6 @@
     /* scrollbar-gutter: stable; */
     scrollbar-width: thin;
     scrollbar-color: var(--accent) var(--background);
-   
   }
   body {
     @apply bg-background text-foreground overflow-x-hidden font-normal;
@@ -210,7 +209,7 @@
   }
 
   .small-container {
-    @apply max-w-7xl w-full mx-auto px-4 py-16 md:py-32;
+    @apply max-w-7xl w-full mx-auto px-4 py-20 md:py-40;
   }
 
   .carousel-btn {

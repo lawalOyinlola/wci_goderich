@@ -3,7 +3,7 @@ import Features from "@/components/homePage/sections/Features";
 import Welcome from "@/components/homePage/sections/Welcome";
 import ChurchServices from "@/components/homePage/sections/ChurchServices";
 import UpcomingEvents from "@/components/homePage/sections/UpcomingEvents";
-import Sermons from "@/components/homePage/sections/Sermons";
+import Sermons from "@/components/homePage/sections/FeaturedSermons";
 import Donation from "@/components/homePage/sections/Donation";
 import GallerySkeleton from "@/components/homePage/GallerySkeleton";
 import BirthdaysSkeleton from "@/components/homePage/BirthdaysSkeleton";
@@ -30,7 +30,7 @@ export default function Loading() {
       <GallerySkeleton />
       <BirthdaysSkeleton />
       <TestimoniesSkeleton />
-      <ChurchLocationSkeleton/>
+      <ChurchLocationSkeleton />
     </>
   );
 }

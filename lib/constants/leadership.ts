@@ -1,3 +1,4 @@
+import { BOARD_IMG, PST_ABEL_IMG, PST_LUNGI_IMG } from "./gallery";
 import { LeadershipRole } from "../types/leadership";
 
 export const LEADERSHIP = {
@@ -7,12 +8,11 @@ export const LEADERSHIP = {
   PASTORS: [
     {
       id: "1",
-      name: "Pastor Abel Ukweni",
+      name: "Pastor Abel Enun Ukweni",
       title: "Resident Pastor",
       role: LeadershipRole.RESIDENT_PASTOR,
       bio: "Pastor Abel Ukweni has been serving as Resident Pastor of WCI Goderich since 2015. With over 15 years of ministry experience, he is passionate about teaching God's Word and building strong believers. He holds a Master's degree in Theology and is known for his practical and inspiring messages.",
-      image:
-        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=826&h=1239&fit=crop&q=80",
+      image: PST_ABEL_IMG,
       email: "pastor.abel@wcigoderich.org",
       phone: "+232 88 123 456",
       education: [
@@ -48,8 +48,7 @@ export const LEADERSHIP = {
       title: "Associate Pastor",
       role: LeadershipRole.ASSOCIATE_PASTOR,
       bio: "Pastor Lungay Sellu serves as our Associate Pastor, focusing on women's ministry and family counseling. She brings a heart for nurturing and discipleship, having served in ministry for over 12 years.",
-      image:
-        "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=826&h=1239&fit=crop&q=80",
+      image: PST_LUNGI_IMG,
       email: "pastor.lungi@wcigoderich.org",
       phone: "+232 88 123 457",
       education: [
@@ -174,12 +173,11 @@ export const LEADERSHIP = {
   DIRECTORS: [
     {
       id: "3",
-      name: "Pastor Michael Chen",
+      name: "Church Board",
       title: "Chairman Board of Directors",
       role: LeadershipRole.CHAIRMAN,
       bio: "Pastor Michael Chen serves as Chairman of the Board of Directors, providing strategic leadership and governance oversight for WCI Goderich. With extensive experience in organizational leadership and church administration, he ensures the church operates with integrity, vision, and accountability while supporting the pastoral team in fulfilling the church's mission.",
-      image:
-        "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=826&h=1239&fit=crop&q=80",
+      image: BOARD_IMG,
       email: "pastor.michael@wcigoderich.org",
       phone: "+232 88 123 458",
       education: [

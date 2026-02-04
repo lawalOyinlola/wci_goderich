@@ -64,27 +64,3 @@ export const SERVICES = [
     accentColor: "text-accent",
   },
 ] as const;
-
-export const SERMONS = [
-  {
-    id: 1,
-    title: "Let the Sunset Inspire You",
-    date: "JULY 01, 2025",
-    pastor: "Abel Ukweni",
-    image: "https://picsum.photos/800/600?random=1",
-  },
-  {
-    id: 2,
-    title: "Developing Spiritual Mentality",
-    date: "AUGUST 01, 2025",
-    pastor: "Lungay Sellu",
-    image: "https://picsum.photos/800/600?random=2",
-  },
-  {
-    id: 3,
-    title: "Let the Bible Motivate You",
-    date: "AUGUST 29, 2025",
-    pastor: "Abel Ukweni",
-    image: "https://picsum.photos/800/600?random=3",
-  },
-] as const;

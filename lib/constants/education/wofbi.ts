@@ -11,7 +11,7 @@ export const WOFBI = {
     {
       id: "1",
       title: "Foundation School",
-      duration: "6 Months",
+      duration: "4 Weeks",
       level: "Beginner" as const,
       description:
         "Basic biblical principles and Christian fundamentals for new believers. This foundational course is designed to establish new converts in the faith and provide them with essential Christian knowledge.",
@@ -51,7 +51,7 @@ export const WOFBI = {
     {
       id: "2",
       title: "Leadership School",
-      duration: "12 Months",
+      duration: "2 Months",
       level: "Intermediate" as const,
       description:
         "Advanced training for church leaders and ministry workers. This program equips individuals with practical leadership skills and ministry management abilities.",
@@ -92,7 +92,7 @@ export const WOFBI = {
     {
       id: "3",
       title: "Advanced Ministry",
-      duration: "18 Months",
+      duration: "3 Months",
       level: "Advanced" as const,
       description:
         "Specialized training for pastors and senior ministry leaders. This advanced program provides in-depth theological study and practical ministry application.",

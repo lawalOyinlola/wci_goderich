@@ -3,7 +3,7 @@
 import { AnimatedButton } from "../ui/animated-button";
 import { PlayIcon, DownloadIcon } from "@phosphor-icons/react";
 
-const SermonBtn = () => {
+const SermonBtn = ({ videoUrl }: { videoUrl: string }) => {
   return (
     <div className="flex gap-2 tracking-[0.2em]">
       <AnimatedButton
@@ -11,6 +11,7 @@ const SermonBtn = () => {
         className="bg-transparent hover:bg-accent/80 transition-all text-xs text-white border-none ring-white ring-[0.4px] hover:ring-accent uppercase rounded py-0! px-1.5!"
         text="Watch"
         icon={<PlayIcon weight="fill" />}
+        href={videoUrl}
       />
 
       <AnimatedButton

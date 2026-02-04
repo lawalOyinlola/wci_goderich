@@ -1,5 +1,4 @@
 import { cn } from "@/lib/utils";
-import { preload } from "react-dom";
 
 interface HeroTemplateProps {
   title?: string;
@@ -24,11 +23,11 @@ export default function HeroTemplate({
         style={
           backgroundImage
             ? {
-                backgroundImage: `url(${backgroundImage})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                backgroundRepeat: "no-repeat",
-              }
+              backgroundImage: `url(${backgroundImage})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              backgroundRepeat: "no-repeat",
+            }
             : undefined
         }
       >

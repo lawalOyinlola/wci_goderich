@@ -24,7 +24,7 @@ export default function Ministries() {
 
         <Image
           className="rounded-(--radius) grayscale"
-          src="https://images.unsplash.com/photo-1616587226960-4a03badbe8bf?q=80&w=2940&auto=format&fit=crop"
+          src="/images/ministries.jpeg"
           alt="Church ministries team"
           width={2940}
           height={1960}
