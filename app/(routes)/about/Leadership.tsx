@@ -14,14 +14,14 @@ const Leadership = () => {
   const filteredPastors = PASTORS.filter(
     (pastor) =>
       pastor.role === LeadershipRole.RESIDENT_PASTOR ||
-      pastor.role === LeadershipRole.ASSOCIATE_PASTOR
+      pastor.role === LeadershipRole.ASSOCIATE_PASTOR,
   );
 
   const filteredDirectors = DIRECTORS.filter(
-    (director) => director.role === LeadershipRole.CHAIRMAN
+    (director) => director.role === LeadershipRole.CHAIRMAN,
   );
 
-  const leaders = [...filteredPastors, ...filteredDirectors];
+  const leaders = [...filteredDirectors, ...filteredPastors];
 
   return (
     <section id="leadership" className="bg-muted/30">
@@ -48,7 +48,7 @@ const Leadership = () => {
                   // onTouchEnd={() => setActiveLeaderId(null)}
                   onTouchStart={() =>
                     setActiveLeaderId((prev) =>
-                      prev === leaderId ? null : leaderId
+                      prev === leaderId ? null : leaderId,
                     )
                   }
                 >
@@ -56,7 +56,7 @@ const Leadership = () => {
                     className={cn(
                       "h-96 w-full rounded-md object-cover object-top grayscale transition-all duration-500",
                       "hover:grayscale-0 group-hover:h-90 group-hover:rounded-xl",
-                      isActive && "grayscale-0 h-90 rounded-xl"
+                      isActive && "grayscale-0 h-90 rounded-xl",
                     )}
                     src={leader.image}
                     alt={`${leader.title} - ${leader.name}`}
@@ -71,7 +71,7 @@ const Leadership = () => {
                         className={cn(
                           "text-base font-medium transition-all duration-500",
                           "group-hover:tracking-wider",
-                          isActive && "tracking-wider"
+                          isActive && "tracking-wider",
                         )}
                       >
                         {leader.name}
@@ -83,8 +83,7 @@ const Leadership = () => {
                           "text-muted-foreground inline-block text-sm transition duration-300",
                           "translate-y-6 opacity-0",
                           "group-hover:translate-y-0 group-hover:opacity-100",
-                          // Mobile touch states
-                          isActive && "translate-y-0 opacity-100"
+                          isActive && "translate-y-0 opacity-100",
                         )}
                       >
                         {leader.title}
@@ -97,7 +96,7 @@ const Leadership = () => {
                             "translate-y-8 opacity-0",
                             "group-hover:text-primary-600 dark:group-hover:text-primary-400 group-hover:translate-y-0 group-hover:opacity-100 hover:underline",
                             isActive &&
-                            "text-primary-600 dark:text-primary-400 translate-y-0 opacity-100"
+                              "text-primary-600 dark:text-primary-400 translate-y-0 opacity-100",
                           )}
                         >
                           Call
