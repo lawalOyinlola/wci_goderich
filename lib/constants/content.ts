@@ -25,11 +25,11 @@ export const SLIDES = [
   },
   {
     title: "PRAYER AND FASTING",
-    subtitle: "PROPHETIC FOCUS - JAN",
+    subtitle: "PROPHETIC FOCUS - MAR",
     description: "Empowers for Dominion.",
     background: "linear-gradient(135deg, #1a1a1a 0%, #2d3436 100%)",
-    backgroundImage: "/images/bg-prophetic_focus_jan.jpg",
-    image: "/images/prophetic_focus_jan.png",
+    backgroundImage: "/images/bg-prophetic_focus_mar.jpg",
+    image: "/images/prophetic_focus_mar.png",
   },
   // {
   //   title: "SHILOH 2025",
