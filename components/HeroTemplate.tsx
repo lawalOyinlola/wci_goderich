@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import { Reveal } from "@/components/motion";
 
 interface HeroTemplateProps {
   title?: string;
@@ -36,7 +37,10 @@ export default function HeroTemplate({
         <section>
           <div className="pb-24 pt-12">
             <div className="relative small-container flex flex-col lg:flex-center">
-              <div className="mx-auto max-w-lg text-center lg:ml-0 lg:w-1/2 lg:text-left">
+              <Reveal
+                variant="fade-up"
+                className="mx-auto max-w-lg text-center lg:ml-0 lg:w-1/2 lg:text-left"
+              >
                 <h1 className="mt-8 max-w-2xl text-balance text-5xl font-medium md:text-6xl lg:mt-16 xl:text-7xl text-shadow-md">
                   {title}
                 </h1>
@@ -49,7 +53,7 @@ export default function HeroTemplate({
                     {children}
                   </div>
                 )}
-              </div>
+              </Reveal>
             </div>
           </div>
         </section>
