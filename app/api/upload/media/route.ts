@@ -3,29 +3,38 @@ import { v2 as cloudinary } from "cloudinary";
 
 export const maxDuration = 60; // 60 seconds for video/audio uploads
 
-// Configure Cloudinary
-if (process.env.CLOUDINARY_URL) {
-  cloudinary.config();
-} else {
-  const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
-  const apiKey = process.env.CLOUDINARY_API_KEY;
-  const apiSecret = process.env.CLOUDINARY_API_SECRET;
+// Configure Cloudinary lazily (on first request) so `next build` can evaluate
+// this route without credentials present.
+let configured = false;
+function ensureCloudinaryConfigured(): void {
+  if (configured) return;
 
-  if (!cloudName || !apiKey || !apiSecret) {
-    throw new Error(
-      "Missing Cloudinary configuration. Please set CLOUDINARY_URL or provide individual credentials."
-    );
+  if (process.env.CLOUDINARY_URL) {
+    cloudinary.config();
+  } else {
+    const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
+    const apiKey = process.env.CLOUDINARY_API_KEY;
+    const apiSecret = process.env.CLOUDINARY_API_SECRET;
+
+    if (!cloudName || !apiKey || !apiSecret) {
+      throw new Error(
+        "Missing Cloudinary configuration. Please set CLOUDINARY_URL or provide individual credentials."
+      );
+    }
+
+    cloudinary.config({
+      cloud_name: cloudName,
+      api_key: apiKey,
+      api_secret: apiSecret,
+    });
   }
 
-  cloudinary.config({
-    cloud_name: cloudName,
-    api_key: apiKey,
-    api_secret: apiSecret,
-  });
+  configured = true;
 }
 
 export async function POST(request: NextRequest) {
   try {
+    ensureCloudinaryConfigured();
     const formData = await request.formData();
     const file = formData.get("file") as File | null;
     const resourceType = formData.get("resourceType") as string | null; // "video" or "audio"
