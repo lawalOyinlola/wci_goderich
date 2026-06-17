@@ -9,6 +9,7 @@ import { FilterTabs, type TabConfig } from "@/components/ui/filter-tabs";
 import { BookOpenIcon } from "@phosphor-icons/react";
 import { PRAYER_POINTS } from "@/lib/constants";
 import { formatOrdinal } from "@/lib/utils";
+import { Reveal } from "@/components/motion";
 
 interface PrayerPointsProps {
   initialCategory?: string;
@@ -153,11 +154,13 @@ export default function PrayerPoints({ initialCategory }: PrayerPointsProps) {
   return (
     <section>
       <div className="small-container">
-        <SectionHeader
-          title="Prayer Points"
-          subtitle="Guided Prayer"
-          description="Use these prayer points to guide your prayer time. We especially focus on our weekly midnight prayer groups that meet to intercede for breakthrough and victory."
-        />
+        <Reveal>
+          <SectionHeader
+            title="Prayer Points"
+            subtitle="Guided Prayer"
+            description="Use these prayer points to guide your prayer time. We especially focus on our weekly midnight prayer groups that meet to intercede for breakthrough and victory."
+          />
+        </Reveal>
 
         <div className="mt-12">
           <FilterTabs
