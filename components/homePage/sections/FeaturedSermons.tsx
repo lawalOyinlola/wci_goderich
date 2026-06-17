@@ -1,21 +1,24 @@
 import Image from "next/image";
 import SermonBtn from "../SermonBtn";
 import SectionHeader from "@/components/SectionHeader";
+import { Reveal, Stagger, StaggerItem } from "@/components/motion";
 import { FEATURED_SERMONS } from "@/lib/constants";
 
 export default function FeaturedSermons() {
   return (
     <section>
       <div className="small-container">
-        <SectionHeader
-          title="Church Sermons"
-          subtitle="Sermons"
-          description="Watch and listen to powerful teachings from our pastors."
-        />
+        <Reveal>
+          <SectionHeader
+            title="Church Sermons"
+            subtitle="Sermons"
+            description="Watch and listen to powerful teachings from our pastors."
+          />
+        </Reveal>
 
-        <div className="flex flex-wrap justify-center gap-8">
+        <Stagger className="flex flex-wrap justify-center gap-8">
           {FEATURED_SERMONS.map((sermon, index) => (
-            <div
+            <StaggerItem
               key={sermon.id}
               className="group relative overflow-hidden text-center flex flex-col basis-full sm:basis-[calc(50%-theme(space.8)/2)] lg:basis-[calc(33.333%-theme(space.8)/1.5)] max-w-[420px] rounded"
             >
@@ -44,7 +47,7 @@ export default function FeaturedSermons() {
                   <p className="text-xs uppercase tracking-[0.2em]">
                     BY PASTOR:
                   </p>
-                  <p className="text-2xl italic -tracking-tight font-medium my-1">
+                  <p className="text-2xl italic tracking-wide font-medium my-1">
                     {sermon.pastor}
                   </p>
                 </div>
@@ -52,9 +55,9 @@ export default function FeaturedSermons() {
                   {sermon.date}
                 </p>
               </div>
-            </div>
+            </StaggerItem>
           ))}
-        </div>
+        </Stagger>
       </div>
     </section>
   );
