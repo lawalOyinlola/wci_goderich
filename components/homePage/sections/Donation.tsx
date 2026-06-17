@@ -1,5 +1,6 @@
 import { WordRotate } from "@/components/ui/word-rotate";
 import { AnimatedButton } from "@/components/ui/animated-button";
+import { Reveal } from "@/components/motion";
 import { DONATIONS } from "@/lib/constants";
 
 export default function Donation() {
@@ -17,7 +18,10 @@ export default function Donation() {
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
 
       <div className="relative z-10 max-w-4xl mx-auto px-4 py-16 text-center text-white">
-        <div className="bg-white/10 backdrop-blur-md rounded-2xl p-8 md:p-12 border border-white/20 shadow-2xl">
+        <Reveal
+          variant="scale"
+          className="bg-white/10 backdrop-blur-md rounded-2xl p-8 md:p-12 border border-white/20 shadow-2xl"
+        >
           <h2 className="font-outfit">
             <span className="text-2xl">Give towards the </span>
             <WordRotate
@@ -50,7 +54,7 @@ export default function Donation() {
               text="Learn More"
             />
           </div>
-        </div>
+        </Reveal>
       </div>
 
       {/* Decorative elements */}
