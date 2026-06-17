@@ -6,6 +6,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
+import { Reveal } from "@/components/motion";
 import { CHURCH_INFO } from "@/lib/constants";
 
 const Pillars = () => {
@@ -15,15 +16,17 @@ const Pillars = () => {
   return (
     <section className="bg-muted/30">
       <div className="small-container">
-        <SectionHeader
-          title={title}
-          subtitle={subtitle}
-          description={description[0]}
-          descriptionClassName="mb-8 max-w-5xl"
-          additionalText={description[1]}
-        />
+        <Reveal>
+          <SectionHeader
+            title={title}
+            subtitle={subtitle}
+            description={description[0]}
+            descriptionClassName="mb-8 max-w-5xl"
+            additionalText={description[1]}
+          />
+        </Reveal>
 
-        <div className="mt-12 md:mt-24">
+        <Reveal variant="fade-up" className="mt-12 md:mt-24">
           <Accordion
             className="max-w-6xl mx-auto grid gap-6 sm:grid-cols-2 lg:grid-cols-3 items-start"
             defaultValue={["1", "2", "3"]}
@@ -48,7 +51,7 @@ const Pillars = () => {
                 </AccordionTrigger>
                 <AccordionContent className="pb-2 pt-4 text-muted-foreground flex flex-col gap-4">
                   <p className="text-sm text-muted-foreground leading-relaxed grow">
-                    "{pillar.description}"
+                    &ldquo;{pillar.description}&rdquo;
                   </p>
                   <div className="pt-2 border-t">
                     <p className="text-xs font-medium text-muted-foreground mb-2">
@@ -71,7 +74,7 @@ const Pillars = () => {
               </AccordionItem>
             ))}
           </Accordion>
-        </div>
+        </Reveal>
       </div>
     </section>
   );
