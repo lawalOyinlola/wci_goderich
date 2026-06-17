@@ -24,12 +24,12 @@ export const SLIDES = [
     ],
   },
   {
-    title: "PRAYER AND FASTING",
-    subtitle: "PROPHETIC FOCUS - MAR",
-    description: "Empowers for Dominion.",
+    title: "I AM A CHILD OF DESTINY",
+    subtitle: "PROPHETIC FOCUS - JUNE",
+    description: "I am a child of destiny",
     background: "linear-gradient(135deg, #1a1a1a 0%, #2d3436 100%)",
-    backgroundImage: "/images/bg-prophetic_focus_mar.jpg",
-    image: "/images/prophetic_focus_mar.png",
+    backgroundImage: "/images/bg-prophetic_focus_june.jpg",
+    image: "/images/prophetic_focus_june.png",
   },
   // {
   //   title: "SHILOH 2025",
