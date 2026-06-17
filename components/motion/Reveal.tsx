@@ -46,7 +46,7 @@ export function Reveal({
       className={cn(className)}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: !repeat, margin: VIEWPORT.margin }}
+      viewport={{ ...VIEWPORT, once: !repeat }}
       variants={variants}
       transition={delay ? { delay } : undefined}
       {...props}
