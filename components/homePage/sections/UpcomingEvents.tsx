@@ -1,6 +1,7 @@
 import Image from "next/image";
 import SectionHeader from "@/components/SectionHeader";
 import CaretButton from "@/components/ui/caret-button";
+import { Reveal, Stagger, StaggerItem } from "@/components/motion";
 import { formatEventDateTime } from "@/lib/utils";
 import { UPCOMING_EVENTS } from "@/lib/constants";
 
@@ -8,19 +9,21 @@ export default function UpcomingEvents() {
   return (
     <section className="py-20 bg-cover bg-center relative bg-[url(/images/bg-covenant_exchange.jpg)]">
       <div className="max-w-500 w-full mx-auto px-4">
-        <SectionHeader
-          title="Upcoming Events"
-          subtitle="Events"
-          description="Stay connected and join us for our upcoming church events."
-          titleClassName="text-primary-foreground"
-          subtitleClassName="text-primary-foreground"
-          descriptionClassName="text-primary-foreground"
-        />
+        <Reveal>
+          <SectionHeader
+            title="Upcoming Events"
+            subtitle="Events"
+            description="Stay connected and join us for our upcoming church events."
+            titleClassName="text-primary-foreground"
+            subtitleClassName="text-primary-foreground"
+            descriptionClassName="text-primary-foreground"
+          />
+        </Reveal>
 
-        <div className="flex flex-wrap justify-center gap-8">
+        <Stagger className="flex flex-wrap justify-center gap-8">
           {UPCOMING_EVENTS.map((event) => {
             return (
-              <div
+              <StaggerItem
                 key={event.id}
                 className="cursor-pointer flex h-[300px] w-full flex-row items-stretch sm:w-[calc(50%-(--spacing(8))/2)] lg:w-[calc(33.333%-(--spacing(8))/1.5)] max-w-[560px]"
               >
@@ -52,10 +55,10 @@ export default function UpcomingEvents() {
                   </p>
                   <CaretButton href="/events" text="View Event" aria-label={`Find out more about ${event.title} event`} />
                 </div>
-              </div>
+              </StaggerItem>
             );
           })}
-        </div>
+        </Stagger>
       </div>
     </section>
   );

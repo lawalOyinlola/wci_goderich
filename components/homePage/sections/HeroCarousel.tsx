@@ -3,11 +3,13 @@ import { HeroCarouselWrapper } from "../HeroCarouselWrapper";
 import { CarouselItem } from "@/components/ui/carousel";
 import { Separator } from "@/components/ui/separator";
 import { AnimatedButton } from "@/components/ui/animated-button";
+import { Reveal } from "@/components/motion";
 import { SLIDES } from "@/lib/constants";
 
 export default function HeroCarousel() {
   return (
     <main className="relative overflow-hidden">
+      <Reveal variant="fade" className="h-full">
       <HeroCarouselWrapper>
         {SLIDES.map((slide, index) => (
           <CarouselItem key={index} className="h-full p-0">
@@ -79,6 +81,7 @@ export default function HeroCarousel() {
           </CarouselItem>
         ))}
       </HeroCarouselWrapper>
+      </Reveal>
     </main>
   );
 }

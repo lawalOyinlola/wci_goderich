@@ -11,23 +11,26 @@ import {
 } from "@/components/ui/card";
 import { BorderBeam } from "@/components/ui/border-beam";
 import { Badge } from "@/components/ui/badge";
+import { Reveal, Stagger, StaggerItem } from "@/components/motion";
 import { SERVICES } from "@/lib/constants";
 
 export default function ChurchServices() {
   return (
     <section className="small-container">
-      <SectionHeader
-        title="Church Services"
-        subtitle="Services"
-        description="Join us for worship, prayer, and fellowship throughout the week."
-      />
+      <Reveal>
+        <SectionHeader
+          title="Church Services"
+          subtitle="Services"
+          description="Join us for worship, prayer, and fellowship throughout the week."
+        />
+      </Reveal>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 auto-rows-fr">
+      <Stagger className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 auto-rows-fr">
         {SERVICES.map((service) => {
           return (
+            <StaggerItem key={service.id} className="h-full">
             <Card
-              key={service.id}
-              className="group py-6 backdrop-blur-sm border-0 hover:shadow-primary/20 hover:-translate-y-1 transition-all duration-300"
+              className="group h-full py-6 backdrop-blur-sm border-0 hover:shadow-primary/20 hover:-translate-y-1 transition-all duration-300"
             >
               <BorderBeam
                 size={200}
@@ -59,9 +62,10 @@ export default function ChurchServices() {
                 </Badge>
               </CardFooter>
             </Card>
+            </StaggerItem>
           );
         })}
-      </div>
+      </Stagger>
     </section>
   );
 }

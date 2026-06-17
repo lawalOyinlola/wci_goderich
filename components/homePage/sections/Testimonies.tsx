@@ -17,6 +17,7 @@ import {
 import { BorderBeam } from "@/components/ui/border-beam";
 import { VideoDialog } from "@/components/ui/video-dialog";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Reveal } from "@/components/motion";
 import AutoScroll from "embla-carousel-auto-scroll";
 import type { Testimony } from "@/lib/types/testimonies";
 import { cn, getEmbedUrl, getAvatarInitials } from "@/lib/utils";
@@ -36,13 +37,13 @@ export default function TestimoniesSection({
     return (
       <section className="py-20 bg-linear-to-br from-foreground/5 to-background">
         <div className="max-w-500 w-full mx-auto">
-          <div className="px-4">
+          <Reveal className="px-4">
             <SectionHeader
               title="Wonders of God in the Community"
               subtitle="Testimonies"
               description="Hear from our church family about how God has worked in their lives"
             />
-          </div>
+          </Reveal>
           <div className="px-4 mt-8">
             <TestimoniesEmpty />
           </div>
@@ -54,13 +55,13 @@ export default function TestimoniesSection({
   return (
     <section className="py-20 bg-linear-to-br from-foreground/5 to-background">
       <div className="max-w-500 w-full mx-auto">
-        <div className="px-4">
+        <Reveal className="px-4">
           <SectionHeader
             title="Wonders of God in the Community"
             subtitle="Testimonies"
             description="Hear from our church family about how God has worked in their lives"
           />
-        </div>
+        </Reveal>
 
         <div>
           <Carousel

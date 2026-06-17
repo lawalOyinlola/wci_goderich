@@ -1,36 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { v2 as cloudinary } from "cloudinary";
+import { ensureCloudinaryConfigured } from "@/lib/cloudinary";
 
 export const maxDuration = 60; // 60 seconds for video/audio uploads
-
-// Configure Cloudinary lazily (on first request) so `next build` can evaluate
-// this route without credentials present.
-let configured = false;
-function ensureCloudinaryConfigured(): void {
-  if (configured) return;
-
-  if (process.env.CLOUDINARY_URL) {
-    cloudinary.config();
-  } else {
-    const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
-    const apiKey = process.env.CLOUDINARY_API_KEY;
-    const apiSecret = process.env.CLOUDINARY_API_SECRET;
-
-    if (!cloudName || !apiKey || !apiSecret) {
-      throw new Error(
-        "Missing Cloudinary configuration. Please set CLOUDINARY_URL or provide individual credentials."
-      );
-    }
-
-    cloudinary.config({
-      cloud_name: cloudName,
-      api_key: apiKey,
-      api_secret: apiSecret,
-    });
-  }
-
-  configured = true;
-}
 
 export async function POST(request: NextRequest) {
   try {

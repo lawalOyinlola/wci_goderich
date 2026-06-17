@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/popover";
 import { FieldError, FieldGroup } from "@/components/ui/field";
 import { AnimatedButton } from "@/components/ui/animated-button";
+import { Reveal, Stagger, StaggerItem } from "@/components/motion";
 import type { Birthday } from "@/lib/types/birthdays";
 import { formatOrdinal } from "@/lib/utils";
 import { MONTHS, SAMPLE_BIRTHDAYS } from "@/lib/constants";
@@ -289,7 +290,9 @@ export default function MonthlyBirthdays({
       )}
 
       <div className="container">
-        <div className="text-center mb-12">
+        {/* Opacity-only reveal: a transform here would offset the rough-notation
+            Highlighter stroke, which measures the heading's position to draw. */}
+        <Reveal variant="fade" className="text-center mb-12">
           <div className="flex items-center justify-center text-sm text-muted-foreground uppercase tracking-[0.4em] mb-3 font-light gap-4">
             <Separator className="shrink sm:w-40!" />
             <p>Birthdays</p>
@@ -313,17 +316,21 @@ export default function MonthlyBirthdays({
             We celebrate all members born in {currentMonth}. God bless and keep
             you in this new year!
           </p>
-        </div>
+        </Reveal>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-          {initialBirthdays.length > 0
-            ? initialBirthdays.map((birthday) => (
-                <BirthdayCard key={birthday.id} birthday={birthday} />
-              ))
-            : SAMPLE_BIRTHDAYS.map((birthday) => (
-                <BirthdayCard key={birthday.id} birthday={birthday} />
-              ))}
-        </div>
+        <Stagger
+          stagger={0.07}
+          className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4"
+        >
+          {(initialBirthdays.length > 0
+            ? initialBirthdays
+            : SAMPLE_BIRTHDAYS
+          ).map((birthday) => (
+            <StaggerItem key={birthday.id}>
+              <BirthdayCard birthday={birthday} />
+            </StaggerItem>
+          ))}
+        </Stagger>
 
         {/* CTA */}
         <CtaContainer
