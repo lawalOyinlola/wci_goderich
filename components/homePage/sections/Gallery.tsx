@@ -1,4 +1,5 @@
 import SectionHeader from "@/components/SectionHeader";
+import { Reveal } from "@/components/motion";
 import { InfiniteSlider } from "@/components/ui/infinite-slider";
 import { ProgressiveBlur } from "@/components/ui/progressive-blur";
 import { getGalleryImagesServer } from "@/lib/data/gallery.server";
@@ -36,13 +37,13 @@ export default async function Gallery() {
   return (
     <section className="py-20">
       <div className="max-w-500 w-full mx-auto">
-        <div className="px-4">
+        <Reveal className="px-4">
           <SectionHeader
             title="Photo Collections"
             subtitle="Gallery"
             description="Pictures from documented events, special occasions and during service"
           />
-        </div>
+        </Reveal>
 
         <div className="relative">
           {count === 0 ? (
