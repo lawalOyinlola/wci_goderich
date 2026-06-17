@@ -5,7 +5,7 @@ import { v2 as cloudinary, type ResourceApiResponse } from "cloudinary";
  * `next build` can evaluate modules that import this file without credentials.
  */
 let configured = false;
-function ensureCloudinaryConfigured(): void {
+export function ensureCloudinaryConfigured(): void {
   if (configured) return;
 
   if (process.env.CLOUDINARY_URL) {
@@ -260,4 +260,3 @@ export async function listImagesFromFolder(
   }
 }
 
-export { cloudinary };
