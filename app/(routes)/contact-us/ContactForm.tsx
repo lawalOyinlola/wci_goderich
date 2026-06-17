@@ -23,6 +23,7 @@ import {
 import { PaperPlaneTiltIcon } from "@phosphor-icons/react";
 import { LeadershipRole } from "@/lib/types/leadership";
 import { CHURCH_INFO, LEADERSHIP } from "@/lib/constants";
+import { Reveal } from "@/components/motion";
 
 type ContactFormValues = {
   name: string;
@@ -202,13 +203,15 @@ export default function ContactForm() {
   return (
     <section className="bg-muted">
       <div className="small-container max-w-4xl">
-        <SectionHeader
-          title="How can we help you?"
-          subtitle="Contact Us"
-          description="We'd love to hear from you. Whether you have a question, prayer request, or just want to connect, we're here to help."
-        />
+        <Reveal>
+          <SectionHeader
+            title="How can we help you?"
+            subtitle="Contact Us"
+            description="We'd love to hear from you. Whether you have a question, prayer request, or just want to connect, we're here to help."
+          />
+        </Reveal>
         <div className="mt-12 grid gap-12 lg:grid-cols-3">
-          <div className="grid grid-cols-2 gap-6 lg:block lg:space-y-12">
+          <Reveal variant="slide-right" className="grid grid-cols-2 gap-6 lg:block lg:space-y-12">
             <div className="flex flex-col justify-between space-y-6">
               <div>
                 <h2 className="mb-3 text-lg">Church Office</h2>
@@ -235,8 +238,9 @@ export default function ContactForm() {
                 </div>
               </div>
             )}
-          </div>
+          </Reveal>
 
+          <Reveal variant="slide-left" className="lg:col-span-2">
           <form
             onSubmit={form.handleSubmit(onSubmit, (errors) => {
               // Show toast when form validation fails
@@ -252,7 +256,7 @@ export default function ContactForm() {
                 });
               }
             })}
-            className="@container lg:col-span-2"
+            className="@container"
           >
             <Card className="p-8 sm:p-12">
               <div className="flex flex-col gap-4">
@@ -366,6 +370,7 @@ export default function ContactForm() {
               </div>
             </Card>
           </form>
+          </Reveal>
         </div>
       </div>
     </section>

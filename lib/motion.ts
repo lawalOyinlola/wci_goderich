@@ -26,8 +26,10 @@ export const DISTANCE = 24;
 /** Default viewport config for scroll-triggered reveals. */
 export const VIEWPORT = {
   once: true,
-  /** Trigger slightly before the element is fully in view. */
-  margin: "0px 0px -12% 0px",
+  /** At least 15% of the element must be visible before triggering — prevents
+   *  false positives during page load / scroll restoration. */
+  amount: 0.15,
+  margin: "0px 0px -8% 0px",
 } as const;
 
 const transition: Transition = { duration: DURATION.base, ease: EASE.out };

@@ -9,6 +9,7 @@ import {
 import Link from "next/link";
 import { FAQS } from "@/lib/constants";
 import SectionHeader from "@/components/SectionHeader";
+import { Reveal } from "@/components/motion";
 
 export default function Faqs() {
   const { title, subtitle, description, questions } = FAQS;
@@ -17,14 +18,14 @@ export default function Faqs() {
     <section>
       <div className="small-container max-w-5xl">
         <div className="grid gap-8 md:grid-cols-5 md:gap-12">
-          <div className="md:col-span-2">
+          <Reveal variant="slide-right" className="md:col-span-2">
             <SectionHeader
               title={title}
               description={description}
               className="text-left"
             />
-          </div>
-          <div className="md:col-span-3">
+          </Reveal>
+          <Reveal variant="slide-left" className="md:col-span-3">
             <Accordion
               type="single"
               defaultValue={String(questions[0].id)}
@@ -59,7 +60,7 @@ export default function Faqs() {
               </Link>{" "}
               below
             </p>
-          </div>
+          </Reveal>
         </div>
       </div>
     </section>

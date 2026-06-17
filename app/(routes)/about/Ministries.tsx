@@ -4,6 +4,7 @@ import SectionHeader from "@/components/SectionHeader";
 import { MINISTRIES } from "@/lib/constants";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
+import { Reveal, Stagger, StaggerItem } from "@/components/motion";
 
 export default function Ministries() {
   const { title, subtitle, description, ministries } = MINISTRIES;
@@ -15,24 +16,28 @@ export default function Ministries() {
   return (
     <section>
       <div className="small-container space-y-8 md:space-y-12" id="ministries">
-        <SectionHeader
-          title={title}
-          subtitle={subtitle}
-          description={description}
-          descriptionClassName="max-w-5xl"
-        />
+        <Reveal>
+          <SectionHeader
+            title={title}
+            subtitle={subtitle}
+            description={description}
+            descriptionClassName="max-w-5xl"
+          />
+        </Reveal>
 
-        <Image
-          className="rounded-(--radius) grayscale"
-          src="/images/ministries.jpeg"
-          alt="Church ministries team"
-          width={2940}
-          height={1960}
-        />
+        <Reveal variant="fade">
+          <Image
+            className="rounded-(--radius) grayscale"
+            src="/images/ministries.jpeg"
+            alt="Church ministries team"
+            width={2940}
+            height={1960}
+          />
+        </Reveal>
 
-        <div className="relative mx-auto grid grid-cols-2 gap-x-3 gap-y-6 sm:gap-8 lg:grid-cols-4">
+        <Stagger className="relative mx-auto grid grid-cols-2 gap-x-3 gap-y-6 sm:gap-8 lg:grid-cols-4">
           {filteredMinistries.map((ministry) => (
-            <div key={ministry?.id} className="space-y-3 cursor-pointer">
+            <StaggerItem key={ministry?.id} className="space-y-3 cursor-pointer">
               <div className="flex items-center gap-2">
                 <Zap className="size-4" />
                 <h3 className="text-sm font-medium">{ministry.title}</h3>
@@ -43,9 +48,9 @@ export default function Ministries() {
               <Badge variant="primary">
                 {ministry?.ageRange ?? "All Ages"}
               </Badge>
-            </div>
+            </StaggerItem>
           ))}
-        </div>
+        </Stagger>
       </div>
     </section>
   );

@@ -6,6 +6,7 @@ import { LeadershipRole } from "@/lib/types/leadership";
 import { LEADERSHIP } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { ImageWithRetry } from "@/components/ui/image-with-retry";
+import { Reveal, Stagger, StaggerItem } from "@/components/motion";
 
 const Leadership = () => {
   const { title, subtitle, description, PASTORS, DIRECTORS } = LEADERSHIP;
@@ -26,20 +27,22 @@ const Leadership = () => {
   return (
     <section id="leadership" className="bg-muted/30">
       <div className="small-container">
-        <SectionHeader
-          title={title}
-          subtitle={subtitle}
-          description={description}
-        />
+        <Reveal>
+          <SectionHeader
+            title={title}
+            subtitle={subtitle}
+            description={description}
+          />
+        </Reveal>
 
         <div className="mt-12 md:mt-24">
-          <div className="max-w-4xl mx-auto grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+          <Stagger className="max-w-4xl mx-auto grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
             {leaders.map((leader, index) => {
               const leaderId = leader.id || `leader-${index}`;
               const isActive = activeLeaderId === leaderId;
 
               return (
-                <div
+                <StaggerItem
                   key={leaderId}
                   className="group overflow-hidden"
                   onMouseEnter={() => setActiveLeaderId(leaderId)}
@@ -51,6 +54,7 @@ const Leadership = () => {
                       prev === leaderId ? null : leaderId,
                     )
                   }
+                  as="div"
                 >
                   <ImageWithRetry
                     className={cn(
@@ -104,10 +108,10 @@ const Leadership = () => {
                       )}
                     </div>
                   </div>
-                </div>
+                </StaggerItem>
               );
             })}
-          </div>
+          </Stagger>
         </div>
       </div>
     </section>
