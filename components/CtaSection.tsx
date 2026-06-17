@@ -1,5 +1,6 @@
 import SectionHeader from "@/components/SectionHeader";
 import CtaContainer from "./CtaContainer";
+import { Reveal } from "@/components/motion";
 import { cn } from "@/lib/utils";
 import { SmoothScrollOptions } from "@/lib/utils/smoothScroll";
 
@@ -27,7 +28,7 @@ export default function CtaSection({
   containerClassName,
 }: CtaSectionProps) {
   return (
-    <div className={cn("small-container max-w-4xl text-center", className)}>
+    <Reveal className={cn("small-container max-w-4xl text-center", className)}>
       <SectionHeader title={title} description={description} />
 
       <CtaContainer
@@ -35,6 +36,6 @@ export default function CtaSection({
         containerClassName={containerClassName}
         buttons={buttons}
       />
-    </div>
+    </Reveal>
   );
 }
