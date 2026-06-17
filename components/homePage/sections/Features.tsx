@@ -1,6 +1,7 @@
 import { IconComponent } from "@/components/IconComponent";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import { Separator } from "@/components/ui/separator";
+import { Stagger, StaggerItem } from "@/components/motion";
 import { FEATURES, CHURCH_INFO } from "@/lib/constants";
 
 export default function Features() {
@@ -9,9 +10,9 @@ export default function Features() {
   return (
     <section className="bg-card">
       <div className="relative small-container py-14 pb-16 md:pb-20">
-        <div className="grid min-[480px]:grid-cols-2 sm:grid-cols-3 lg:grid-cols-9 gap-8 relative">
+        <Stagger className="grid min-[480px]:grid-cols-2 sm:grid-cols-3 lg:grid-cols-9 gap-8 relative">
           {FEATURES.map((feature, index) => (
-            <div
+            <StaggerItem
               key={index}
               className="group lg:col-span-2 flex flex-col h-full"
             >
@@ -29,10 +30,10 @@ export default function Features() {
               <blockquote className="border-l-2 pl-2 text-sm italic mt-auto">
                 {feature.bible}
               </blockquote>
-            </div>
+            </StaggerItem>
           ))}
 
-          <div className="text-center bg-primary text-primary-foreground lg:px-8 p-4 lg:-mt-30 lg:pt-20 sm:py-10 sm:col-span-3 flex flex-col items-center justify-center gap-4 group">
+          <StaggerItem className="text-center bg-primary text-primary-foreground lg:px-8 p-4 lg:-mt-30 lg:pt-20 sm:py-10 sm:col-span-3 flex flex-col items-center justify-center gap-4 group">
             <h4 className="text-2xl">THE MANDATE</h4>
 
             <blockquote className="sm:border-l-2 border-secondary/30 sm:pl-2 text-lg mt-6 italic leading-7 transition-all duration-300 group-hover:border-l-0 group-hover:pl-0">
@@ -46,8 +47,8 @@ export default function Features() {
               text="Partake this mission"
               href="https://faithtabernacle.org.ng/mandate/"
             />
-          </div>
-        </div>
+          </StaggerItem>
+        </Stagger>
       </div>
     </section>
   );
