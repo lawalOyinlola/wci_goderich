@@ -43,7 +43,7 @@ export function Stagger({
       className={cn(className)}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: !repeat, margin: VIEWPORT.margin }}
+      viewport={{ ...VIEWPORT, once: !repeat }}
       variants={staggerContainer(stagger, delayChildren)}
       {...props}
     >
