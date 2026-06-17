@@ -1,5 +1,4 @@
-import { createClient } from "@supabase/supabase-js";
-import { cookies } from "next/headers";
+import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 
@@ -12,34 +11,46 @@ const supabasePublishableKey =
   process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ||
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-if (!supabaseUrl) {
-  throw new Error(
-    "Missing NEXT_PUBLIC_SUPABASE_URL. Please check your .env.local file."
-  );
+/**
+ * Lazily creates the admin (secret-key) Supabase client on first use.
+ * Validation is deferred to call time so `next build` doesn't require
+ * credentials just to evaluate modules.
+ */
+let _serverClient: SupabaseClient | null = null;
+function getServerClient(): SupabaseClient {
+  if (_serverClient) return _serverClient;
+
+  if (!supabaseUrl) {
+    throw new Error(
+      "Missing NEXT_PUBLIC_SUPABASE_URL. Please check your .env.local file."
+    );
+  }
+  if (!supabaseSecretKey) {
+    throw new Error(
+      "Missing SUPABASE_SECRET_KEY (or SUPABASE_SERVICE_ROLE_KEY for legacy). " +
+        "Server-side Supabase client requires the secret key for admin operations. " +
+        "Please check your .env.local file and ensure SUPABASE_SECRET_KEY is set."
+    );
+  }
+
+  _serverClient = createClient(supabaseUrl, supabaseSecretKey, {
+    auth: {
+      autoRefreshToken: false,
+      persistSession: false,
+    },
+  });
+  return _serverClient;
 }
 
-// Server-side operations require the secret key for admin access
-if (!supabaseSecretKey) {
-  throw new Error(
-    "Missing SUPABASE_SECRET_KEY (or SUPABASE_SERVICE_ROLE_KEY for legacy). " +
-      "Server-side Supabase client requires the secret key for admin operations. " +
-      "Please check your .env.local file and ensure SUPABASE_SECRET_KEY is set."
-  );
-}
-
-if (!supabasePublishableKey) {
-  throw new Error(
-    "Missing NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY (or NEXT_PUBLIC_SUPABASE_ANON_KEY for legacy). " +
-      "Please check your .env.local file."
-  );
-}
-
-const supabaseKey = supabaseSecretKey;
-
-export const supabaseServer = createClient(supabaseUrl, supabaseKey, {
-  auth: {
-    autoRefreshToken: false,
-    persistSession: false,
+/**
+ * Admin Supabase client. Backed by a lazy Proxy: the underlying client (and
+ * its env validation) is created on first property access, not at import time.
+ */
+export const supabaseServer = new Proxy({} as SupabaseClient, {
+  get(_target, prop, receiver) {
+    const client = getServerClient();
+    const value = Reflect.get(client, prop, receiver);
+    return typeof value === "function" ? value.bind(client) : value;
   },
 });
 
