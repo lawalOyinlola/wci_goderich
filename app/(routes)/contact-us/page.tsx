@@ -2,6 +2,7 @@ import { Spotlight } from "@/components/ui/spotlight";
 import Faqs from "./Faqs";
 import ContactForm from "./ContactForm";
 import CtaSection from "@/components/CtaSection";
+import { Reveal } from "@/components/motion";
 
 const ContactUsPage = () => {
   return (
@@ -14,7 +15,7 @@ const ContactUsPage = () => {
           className="-top-1/5 -left-1/7 md:-top-1/4 md:left-1/6"
           fill="#fdfcfb"
         />
-        <div className="relative max-w-7xl mx-auto px-4 text-center">
+        <Reveal variant="fade-up" className="relative max-w-7xl mx-auto px-4 text-center">
           <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-linear-to-r from-white to-slate-200 bg-clip-text text-transparent">
             Get in Touch
           </h1>
@@ -22,7 +23,7 @@ const ContactUsPage = () => {
             We&apos;d love to hear from you and help answer any questions you
             may have
           </p>
-        </div>
+        </Reveal>
       </section>
       <Faqs />
       <ContactForm />
