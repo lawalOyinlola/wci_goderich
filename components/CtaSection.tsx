@@ -28,7 +28,7 @@ export default function CtaSection({
   containerClassName,
 }: CtaSectionProps) {
   return (
-    <Reveal className={cn("small-container max-w-4xl text-center", className)}>
+    <Reveal repeat className={cn("small-container max-w-4xl text-center", className)}>
       <SectionHeader title={title} description={description} />
 
       <CtaContainer
