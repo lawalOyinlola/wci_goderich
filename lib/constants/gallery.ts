@@ -5,9 +5,7 @@
 
 const CLOUDINARY_CLOUD_NAME =
   process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME ?? "";
-if (!CLOUDINARY_CLOUD_NAME && process.env.NODE_ENV !== "production") {
-  // Warn (don't throw) so builds succeed without env configured. Set
-  // NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME in .env.local for working gallery images.
+if (!CLOUDINARY_CLOUD_NAME) {
   console.warn(
     "[gallery] NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME is not set — gallery image URLs will be invalid until it is configured."
   );
