@@ -1,24 +1,35 @@
 import { v2 as cloudinary, type ResourceApiResponse } from "cloudinary";
 
-if (process.env.CLOUDINARY_URL) {
-  cloudinary.config();
-} else {
-  // Fallback to individual environment variables
-  const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
-  const apiKey = process.env.CLOUDINARY_API_KEY;
-  const apiSecret = process.env.CLOUDINARY_API_SECRET;
+/**
+ * Configures Cloudinary on first use. Deferred (not run at import time) so that
+ * `next build` can evaluate modules that import this file without credentials.
+ */
+let configured = false;
+function ensureCloudinaryConfigured(): void {
+  if (configured) return;
 
-  if (!cloudName || !apiKey || !apiSecret) {
-    throw new Error(
-      "Missing Cloudinary configuration. Please set CLOUDINARY_URL (recommended - single variable) or provide CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, and CLOUDINARY_API_SECRET in your .env.local file.",
-    );
+  if (process.env.CLOUDINARY_URL) {
+    cloudinary.config();
+  } else {
+    // Fallback to individual environment variables
+    const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
+    const apiKey = process.env.CLOUDINARY_API_KEY;
+    const apiSecret = process.env.CLOUDINARY_API_SECRET;
+
+    if (!cloudName || !apiKey || !apiSecret) {
+      throw new Error(
+        "Missing Cloudinary configuration. Please set CLOUDINARY_URL (recommended - single variable) or provide CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, and CLOUDINARY_API_SECRET in your .env.local file.",
+      );
+    }
+
+    cloudinary.config({
+      cloud_name: cloudName,
+      api_key: apiKey,
+      api_secret: apiSecret,
+    });
   }
 
-  cloudinary.config({
-    cloud_name: cloudName,
-    api_key: apiKey,
-    api_secret: apiSecret,
-  });
+  configured = true;
 }
 
 export interface UploadImageOptions {
@@ -44,6 +55,7 @@ export async function uploadImage(
   file: Blob | File | Buffer,
   options: UploadImageOptions = {},
 ): Promise<string> {
+  ensureCloudinaryConfigured();
   const { folder, public_id, upload_preset, transformation } = options;
 
   try {
@@ -144,6 +156,7 @@ function extractPublicId(url: string): string | null {
  * @returns Promise with deletion result
  */
 export async function deleteImage(imageUrl: string): Promise<void> {
+  ensureCloudinaryConfigured();
   const publicId = extractPublicId(imageUrl);
   if (!publicId) {
     throw new Error("Invalid Cloudinary URL format");
@@ -160,6 +173,7 @@ export async function deleteImage(imageUrl: string): Promise<void> {
  * @returns Promise with deletion result
  */
 export async function deleteMedia(mediaUrl: string): Promise<void> {
+  ensureCloudinaryConfigured();
   const publicId = extractPublicId(mediaUrl);
   if (!publicId) {
     throw new Error("Invalid Cloudinary URL format");
@@ -209,6 +223,7 @@ export async function listImagesFromFolder(
   next_cursor?: string;
   total_count: number;
 }> {
+  ensureCloudinaryConfigured();
   try {
     const result = (await cloudinary.api.resources({
       type: "upload",
