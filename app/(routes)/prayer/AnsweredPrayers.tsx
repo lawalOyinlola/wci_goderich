@@ -1,6 +1,7 @@
 import SectionHeader from "@/components/SectionHeader";
 import { AnsweredPrayerCarousel } from "@/app/(routes)/prayer/AnsweredPrayerCarousel";
 import { getTestimoniesServer } from "@/lib/data/testimonies.server";
+import { Reveal } from "@/components/motion";
 
 export default async function AnsweredPrayers() {
   // Fetch testimonies filtered by category "prayer" or "miracles"
@@ -21,11 +22,13 @@ export default async function AnsweredPrayers() {
   return (
     <section className="bg-muted">
       <div className="small-container">
-        <SectionHeader
-          subtitle="Answered Prayers"
-          title="Testimonies of God's Faithfulness"
-          description="See how God has answered prayers in the lives of our members. These testimonies serve as encouragement and proof that prayer works."
-        />
+        <Reveal>
+          <SectionHeader
+            subtitle="Answered Prayers"
+            title="Testimonies of God's Faithfulness"
+            description="See how God has answered prayers in the lives of our members. These testimonies serve as encouragement and proof that prayer works."
+          />
+        </Reveal>
         <div>
           {testimonies.length === 0 ? (
             <div className="text-center py-12">
