@@ -21,6 +21,7 @@ import {
   UsersIcon,
 } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
+import { Reveal } from "@/components/motion";
 import {
   MIDNIGHT_PRAYER_GROUPS,
   UNIQUE_PRAYER_SESSIONS,
@@ -191,7 +192,7 @@ export default function JoinPrayerGroup() {
 
   return (
     <div id="join-group" className="grid gap-12 lg:grid-cols-4 items-start">
-      <div className="grid min-[400px]:grid-cols-2 gap-4 lg:col-span-2">
+      <Reveal variant="slide-right" className="grid min-[400px]:grid-cols-2 gap-4 lg:col-span-2">
         <div className="mb-8 col-span-2">
           <div className="flex items-center gap-2 mb-6">
             <ClockIcon size={24} weight="duotone" className="text-primary" />
@@ -274,7 +275,8 @@ export default function JoinPrayerGroup() {
             </div>
           );
         })}
-      </div>
+      </Reveal>
+      <Reveal variant="slide-left" className="lg:col-span-2">
       <form
         onSubmit={form.handleSubmit(onSubmit, (errors) => {
           // Show toast when form validation fails
@@ -290,7 +292,7 @@ export default function JoinPrayerGroup() {
             });
           }
         })}
-        className="@container lg:col-span-2"
+        className="@container"
       >
         <Card className="p-8">
           <div className="flex flex-col gap-4">
@@ -354,6 +356,7 @@ export default function JoinPrayerGroup() {
           </div>
         </Card>
       </form>
+      </Reveal>
     </div>
   );
 }
