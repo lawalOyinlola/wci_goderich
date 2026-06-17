@@ -16,6 +16,7 @@ import { cn } from "@/lib/utils";
 import { WordRotate } from "@/components/ui/word-rotate";
 import SectionHeader from "@/components/SectionHeader";
 import { Badge } from "@/components/ui/badge";
+import { Reveal } from "@/components/motion";
 
 export default function GivingDetails() {
   const [copiedField, setCopiedField] = useState<string | null>(null);
@@ -96,17 +97,20 @@ export default function GivingDetails() {
   return (
     <section id="account-details" className="bg-muted/30">
       <div className="small-container max-w-4xl">
-        <SectionHeader
-          title={<WordRotate
-            words={GIVE_NOW}
-            className="text-4xl md:text-5xl font-semibold leading-tight tracking-tight mb-6 bg-linear-to-br from-[#f59e0b] via-primary to-accent bg-clip-text text-transparent"
-            duration={2500}
-            pauseDuration={500}
-          />}
-          subtitle="Give Now"
-          description="Use the account details below to make your transfer. Click on any detail to copy it to your clipboard."
-        />
+        <Reveal>
+          <SectionHeader
+            title={<WordRotate
+              words={GIVE_NOW}
+              className="text-4xl md:text-5xl font-semibold leading-tight tracking-tight mb-6 bg-linear-to-br from-[#f59e0b] via-primary to-accent bg-clip-text text-transparent"
+              duration={2500}
+              pauseDuration={500}
+            />}
+            subtitle="Give Now"
+            description="Use the account details below to make your transfer. Click on any detail to copy it to your clipboard."
+          />
+        </Reveal>
 
+        <Reveal variant="fade-up">
         <Card className="mb-8">
           <CardHeader>
             <CardTitle className="text-2xl">Bank Account Details</CardTitle>
@@ -181,6 +185,7 @@ export default function GivingDetails() {
             className="mb-4"
           />
         </div>
+        </Reveal>
       </div>
     </section>
   );

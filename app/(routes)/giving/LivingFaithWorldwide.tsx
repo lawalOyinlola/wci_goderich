@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/card";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import { ArrowSquareOutIcon } from "@phosphor-icons/react";
+import { Reveal, Stagger, StaggerItem } from "@/components/motion";
 
 const worldwideGivingOptions: Array<{
   icon: ValidIconName;
@@ -41,36 +42,37 @@ export default function LivingFaithWorldwide() {
   return (
     <section className="bg-linear-to-br from-foreground/5 to-background">
       <div className="small-container max-w-4xl">
-        <SectionHeader
-          title="Give to Living Faith Church Worldwide"
-          subtitle="International Giving"
-          description="Support the global mission and vision of Living Faith Church Worldwide International. Your giving helps advance God's kingdom through various impactful projects and initiatives."
-        />
+        <Reveal>
+          <SectionHeader
+            title="Give to Living Faith Church Worldwide"
+            subtitle="International Giving"
+            description="Support the global mission and vision of Living Faith Church Worldwide International. Your giving helps advance God's kingdom through various impactful projects and initiatives."
+          />
+        </Reveal>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <Stagger className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           {worldwideGivingOptions.map((option) => (
-            <Card
-              key={option.title}
-              className="group border-0 hover:shadow-primary/20 hover:shadow-sm transition-all duration-300 flex flex-col"
-            >
-              <CardHeader>
-                <div className="p-2 rounded-lg bg-primary/10 text-primary w-fit mb-2">
-                  <IconComponent
-                    iconName={option.icon}
-                    size={24}
-                    weight="duotone"
-                  />
-                </div>
-                <CardTitle className="text-lg">{option.title}</CardTitle>
-              </CardHeader>
-              <CardContent className="flex-1">
-                <CardDescription className="text-sm">
-                  {option.description}
-                </CardDescription>
-              </CardContent>
-            </Card>
+            <StaggerItem key={option.title} className="flex">
+              <Card className="group border-0 hover:shadow-primary/20 hover:shadow-sm transition-all duration-300 flex flex-col w-full">
+                <CardHeader>
+                  <div className="p-2 rounded-lg bg-primary/10 text-primary w-fit mb-2">
+                    <IconComponent
+                      iconName={option.icon}
+                      size={24}
+                      weight="duotone"
+                    />
+                  </div>
+                  <CardTitle className="text-lg">{option.title}</CardTitle>
+                </CardHeader>
+                <CardContent className="flex-1">
+                  <CardDescription className="text-sm">
+                    {option.description}
+                  </CardDescription>
+                </CardContent>
+              </Card>
+            </StaggerItem>
           ))}
-        </div>
+        </Stagger>
 
         <div className="text-center">
           <AnimatedButton

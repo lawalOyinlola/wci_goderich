@@ -8,6 +8,7 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 import { IconComponent, ValidIconName } from "@/components/IconComponent";
+import { Reveal, Stagger, StaggerItem } from "@/components/motion";
 
 const infoCards: Array<{
   icon: ValidIconName;
@@ -39,30 +40,31 @@ export default function GivingInfo() {
   return (
     <section id="giving">
       <div className="@container small-container">
-        <SectionHeader
-          title="About Giving"
-          subtitle="Ways to Support"
-          description="Learn more about how you can partner with us in advancing God's kingdom through your generous giving"
-        />
+        <Reveal>
+          <SectionHeader
+            title="About Giving"
+            subtitle="Ways to Support"
+            description="Learn more about how you can partner with us in advancing God's kingdom through your generous giving"
+          />
+        </Reveal>
 
-        <div className="@min-4xl:max-w-full @min-4xl:grid-cols-3 mx-auto mt-8 grid max-w-sm gap-6 [--color-background:var(--color-muted)] [--color-card:var(--color-muted)] *:text-center md:mt-16 dark:[--color-muted:var(--color-zinc-900)]">
+        <Stagger className="@min-4xl:max-w-full @min-4xl:grid-cols-3 mx-auto mt-8 grid max-w-sm gap-6 [--color-background:var(--color-muted)] [--color-card:var(--color-muted)] *:text-center md:mt-16 dark:[--color-muted:var(--color-zinc-900)]">
           {infoCards.map((info, index) => (
-            <Card
-              key={index}
-              className="group border-0 shadow-none bg-background"
-            >
-              <CardHeader>
-                <CardDecorator>
-                  <IconComponent iconName={info.icon} className="text-foreground" size={32} weight="duotone" />
-                </CardDecorator>
-                <h3 className="font-medium">{info.title}</h3>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm">{info.description}</p>
-              </CardContent>
-            </Card>
+            <StaggerItem key={index}>
+              <Card className="group border-0 shadow-none bg-background h-full">
+                <CardHeader>
+                  <CardDecorator>
+                    <IconComponent iconName={info.icon} className="text-foreground" size={32} weight="duotone" />
+                  </CardDecorator>
+                  <h3 className="font-medium">{info.title}</h3>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm">{info.description}</p>
+                </CardContent>
+              </Card>
+            </StaggerItem>
           ))}
-        </div>
+        </Stagger>
       </div>
     </section>
   );
