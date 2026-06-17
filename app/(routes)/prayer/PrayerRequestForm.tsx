@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/field";
 import { PaperPlaneTiltIcon } from "@phosphor-icons/react";
 import { CHURCH_INFO, PRAYER_CATEGORIES } from "@/lib/constants";
+import { Reveal } from "@/components/motion";
 
 type PrayerRequestFormValues = {
   name: string;
@@ -225,13 +226,15 @@ export default function PrayerRequestForm() {
       className="bg-linear-to-b from-muted to-background"
     >
       <div className="small-container max-w-4xl">
-        <SectionHeader
-          title="We're Here to Pray With You"
-          subtitle="Prayer Request"
-          description="Share your prayer needs with us. Our prayer team is committed to interceding on your behalf. Your request will be handled with care and confidentiality."
-        />
+        <Reveal>
+          <SectionHeader
+            title="We're Here to Pray With You"
+            subtitle="Prayer Request"
+            description="Share your prayer needs with us. Our prayer team is committed to interceding on your behalf. Your request will be handled with care and confidentiality."
+          />
+        </Reveal>
         <div className="mt-12 grid gap-12 lg:grid-cols-3">
-          <div className="grid grid-cols-2 gap-6 lg:block lg:space-y-12">
+          <Reveal variant="slide-right" className="grid grid-cols-2 gap-6 lg:block lg:space-y-12">
             <div className="flex flex-col justify-between space-y-6">
               <div>
                 <h2 className="mb-3 text-lg">Church Office</h2>
@@ -255,7 +258,8 @@ export default function PrayerRequestForm() {
                 our services.
               </p>
             </div>
-          </div>
+          </Reveal>
+          <Reveal variant="slide-left" className="lg:col-span-2">
           <form
             onSubmit={form.handleSubmit(onSubmit, (errors) => {
               // Show toast when form validation fails
@@ -271,7 +275,7 @@ export default function PrayerRequestForm() {
                 });
               }
             })}
-            className="@container lg:col-span-2"
+            className="@container"
           >
             <Card className="p-8 sm:p-12">
               <div className="flex flex-col gap-4">
@@ -381,6 +385,7 @@ export default function PrayerRequestForm() {
               </div>
             </Card>
           </form>
+          </Reveal>
         </div>
       </div>
     </section>
