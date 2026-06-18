@@ -3,375 +3,303 @@
 import SectionHeader from "@/components/SectionHeader";
 import { MINISTRY_DETAILS } from "@/lib/constants";
 import { Badge } from "@/components/ui/badge";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import {
-  Calendar,
-  Clock,
-  Mail,
-  Phone,
-  Rocket,
-  Users,
-  Target,
-  TrendingUp,
-  Award,
-  Briefcase,
-  Heart,
-  Zap,
-} from "lucide-react";
+import { Reveal, Stagger, StaggerItem } from "@/components/motion";
+import { AnimatedButton } from "@/components/ui/animated-button";
+import HeroTemplate from "@/components/HeroTemplate";
 import CtaSection from "@/components/CtaSection";
+import {
+  ArrowDownIcon,
+  RocketLaunchIcon,
+  BriefcaseIcon,
+  HandshakeIcon,
+  HeartIcon,
+  TrophyIcon,
+  TargetIcon,
+  EyeIcon,
+  CalendarIcon,
+  ClockIcon,
+  UsersIcon,
+  SparkleIcon,
+  QuotesIcon,
+  ChartLineUpIcon,
+  CrownIcon,
+} from "@phosphor-icons/react";
+
+const ACTIVITY_ICONS = [
+  RocketLaunchIcon,
+  ChartLineUpIcon,
+  BriefcaseIcon,
+  HandshakeIcon,
+  HeartIcon,
+  TrophyIcon,
+  UsersIcon,
+  SparkleIcon,
+];
 
 export default function YouthAlivePage() {
   const ministry = MINISTRY_DETAILS.youth;
 
   return (
-    <div className="pt-20">
-      {/* Hero Section - Dynamic and Empowering */}
-      <section
-        className="relative py-24 text-white overflow-hidden"
-        style={{
-          background: `linear-gradient(135deg, ${ministry.colors.primary} 0%, ${ministry.colors.secondary} 50%, ${ministry.colors.accent} 100%)`,
-        }}
+    <div>
+      {/* Hero */}
+      <HeroTemplate
+        title="Youth Alive"
+        description={`Young Adults · ${ministry.subtitle}. ${ministry.tagline}`}
+        className="bg-linear-to-br from-slate-950 via-emerald-950 to-teal-900"
       >
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-0 left-0 w-full h-full bg-linear-to-br from-white/20 to-transparent"></div>
-        </div>
-        <div className="relative small-container text-center">
-          <div className="flex justify-center mb-4">
-            <Rocket className="h-12 w-12 animate-pulse" />
-          </div>
-          <h1 className="text-5xl md:text-6xl font-bold mb-4">
-            {ministry.title}
-          </h1>
-          <p className="text-2xl md:text-3xl font-semibold mb-2">
-            {ministry.subtitle}
-          </p>
-          <p className="text-xl md:text-2xl opacity-90 mb-6">
-            {ministry.tagline}
-          </p>
-          <Badge variant="default" className="text-lg px-4 py-2">
-            {ministry.ageRange}
-          </Badge>
+        <AnimatedButton
+          href="#programs"
+          text="Explore Programs"
+          icon={<ArrowDownIcon weight="bold" />}
+          size="lg"
+        />
+        <AnimatedButton
+          variant="outline"
+          href="/contact-us"
+          text="Get in Touch"
+          size="lg"
+        />
+      </HeroTemplate>
+
+      {/* Scripture */}
+      <section className="bg-card">
+        <div className="small-container max-w-3xl">
+          <Reveal className="text-center">
+            <QuotesIcon
+              className="h-10 w-10 text-primary mx-auto mb-6 opacity-50"
+              weight="fill"
+            />
+            <blockquote className="font-lora text-2xl md:text-3xl italic text-foreground/80 leading-relaxed mb-4">
+              &ldquo;They that wait upon the LORD shall renew their strength;
+              they shall mount up with wings as eagles; they shall run, and not
+              be weary.&rdquo;
+            </blockquote>
+            <p className="text-xs text-muted-foreground tracking-[0.4em] uppercase mt-4">
+              Isaiah 40:31
+            </p>
+          </Reveal>
         </div>
       </section>
 
-      {/* Introduction */}
-      <section className="py-20 bg-card">
-        <div className="small-container max-w-4xl text-center">
-          <SectionHeader
-            title="Empowered to Impact"
-            subtitle="About"
-            description={ministry.description}
-          />
-          <div
-            className="mt-8 p-6 rounded-lg"
-            style={{ backgroundColor: `${ministry.colors.accent}20` }}
-          >
-            <p className="text-lg text-foreground/80 italic flex items-center justify-center gap-2">
-              <Heart
-                className="h-5 w-5"
-                style={{ color: ministry.colors.primary }}
-              />
-              &quot;Don't let anyone despise your youth, but set an
-              example...&quot;
-            </p>
-            <p className="text-sm text-muted-foreground mt-2">
-              - 1 Timothy 4:12
-            </p>
-          </div>
+      {/* About */}
+      <section className="bg-muted/30">
+        <div className="small-container max-w-4xl">
+          <Reveal>
+            <SectionHeader
+              subtitle="About"
+              title="Empowered to Impact a Generation"
+              description={ministry.description}
+            />
+          </Reveal>
         </div>
       </section>
 
       {/* Mission & Vision */}
-      <section className="py-20 bg-muted/30">
-        <div className="small-container max-w-4xl">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <Card
-              className="border-2"
-              style={{ borderColor: ministry.colors.primary }}
-            >
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Target
-                    className="h-5 w-5"
-                    style={{ color: ministry.colors.primary }}
+      <section className="bg-card">
+        <div className="small-container">
+          <Reveal>
+            <SectionHeader subtitle="Purpose" title="What We Stand For" />
+          </Reveal>
+
+          <Stagger className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-4xl mx-auto">
+            <StaggerItem>
+              <div className="border-l-2 border-primary pl-6">
+                <div className="flex items-center gap-2 mb-3">
+                  <TargetIcon
+                    className="h-4 w-4 text-primary"
+                    weight="duotone"
                   />
-                  Our Mission
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-foreground/70">{ministry.mission}</p>
-              </CardContent>
-            </Card>
-            <Card
-              className="border-2"
-              style={{ borderColor: ministry.colors.secondary }}
-            >
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <TrendingUp
-                    className="h-5 w-5"
-                    style={{ color: ministry.colors.secondary }}
+                  <span className="text-xs uppercase tracking-[0.3em] text-muted-foreground font-medium">
+                    Our Mission
+                  </span>
+                </div>
+                <p className="text-foreground/80 leading-relaxed">
+                  {ministry.mission}
+                </p>
+              </div>
+            </StaggerItem>
+            <StaggerItem>
+              <div className="border-l-2 border-primary/40 pl-6">
+                <div className="flex items-center gap-2 mb-3">
+                  <EyeIcon
+                    className="h-4 w-4 text-primary/70"
+                    weight="duotone"
                   />
-                  Our Vision
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-foreground/70">{ministry.vision}</p>
-              </CardContent>
-            </Card>
-          </div>
+                  <span className="text-xs uppercase tracking-[0.3em] text-muted-foreground font-medium">
+                    Our Vision
+                  </span>
+                </div>
+                <p className="text-foreground/80 leading-relaxed">
+                  {ministry.vision}
+                </p>
+              </div>
+            </StaggerItem>
+          </Stagger>
         </div>
       </section>
 
       {/* Programs */}
-      <section className="py-20 bg-card">
+      <section id="programs" className="bg-muted/30">
         <div className="small-container">
-          <SectionHeader
-            title="Our Programs"
-            subtitle="What We Offer"
-            description="Comprehensive programs designed to empower and equip young adults"
-          />
+          <Reveal>
+            <SectionHeader
+              subtitle="Programs"
+              title="What We Offer"
+              description="Word-based teaching, mentorship, and impact projects that equip you to excel in every area of life."
+            />
+          </Reveal>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {ministry.programs.map((program) => (
-              <Card
-                key={program.id}
-                className="hover:shadow-lg transition-all hover:scale-105 border-2"
-                style={{ borderColor: ministry.colors.accent }}
-              >
-                <CardHeader>
-                  <div className="flex items-start justify-between">
-                    <CardTitle className="text-xl">{program.name}</CardTitle>
-                    <Rocket
-                      className="h-5 w-5"
-                      style={{ color: ministry.colors.primary }}
-                    />
+          <Stagger
+            as="ul"
+            className="divide-y border-t border-b max-w-3xl mx-auto"
+          >
+            {ministry.programs.filter((p) => p.name !== "Youth Bible Study").map((program, index) => (
+              <StaggerItem key={program.id} as="li">
+                <div className="flex gap-6 py-8">
+                  <span className="text-4xl font-bold text-muted-foreground/20 font-mono select-none pt-1 min-w-12 shrink-0">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-2">
+                      <h3 className="text-lg font-semibold tracking-tight">
+                        {program.name}
+                      </h3>
+                      <div className="flex items-center gap-1.5 text-xs text-muted-foreground shrink-0">
+                        <ClockIcon className="h-3.5 w-3.5" />
+                        <span>{program.time}</span>
+                      </div>
+                    </div>
+                    <p className="text-muted-foreground text-sm leading-relaxed mb-3">
+                      {program.description}
+                    </p>
+                    <Badge variant="muted" size="sm">
+                      <UsersIcon className="h-3 w-3" />
+                      {program.ageGroup}
+                    </Badge>
                   </div>
-                  <CardDescription className="flex items-center gap-2 mt-2">
-                    <Users className="h-4 w-4" />
-                    {program.ageGroup}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-foreground/70 mb-4">
-                    {program.description}
-                  </p>
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <Clock className="h-4 w-4" />
-                    <span>{program.time}</span>
-                  </div>
-                </CardContent>
-              </Card>
+                </div>
+              </StaggerItem>
             ))}
-          </div>
+          </Stagger>
         </div>
       </section>
 
       {/* Activities */}
-      <section className="py-20 bg-muted/30">
+      <section className="bg-card">
         <div className="small-container">
-          <SectionHeader
-            title="What We Do"
-            subtitle="Activities"
-            description="Engaging activities for growth, connection, and impact"
-          />
+          <Reveal>
+            <SectionHeader
+              subtitle="Activities"
+              title="What We Do Together"
+              description="Worship, growth, and connection that move you from potential to impact."
+            />
+          </Reveal>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {ministry.activities.map((activity, index) => (
-              <Card
-                key={index}
-                className="text-center hover:shadow-lg transition-all hover:scale-105"
-                style={{
-                  borderColor:
-                    index % 3 === 0
-                      ? ministry.colors.primary
-                      : index % 3 === 1
-                      ? ministry.colors.secondary
-                      : ministry.colors.accent,
-                  borderWidth: "2px",
-                }}
-              >
-                <CardContent className="pt-6">
-                  <div className="flex justify-center mb-2">
-                    {index % 4 === 0 ? (
-                      <Rocket
-                        className="h-8 w-8"
-                        style={{ color: ministry.colors.primary }}
-                      />
-                    ) : index % 4 === 1 ? (
-                      <Briefcase
-                        className="h-8 w-8"
-                        style={{ color: ministry.colors.secondary }}
-                      />
-                    ) : index % 4 === 2 ? (
-                      <Award
-                        className="h-8 w-8"
-                        style={{ color: ministry.colors.accent }}
-                      />
-                    ) : (
-                      <Zap
-                        className="h-8 w-8"
-                        style={{ color: ministry.colors.primary }}
-                      />
-                    )}
+          <Stagger className="flex flex-wrap gap-3 justify-center max-w-2xl mx-auto">
+            {ministry.activities.map((activity, index) => {
+              const Icon = ACTIVITY_ICONS[index % ACTIVITY_ICONS.length];
+              return (
+                <StaggerItem key={index}>
+                  <div className="flex items-center gap-2 px-4 py-2.5 rounded-full border border-border bg-muted/40 hover:bg-primary/5 hover:border-primary/30 transition-colors duration-200 cursor-default">
+                    <Icon className="h-4 w-4 text-primary/60" weight="duotone" />
+                    <span className="text-sm font-medium">{activity}</span>
                   </div>
-                  <p className="font-medium">{activity}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+                </StaggerItem>
+              );
+            })}
+          </Stagger>
         </div>
       </section>
 
       {/* Focus Areas */}
-      <section className="py-20 bg-card">
+      <section className="bg-muted/30">
         <div className="small-container">
-          <SectionHeader
-            title="Our Focus Areas"
-            subtitle="Areas of Emphasis"
-            description="Key areas we focus on for holistic development"
-          />
+          <Reveal>
+            <SectionHeader
+              subtitle="Focus Areas"
+              title="Where We Grow"
+              description="We pursue holistic development — spirit, career, finances, and leadership — so you thrive in every season."
+            />
+          </Reveal>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-5xl mx-auto">
+          <Stagger className="grid grid-cols-2 md:grid-cols-4 gap-px bg-border max-w-4xl mx-auto rounded-lg overflow-hidden border">
             {ministry.focusAreas.map((area, index) => (
-              <div
-                key={index}
-                className="p-4 rounded-lg text-center font-semibold border-2"
-                style={{
-                  borderColor: ministry.colors.accent,
-                  backgroundColor: `${ministry.colors.accent}10`,
-                }}
-              >
-                {area}
-              </div>
+              <StaggerItem key={index}>
+                <div className="bg-card px-5 py-4 flex items-center gap-3 hover:bg-primary/5 transition-colors duration-200">
+                  <CrownIcon
+                    className="h-4 w-4 text-primary/60 shrink-0"
+                    weight="duotone"
+                  />
+                  <span className="text-sm font-semibold">{area}</span>
+                </div>
+              </StaggerItem>
             ))}
-          </div>
+          </Stagger>
         </div>
       </section>
 
       {/* Schedule */}
-      <section className="py-20 bg-muted/30">
-        <div className="small-container max-w-4xl">
-          <SectionHeader
-            title="When We Meet"
-            subtitle="Schedule"
-            description="Join us for powerful worship and practical teachings"
-          />
+      <section className="bg-card">
+        <div className="small-container max-w-3xl">
+          <Reveal>
+            <SectionHeader
+              subtitle="Schedule"
+              title="When We Meet"
+              description="Join us every Sunday — concurrent with the main service."
+            />
+          </Reveal>
 
-          <Card>
-            <CardHeader>
-              <CardTitle>Regular Schedule</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex items-center gap-4">
-                <Calendar
-                  className="h-5 w-5"
-                  style={{ color: ministry.colors.primary }}
-                />
-                <div>
-                  <p className="font-semibold">Sunday Service</p>
-                  <p className="text-sm text-muted-foreground">
-                    {ministry.schedule.sunday}
-                  </p>
+          <Stagger className="divide-y">
+            {[
+              { label: "1st Service", time: "7:00 AM – 9:00 AM" },
+              { label: "2nd Service", time: "9:00 AM – 11:00 AM" },
+              { label: "3rd Service", time: "11:00 AM – 1:00 PM" },
+            ].map((service) => (
+              <StaggerItem key={service.label}>
+                <div className="flex items-center gap-4 py-6">
+                  <div className="h-10 w-10 rounded-full bg-primary/10 flex-center shrink-0">
+                    <CalendarIcon
+                      className="h-5 w-5 text-primary"
+                      weight="duotone"
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <p className="font-semibold text-sm">{service.label}</p>
+                    <p className="text-sm text-muted-foreground mt-0.5">
+                      {service.time} · Concurrent with main service
+                    </p>
+                  </div>
                 </div>
-              </div>
-              <div className="flex items-center gap-4">
-                <Calendar
-                  className="h-5 w-5"
-                  style={{ color: ministry.colors.secondary }}
-                />
-                <div>
-                  <p className="font-semibold">Midweek Bible Study</p>
-                  <p className="text-sm text-muted-foreground">
-                    {ministry.schedule.midweek}
-                  </p>
+              </StaggerItem>
+            ))}
+            <StaggerItem>
+              <div className="flex items-center gap-4 py-6">
+                <div className="h-10 w-10 rounded-full bg-primary/10 flex-center shrink-0">
+                  <SparkleIcon
+                    className="h-5 w-5 text-primary"
+                    weight="duotone"
+                  />
                 </div>
-              </div>
-              <div className="flex items-center gap-4">
-                <Calendar
-                  className="h-5 w-5"
-                  style={{ color: ministry.colors.accent }}
-                />
-                <div>
-                  <p className="font-semibold">Prayer Meeting</p>
-                  <p className="text-sm text-muted-foreground">
-                    {ministry.schedule.prayer}
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-center gap-4">
-                <Calendar
-                  className="h-5 w-5"
-                  style={{ color: ministry.colors.primary }}
-                />
-                <div>
-                  <p className="font-semibold">Special Events</p>
-                  <p className="text-sm text-muted-foreground">
+                <div className="flex-1">
+                  <p className="font-semibold text-sm">Special Events</p>
+                  <p className="text-sm text-muted-foreground mt-0.5">
                     {ministry.schedule.specialEvents}
                   </p>
                 </div>
               </div>
-            </CardContent>
-          </Card>
+            </StaggerItem>
+          </Stagger>
         </div>
       </section>
 
-      {/* Contact */}
-      <section className="py-20 bg-card">
-        <div className="small-container max-w-4xl">
-          <SectionHeader
-            title="Get in Touch"
-            subtitle="Contact"
-            description="Ready to join? Have questions? We're here for you!"
-          />
-
-          <Card>
-            <CardContent className="pt-6 space-y-4">
-              <div className="flex items-center gap-4">
-                <Mail
-                  className="h-5 w-5"
-                  style={{ color: ministry.colors.primary }}
-                />
-                <a
-                  href={`mailto:${ministry.contact.email}`}
-                  className="text-primary hover:underline"
-                >
-                  {ministry.contact.email}
-                </a>
-              </div>
-              <div className="flex items-center gap-4">
-                <Phone
-                  className="h-5 w-5"
-                  style={{ color: ministry.colors.secondary }}
-                />
-                <a
-                  href={`tel:${ministry.contact.phone}`}
-                  className="text-primary hover:underline"
-                >
-                  {ministry.contact.phone}
-                </a>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      </section>
-
-      {/* Call to Action */}
+      {/* CTA */}
       <CtaSection
-        title="Join Youth Alive Today!"
-        description="Be part of a movement of young people making a difference"
-        mainText="Whether you're starting your career, building your future, or seeking purpose, Youth Alive is the place for you. Connect with like-minded young adults, grow in your faith, and make an impact in your generation."
+        title="Join Youth Alive Today"
+        description="Be part of a movement of young people making a difference in their generation."
+        mainText="Whether you're building your career, finding your purpose, or growing your faith, Youth Alive is the place for you. Connect with like-minded young adults, grow in the Word, and make an impact that lasts."
         buttons={[
           { text: "Contact Us", href: "/contact-us" },
-          { text: "View All Ministries", href: "/about" },
+          { text: "All Ministries", href: "/about" },
         ]}
       />
     </div>
