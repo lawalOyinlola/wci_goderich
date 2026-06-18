@@ -2,64 +2,57 @@
 
 import { useMemo } from "react";
 import { FilterTabs, type TabConfig } from "@/components/ui/filter-tabs";
-import type { Testimony } from "@/lib/types/testimonies";
+import type { TestimonyCounts } from "./TestimoniesContent";
 
 interface TestimoniesTabsProps {
-  testimonies: readonly Testimony[];
   activeTab: string;
   onTabChange: (value: string) => void;
   children: React.ReactNode;
-  totalCount?: number; // Optional total count for "All" tab when using pagination
+  // Stable per-type counts from the API (independent of the active tab).
+  counts: TestimonyCounts | null;
 }
 
 export default function TestimoniesTabs({
-  testimonies,
   activeTab,
   onTabChange,
   children,
-  totalCount,
+  counts,
 }: TestimoniesTabsProps) {
-  const testimonyTypes = useMemo<TabConfig[]>(() => {
-    const counts = testimonies.reduce(
-      (acc, t) => {
-        acc[t.type]++;
-        return acc;
-      },
-      { written: 0, video: 0, audio: 0 }
-    );
-
-    return [
+  const testimonyTypes = useMemo<TabConfig[]>(
+    () => [
       {
         value: "all",
         label: "All",
-        count: totalCount !== undefined ? totalCount : testimonies.length,
+        count: counts?.all,
       },
       {
         value: "written",
         label: "Written",
         icon: "FileTextIcon",
-        count: counts.written,
+        count: counts?.written,
       },
       {
         value: "video",
         label: "Video",
         icon: "VideoCameraIcon",
-        count: counts.video,
+        count: counts?.video,
       },
       {
         value: "audio",
         label: "Audio",
         icon: "MusicNotesIcon",
-        count: counts.audio,
+        count: counts?.audio,
       },
-    ];
-  }, [testimonies, totalCount]);
+    ],
+    [counts]
+  );
 
   return (
     <FilterTabs
       tabs={testimonyTypes}
       activeTab={activeTab}
       onTabChange={onTabChange}
+      countLoading={counts === null}
     >
       {children}
     </FilterTabs>

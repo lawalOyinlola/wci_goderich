@@ -26,7 +26,7 @@ function TextTestimonyContent({
   testimony: Extract<Testimony, { type: "written" }>;
 }) {
   return (
-    <blockquote className="text-sm leading-relaxed line-clamp-20">
+    <blockquote className="text-sm leading-relaxed line-clamp-8">
       &quot;{testimony.testimony}&quot;
     </blockquote>
   );

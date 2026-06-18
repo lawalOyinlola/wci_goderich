@@ -384,18 +384,18 @@ export const MINISTRY_DETAILS = {
     ageRange: "Ages 18 and above",
     schedule: {
       sunday: "Main Service",
-      fellowship: "First Saturday of every month, 4:00 PM - 6:00 PM",
+      fellowship: "At least once every two months, 4:00 PM – 6:00 PM",
       prayer: "Tuesdays 6:00 AM",
       specialEvents: "Quarterly Business Seminars",
     },
     programs: [
       {
         id: "1",
-        name: "Monthly Fellowship",
+        name: "Bi-Monthly Fellowship",
         description:
-          "Monthly gathering for prayer, Bible study, and business discussions.",
+          "Gathering for prayer, Bible study, and business discussions.",
         ageGroup: "Ages 18+",
-        time: "First Saturday, 4:00 PM",
+        time: "Every two months, 4:00 PM – 6:00 PM",
       },
       {
         id: "2",

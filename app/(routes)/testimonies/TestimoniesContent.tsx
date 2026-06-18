@@ -1,25 +1,26 @@
 "use client";
 
-import {
-  useState,
-  useEffect,
-  useCallback,
-  useMemo,
-  startTransition,
-} from "react";
+import { useState, useEffect, useRef, startTransition } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import SectionHeader from "@/components/SectionHeader";
 import TestimoniesTabs from "./TestimoniesTabs";
 import TestimonyCard from "./TestimonyCard";
 import { TestimoniesEmpty } from "@/components/testimonies/TestimoniesEmpty";
+import { TestimoniesCardsSkeleton } from "@/components/testimonies/TestimoniesCardsSkeleton";
 import { Pagination } from "@/components/ui/pagination";
 import type { Testimony } from "@/lib/types";
 import type { PaginationMeta } from "@/lib/types/gallery";
-import TestimoniesLoading from "./loading";
 
 interface TestimoniesContentProps {
   initialType?: string;
   initialPage?: number;
+}
+
+export interface TestimonyCounts {
+  all: number;
+  written: number;
+  video: number;
+  audio: number;
 }
 
 export default function TestimoniesContent({
@@ -30,7 +31,21 @@ export default function TestimoniesContent({
   const searchParams = useSearchParams();
   const [testimonies, setTestimonies] = useState<Testimony[]>([]);
   const [pagination, setPagination] = useState<PaginationMeta | null>(null);
+  const [counts, setCounts] = useState<TestimonyCounts | null>(null);
   const [loading, setLoading] = useState(true);
+
+  // In-memory cache keyed by `type:page` so switching back to an already-viewed
+  // tab or page renders instantly without a refetch or loading flash.
+  const cacheRef = useRef<
+    Map<
+      string,
+      {
+        testimonies: Testimony[];
+        pagination: PaginationMeta | null;
+        counts: TestimonyCounts | null;
+      }
+    >
+  >(new Map());
 
   const parsedPage = Number.parseInt(searchParams.get("page") ?? "", 10);
 
@@ -46,66 +61,90 @@ export default function TestimoniesContent({
   const activeTab =
     typeParam && validTypes.includes(typeParam) ? typeParam : "all";
 
-  const fetchTestimonies = useCallback(async (signal: AbortSignal) => {
-    setLoading(true);
-    try {
-      const params = new URLSearchParams();
-      params.append("page", String(currentPage));
-      params.append("limit", "12"); // 12 items per page
-      params.append("verified", "true"); // Only show verified testimonies
-
-      // Add type filter if not "all"
-      if (activeTab !== "all") {
-        params.append("type", activeTab);
-      }
-
-      const response = await fetch(`/api/testimonies?${params.toString()}`, {
-        signal,
-      });
-
-      // Check if request was aborted before processing
-      if (signal.aborted) {
-        return;
-      }
-
-      const data = await response.json();
-
-      // Check again after async operation
-      if (signal.aborted) {
-        return;
-      }
-
-      if (data.success) {
-        setTestimonies(data.data || []);
-        setPagination(data.pagination);
-      }
-    } catch (error) {
-      // Ignore AbortError - it's expected when requests are cancelled
-      if (error instanceof Error && error.name === "AbortError") {
-        return;
-      }
-      console.error("Error fetching testimonies:", error);
-    } finally {
-      // Only update loading state if request wasn't aborted
-      if (!signal.aborted) {
-        setLoading(false);
-      }
-    }
-  }, [currentPage, activeTab]);
-
   useEffect(() => {
-    // Create AbortController for this effect
+    const cacheKey = `${activeTab}:${currentPage}`;
+
+    // Serve from cache instantly — no network call, no loading flash.
+    const cached = cacheRef.current.get(cacheKey);
+    if (cached) {
+      setTestimonies(cached.testimonies);
+      setPagination(cached.pagination);
+      if (cached.counts) {
+        setCounts(cached.counts);
+      }
+      setLoading(false);
+      return;
+    }
+
     const controller = new AbortController();
     const signal = controller.signal;
 
-    // Fetch testimonies with abort signal
-    fetchTestimonies(signal);
+    const fetchTestimonies = async () => {
+      setLoading(true);
+      try {
+        const params = new URLSearchParams();
+        params.append("page", String(currentPage));
+        params.append("limit", "12"); // 12 items per page
+        params.append("verified", "true"); // Only show verified testimonies
 
-    // Cleanup: abort the request if component unmounts or dependencies change
+        // Add type filter if not "all"
+        if (activeTab !== "all") {
+          params.append("type", activeTab);
+        }
+
+        const response = await fetch(`/api/testimonies?${params.toString()}`, {
+          signal,
+        });
+
+        if (signal.aborted) {
+          return;
+        }
+
+        const data = await response.json();
+
+        if (signal.aborted) {
+          return;
+        }
+
+        if (data.success) {
+          const next = {
+            testimonies: (data.data ?? []) as Testimony[],
+            pagination: (data.pagination ?? null) as PaginationMeta | null,
+            counts: (data.counts ?? null) as TestimonyCounts | null,
+          };
+          cacheRef.current.set(cacheKey, next);
+          setTestimonies(next.testimonies);
+          setPagination(next.pagination);
+          if (next.counts) {
+            setCounts(next.counts);
+          }
+        } else {
+          setTestimonies([]);
+          setPagination(null);
+          setCounts(null);
+        }
+      } catch (error) {
+        // Ignore AbortError - it's expected when requests are cancelled
+        if (error instanceof Error && error.name === "AbortError") {
+          return;
+        }
+        console.error("Error fetching testimonies:", error);
+        setTestimonies([]);
+        setPagination(null);
+        setCounts(null);
+      } finally {
+        if (!signal.aborted) {
+          setLoading(false);
+        }
+      }
+    };
+
+    fetchTestimonies();
+
     return () => {
       controller.abort();
     };
-  }, [fetchTestimonies]);
+  }, [activeTab, currentPage]);
 
   const updateSearchParams = (
     updates: Record<string, string | number | null | undefined>
@@ -144,15 +183,6 @@ export default function TestimoniesContent({
     updateSearchParams({ page: newPage });
   };
 
-  // Get all testimonies count for tabs (we'll fetch a count separately or use pagination total)
-  // For now, we'll use the pagination totalItems when available
-  const allTestimoniesCount = pagination?.totalItems || 0;
-
-  // Show loading skeleton when loading (including page changes)
-  if (loading) {
-    return <TestimoniesLoading />;
-  }
-
   return (
     <section
       className="py-16 sm:py-24 lg:py-32 bg-background z-20"
@@ -165,12 +195,13 @@ export default function TestimoniesContent({
           description="Hear from our church family about how God has worked in their lives"
         />
         <TestimoniesTabs
-          testimonies={testimonies}
           activeTab={activeTab}
           onTabChange={handleTabChange}
-          totalCount={pagination?.totalItems}
+          counts={counts}
         >
-          {testimonies.length > 0 ? (
+          {loading ? (
+            <TestimoniesCardsSkeleton />
+          ) : testimonies.length > 0 ? (
             <>
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-12">
                 {testimonies.map((testimony) => (

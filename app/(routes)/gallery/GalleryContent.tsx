@@ -8,19 +8,12 @@ import {
   startTransition,
 } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { RobustGalleryImage } from "./RobustGalleryImage";
 import { GalleryThumbnailImage } from "./GalleryThumbnailImage";
+import GalleryLightbox from "./GalleryLightbox";
 import GallerySkeleton from "./GallerySkeleton";
 import SectionHeader from "@/components/SectionHeader";
 import { SelectField } from "@/components/form/SelectField";
 import { Pagination } from "@/components/ui/pagination";
-import {
-  MorphingDialog,
-  MorphingDialogTrigger,
-  MorphingDialogContent,
-  MorphingDialogClose,
-  MorphingDialogContainer,
-} from "@/components/ui/morphing-dialog";
 import {
   Empty,
   EmptyContent,
@@ -31,7 +24,7 @@ import {
 } from "@/components/ui/empty";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import { ImagesIcon, CameraIcon } from "@phosphor-icons/react";
-import { AlertCircle, XIcon } from "lucide-react";
+import { AlertCircle } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { cn } from "@/lib/utils";
 import type { GalleryImage, PaginationMeta } from "@/lib/types/gallery";
@@ -82,6 +75,8 @@ export default function GalleryContent({
   const [pagination, setPagination] = useState<PaginationMeta | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  // Index of the image currently open in the lightbox (null = closed).
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
   const currentPage = parseInt(
     searchParams.get("page") || String(initialPage),
@@ -250,6 +245,14 @@ export default function GalleryContent({
     return cols;
   }, [images, columnCount]);
 
+  // Map each image id to its flat index so a card (rendered inside a masonry
+  // column) can open the lightbox at the correct position.
+  const indexById = useMemo(() => {
+    const map = new Map<string, number>();
+    images.forEach((image, i) => map.set(image.id, i));
+    return map;
+  }, [images]);
+
   // Show skeleton when loading (including page changes)
   if (loading) {
     return <GallerySkeleton />;
@@ -298,12 +301,26 @@ export default function GalleryContent({
             {columns.map((column, colIndex) => (
               <div key={colIndex} className="flex flex-1 flex-col gap-3 min-w-0">
                 {column.map((image) => (
-                  <GalleryImageCard key={image.id} image={image} />
+                  <GalleryImageCard
+                    key={image.id}
+                    image={image}
+                    onOpen={() =>
+                      setLightboxIndex(indexById.get(image.id) ?? 0)
+                    }
+                  />
                 ))}
               </div>
             ))}
           </div>
         )}
+
+        {/* Full-screen image viewer with prev/next navigation and swipe */}
+        <GalleryLightbox
+          images={images}
+          startIndex={lightboxIndex ?? 0}
+          open={lightboxIndex !== null}
+          onClose={() => setLightboxIndex(null)}
+        />
 
         {/* Show error banner if there's an error but we have cached images */}
         {error && images.length > 0 && (
@@ -337,7 +354,13 @@ export default function GalleryContent({
   );
 }
 
-function GalleryImageCard({ image }: { image: GalleryImage }) {
+function GalleryImageCard({
+  image,
+  onOpen,
+}: {
+  image: GalleryImage;
+  onOpen: () => void;
+}) {
   // Reserve the exact box using the image's real dimensions so nothing shifts as
   // it loads; fall back to orientation buckets when dimensions are unavailable.
   const aspectStyle =
@@ -352,60 +375,33 @@ function GalleryImageCard({ image }: { image: GalleryImage }) {
         : "aspect-square";
 
   return (
-    <MorphingDialog
-      transition={{
-        duration: 0.3,
-        ease: "easeInOut",
-      }}
+    <button
+      type="button"
+      onClick={onOpen}
+      aria-label={`View ${image.title}`}
+      style={aspectStyle}
+      className={cn(
+        "group relative block w-full overflow-hidden shadow-lg cursor-pointer rounded-lg bg-muted",
+        "hover:shadow-2xl transition-all duration-300 hover:scale-[1.02]",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
+        !aspectStyle && aspectFallback
+      )}
     >
-      <MorphingDialogTrigger
-        style={aspectStyle}
-        className={cn(
-          "group relative block w-full overflow-hidden shadow-lg cursor-pointer rounded-lg bg-muted",
-          "hover:shadow-2xl transition-all duration-300 hover:scale-[1.02]",
-          !aspectStyle && aspectFallback
+      <GalleryThumbnailImage
+        src={image.imageUrl}
+        alt={image.altText}
+        className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-500 rounded-lg"
+      />
+      <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg" />
+      <div className="absolute inset-x-0 bottom-0 p-4 text-left transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+        <h3 className="text-white font-semibold text-lg mb-1">{image.title}</h3>
+        {image.description && (
+          <p className="text-white/90 text-sm line-clamp-2">
+            {image.description}
+          </p>
         )}
-      >
-        <GalleryThumbnailImage
-          src={image.imageUrl}
-          alt={image.altText}
-          className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-500 rounded-lg"
-        />
-        <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg" />
-        <div className="absolute inset-x-0 bottom-0 p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-          <h3 className="text-white font-semibold text-lg mb-1">
-            {image.title}
-          </h3>
-          {image.description && (
-            <p className="text-white/90 text-sm line-clamp-2">
-              {image.description}
-            </p>
-          )}
-        </div>
-      </MorphingDialogTrigger>
-      <MorphingDialogContainer>
-        <MorphingDialogContent className="relative">
-          <RobustGalleryImage
-            src={image.imageUrl}
-            alt={image.altText}
-            className="h-auto w-full max-w-[90vw] rounded-[4px] object-contain lg:h-[90vh]"
-          />
-        </MorphingDialogContent>
-        <MorphingDialogClose
-          className="fixed right-6 top-6 h-fit w-fit rounded-full bg-white p-1"
-          variants={{
-            initial: { opacity: 0 },
-            animate: {
-              opacity: 1,
-              transition: { delay: 0.3, duration: 0.1 },
-            },
-            exit: { opacity: 0, transition: { duration: 0 } },
-          }}
-        >
-          <XIcon className="h-5 w-5 text-zinc-500" />
-        </MorphingDialogClose>
-      </MorphingDialogContainer>
-    </MorphingDialog>
+      </div>
+    </button>
   );
 }
 

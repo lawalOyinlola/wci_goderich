@@ -44,18 +44,6 @@ export const NAV_ITEMS: NavItem[] = [
           "Outreach Programs",
         ],
       },
-      // {
-      //   label: "Women's Ministry",
-      //   description:
-      //     "Supporting and encouraging women in their spiritual journey through fellowship, prayer, and Bible study.",
-      //   href: "/ministries",
-      //   activities: [
-      //     "Women's Bible Study",
-      //     "Prayer Groups",
-      //     "Fellowship Events",
-      //     "Outreach Programs",
-      //   ],
-      // },
       {
         label: "Businessmen Fellowship",
         description:
@@ -122,12 +110,12 @@ export const NAV_ITEMS: NavItem[] = [
         description:
           "Watch recent sermons, live streams, and multimedia content.",
       },
-      {
-        label: "Library",
-        href: "/library",
-        description:
-          "Access our digital library of books, teachings, and resources.",
-      },
+      // {
+      //   label: "Library",
+      //   href: "/library",
+      //   description:
+      //     "Access our digital library of books, teachings, and resources.",
+      // },
       {
         label: "Gallery",
         href: "/gallery",
