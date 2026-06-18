@@ -20,6 +20,7 @@ import {
     type Icon,
 } from "@phosphor-icons/react";
 import { School } from "@/lib/types";
+import { Reveal, Stagger, StaggerItem } from "@/components/motion";
 
 const MAX_TEXT_LENGTH = 250;
 
@@ -37,7 +38,7 @@ function getDisplayText(school: School): string | null {
 function SchoolCard({ school }: { school: School }) {
     const displayText = getDisplayText(school);
     return (
-        <Card className="shadow-sm hover:shadow-primary/20 hover:shadow-md transition-all duration-300 flex flex-col">
+        <Card className="shadow-sm hover:shadow-primary/20 hover:shadow-md transition-all duration-300 flex flex-col w-full">
             <CardHeader>
                 <CardTitle className="text-xl">{school.name}</CardTitle>
                 <CardDescription className="flex items-center gap-1">
@@ -101,15 +102,19 @@ function SchoolSection({
 
     return (
         <div className={`mb-12 ${className}`}>
-            <h3 className="text-2xl font-semibold mb-6 flex items-center gap-2">
-                <IconComponent className="h-6 w-6 text-primary" />
-                {title}
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <Reveal>
+                <h3 className="text-2xl font-semibold mb-6 flex items-center gap-2">
+                    <IconComponent className="h-6 w-6 text-primary" />
+                    {title}
+                </h3>
+            </Reveal>
+            <Stagger className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {schools.map((school) => (
-                    <SchoolCard key={school.id} school={school} />
+                    <StaggerItem key={school.id} className="flex">
+                        <SchoolCard school={school} />
+                    </StaggerItem>
                 ))}
-            </div>
+            </Stagger>
         </div>
     );
 }
@@ -131,11 +136,13 @@ export default function NigerianSchools({
     return (
         <section>
             <div className="small-container">
-                <SectionHeader
-                    subtitle="Nigeria"
-                    title="Schools in Nigeria"
-                    description="Our comprehensive educational institutions in Nigeria, from primary to university level, committed to raising a new generation of leaders who excel academically while maintaining strong Christian values and character."
-                />
+                <Reveal>
+                    <SectionHeader
+                        subtitle="Nigeria"
+                        title="Schools in Nigeria"
+                        description="Our comprehensive educational institutions in Nigeria, from primary to university level, committed to raising a new generation of leaders who excel academically while maintaining strong Christian values and character."
+                    />
+                </Reveal>
 
                 <SchoolSection
                     title="Primary & Secondary Schools"
