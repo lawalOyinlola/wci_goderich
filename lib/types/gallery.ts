@@ -13,6 +13,9 @@ export interface GalleryImage {
   imageUrl: string;
   altText: string;
   orientation: GalleryOrientation;
+  /** Intrinsic pixel dimensions, used to reserve exact space and drive masonry heights. */
+  width?: number;
+  height?: number;
   category?: string;
   featured: boolean;
   displayOrder: number;
