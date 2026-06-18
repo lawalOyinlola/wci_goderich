@@ -13,6 +13,7 @@ import {
   MusicNoteIcon,
   PaletteIcon,
   HeartIcon,
+  HandHeartIcon,
   StarIcon,
   TargetIcon,
   EyeIcon,
@@ -30,7 +31,7 @@ const ACTIVITY_ICONS = [
   StarIcon,
   PaletteIcon,
   SparkleIcon,
-  HeartIcon,
+  HandHeartIcon,
   UsersIcon,
 ];
 
