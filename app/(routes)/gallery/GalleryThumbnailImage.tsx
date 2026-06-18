@@ -27,7 +27,9 @@ export function GalleryThumbnailImage({
   const [hasError, setHasError] = useState(false);
   const [retryCount, setRetryCount] = useState(0);
   const [isRetrying, setIsRetrying] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const imgRef = useRef<HTMLImageElement>(null);
 
   // Reset when src changes
   useEffect(() => {
@@ -35,11 +37,19 @@ export function GalleryThumbnailImage({
     setHasError(false);
     setRetryCount(0);
     setIsRetrying(false);
+    setIsLoaded(false);
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
       timeoutRef.current = null;
     }
   }, [src]);
+
+  // Handle images already cached/complete before onLoad fires
+  useEffect(() => {
+    if (imgRef.current?.complete && imgRef.current.naturalWidth > 0) {
+      setIsLoaded(true);
+    }
+  }, [imageSrc]);
 
   const handleError = () => {
     if (retryCount < maxRetries) {
@@ -69,6 +79,7 @@ export function GalleryThumbnailImage({
 
   const handleLoad = () => {
     setIsRetrying(false);
+    setIsLoaded(true);
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
       timeoutRef.current = null;
@@ -99,13 +110,20 @@ export function GalleryThumbnailImage({
 
   return (
     <img
+      ref={imgRef}
       src={imageSrc}
       alt={alt}
       className={cn(
+        // GPU-promote each image to its own compositing layer so it isn't
+        // re-rasterized (and flickering) as it scrolls behind the fixed,
+        // backdrop-blurred navbar.
+        "transform-gpu backface-hidden transition-opacity duration-500 ease-out",
+        isLoaded ? "opacity-100" : "opacity-0",
         isRetrying && "opacity-50",
         className
       )}
       loading="lazy"
+      decoding="async"
       onError={handleError}
       onLoad={handleLoad}
     />
