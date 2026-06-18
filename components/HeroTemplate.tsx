@@ -20,7 +20,10 @@ export default function HeroTemplate({
     <>
       <main
         id="hero"
-        className={cn("overflow-hidden relative min-h-screen", className)}
+        className={cn(
+          "overflow-hidden relative min-h-screen transform-gpu backface-hidden",
+          className
+        )}
         style={
           backgroundImage
             ? {
@@ -32,8 +35,8 @@ export default function HeroTemplate({
             : undefined
         }
       >
-        <div className="bg-background/50 absolute inset-y-0 h-[200%] w-full md:w-1/2 rounded-r-full backdrop-blur-[2px]" />
-        <div className="bg-background/50 absolute inset-y-0 w-full lg:w-4/7 rounded-r-full backdrop-blur-[2px]" />
+        <div className="bg-background/55 absolute inset-y-0 h-[200%] w-full md:w-1/2 rounded-r-full" />
+        <div className="bg-background/55 absolute inset-y-0 w-full lg:w-4/7 rounded-r-full" />
         <section>
           <div className="pb-24 pt-12">
             <div className="relative small-container flex flex-col lg:flex-center">

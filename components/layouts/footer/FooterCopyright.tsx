@@ -18,7 +18,7 @@ export function FooterCopyright() {
         rel="noopener noreferrer"
         className="font-semibold hover:underline transition-colors"
       >
-        YERO
+        LAWAL
       </a>
     </span>
   );

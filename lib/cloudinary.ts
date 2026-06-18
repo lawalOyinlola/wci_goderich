@@ -260,3 +260,73 @@ export async function listImagesFromFolder(
   }
 }
 
+/**
+ * Lists images by their `asset_folder` using the Search API.
+ *
+ * Required for Cloudinary "dynamic folders" mode, where the folder is stored as
+ * asset_folder metadata and is NOT part of the public_id — so the Admin API's
+ * `prefix` (which matches on public_id) returns nothing. Paginates via
+ * next_cursor up to `max_results`.
+ */
+export async function listImagesByAssetFolder(
+  assetFolder: string,
+  options: { max_results?: number } = {},
+): Promise<{ resources: ListImagesResource[]; total_count: number }> {
+  ensureCloudinaryConfigured();
+  const maxResults = options.max_results ?? 500;
+
+  type SearchResource = {
+    public_id: string;
+    secure_url: string;
+    url?: string;
+    width: number;
+    height: number;
+    format: string;
+    created_at: string;
+    bytes: number;
+    context?: ListImagesResource["context"];
+    tags?: string[];
+  };
+
+  try {
+    const collected: ListImagesResource[] = [];
+    let nextCursor: string | undefined;
+
+    do {
+      const query = cloudinary.search
+        .expression(`asset_folder="${assetFolder}" AND resource_type:image`)
+        .with_field("context")
+        .with_field("tags")
+        .sort_by("created_at", "desc")
+        .max_results(Math.min(maxResults - collected.length, 500));
+
+      if (nextCursor) query.next_cursor(nextCursor);
+
+      const result = await query.execute();
+      const resources = (result.resources ?? []) as SearchResource[];
+
+      for (const r of resources) {
+        collected.push({
+          public_id: r.public_id,
+          secure_url: r.secure_url,
+          url: r.url ?? r.secure_url,
+          width: r.width,
+          height: r.height,
+          format: r.format,
+          created_at: r.created_at,
+          bytes: r.bytes,
+          context: r.context,
+          tags: r.tags,
+        });
+      }
+
+      nextCursor = result.next_cursor;
+    } while (nextCursor && collected.length < maxResults);
+
+    return { resources: collected, total_count: collected.length };
+  } catch (error) {
+    console.error("Error searching images by asset_folder:", error);
+    throw new Error(`Failed to search images in asset_folder: ${assetFolder}`);
+  }
+}
+

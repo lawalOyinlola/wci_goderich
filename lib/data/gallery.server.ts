@@ -6,7 +6,10 @@
  * url, alt, title come from Cloudinary metadata or SAMPLE_IMAGES.
  */
 
-import { listImagesFromFolder } from "@/lib/cloudinary";
+import {
+  listImagesFromFolder,
+  listImagesByAssetFolder,
+} from "@/lib/cloudinary";
 import {
   GALLERY_FOLDER,
   DEFAULT_GALLERY_LIMIT,
@@ -90,8 +93,32 @@ function sanitizePagination(filters?: GalleryFilters): {
 
 type ListResult = Awaited<ReturnType<typeof listImagesFromFolder>>;
 
-/** Fetch from Cloudinary, trying each prefix until we get resources or exhaust options. */
+/**
+ * Fetch gallery images from Cloudinary.
+ *
+ * Primary path is the Search API by `asset_folder` (works with dynamic-folder
+ * accounts, where the folder is metadata rather than part of the public_id).
+ * Falls back to the legacy public_id `prefix` listing for assets uploaded the
+ * old way (folder baked into the public_id).
+ */
 async function fetchFromCloudinary(): Promise<ListResult | null> {
+  try {
+    const result = await listImagesByAssetFolder(GALLERY_FOLDER, {
+      max_results: MAX_GALLERY_RESULTS,
+    });
+    if (result.resources.length > 0) {
+      console.info(
+        `Gallery: found ${result.resources.length} images in asset_folder "${GALLERY_FOLDER}"`,
+      );
+      return result;
+    }
+  } catch (e) {
+    console.warn(
+      `Gallery: asset_folder search failed for "${GALLERY_FOLDER}"`,
+      e,
+    );
+  }
+
   for (const prefix of GALLERY_PREFIXES) {
     try {
       const result = await listImagesFromFolder(prefix, {
@@ -117,7 +144,9 @@ function sampleImagesAsGallery(): GalleryImage[] {
     description: undefined,
     imageUrl: optimizeCloudinaryUrl(img.src),
     altText: img.alt,
-    orientation: "square" as const,
+    orientation: getOrientation(img.width, img.height),
+    width: img.width,
+    height: img.height,
     category: undefined,
     featured: false,
     displayOrder: SAMPLE_IMAGES.length - i,
@@ -174,6 +203,8 @@ export async function getGalleryImagesServer(
           imageUrl: optimizeCloudinaryUrl(r.secure_url),
           altText,
           orientation,
+          width: r.width,
+          height: r.height,
           category,
           featured,
           displayOrder: result.resources.length - i,

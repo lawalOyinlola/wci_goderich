@@ -4,7 +4,6 @@ import { useMemo } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import SectionHeader from "@/components/SectionHeader";
 import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { FilterTabs, type TabConfig } from "@/components/ui/filter-tabs";
 import { BookOpenIcon } from "@phosphor-icons/react";
 import { PRAYER_POINTS } from "@/lib/constants";
@@ -21,7 +20,7 @@ export default function PrayerPoints({ initialCategory }: PrayerPointsProps) {
     const now = new Date();
     const startOfYear = new Date(now.getFullYear(), 0, 1);
     const daysSinceStart = Math.floor(
-      (now.getTime() - startOfYear.getTime()) / (1000 * 60 * 60 * 24)
+      (now.getTime() - startOfYear.getTime()) / (1000 * 60 * 60 * 24),
     );
     const currentWeekOfYear = Math.floor(daysSinceStart / 7);
     const cycleWeekNumber = (currentWeekOfYear % 6) + 1;
@@ -51,25 +50,10 @@ export default function PrayerPoints({ initialCategory }: PrayerPointsProps) {
   const router = useRouter();
   const categoryParam = searchParams.get("category") || initialCategory;
 
-  // Validate and set active tab from URL
-  const validCategories = [
-    "all",
-    "midnight",
-    "general-personal-growth",
-    "general-family-relationships",
-    "general-church-community",
-    "general-global-concerns",
-    "special",
-  ];
-  const activeTab =
-    categoryParam && validCategories.includes(categoryParam)
-      ? categoryParam
-      : "all";
-
   const tabs = useMemo<TabConfig[]>(() => {
     // Count midnight groups (all groups together)
     const midnightCount = PRAYER_POINTS.filter(
-      (point) => point.category === "midnight"
+      (point) => point.category === "midnight",
     ).length;
 
     // Count general subcategories
@@ -81,7 +65,7 @@ export default function PrayerPoints({ initialCategory }: PrayerPointsProps) {
     ].map((subcat) => {
       const count = PRAYER_POINTS.filter(
         (point) =>
-          point.category === "general" && point.subcategory === subcat.value
+          point.category === "general" && point.subcategory === subcat.value,
       ).length;
       return {
         value: `general-${subcat.value}`,
@@ -92,10 +76,10 @@ export default function PrayerPoints({ initialCategory }: PrayerPointsProps) {
 
     // Count special
     const specialCount = PRAYER_POINTS.filter(
-      (point) => point.category === "special"
+      (point) => point.category === "special",
     ).length;
 
-    return [
+    const allTabs: TabConfig[] = [
       {
         value: "all",
         label: "All Points",
@@ -113,7 +97,17 @@ export default function PrayerPoints({ initialCategory }: PrayerPointsProps) {
         count: specialCount,
       },
     ];
+
+    // Only render a tab when it actually has points (always keep "All Points"
+    // as the home tab). This auto-hides e.g. Midnight Groups while it's empty.
+    return allTabs.filter((tab) => tab.value === "all" || (tab.count ?? 0) > 0);
   }, []);
+
+  // Fall back to "All Points" when the URL category has no visible tab.
+  const activeTab =
+    categoryParam && tabs.some((tab) => tab.value === categoryParam)
+      ? categoryParam
+      : "all";
 
   const filteredPoints = useMemo(() => {
     if (activeTab === "all") {
@@ -128,7 +122,7 @@ export default function PrayerPoints({ initialCategory }: PrayerPointsProps) {
       const subcategory = activeTab.replace("general-", "");
       return PRAYER_POINTS.filter(
         (point) =>
-          point.category === "general" && point.subcategory === subcategory
+          point.category === "general" && point.subcategory === subcategory,
       );
     }
 

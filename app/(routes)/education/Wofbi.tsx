@@ -6,23 +6,26 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { WOFBI } from "@/lib/constants";
 import { ArrowUpRightIcon, CalendarIcon } from "@phosphor-icons/react";
+import { Reveal, Stagger, StaggerItem } from "@/components/motion";
 
 
 
 export default function Wofbi() {
     return (<section id="wofbi" className="bg-muted/30">
         <div className="small-container">
-            <SectionHeader
-                title={WOFBI.title}
-                subtitle={WOFBI.subtitle}
-                description={WOFBI.description}
-            />
+            <Reveal>
+                <SectionHeader
+                    title={WOFBI.title}
+                    subtitle={WOFBI.subtitle}
+                    description={WOFBI.description}
+                />
+            </Reveal>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <Stagger className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {WOFBI.programs.map((program) => (
+                    <StaggerItem key={program.id} className="flex">
                     <Card
-                        key={program.id}
-                        className="relative hover:shadow-lg transition-shadow overflow-hidden"
+                        className="relative hover:shadow-lg transition-shadow overflow-hidden w-full flex flex-col"
                     >
                         <div className="absolute flex-center top-0 translate-y-1/2 right-0 translate-x-1/4 w-1/2 text-background dark:text-foreground bg-foreground/80 dark:bg-background/80 px-2 py-1 rotate-35">{program.level}</div>
                         <CardHeader>
@@ -69,8 +72,9 @@ export default function Wofbi() {
                             />
                         </CardContent>
                     </Card>
+                    </StaggerItem>
                 ))}
-            </div>
+            </Stagger>
             <div className="mt-12 text-center">
                 <AnimatedButton
                     href="/wofbi"

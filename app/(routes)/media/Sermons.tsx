@@ -3,27 +3,29 @@
 
 import Image from "next/image";
 import SectionHeader from "@/components/SectionHeader";
-import { SERMONS } from "@/lib/constants";
+import { SERMONS, SERMONS_ENABLED } from "@/lib/constants";
 import SermonBtn from "@/components/homePage/SermonBtn";
+import { Reveal, Stagger, StaggerItem } from "@/components/motion";
 
 const MEDIA_CENTER_URL = "https://media.faithtabernacle.org.ng/";
 
 export default function Sermons() {
-
-
+  if (!SERMONS_ENABLED) return null;
 
     return (
         <section id="sermons" className="scroll-mt-24">
             <div className="small-container">
-                <SectionHeader
-                    title="Recent Sermons"
-                    subtitle="Teaching & Ministry"
-                    description="Watch and listen to powerful teachings from our pastors. More content available on our live stream platform."
-                />
+                <Reveal>
+                    <SectionHeader
+                        title="Recent Sermons"
+                        subtitle="Teaching & Ministry"
+                        description="Watch and listen to powerful teachings from our pastors. More content available on our live stream platform."
+                    />
+                </Reveal>
 
-                <div className="flex flex-wrap justify-center gap-8">
+                <Stagger className="flex flex-wrap justify-center gap-8">
                     {[...SERMONS].reverse().map((sermon, index) => (
-                        <div
+                        <StaggerItem
                             key={sermon.id}
                             className="group relative overflow-hidden text-center flex flex-col basis-full sm:basis-[calc(50%-theme(space.8)/2)] lg:basis-[calc(33.333%-theme(space.8)/1.5)] max-w-[420px] rounded"
                         >
@@ -60,9 +62,9 @@ export default function Sermons() {
                                     {sermon.date}
                                 </p>
                             </div>
-                        </div>
+                        </StaggerItem>
                     ))}
-                </div>
+                </Stagger>
             </div>
         </section>
     );

@@ -77,6 +77,11 @@ export type PrayerSession = {
   description: string;
   day: string;
   times: string[];
+  /**
+   * Optional breakdown of multiple schedules within one session (e.g. Weekdays
+   * vs Saturday). When present, rendered as side-by-side day/time columns.
+   */
+  schedules?: { day: string; times: string[] }[];
   location: string;
   type: "service" | "prayer" | "group";
   isSpecial?: boolean;

@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import SectionHeader from "@/components/SectionHeader";
 
 export default function GallerySkeleton() {
@@ -10,26 +11,20 @@ export default function GallerySkeleton() {
           description="Browse through our collection of memorable moments"
         />
 
-        {/* Masonry Layout Skeleton - 21 items */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
-          {Array.from({ length: 3 }).map((_, colIndex) => (
-            <div key={colIndex} className="space-y-4">
-              {Array.from({ length: 7 }).map((_, i) => (
-                <div
-                  key={i}
-                  className={`
-                    bg-muted animate-pulse rounded-lg
-                    ${
-                      i % 3 === 0
-                        ? "aspect-3/4"
-                        : i % 3 === 1
-                        ? "aspect-video"
-                        : "aspect-square"
-                    }
-                  `}
-                />
-              ))}
-            </div>
+        {/* Masonry Skeleton - matches GalleryContent layout */}
+        <div className="columns-2 md:columns-3 lg:columns-4 gap-3 mb-12 *:mb-3">
+          {Array.from({ length: 16 }).map((_, i) => (
+            <div
+              key={i}
+              className={cn(
+                "bg-muted animate-pulse rounded-lg break-inside-avoid",
+                i % 3 === 0
+                  ? "aspect-3/4"
+                  : i % 3 === 1
+                    ? "aspect-4/3"
+                    : "aspect-square"
+              )}
+            />
           ))}
         </div>
 

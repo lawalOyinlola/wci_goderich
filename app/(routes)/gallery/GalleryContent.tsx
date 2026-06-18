@@ -45,6 +45,31 @@ interface GalleryContentProps {
   initialMonth?: number;
 }
 
+/** Responsive column count for the masonry layout: 2 (mobile) / 3 (tablet) / 4 (desktop). */
+function useColumnCount() {
+  const [columns, setColumns] = useState(4);
+
+  useEffect(() => {
+    const compute = () => {
+      const w = window.innerWidth;
+      setColumns(w < 640 ? 2 : w < 1024 ? 3 : 4);
+    };
+    compute();
+    window.addEventListener("resize", compute);
+    return () => window.removeEventListener("resize", compute);
+  }, []);
+
+  return columns;
+}
+
+/** Image height per unit width, used to balance masonry columns. */
+function aspectHeight(image: GalleryImage) {
+  if (image.width && image.height) return image.height / image.width;
+  if (image.orientation === "portrait") return 4 / 3;
+  if (image.orientation === "landscape") return 3 / 4;
+  return 1;
+}
+
 export default function GalleryContent({
   initialPage = 1,
   initialCategory,
@@ -193,17 +218,37 @@ export default function GalleryContent({
     // Don't scroll to top - skeleton will show loading state
   };
 
-  const groupedImages = useMemo(() => {
-    // Distribute images across 3 columns for masonry layout
-    const columns: GalleryImage[][] = [[], [], []];
+  // Clear every active filter and return to the full gallery (page 1).
+  const resetFilters = () => {
+    form.setValue("month", "all");
+    updateSearchParams({
+      month: null,
+      pastYears: null,
+      category: null,
+      orientation: null,
+      page: 1,
+    });
+  };
 
-    // Distribute images evenly across columns
-    images.forEach((image, index) => {
-      columns[index % 3].push(image);
+  // Distribute images into independent, shortest-first columns. Each column is a
+  // normal block flow (not CSS multi-column), so native lazy-loading works and
+  // images never jump between columns as later images load in.
+  const columnCount = useColumnCount();
+  const columns = useMemo(() => {
+    const cols: GalleryImage[][] = Array.from({ length: columnCount }, () => []);
+    const heights = new Array<number>(columnCount).fill(0);
+
+    images.forEach((image) => {
+      let target = 0;
+      for (let i = 1; i < columnCount; i++) {
+        if (heights[i] < heights[target]) target = i;
+      }
+      cols[target].push(image);
+      heights[target] += aspectHeight(image);
     });
 
-    return columns;
-  }, [images]);
+    return cols;
+  }, [images, columnCount]);
 
   // Show skeleton when loading (including page changes)
   if (loading) {
@@ -244,11 +289,14 @@ export default function GalleryContent({
         {error && images.length === 0 ? (
           <GalleryErrorState error={error} onRetry={() => fetchImages()} />
         ) : images.length === 0 ? (
-          <GalleryEmptyState hasFilter={hasActiveFilter} />
+          <GalleryEmptyState
+            hasFilter={hasActiveFilter}
+            onReset={resetFilters}
+          />
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
-            {groupedImages?.map((column, colIndex) => (
-              <div key={colIndex} className="space-y-4">
+          <div className="flex items-start gap-3 mb-12">
+            {columns.map((column, colIndex) => (
+              <div key={colIndex} className="flex flex-1 flex-col gap-3 min-w-0">
                 {column.map((image) => (
                   <GalleryImageCard key={image.id} image={image} />
                 ))}
@@ -290,18 +338,18 @@ export default function GalleryContent({
 }
 
 function GalleryImageCard({ image }: { image: GalleryImage }) {
-  const aspectRatio = useMemo(() => {
-    switch (image.orientation) {
-      case "portrait":
-        return "aspect-3/4";
-      case "landscape":
-        return "aspect-video";
-      case "square":
-        return "aspect-square";
-      default:
-        return "aspect-square";
-    }
-  }, [image.orientation]);
+  // Reserve the exact box using the image's real dimensions so nothing shifts as
+  // it loads; fall back to orientation buckets when dimensions are unavailable.
+  const aspectStyle =
+    image.width && image.height
+      ? { aspectRatio: `${image.width} / ${image.height}` }
+      : undefined;
+  const aspectFallback =
+    image.orientation === "portrait"
+      ? "aspect-3/4"
+      : image.orientation === "landscape"
+        ? "aspect-4/3"
+        : "aspect-square";
 
   return (
     <MorphingDialog
@@ -311,11 +359,11 @@ function GalleryImageCard({ image }: { image: GalleryImage }) {
       }}
     >
       <MorphingDialogTrigger
+        style={aspectStyle}
         className={cn(
-          "group relative overflow-hidden shadow-lg cursor-pointer rounded-lg",
+          "group relative block w-full overflow-hidden shadow-lg cursor-pointer rounded-lg bg-muted",
           "hover:shadow-2xl transition-all duration-300 hover:scale-[1.02]",
-          aspectRatio,
-          "w-full"
+          !aspectStyle && aspectFallback
         )}
       >
         <GalleryThumbnailImage
@@ -407,7 +455,13 @@ function GalleryErrorState({
   );
 }
 
-function GalleryEmptyState({ hasFilter }: { hasFilter?: boolean }) {
+function GalleryEmptyState({
+  hasFilter,
+  onReset,
+}: {
+  hasFilter?: boolean;
+  onReset?: () => void;
+}) {
   return (
     <Empty className="border border-dashed py-20 my-12 max-w-2xl mx-auto">
       <EmptyHeader>
@@ -437,7 +491,7 @@ function GalleryEmptyState({ hasFilter }: { hasFilter?: boolean }) {
               <AnimatedButton
                 size="lg"
                 text="View All Images"
-                href="/gallery"
+                onClick={onReset}
                 icon={<CameraIcon weight="bold" />}
               />
               <AnimatedButton

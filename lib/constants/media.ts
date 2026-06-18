@@ -29,6 +29,9 @@ export const LIVE_STREAM_SOURCES = [
   },
 ] as const;
 
+/** Set to true once real sermon data with proper images replaces the placeholders. */
+export const SERMONS_ENABLED = false;
+
 export const SERMONS = [
   {
     id: 1,
