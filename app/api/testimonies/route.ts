@@ -64,41 +64,20 @@ export async function GET(request: NextRequest) {
     // Calculate offset using sanitized values
     const offset = (pageNum - 1) * limitNum;
 
-    // Build base query for counting total items
-    let countQuery = supabaseServer
-      .from("testimonies")
-      .select("*", { count: "exact", head: true });
+    // Validate the optional type filter
+    const typeFilter =
+      type && ["written", "video", "audio"].includes(type)
+        ? (type as "written" | "video" | "audio")
+        : null;
 
-    // Build query for fetching data
-    let query = supabaseServer
-      .from("testimonies")
-      .select("*")
-      .order("date", { ascending: false });
-
-    // Default to showing only verified testimonies unless explicitly requested
-    if (verified === "false" || verified === "0") {
-      // Show unverified if explicitly requested
-      query = query.eq("verified", false);
-      countQuery = countQuery.eq("verified", false);
-    } else {
-      // Default: show only verified testimonies
-      query = query.eq("verified", true);
-      countQuery = countQuery.eq("verified", true);
-    }
-
-    if (type && ["written", "video", "audio"].includes(type)) {
-      query = query.eq("type", type);
-      countQuery = countQuery.eq("type", type);
-    }
-
+    // Parse categories (supports comma-separated or single category)
+    let categories: string[] | null = null;
     if (category) {
-      // Support comma-separated categories or single category
-      const categories = category
+      categories = category
         .split(",")
         .map((c) => c.trim())
         .filter((c) => c.length > 0);
       if (categories.length === 0) {
-        // Skip filtering if no valid categories after trimming
         return NextResponse.json(
           {
             error:
@@ -106,28 +85,70 @@ export async function GET(request: NextRequest) {
           },
           { status: 400 }
         );
-      } else if (categories.length === 1) {
-        query = query.eq("category", categories[0]);
-        countQuery = countQuery.eq("category", categories[0]);
-      } else {
-        query = query.in("category", categories);
-        countQuery = countQuery.in("category", categories);
       }
     }
 
-    if (featured === "true") {
-      query = query.eq("featured", true);
-      countQuery = countQuery.eq("featured", true);
+    const showVerified = !(verified === "false" || verified === "0");
+    const onlyFeatured = featured === "true";
+
+    // Filters shared by every query (verified, category, featured). Deliberately
+    // excludes the `type` filter so tab counts stay stable regardless of which
+    // type tab is currently active. `eq`/`in` return the same builder type, so a
+    // typed-helper is unnecessary here — we apply them inline per query.
+
+    // Query for the current page of data (respects the active type filter).
+    let dataQuery = supabaseServer
+      .from("testimonies")
+      .select("*")
+      .order("date", { ascending: false })
+      .eq("verified", showVerified);
+    if (categories) {
+      dataQuery =
+        categories.length === 1
+          ? dataQuery.eq("category", categories[0])
+          : dataQuery.in("category", categories);
     }
+    if (onlyFeatured) {
+      dataQuery = dataQuery.eq("featured", true);
+    }
+    if (typeFilter) {
+      dataQuery = dataQuery.eq("type", typeFilter);
+    }
+    dataQuery = dataQuery.range(offset, offset + limitNum - 1);
 
-    // Apply pagination
-    query = query.range(offset, offset + limitNum - 1);
+    // Per-type counts, independent of the active type filter, so the tabs can
+    // always show the true total for each category.
+    const makeTypeCount = (t: "written" | "video" | "audio") => {
+      let q = supabaseServer
+        .from("testimonies")
+        .select("*", { count: "exact", head: true })
+        .eq("verified", showVerified);
+      if (categories) {
+        q =
+          categories.length === 1
+            ? q.eq("category", categories[0])
+            : q.in("category", categories);
+      }
+      if (onlyFeatured) {
+        q = q.eq("featured", true);
+      }
+      return q.eq("type", t);
+    };
 
-    // Execute both queries
-    const [{ data, error }, { count, error: countError }] = await Promise.all([
-      query,
-      countQuery,
+    const [
+      { data, error },
+      writtenCountRes,
+      videoCountRes,
+      audioCountRes,
+    ] = await Promise.all([
+      dataQuery,
+      makeTypeCount("written"),
+      makeTypeCount("video"),
+      makeTypeCount("audio"),
     ]);
+
+    const countError =
+      writtenCountRes.error || videoCountRes.error || audioCountRes.error;
 
     if (error || countError) {
       if (process.env.NODE_ENV === "development") {
@@ -139,16 +160,24 @@ export async function GET(request: NextRequest) {
       );
     }
 
+    const counts = {
+      written: writtenCountRes.count || 0,
+      video: videoCountRes.count || 0,
+      audio: audioCountRes.count || 0,
+    };
+    const allCount = counts.written + counts.video + counts.audio;
+
     // Transform data to match frontend expectations
     const transformedData = transformTestimonies(data || []);
 
-    // Calculate pagination metadata using sanitized limitNum
-    // limitNum is already sanitized (>= 1 and <= MAX_LIMIT), so it's safe to use
-    const totalItems = count || 0;
+    // Total for the *current* view: the active type's count when filtered,
+    // otherwise the combined total.
+    const totalItems = typeFilter ? counts[typeFilter] : allCount;
     const totalPages = Math.ceil(totalItems / limitNum);
     // Ensure totalPages is a valid number (handle edge cases like NaN/Infinity)
-    const safeTotalPages = Number.isFinite(totalPages) && totalPages >= 0 ? totalPages : 0;
-    
+    const safeTotalPages =
+      Number.isFinite(totalPages) && totalPages >= 0 ? totalPages : 0;
+
     const pagination = {
       currentPage: pageNum,
       totalPages: safeTotalPages,
@@ -159,7 +188,12 @@ export async function GET(request: NextRequest) {
     };
 
     return NextResponse.json(
-      { data: transformedData, pagination, success: true },
+      {
+        data: transformedData,
+        pagination,
+        counts: { all: allCount, ...counts },
+        success: true,
+      },
       { status: 200 }
     );
   } catch (error) {

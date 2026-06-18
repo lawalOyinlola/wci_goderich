@@ -21,6 +21,9 @@ interface FilterTabsProps {
   tabsTriggerClassName?: string;
   showCount?: boolean;
   variant?: "default" | "simple";
+  // When true, the count slot shows a placeholder figure instead of a number
+  // (e.g. while counts are still being fetched), so the layout doesn't shift.
+  countLoading?: boolean;
 }
 
 export function FilterTabs({
@@ -33,6 +36,7 @@ export function FilterTabs({
   tabsTriggerClassName,
   showCount = true,
   variant = "default",
+  countLoading = false,
 }: FilterTabsProps) {
   const isDefaultVariant = variant === "default";
 
@@ -80,7 +84,7 @@ export function FilterTabs({
             >
               {tab.label}
             </span>
-            {showCount && tab.count !== undefined && (
+            {showCount && (countLoading || tab.count !== undefined) && (
               <span
                 className={cn(
                   "ml-1 sm:ml-2 rounded-sm px-1.5 sm:px-2.5 py-1 sm:py-1.5 text-[10px] sm:text-xs font-medium shrink-0",
@@ -93,7 +97,11 @@ export function FilterTabs({
                     : "bg-muted text-muted-foreground"
                 )}
               >
-                {tab.count}
+                {countLoading ? (
+                  <span className="inline-block h-2.5 w-3 animate-pulse rounded-xs bg-current/40 align-middle" />
+                ) : (
+                  tab.count
+                )}
               </span>
             )}
           </TabsTrigger>
