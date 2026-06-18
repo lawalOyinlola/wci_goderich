@@ -5,26 +5,6 @@ import type {
 } from "@/lib/types/prayer";
 import { SERVICES } from "./services";
 
-// Helper function to convert midnight prayer groups to PrayerPoint[]
-function convertMidnightGroupsToPrayerPoints(
-  groups: MidnightPrayerGroups,
-): PrayerPoint[] {
-  return Object.entries(groups).map(([groupNumberStr, group]) => {
-    const groupNumber = parseInt(groupNumberStr, 10);
-    return {
-      id: `midnight-group-${groupNumber}`,
-      title: `Midnight Prayer Group ${groupNumber}`,
-      description: `Complete prayer guide for ${group.name} with all intercessions and personal thanksgiving`,
-      category: "midnight" as const,
-      groupNumber,
-      intercessions: group.intercessions,
-      personalThanksgiving: group.personalThanksgiving,
-      points: [],
-      date: new Date().toISOString().split("T")[0],
-    };
-  });
-}
-
 // Midnight Prayer Groups Data - Object with groupNumber as key
 // Each group is assigned to a specific day of the week (Group 1 = Monday, Group 2 = Tuesday, etc.)
 export const MIDNIGHT_PRAYER_GROUPS: MidnightPrayerGroups = {
@@ -334,10 +314,6 @@ export const MIDNIGHT_PRAYER_GROUPS: MidnightPrayerGroups = {
   },
 };
 
-// Generate all midnight prayer points from the structured data
-const midnightPrayerPoints: PrayerPoint[] = convertMidnightGroupsToPrayerPoints(
-  MIDNIGHT_PRAYER_GROUPS,
-);
 
 // General Prayer Points
 const generalPrayerPoints: PrayerPoint[] = [
@@ -558,8 +534,10 @@ const specialPrayerPoints: PrayerPoint[] = [
 ];
 
 // Export all prayer points
+// NOTE: Midnight prayer points are intentionally excluded for now — the current
+// midnight data is placeholder, not the real points to display. The midnight tab
+// auto-hides while its count is 0; re-add midnight points here once they're ready.
 export const PRAYER_POINTS: PrayerPoint[] = [
-  ...midnightPrayerPoints,
   ...generalPrayerPoints,
   ...specialPrayerPoints,
 ];
@@ -588,33 +566,30 @@ function adaptServicesToPrayerSessions(): PrayerSession[] {
         ? [...service.times, ...service.additionalSchedule.times]
         : [...service.times];
 
-    // Handle Covenant Hour of Prayer with additional schedule
+    // Handle Covenant Hour of Prayer: combine the weekday and Saturday schedules
+    // into a single session that shows both day/time columns.
     if (
       service.title === "Covenant Hour of Prayer" &&
       "additionalSchedule" in service &&
       service.additionalSchedule
     ) {
-      return [
-        {
-          id: `service-${service.id}`,
-          name: service.title,
-          description:
-            PRAYER_SERVICE_DESCRIPTIONS[service.title] ?? service.description,
-          day: service.day,
-          times: [...service.times],
-          location: "Church Auditorium",
-          type: "prayer" as const,
-        },
-        {
-          id: `service-${service.id}-saturday`,
-          name: `${service.title} - Saturday`,
-          description: `Weekly Saturday morning prayer session - Part of the ${service.title} program.`,
-          day: service.additionalSchedule.day,
-          times: [...service.additionalSchedule.times],
-          location: "Church Auditorium",
-          type: "prayer" as const,
-        },
-      ];
+      return {
+        id: `service-${service.id}`,
+        name: service.title,
+        description:
+          PRAYER_SERVICE_DESCRIPTIONS[service.title] ?? service.description,
+        day: `${service.day} & ${service.additionalSchedule.day}`,
+        times: allTimes,
+        schedules: [
+          { day: service.day, times: [...service.times] },
+          {
+            day: service.additionalSchedule.day,
+            times: [...service.additionalSchedule.times],
+          },
+        ],
+        location: "Church Auditorium",
+        type: "prayer" as const,
+      };
     }
 
     return {
