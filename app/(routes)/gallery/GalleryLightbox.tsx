@@ -70,6 +70,11 @@ export default function GalleryLightbox({
     [images.length]
   );
 
+  // Shift keyboard focus into the dialog when it opens.
+  useEffect(() => {
+    if (open) closeButtonRef.current?.focus();
+  }, [open]);
+
   // Keyboard navigation + body scroll lock while open.
   useEffect(() => {
     if (!open) return;
