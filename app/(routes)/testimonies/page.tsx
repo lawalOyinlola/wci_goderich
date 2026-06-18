@@ -1,9 +1,9 @@
 import Hero from "./Hero";
-import TestimoniesContentWrapper from "./TestimoniesContentWrapper";
+// import TestimoniesContentWrapper from "./TestimoniesContentWrapper";
 import ShareTestimonyForm from "./ShareTestimonyForm";
 import CtaSection from "@/components/CtaSection";
-import { Suspense } from "react";
-import TestimoniesLoading from "./loading";
+// import { Suspense } from "react";
+// import TestimoniesLoading from "./loading";
 
 interface TestimoniesPageProps {
   searchParams: Promise<{ type?: string; page?: string }>;
@@ -21,12 +21,12 @@ export default async function TestimoniesPage({
     <>
       <Hero />
 
-      <Suspense fallback={<TestimoniesLoading />}>
+      {/* <Suspense fallback={<TestimoniesLoading />}>
         <TestimoniesContentWrapper
           initialType={typeParam}
           initialPage={pageParam}
         />
-      </Suspense>
+      </Suspense> */}
       <ShareTestimonyForm />
 
       <CtaSection
