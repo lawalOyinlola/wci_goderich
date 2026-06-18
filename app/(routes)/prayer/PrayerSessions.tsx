@@ -41,24 +41,55 @@ export default function PrayerSessions() {
                     {session.description}
                   </p>
                   <div className="space-y-2">
-                    <div className="flex items-center gap-2">
-                      <CalendarIcon size={16} className="text-primary" />
-                      <span className="text-sm">{session.day}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <ClockIcon size={16} className="text-primary" />
-                      <div className="flex flex-wrap gap-1">
-                        {session.times.map((time, index) => (
-                          <Badge
-                            key={index}
-                            variant="outline"
-                            className="text-xs"
-                          >
-                            {time}
-                          </Badge>
+                    {session.schedules ? (
+                      <div className="flex flex-wrap gap-x-8 gap-y-3">
+                        {session.schedules.map((schedule, index) => (
+                          <div key={index} className="space-y-1.5">
+                            <div className="flex items-center gap-2">
+                              <CalendarIcon
+                                size={16}
+                                className="text-primary"
+                              />
+                              <span className="text-sm font-medium">
+                                {schedule.day}
+                              </span>
+                            </div>
+                            <div className="flex flex-wrap gap-1 pl-6">
+                              {schedule.times.map((time, timeIndex) => (
+                                <Badge
+                                  key={timeIndex}
+                                  variant="outline"
+                                  className="text-xs"
+                                >
+                                  {time}
+                                </Badge>
+                              ))}
+                            </div>
+                          </div>
                         ))}
                       </div>
-                    </div>
+                    ) : (
+                      <>
+                        <div className="flex items-center gap-2">
+                          <CalendarIcon size={16} className="text-primary" />
+                          <span className="text-sm">{session.day}</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <ClockIcon size={16} className="text-primary" />
+                          <div className="flex flex-wrap gap-1">
+                            {session.times.map((time, index) => (
+                              <Badge
+                                key={index}
+                                variant="outline"
+                                className="text-xs"
+                              >
+                                {time}
+                              </Badge>
+                            ))}
+                          </div>
+                        </div>
+                      </>
+                    )}
                     <div className="flex items-center gap-2">
                       <MapPinIcon size={16} className="text-primary" />
                       <span className="text-sm">{session.location}</span>
