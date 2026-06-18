@@ -118,6 +118,10 @@ export default function TestimoniesContent({
           if (next.counts) {
             setCounts(next.counts);
           }
+        } else {
+          setTestimonies([]);
+          setPagination(null);
+          setCounts(null);
         }
       } catch (error) {
         // Ignore AbortError - it's expected when requests are cancelled
@@ -125,6 +129,9 @@ export default function TestimoniesContent({
           return;
         }
         console.error("Error fetching testimonies:", error);
+        setTestimonies([]);
+        setPagination(null);
+        setCounts(null);
       } finally {
         if (!signal.aborted) {
           setLoading(false);
