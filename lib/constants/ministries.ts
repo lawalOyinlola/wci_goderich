@@ -384,7 +384,7 @@ export const MINISTRY_DETAILS = {
     ageRange: "Ages 18 and above",
     schedule: {
       sunday: "Main Service",
-      fellowship: "First Saturday of every month, 4:00 PM - 6:00 PM",
+      fellowship: "At least once every two months, 4:00 PM – 6:00 PM",
       prayer: "Tuesdays 6:00 AM",
       specialEvents: "Quarterly Business Seminars",
     },
