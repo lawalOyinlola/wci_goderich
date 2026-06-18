@@ -153,7 +153,7 @@ export default function YouthAlivePage() {
             as="ul"
             className="divide-y border-t border-b max-w-3xl mx-auto"
           >
-            {ministry.programs.filter((p) => p.name !== "Youth Bible Study").map((program, index) => (
+            {ministry.programs.filter((p) => p.id !== "2").map((program, index) => (
               <StaggerItem key={program.id} as="li">
                 <div className="flex gap-6 py-8">
                   <span className="text-4xl font-bold text-muted-foreground/20 font-mono select-none pt-1 min-w-12 shrink-0">
