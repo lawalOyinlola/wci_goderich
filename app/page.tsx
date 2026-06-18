@@ -8,11 +8,12 @@ import FeaturedSermons from "@/components/homePage/sections/FeaturedSermons";
 import Donation from "@/components/homePage/sections/Donation";
 import Gallery from "@/components/homePage/sections/Gallery";
 import BirthdaysWrapper from "@/components/homePage/BirthdaysWrapper";
-import TestimoniesWrapper from "@/components/homePage/TestimoniesWrapper";
+// Testimonies hidden for now (sample data only).
+// import TestimoniesWrapper from "@/components/homePage/TestimoniesWrapper";
 import ChurchLocation from "@/components/homePage/sections/ChurchLocation";
 import GallerySkeleton from "@/components/homePage/GallerySkeleton";
 import BirthdaysSkeleton from "@/components/homePage/BirthdaysSkeleton";
-import TestimoniesSkeleton from "@/components/homePage/TestimoniesSkeleton";
+// import TestimoniesSkeleton from "@/components/homePage/TestimoniesSkeleton";
 import ChurchLocationSkeleton from "@/components/homePage/ChurchLocationSkeleton";
 
 export default async function Home() {
@@ -31,9 +32,11 @@ export default async function Home() {
       <Suspense fallback={<BirthdaysSkeleton />}>
         <BirthdaysWrapper />
       </Suspense>
+      {/* Testimonies hidden for now (sample data only).
       <Suspense fallback={<TestimoniesSkeleton />}>
         <TestimoniesWrapper />
       </Suspense>
+      */}
       <Suspense fallback={<ChurchLocationSkeleton />}>
         <ChurchLocation />
       </Suspense>

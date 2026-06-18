@@ -134,12 +134,13 @@ export const NAV_ITEMS: NavItem[] = [
         description:
           "View photos from our recent events, services, and community activities.",
       },
-      {
-        label: "Testimonies",
-        href: "/testimonies",
-        description:
-          "Read and share testimonies of God's faithfulness in our lives.",
-      },
+      // Testimonies hidden for now (sample data only).
+      // {
+      //   label: "Testimonies",
+      //   href: "/testimonies",
+      //   description:
+      //     "Read and share testimonies of God's faithfulness in our lives.",
+      // },
       {
         label: "Prayer",
         href: "/prayer",

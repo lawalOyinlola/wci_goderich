@@ -39,7 +39,8 @@ export const FOOTER_LINKS: FooterLinkGroup[] = [
       { title: "Media Library", href: "/media#hero" },
       { title: "Book Library", href: "/library#hero" },
       { title: "Photo Gallery", href: "/gallery#hero" },
-      { title: "Testimonies", href: "/testimonies#hero" },
+      // Testimonies hidden for now (sample data only).
+      // { title: "Testimonies", href: "/testimonies#hero" },
       { title: "Prayer Requests", href: "/prayer#prayer-request" },
     ],
   },
