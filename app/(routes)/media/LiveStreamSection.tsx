@@ -4,6 +4,7 @@ import SectionHeader from "@/components/SectionHeader";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import { LIVE_STREAM_SOURCES } from "@/lib/constants/media";
 import { RadioIcon, VideoCameraIcon } from "@phosphor-icons/react";
+import { Reveal, Stagger, StaggerItem } from "@/components/motion";
 import {
   Card,
   CardContent,
@@ -21,20 +22,22 @@ export default function LiveStreamSection() {
   return (
     <section id="live-streams" className="scroll-mt-24 bg-muted/30">
       <div className="small-container">
-        <SectionHeader
-          title="Live Streams & Radio"
-          subtitle="Tune In"
-          description="Connect with Living Faith Church Worldwide through DOMI Radio and live video streams directly from headquarters."
-        />
+        <Reveal>
+          <SectionHeader
+            title="Live Streams & Radio"
+            subtitle="Tune In"
+            description="Connect with Living Faith Church Worldwide through DOMI Radio and live video streams directly from headquarters."
+          />
+        </Reveal>
 
-        <div className="grid gap-6 md:grid-cols-2">
+        <Stagger className="grid gap-6 md:grid-cols-2">
           {LIVE_STREAM_SOURCES.map((source) => {
             const IconComponent =
               ICON_MAP[source.icon as keyof typeof ICON_MAP] ?? VideoCameraIcon;
             return (
+              <StaggerItem key={source.id} className="flex">
               <Card
-                key={source.id}
-                className="group overflow-hidden border-2 transition-all duration-300 hover:border-primary/30 hover:shadow-lg"
+                className="group overflow-hidden border-2 transition-all duration-300 hover:border-primary/30 hover:shadow-lg w-full"
               >
                 <CardHeader>
                   <div className="mb-2 flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
@@ -55,9 +58,10 @@ export default function LiveStreamSection() {
                   />
                 </CardContent>
               </Card>
+              </StaggerItem>
             );
           })}
-        </div>
+        </Stagger>
       </div>
     </section>
   );
