@@ -3,8 +3,8 @@ import HeroCarousel from "@/components/homePage/sections/HeroCarousel";
 import Features from "@/components/homePage/sections/Features";
 import Welcome from "@/components/homePage/sections/Welcome";
 import ChurchServices from "@/components/homePage/sections/ChurchServices";
-import UpcomingEvents from "@/components/homePage/sections/UpcomingEvents";
-import FeaturedSermons from "@/components/homePage/sections/FeaturedSermons";
+// UpcomingEvents hidden (template data only).
+// FeaturedSermons hidden (template data only).
 import Donation from "@/components/homePage/sections/Donation";
 import Gallery from "@/components/homePage/sections/Gallery";
 import BirthdaysWrapper from "@/components/homePage/BirthdaysWrapper";
@@ -23,8 +23,8 @@ export default async function Home() {
       <Features />
       <Welcome />
       <ChurchServices />
-      <UpcomingEvents />
-      <FeaturedSermons />
+      {/* <UpcomingEvents />
+      <FeaturedSermons /> */}
       <Donation />
       <Suspense fallback={<GallerySkeleton />}>
         <Gallery />
