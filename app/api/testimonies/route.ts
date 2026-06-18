@@ -65,10 +65,14 @@ export async function GET(request: NextRequest) {
     const offset = (pageNum - 1) * limitNum;
 
     // Validate the optional type filter
-    const typeFilter =
-      type && ["written", "video", "audio"].includes(type)
-        ? (type as "written" | "video" | "audio")
-        : null;
+    const VALID_TYPES = ["written", "video", "audio"] as const;
+    if (type && !VALID_TYPES.includes(type as (typeof VALID_TYPES)[number])) {
+      return NextResponse.json(
+        { error: "Invalid type. Must be one of: written, video, audio." },
+        { status: 400 }
+      );
+    }
+    const typeFilter = type ? (type as "written" | "video" | "audio") : null;
 
     // Parse categories (supports comma-separated or single category)
     let categories: string[] | null = null;
