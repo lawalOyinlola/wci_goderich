@@ -3,7 +3,8 @@
 import Link from "next/link"
 import { Highlighter } from "@/components/ui/highlighter";
 import { CalendarIcon, MapPinIcon, GlobeIcon, GraduationCapIcon, } from "@phosphor-icons/react";
-import { School } from "@/lib/types"
+import { School } from "@/lib/types";
+import { Reveal, Stagger, StaggerItem } from "@/components/motion";
 
 export default function SierraSchools({ schools }: { schools: School[] }) {
     if (!schools || schools.length === 0) {
@@ -13,7 +14,7 @@ export default function SierraSchools({ schools }: { schools: School[] }) {
     return (
         <div id="sierra-schools" className="small-container py-0">
             <div className="grid gap-12 md:grid-cols-4">
-                <div className="md:col-span-2">
+                <Reveal variant="fade" className="md:col-span-2">
                     <h2 className="text-foreground text-balance text-4xl font-semibold">Enroll your child in one of our schools in
                         <Highlighter
                             action="underline"
@@ -34,11 +35,11 @@ export default function SierraSchools({ schools }: { schools: School[] }) {
                         <li><span className="font-bold">Holistic Development:</span> We focus on nurturing the mind, body, and spirit of every student.</li>
                     </ul>
 
-                </div>
+                </Reveal>
 
-                <div className="space-y-6 md:col-span-2 md:space-y-12">
+                <Stagger stagger={0.12} className="space-y-6 md:col-span-2 md:space-y-12">
                     {schools.map(school => (
-                        <div key={school.id} className="flex flex-col gap-2">
+                        <StaggerItem key={school.id} className="flex flex-col gap-2">
                             <div className="flex items-center  gap-2">
                                 <GraduationCapIcon size={24} />
                                 <h3 className="text-foreground text-lg font-semibold">{school.name}</h3>
@@ -63,9 +64,9 @@ export default function SierraSchools({ schools }: { schools: School[] }) {
                                         </Link>
                                     </div>}
                             </div>
-                        </div>
+                        </StaggerItem>
                     ))}
-                </div>
+                </Stagger>
             </div>
         </div>
 
