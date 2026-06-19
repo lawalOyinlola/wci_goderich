@@ -36,6 +36,7 @@ export default function LocationPage() {
       <HeroTemplate
         title="Visit Us"
         description={description}
+        backgroundImage="/images/location_hero.jpeg"
         className="bg-linear-to-br from-slate-950 via-zinc-900 to-stone-900"
       >
         <AnimatedButton
