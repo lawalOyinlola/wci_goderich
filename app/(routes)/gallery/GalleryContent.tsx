@@ -378,7 +378,7 @@ function GalleryImageCard({
     <button
       type="button"
       onClick={onOpen}
-      aria-label={`View ${image.title}`}
+      aria-label={`View ${image.description ?? image.title}`}
       style={aspectStyle}
       className={cn(
         "group relative block w-full overflow-hidden shadow-lg cursor-pointer rounded-lg bg-muted",
@@ -394,12 +394,7 @@ function GalleryImageCard({
       />
       <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg" />
       <div className="absolute inset-x-0 bottom-0 p-4 text-left transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-        <h3 className="text-white font-semibold text-lg mb-1">{image.title}</h3>
-        {image.description && (
-          <p className="text-white/90 text-sm line-clamp-2">
-            {image.description}
-          </p>
-        )}
+        <p className="text-white/90 text-sm line-clamp-3">{image.description ?? image.title}</p>
       </div>
     </button>
   );
