@@ -443,7 +443,7 @@ function GalleryErrorState({
             variant="outline"
             size="lg"
             text="Contact Us"
-            href="/contact-us"
+            href="/contact-us?subject=gallery#contact-form"
           />
         </div>
       </EmptyContent>
@@ -494,7 +494,7 @@ function GalleryEmptyState({
                 variant="outline"
                 size="lg"
                 text="Contact Us"
-                href="/contact-us"
+                href="/contact-us?subject=gallery#contact-form"
               />
             </>
           ) : (
@@ -509,7 +509,7 @@ function GalleryEmptyState({
                 variant="outline"
                 size="lg"
                 text="Contact Us"
-                href="/contact-us"
+                href="/contact-us?subject=gallery#contact-form"
               />
             </>
           )}
