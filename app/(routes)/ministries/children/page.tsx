@@ -44,6 +44,7 @@ export default function ChildrenMinistryPage() {
       <HeroTemplate
         title="Children's Ministry"
         description={`Ages 1–12 · ${ministry.subtitle}. ${ministry.tagline}`}
+        backgroundImage="/images/children_ministry_hero.jpeg"
         className="bg-linear-to-br from-amber-900 via-orange-900 to-rose-900"
       >
         <AnimatedButton
