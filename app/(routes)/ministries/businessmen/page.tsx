@@ -46,6 +46,7 @@ export default function BusinessmenFellowshipPage() {
       <HeroTemplate
         title="Businessmen Fellowship"
         description={`Men of Purpose · ${ministry.subtitle}. ${ministry.tagline}`}
+        backgroundImage="/images/businessmen_fellowship_hero.jpeg"
         className="bg-linear-to-br from-zinc-950 via-slate-900 to-stone-900"
       >
         <AnimatedButton
