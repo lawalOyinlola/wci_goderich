@@ -113,24 +113,31 @@ export async function smoothScrollToTop(options: SmoothScrollOptions = {}): Prom
 }
 
 /**
- * Parses a URL to extract path and hash
+ * Parses a URL to extract path, query string and hash
  * @param url - The URL to parse
- * @returns Object with pathname and hash
+ * @returns Object with pathname, search and hash
  */
-export function parseUrl(url: string): { pathname: string; hash: string } {
+export function parseUrl(url: string): {
+  pathname: string;
+  search: string;
+  hash: string;
+} {
   try {
     const base = typeof window !== "undefined" ? window.location.href : "http://localhost";
     const urlObj = new URL(url, base);
 
     return {
       pathname: urlObj.pathname,
+      search: urlObj.search,
       hash: urlObj.hash,
     };
   } catch {
     // Handle relative URLs
-    const [pathname, hash = ""] = url.split("#");
+    const [pathAndSearch, hash = ""] = url.split("#");
+    const [pathname, search = ""] = (pathAndSearch || "").split("?");
     return {
       pathname: pathname || "/",
+      search: search ? `?${search}` : "",
       hash: hash ? `#${hash}` : "",
     };
   }
