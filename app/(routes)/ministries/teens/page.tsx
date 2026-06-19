@@ -45,6 +45,7 @@ export default function TeensChurchPage() {
       <HeroTemplate
         title="Teens Church"
         description={`Ages 13–18 · ${ministry.subtitle}. ${ministry.tagline}`}
+        backgroundImage="/images/teens_church_hero.jpeg"
         className="bg-linear-to-br from-indigo-950 via-violet-900 to-purple-900"
       >
         <AnimatedButton
