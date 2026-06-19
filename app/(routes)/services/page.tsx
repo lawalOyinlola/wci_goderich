@@ -56,7 +56,7 @@ export default function ServicesPage() {
       <HeroTemplate
         title="Worship With Us"
         description="From Sunday celebrations to midweek prayer, there's a place for you at our table every day of the week. Come and encounter God with our family."
-        backgroundImage="/images/church-welcome.jpeg"
+        backgroundImage="/images/church_welcome.jpeg"
         className="bg-linear-to-br from-slate-950 via-zinc-900 to-stone-900"
       >
         <AnimatedButton

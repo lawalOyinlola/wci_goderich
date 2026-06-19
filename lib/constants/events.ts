@@ -8,7 +8,7 @@ export const UPCOMING_EVENTS = [
     endTime: "11:30am",
     by: "Pastor Abel Ukweni",
     address: "WCI Goderich Church, Sierra Leone",
-    image: "/images/church-welcome.jpeg",
+    image: "/images/church_welcome.jpeg",
   },
   {
     id: "2",
