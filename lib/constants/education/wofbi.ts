@@ -1,8 +1,8 @@
 export const WOFBI = {
-  title: "Winners' Chapel Faith Bible Institute",
+  title: "Word of Faith Bible Institute",
   subtitle: "Bible Training",
   description:
-    "WOFBI is committed to raising a new generation of leaders through comprehensive biblical education and training. Our programs are designed to equip believers with sound doctrine, practical ministry skills, and a deep understanding of God's Word.",
+    "Raising a new generation of leaders through sound doctrine, practical ministry skills, and a deep understanding of God's Word.",
   mission:
     "To raise a new generation of leaders through the teaching of the Word of Faith, empowering believers to fulfill their God-given destiny.",
   vision:
@@ -146,7 +146,7 @@ export const WOFBI = {
       "Begin classes",
     ],
     contact: {
-      email: "wofbi@wcigoderich.org",
+      email: "info@wcigoderich.org",
       phone: "+232 88 123 456",
       officeHours: "Monday - Friday: 9:00 AM - 5:00 PM",
     },
