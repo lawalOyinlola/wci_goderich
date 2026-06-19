@@ -19,7 +19,7 @@ const AboutUsPage = () => {
         mainText="We invite you to connect with us. Explore our service times or reach out directly to learn how you can become part of our vibrant community."
         buttons={[
           { text: "Join a Service Unit", href: "/service-units" },
-          { text: "Get in Touch", href: "/contact-us" },
+          { text: "Get in Touch", href: "/contact-us#contact-form" },
         ]}
       />
     </>
