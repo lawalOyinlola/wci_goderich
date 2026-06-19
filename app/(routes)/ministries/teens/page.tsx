@@ -55,7 +55,7 @@ export default function TeensChurchPage() {
         />
         <AnimatedButton
           variant="outline"
-          href="/contact-us"
+          href="/contact-us?subject=ministry#contact-form"
           text="Get in Touch"
           size="lg"
         />
@@ -298,7 +298,7 @@ export default function TeensChurchPage() {
         description="Be part of a community where you can be yourself and grow in your faith."
         mainText="Whether you're new to faith or want to go deeper, Teens Church is the place for you. Come as you are and experience authentic community, relevant teaching, and real relationships."
         buttons={[
-          { text: "Contact Us", href: "/contact-us" },
+          { text: "Contact Us", href: "/contact-us?subject=ministry#contact-form" },
           { text: "All Ministries", href: "/about" },
         ]}
       />

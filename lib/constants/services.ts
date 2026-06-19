@@ -48,8 +48,8 @@ export const SERVICES = [
     icon: "CrossIcon",
     title: "Spiritual Week of Emphasis",
     description:
-      "Intensive spiritual focus with special teachings, prayer, and fasting during the first week of each month.",
-    day: "Wednesdays - Fridays",
+      "Intensive spiritual focus with special teachings, prayer, and fasting on the first Wednesday to Friday of each month.",
+    day: "First Wednesdays - Fridays",
     times: ["06:00PM"],
     accentColor: "text-accent",
   },

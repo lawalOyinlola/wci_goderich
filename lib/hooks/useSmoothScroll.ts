@@ -26,7 +26,7 @@ export function useSmoothScroll(defaultOptions?: SmoothScrollOptions) {
    */
   const navigateTo = useCallback(
     (url: string, options?: SmoothScrollOptions) => {
-      const { pathname: targetPath, hash } = parseUrl(url);
+      const { pathname: targetPath, search, hash } = parseUrl(url);
       const mergedOptions = { ...defaultOptions, ...options };
 
       // Same page navigation
@@ -54,8 +54,8 @@ export function useSmoothScroll(defaultOptions?: SmoothScrollOptions) {
        if (hash) {
           sessionStorage.setItem("smoothScrollTarget", hash);
         }
-        // Navigate to new page (preserve hash for shareable URLs)
-        const nextUrl = hash ? `${targetPath}${hash}` : targetPath;
+        // Navigate to new page (preserve query + hash for shareable URLs)
+        const nextUrl = `${targetPath}${search}${hash}`;
         router.push(nextUrl, { scroll: false });
         // router.push(targetPath + hash);
       }

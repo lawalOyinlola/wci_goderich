@@ -342,7 +342,7 @@ export default function MonthlyBirthdays({
           <AnimatedButton
             size="lg"
             variant="outline"
-            href="/contact-us"
+            href="/contact-us#contact-form"
             text="Contact Church Admin"
           />
 

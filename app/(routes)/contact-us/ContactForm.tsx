@@ -71,6 +71,8 @@ const subjectOptions = [
   { value: "prayer", label: "Prayer Request" },
   { value: "visitor", label: "New Visitor Information" },
   { value: "ministry", label: "Ministry Information" },
+  { value: "service-unit", label: "Join a Service Unit" },
+  { value: "wofbi", label: "WOFBI Enrollment" },
   { value: "event", label: "Event Information" },
   { value: "gallery", label: "Gallery/Picture Upload" },
   { value: "donation", label: "Donation Inquiry" },
@@ -112,6 +114,15 @@ export default function ContactForm() {
     },
     mode: "onTouched",
   });
+
+  // Prefill the subject from a `?subject=` query param (set by CTA buttons
+  // across the site, e.g. "Join a Service Unit"). Runs once on mount.
+  useEffect(() => {
+    const subject = new URLSearchParams(window.location.search).get("subject");
+    if (subject && subjectOptions.some((option) => option.value === subject)) {
+      form.setValue("subject", subject);
+    }
+  }, [form]);
 
   // Watch email, phone, and isAnonymous fields to clear errors
   const emailValue = form.watch("email");
@@ -201,7 +212,7 @@ export default function ContactForm() {
   };
 
   return (
-    <section className="bg-muted">
+    <section id="contact-form" className="scroll-mt-24 bg-muted">
       <div className="small-container max-w-4xl">
         <Reveal>
           <SectionHeader

@@ -63,44 +63,44 @@ export const NAV_ITEMS: NavItem[] = [
       },
     ],
   },
-  // {
-  //   label: "Events & Activities",
-  //   items: [
-  //     {
-  //       label: "Services",
-  //       href: "/services",
-  //       description: "Join our weekly services and worship with us.",
-  //     },
-  //     {
-  //       label: "Service Units",
-  //       href: "/service-units",
-  //       description: "Find a unit to serve and grow your faith.",
-  //     },
-  //     {
-  //       label: "Satellite Fellowship",
-  //       href: "/wsf",
-  //       description:
-  //         "Connect with a small group near you for fellowship and Bible study.",
-  //     },
-  //     {
-  //       label: "WOFBI",
-  //       href: "/wofbi",
-  //       description:
-  //         "Enroll in our Word of Faith Bible Institute for theological education.",
-  //     },
-  //     {
-  //       label: "Location",
-  //       href: "/location",
-  //       description: "Find our church location and get directions.",
-  //     },
-  //     {
-  //       label: "Events",
-  //       href: "/events",
-  //       description:
-  //         "Discover upcoming events, conferences, and special programs.",
-  //     },
-  //   ],
-  // },
+  {
+    label: "Events & Activities",
+    items: [
+      {
+        label: "Services",
+        href: "/services",
+        description: "Join our weekly services and worship with us.",
+      },
+      {
+        label: "Service Units",
+        href: "/service-units",
+        description: "Find a unit to serve and grow your faith.",
+      },
+      {
+        label: "Satellite Fellowship",
+        href: "/wsf",
+        description:
+          "Connect with a small group near you for fellowship and Bible study.",
+      },
+      {
+        label: "WOFBI",
+        href: "/wofbi",
+        description:
+          "Enroll in our Word of Faith Bible Institute for theological education.",
+      },
+      {
+        label: "Location",
+        href: "/location",
+        description: "Find our church location and get directions.",
+      },
+      // {
+      //   label: "Events",
+      //   href: "/events",
+      //   description:
+      //     "Discover upcoming events, conferences, and special programs.",
+      // },
+    ],
+  },
   {
     label: "Resources",
     items: [

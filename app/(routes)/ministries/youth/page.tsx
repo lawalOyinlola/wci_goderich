@@ -55,7 +55,7 @@ export default function YouthAlivePage() {
         />
         <AnimatedButton
           variant="outline"
-          href="/contact-us"
+          href="/contact-us?subject=ministry#contact-form"
           text="Get in Touch"
           size="lg"
         />
@@ -298,7 +298,7 @@ export default function YouthAlivePage() {
         description="Be part of a movement of young people making a difference in their generation."
         mainText="Whether you're building your career, finding your purpose, or growing your faith, Youth Alive is the place for you. Connect with like-minded young adults, grow in the Word, and make an impact that lasts."
         buttons={[
-          { text: "Contact Us", href: "/contact-us" },
+          { text: "Contact Us", href: "/contact-us?subject=ministry#contact-form" },
           { text: "All Ministries", href: "/about" },
         ]}
       />

@@ -28,7 +28,7 @@ export function TestimoniesEmpty() {
         <AnimatedButton
           size="lg"
           text="Share Your Testimony"
-          href="/contact-us"
+          href="/contact-us#contact-form"
         />
       </EmptyContent>
     </Empty>

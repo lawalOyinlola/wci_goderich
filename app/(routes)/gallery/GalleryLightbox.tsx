@@ -217,18 +217,11 @@ export default function GalleryLightbox({
             </AnimatePresence>
 
             {/* Caption */}
-            {(current.title || current.description) && (
+            {(current.description ?? current.title) && (
               <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 bg-linear-to-t from-black/80 to-transparent p-4 pt-12 text-center sm:px-16">
-                {current.title && (
-                  <h3 className="text-base font-semibold text-white sm:text-lg">
-                    {current.title}
-                  </h3>
-                )}
-                {current.description && (
-                  <p className="mx-auto mt-1 max-w-2xl text-sm text-white/80 line-clamp-2">
-                    {current.description}
-                  </p>
-                )}
+                <p className="mx-auto max-w-2xl text-sm text-white/80 line-clamp-2">
+                  {current.description ?? current.title}
+                </p>
               </div>
             )}
           </div>

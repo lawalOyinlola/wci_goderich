@@ -8,8 +8,7 @@ export const UPCOMING_EVENTS = [
     endTime: "11:30am",
     by: "Pastor Abel Ukweni",
     address: "WCI Goderich Church, Sierra Leone",
-    image:
-      "https://images.unsplash.com/photo-1542810634-71277d95dcbb?w=600&h=400&fit=crop&q=80",
+    image: "/images/church-welcome.jpeg",
   },
   {
     id: "2",
@@ -18,7 +17,7 @@ export const UPCOMING_EVENTS = [
     startTime: "10:00am",
     by: "Youth Alive Fellowship",
     address: "WCI Goderich Church, Sierra Leone",
-    image: "/images/events/youth-alive-event.jpg",
+    image: "/images/ministries.jpeg",
   },
   {
     id: "3",

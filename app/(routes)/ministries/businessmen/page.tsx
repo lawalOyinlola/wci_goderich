@@ -56,7 +56,7 @@ export default function BusinessmenFellowshipPage() {
         />
         <AnimatedButton
           variant="outline"
-          href="/contact-us"
+          href="/contact-us?subject=ministry#contact-form"
           text="Get in Touch"
           size="lg"
         />
@@ -292,7 +292,7 @@ export default function BusinessmenFellowshipPage() {
         description="Connect with men who pursue excellence in business and faithfulness to God."
         mainText="If you believe business and faith should go hand in hand, this fellowship is for you. Join us for accountability, mentorship, and the tools to build a life of integrity and lasting impact."
         buttons={[
-          { text: "Contact Us", href: "/contact-us" },
+          { text: "Contact Us", href: "/contact-us?subject=ministry#contact-form" },
           { text: "All Ministries", href: "/about" },
         ]}
       />
