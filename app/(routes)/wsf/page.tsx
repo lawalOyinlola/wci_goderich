@@ -175,6 +175,7 @@ export default function WSFPage() {
       <HeroTemplate
         title="Satellite Fellowship"
         description="Faith grows best in community. Join a home cell near you, or open your home to host one — small groups gathering through the week for the Word, prayer, and genuine fellowship."
+        backgroundImage="/images/homecell_hero.jpeg"
         className="bg-linear-to-br from-slate-950 via-zinc-900 to-stone-900"
       >
         <AnimatedButton
