@@ -37,7 +37,7 @@ export default async function GalleryPage({ searchParams }: GalleryPageProps) {
         description="Have photos from church events or services? We'd love to see them!"
         mainText="Share your captured moments with our community and help us build a beautiful collection of memories together."
         buttons={[
-          { text: "Contact Us", href: "/contact-us" },
+          { text: "Contact Us", href: "/contact-us?subject=gallery#contact-form" },
           { text: "View All Events", href: "/events#events" },
         ]}
       />
