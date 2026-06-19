@@ -54,7 +54,7 @@ export default function ChildrenMinistryPage() {
         />
         <AnimatedButton
           variant="outline"
-          href="/contact-us"
+          href="/contact-us?subject=ministry#contact-form"
           text="Get in Touch"
           size="lg"
         />
@@ -296,7 +296,7 @@ export default function ChildrenMinistryPage() {
         description="Every child is welcome to join us for a fun, safe, and faith-filled experience."
         mainText="We believe every child deserves to know God's love. Join us on Sundays for an engaging time designed just for little ones — parents are always welcome to come and see what we're all about."
         buttons={[
-          { text: "Contact Us", href: "/contact-us" },
+          { text: "Contact Us", href: "/contact-us?subject=ministry#contact-form" },
           { text: "All Ministries", href: "/about" },
         ]}
       />
