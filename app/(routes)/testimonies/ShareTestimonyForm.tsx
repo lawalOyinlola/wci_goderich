@@ -27,6 +27,7 @@ import {
 } from "@/components/ui/field";
 import { PaperPlaneTiltIcon } from "@phosphor-icons/react";
 import { CHURCH_INFO, TESTIMONY_CATEGORIES } from "@/lib/constants";
+import { getDirectionsUrl } from "@/lib/utils";
 
 type TestimonyFormValues = {
   name?: string;
@@ -133,6 +134,8 @@ export default function ShareTestimonyForm() {
     email: churchEmail = "",
     address: churchAddress = "",
   } = CONTACT;
+  const { lat, lng } = CHURCH_INFO.CHURCH_LOCATION.coordinates;
+  const directionsUrl = getDirectionsUrl(lat, lng);
 
   const form = useForm<TestimonyFormValues>({
     resolver: yupResolver(testimonySchema),
@@ -462,10 +465,15 @@ export default function ShareTestimonyForm() {
             </div>
             <div>
               <h2 className="mb-3 text-lg">Church Premises</h2>
-              {/* NOTE: Fix to open directions in Google Maps */}
-              <p className="text-red-700 dark:text-primary text-lg hover:underline">
+              <a
+                href={directionsUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`Get directions to ${churchAddress}`}
+                className="text-red-700 dark:text-primary text-lg hover:underline"
+              >
                 {churchAddress}
-              </p>
+              </a>
               <p className="mt-3 text-sm">
                 You can submit your testimony to the ushers during any of our
                 services.

@@ -8,10 +8,26 @@ import { CHURCH_INFO } from "./church";
  * a single source of truth. Update values here and they propagate everywhere.
  */
 
-/** Production base URL — override with NEXT_PUBLIC_SITE_URL in the environment. */
-export const SITE_URL = (
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://wcigoderich.org"
-).replace(/\/$/, "");
+const DEFAULT_SITE_URL = "https://wcigoderich.org";
+
+/**
+ * Production base URL — override with NEXT_PUBLIC_SITE_URL in the environment.
+ * Validated to be an absolute http(s) URL so downstream `new URL(SITE_URL)`
+ * calls (e.g. metadataBase) can't throw on a malformed env value.
+ */
+function resolveSiteUrl(): string {
+  const raw = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+  if (!raw) return DEFAULT_SITE_URL;
+  try {
+    const { protocol } = new URL(raw);
+    if (protocol !== "https:" && protocol !== "http:") return DEFAULT_SITE_URL;
+    return raw.replace(/\/$/, "");
+  } catch {
+    return DEFAULT_SITE_URL;
+  }
+}
+
+export const SITE_URL = resolveSiteUrl();
 
 /** The developer of this site (author attribution). */
 export const AUTHOR = {

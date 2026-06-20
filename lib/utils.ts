@@ -95,6 +95,17 @@ export function isValidUrl(url: string): boolean {
 }
 
 /**
+ * Builds a Google Maps turn-by-turn directions URL to the given coordinates.
+ * Opens the device's native map app on mobile.
+ * @param lat - Destination latitude
+ * @param lng - Destination longitude
+ * @returns Google Maps directions URL
+ */
+export function getDirectionsUrl(lat: number, lng: number): string {
+  return `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`;
+}
+
+/**
  * Formats a number as an ordinal (1st, 2nd, 3rd, 4th, etc.)
  * @param n - Number to format
  * @returns Formatted ordinal string
