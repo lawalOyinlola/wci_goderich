@@ -4,6 +4,9 @@ import Pillars from "./Pillars";
 import Ministries from "./Ministries";
 import Leadership from "./Leadership";
 import CtaSection from "@/components/CtaSection";
+import { createMetadata } from "@/lib/seo";
+
+export const metadata = createMetadata("about");
 
 const AboutUsPage = () => {
   return (

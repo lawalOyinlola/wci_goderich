@@ -7,6 +7,9 @@ import PrayerSessions from "./PrayerSessions";
 import AnsweredPrayers from "./AnsweredPrayers";
 import AnsweredPrayersSkeleton from "./loading";
 import CtaSection from "@/components/CtaSection";
+import { createMetadata } from "@/lib/seo";
+
+export const metadata = createMetadata("prayer");
 
 interface PrayerPageProps {
   searchParams: Promise<{ category?: string }>;

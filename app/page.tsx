@@ -15,6 +15,9 @@ import GallerySkeleton from "@/components/homePage/GallerySkeleton";
 import BirthdaysSkeleton from "@/components/homePage/BirthdaysSkeleton";
 // import TestimoniesSkeleton from "@/components/homePage/TestimoniesSkeleton";
 import ChurchLocationSkeleton from "@/components/homePage/ChurchLocationSkeleton";
+import { createMetadata } from "@/lib/seo";
+
+export const metadata = createMetadata("home");
 
 export default async function Home() {
   return (

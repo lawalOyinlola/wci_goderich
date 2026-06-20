@@ -3,6 +3,9 @@ import Hero from "./Hero";
 import GalleryContent from "./GalleryContent";
 import GallerySkeleton from "./GallerySkeleton";
 import CtaSection from "@/components/CtaSection";
+import { createMetadata } from "@/lib/seo";
+
+export const metadata = createMetadata("gallery");
 
 interface GalleryPageProps {
   searchParams: Promise<{

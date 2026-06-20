@@ -6,6 +6,11 @@ import { Footer } from "@/components/layouts/footer";
 import { Toaster } from "@/components/ui/sonner";
 import { SmoothScrollProvider } from "@/components/SmoothScrollProvider";
 import { cn } from "@/lib/utils";
+import {
+  buildRootMetadata,
+  getOrganizationJsonLd,
+  getWebSiteJsonLd,
+} from "@/lib/seo";
 import "@/lib/utils/console"; // Suppress console in production
 import "./globals.css";
 
@@ -31,10 +36,7 @@ const fontOutfit = Outfit({
   preload: true,
 });
 
-export const metadata: Metadata = {
-  title: "WCI Goderich",
-  description: "Winners Church International - Goderich",
-};
+export const metadata: Metadata = buildRootMetadata();
 
 export default function RootLayout({
   children,
@@ -43,6 +45,20 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning={true}>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(getOrganizationJsonLd()),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(getWebSiteJsonLd()),
+          }}
+        />
+      </head>
       <body
         className={cn(
           "min-h-screen bg-background font-outfit antialiased overflow-x-hidden",
@@ -59,7 +75,7 @@ export default function RootLayout({
         >
           <SmoothScrollProvider>
             <Navbar />
-            {children}
+            <main id="main-content">{children}</main>
             <Footer />
             <Toaster richColors />
           </SmoothScrollProvider>

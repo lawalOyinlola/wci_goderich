@@ -3,6 +3,9 @@ import GivingInfo from "./GivingInfo";
 import GivingDetails from "./GivingDetails";
 import LivingFaithWorldwide from "./LivingFaithWorldwide";
 import CtaSection from "@/components/CtaSection";
+import { createMetadata } from "@/lib/seo";
+
+export const metadata = createMetadata("giving");
 
 export default function GivingPage() {
     return (

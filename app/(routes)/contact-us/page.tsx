@@ -3,6 +3,9 @@ import Faqs from "./Faqs";
 import ContactForm from "./ContactForm";
 import CtaSection from "@/components/CtaSection";
 import { Reveal } from "@/components/motion";
+import { createMetadata } from "@/lib/seo";
+
+export const metadata = createMetadata("contact-us");
 
 const ContactUsPage = () => {
   return (
