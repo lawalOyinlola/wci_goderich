@@ -203,7 +203,7 @@ export default function ServiceUnitsPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center max-w-6xl mx-auto">
             <Reveal variant="slide-right" className="relative aspect-4/3 overflow-hidden rounded-2xl shadow-lg">
               <Image
-                src="/images/church-welcome.jpeg"
+                src="/images/church_welcome.jpeg"
                 alt="Members serving and worshipping together"
                 fill
                 sizes="(max-width: 1024px) 100vw, 50vw"

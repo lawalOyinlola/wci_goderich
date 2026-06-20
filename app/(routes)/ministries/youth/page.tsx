@@ -45,6 +45,7 @@ export default function YouthAlivePage() {
       <HeroTemplate
         title="Youth Alive"
         description={`Young Adults · ${ministry.subtitle}. ${ministry.tagline}`}
+        backgroundImage="/images/youth_alive_hero.jpeg"
         className="bg-linear-to-br from-slate-950 via-emerald-950 to-teal-900"
       >
         <AnimatedButton
