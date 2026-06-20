@@ -5,8 +5,9 @@
 :root {
   --radius: 0.625rem;
 
-  /* Primary Colors - Red (#ef4444) as requested */
-  --primary: #ef4444; /* Red */
+  /* Primary Colors - Red. Red-600 (#dc2626) meets WCAG AA (~4.66:1 on white)
+     for white-on-primary buttons and primary-colored text. */
+  --primary: #dc2626; /* Red-600 */
   --primary-foreground: #fdfcfb; /* White for excellent contrast */
 
   /* Secondary Colors - Clean grays */
@@ -14,17 +15,17 @@
   --secondary-foreground: #1e293b; /* Dark slate for excellent contrast */
 
   /* Accent Colors - Red variations for hover states */
-  --accent: #ef4444; /* Same as primary */
+  --accent: #dc2626; /* Same as primary (Red-600) */
   --accent-foreground: #fdfcfb; /* White */
 
   /* Muted Colors - Neutral grays */
   --muted: #f1f5f9; /* Very light gray */
-  --muted-foreground: #64748b; /* Medium gray for good contrast */
+  --muted-foreground: #475569; /* Slate-600 — meets WCAG AA contrast (~6.8:1 on white) */
 
   /* Border Colors */
   --border: #e2e8f0; /* Light gray */
   --input: #f2f2f2; /* White */
-  --ring: #ef4444; /* Red for focus rings */
+  --ring: #dc2626; /* Red-600 for focus rings */
 
   /* Background Colors */
   --background: #fdfcfb; /* Pure white */
@@ -39,7 +40,7 @@
   --popover-foreground: #1e293b; /* Dark slate */
 
   /* Destructive Colors */
-  --destructive: #ef4444; /* Red */
+  --destructive: #dc2626; /* Red-600 — AA contrast for white text */
   --destructive-foreground: #fdfcfb; /* White for excellent contrast */
 
   /* Chart Colors - Using our palette */
@@ -214,6 +215,21 @@
 
   .carousel-btn {
     @apply absolute top-1/2 -translate-y-1/2 border border-white/30 text-white hover:text-white transition-all duration-200 backdrop-blur-sm;
+  }
+
+  /* Semantic heading classes — apply these when the HTML tag must change for
+     accessibility (e.g. h1→h2) but the visual size must stay the same. */
+  .heading-1 {
+    @apply text-4xl font-semibold tracking-tight;
+  }
+  .heading-2 {
+    @apply text-3xl font-semibold tracking-tight;
+  }
+  .heading-3 {
+    @apply text-2xl font-semibold tracking-tight;
+  }
+  .heading-4 {
+    @apply text-xl font-semibold tracking-tight;
   }
 }
 

@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
-import { Button } from "@/components/ui/button";
 import {
   Carousel,
   CarouselContent,
@@ -74,20 +73,25 @@ export function HeroCarouselWrapper({ children }: HeroCarouselWrapperProps) {
       <CarouselPrevious variant="default" className="carousel-btn left-4!" />
       <CarouselNext variant="default" className="carousel-btn right-4!" />
 
-      {/* Slide Indicators */}
-      <div className="absolute bottom-8 left-0 right-0 flex justify-center gap-2 z-20">
+      {/* Slide Indicators — each button is a 44px touch target with a small visual dot inside */}
+      <div className="absolute bottom-5 left-0 right-0 flex justify-center z-20">
         {Array.from({ length: count }).map((_, index) => (
-          <Button
+          <button
             key={index}
+            type="button"
             onClick={() => scrollTo(index)}
             aria-label={`Go to slide ${index + 1}`}
             aria-current={index === current - 1 ? "true" : undefined}
-            className={`w-2 h-2 p-0 rounded-full transition-all duration-300 ${
-              index === current - 1
-                ? "bg-primary w-8 scale-110"
-                : "bg-primary/50 hover:bg-white/80"
-            }`}
-          />
+            className="group flex h-11 w-11 cursor-pointer items-center justify-center"
+          >
+            <span
+              className={`h-2 rounded-full transition-all duration-300 ${
+                index === current - 1
+                  ? "bg-primary w-8 scale-110"
+                  : "bg-primary/50 w-2 group-hover:bg-white/80"
+              }`}
+            />
+          </button>
         ))}
       </div>
     </Carousel>

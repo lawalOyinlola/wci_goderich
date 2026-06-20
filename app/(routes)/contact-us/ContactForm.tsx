@@ -271,7 +271,7 @@ export default function ContactForm() {
           >
             <Card className="p-8 sm:p-12">
               <div className="flex flex-col gap-4">
-                <h4>Send us a message</h4>
+                <h3 className="heading-4">Send us a message</h3>
                 <p className="text-sm text-muted-foreground">
                   Fill out the form below and we&apos;ll get back to you as soon
                   as possible.

@@ -12,7 +12,7 @@ export default function HeroSection() {
   const videoDialogRef = useRef<VideoDialogRef>(null);
 
   return (
-    <main id="hero" className="overflow-hidden">
+    <section id="hero" className="overflow-hidden">
       <section className="bg-linear-to-b to-muted from-background">
         <div className="relative min-h-screen flex-center">
           <div className="relative z-10 small-container">
@@ -52,7 +52,7 @@ export default function HeroSection() {
                   {CORE_VALUES.map((value, index) => (
                     <StaggerItem key={index}>
                       <div className="flex flex-col gap-2 border-l-2 border-muted-foreground/20 pl-2">
-                        <h3 className="tracking-wider">{value.title}</h3>
+                        <p className="heading-3 tracking-wider">{value.title}</p>
                         <p className="text-sm text-muted-foreground">
                           {value.description}
                         </p>
@@ -70,11 +70,12 @@ export default function HeroSection() {
                 <VideoDialog
                   ref={videoDialogRef}
                   videoSrc="/videos/about_us_hero.mp4"
-                  thumbnailSrc="/images/about_us_hero.png"
+                  thumbnailSrc="/images/about_us_hero.jpg"
                   thumbnailAlt="About Us Hero"
                   className="h-full"
-                  imgWidth={2880}
-                  imgHeight={1842}
+                  imgWidth={1600}
+                  imgHeight={887}
+                  imgSizes="(max-width: 768px) 100vw, 640px"
                   imgClassName="h-full object-cover"
                 />
               </div>
@@ -82,6 +83,6 @@ export default function HeroSection() {
           </Reveal>
         </div>
       </section>
-    </main>
+    </section>
   );
 }

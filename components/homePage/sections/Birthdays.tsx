@@ -263,7 +263,7 @@ export default function MonthlyBirthdays({
               <p>Birthdays</p>
               <Separator className="shrink sm:w-40!" />
             </div>
-            <h1 className="mb-8">Loading...</h1>
+            <h2 className="heading-1 mb-8">Loading...</h2>
           </div>
         </div>
       </section>
@@ -299,7 +299,7 @@ export default function MonthlyBirthdays({
             <Separator className="shrink sm:w-40!" />
           </div>
 
-          <h1 className="mb-8">
+          <h2 className="heading-1 mb-8">
             Celebrating Our{"  "}
             <Highlighter
               action="highlight"
@@ -310,7 +310,7 @@ export default function MonthlyBirthdays({
               <span className="text-primary-foreground">{currentMonth}</span>
             </Highlighter>{" "}
             Birthdays
-          </h1>
+          </h2>
 
           <p className="text-muted-foreground">
             We celebrate all members born in {currentMonth}. God bless and keep
