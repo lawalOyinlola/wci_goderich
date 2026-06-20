@@ -12,6 +12,10 @@ interface GalleryThumbnailImageProps {
   retryDelay?: number;
 }
 
+// Grid thumbnails display at ~330px; cap Cloudinary delivery at 800px (retina
+// headroom) so it doesn't serve the full-resolution original (often 6000px+).
+const THUMBNAIL_WIDTH = 800;
+
 /**
  * A robust thumbnail image component with error handling and retry logic
  * Used for gallery thumbnails in the grid
@@ -23,7 +27,9 @@ export function GalleryThumbnailImage({
   maxRetries = 2,
   retryDelay = 800,
 }: GalleryThumbnailImageProps) {
-  const [imageSrc, setImageSrc] = useState(() => optimizeCloudinaryUrl(src));
+  const [imageSrc, setImageSrc] = useState(() =>
+    optimizeCloudinaryUrl(src, { width: THUMBNAIL_WIDTH })
+  );
   const [hasError, setHasError] = useState(false);
   const [retryCount, setRetryCount] = useState(0);
   const [isRetrying, setIsRetrying] = useState(false);
@@ -33,7 +39,7 @@ export function GalleryThumbnailImage({
 
   // Reset when src changes
   useEffect(() => {
-    setImageSrc(optimizeCloudinaryUrl(src));
+    setImageSrc(optimizeCloudinaryUrl(src, { width: THUMBNAIL_WIDTH }));
     setHasError(false);
     setRetryCount(0);
     setIsRetrying(false);
@@ -65,7 +71,10 @@ export function GalleryThumbnailImage({
       timeoutRef.current = setTimeout(() => {
         setRetryCount(nextRetry);
         // Force re-render by updating src with retry parameter
-        const retryUrl = optimizeCloudinaryUrl(src, { retry: nextRetry });
+        const retryUrl = optimizeCloudinaryUrl(src, {
+          width: THUMBNAIL_WIDTH,
+          retry: nextRetry,
+        });
         setImageSrc(retryUrl);
         setIsRetrying(false);
         timeoutRef.current = null;

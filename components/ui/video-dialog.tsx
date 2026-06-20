@@ -14,6 +14,8 @@ interface VideoDialogProps {
   imgWidth?: number;
   imgHeight?: number;
   imgClassName?: string;
+  /** Responsive `sizes` for the thumbnail so Next.js doesn't over-deliver the largest variant. */
+  imgSizes?: string;
   animationStyle?: Parameters<typeof VideoModal>[0]["animationStyle"];
   videoTitle?: string;
 }
@@ -32,6 +34,7 @@ export const VideoDialog = forwardRef<VideoDialogRef, VideoDialogProps>(
       imgWidth = 1920,
       imgHeight = 1080,
       imgClassName,
+      imgSizes = "(max-width: 768px) 100vw, 640px",
       animationStyle = "from-center",
       videoTitle = "Video player",
     },
@@ -73,7 +76,8 @@ export const VideoDialog = forwardRef<VideoDialogRef, VideoDialogProps>(
                 "w-full rounded-md border shadow-lg transition-all duration-200 ease-out group-hover:brightness-[0.8] pointer-events-none",
                 imgClassName
               )}
-              priority
+              sizes={imgSizes}
+              preload
             />
             <div className="absolute inset-0 flex scale-[0.9] items-center justify-center rounded-2xl transition-all duration-200 ease-out group-hover:scale-100">
               <div className="bg-primary/10 flex size-28 items-center justify-center rounded-full backdrop-blur-md pointer-events-auto">

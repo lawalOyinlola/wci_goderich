@@ -140,7 +140,7 @@ export function GalleryImageWithFallback({
       fill
       sizes="(max-width: 768px) 256px, 320px"
       className="object-cover group-hover:scale-110 transition-all duration-500"
-      priority={priority}
+      preload={priority}
       onError={handleError}
       onLoad={() => {
         // Only update state if component is still mounted

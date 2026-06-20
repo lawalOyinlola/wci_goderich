@@ -28,7 +28,7 @@ export default function FeaturedSermons() {
                   alt={sermon.title}
                   fill
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  priority={index === 0}
+                  preload={index === 0}
                   className="object-cover transition-transform duration-500 group-hover:scale-110"
                 />
                 {/* Overlay */}

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { Reveal } from "@/components/motion";
 
@@ -18,23 +19,28 @@ export default function HeroTemplate({
 }: HeroTemplateProps) {
   return (
     <>
-      <main
+      <section
         id="hero"
         className={cn(
           "overflow-hidden relative min-h-screen transform-gpu backface-hidden",
           className
         )}
-        style={
-          backgroundImage
-            ? {
-              backgroundImage: `url(${backgroundImage})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              backgroundRepeat: "no-repeat",
-            }
-            : undefined
-        }
       >
+        {/* Decorative hero background. Rendered via next/image so it's served as
+            a responsive, modern-format (AVIF/WebP) asset instead of a raw CSS
+            background. Placed first so the positioned overlays/content paint above it. */}
+        {backgroundImage && (
+          <Image
+            src={backgroundImage}
+            alt=""
+            aria-hidden="true"
+            fill
+            preload
+            quality={60}
+            sizes="100vw"
+            className="object-cover object-center pointer-events-none select-none"
+          />
+        )}
         <div className="bg-background/55 absolute inset-y-0 h-[200%] w-full md:w-1/2 rounded-r-full" />
         <div className="bg-background/55 absolute inset-y-0 w-full lg:w-4/7 rounded-r-full" />
         <section>
@@ -60,7 +66,7 @@ export default function HeroTemplate({
             </div>
           </div>
         </section>
-      </main>
+      </section>
     </>
   );
 }
