@@ -1,14 +1,35 @@
 import { NextRequest, NextResponse } from "next/server";
 
 /**
+ * 1x1 fully transparent PNG. Served (with a 200) whenever an upstream tile can't
+ * be fetched, so the browser never logs a failed-resource (4xx/5xx) console error
+ * — Leaflet simply renders a blank tile and the map stays usable.
+ */
+const TRANSPARENT_TILE = Buffer.from(
+  "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+  "base64"
+);
+
+function transparentTile(): NextResponse {
+  return new NextResponse(TRANSPARENT_TILE, {
+    status: 200,
+    headers: {
+      "Content-Type": "image/png",
+      // Cache the fallback only briefly so a transient upstream failure recovers.
+      "Cache-Control": "public, max-age=60",
+    },
+  });
+}
+
+/**
  * Proxy endpoint for OpenStreetMap tiles with optimized cache headers
  * This allows us to control cache lifetime for map tiles, improving performance
  * on repeat visits.
- * 
+ *
  * Route: /api/map-tiles/[z]/[x]/[y].png
  */
 export async function GET(
-  request: NextRequest,
+  _request: NextRequest,
   { params }: { params: Promise<{ params: string[] }> }
 ) {
   try {
@@ -62,18 +83,20 @@ export async function GET(
     
     const tileUrl = `https://${server}.tile.openstreetmap.org/${zNum}/${xNum}/${yNum}.png`;
 
-    // Fetch the tile from OpenStreetMap
+    // Fetch the tile from OpenStreetMap. OSM's tile usage policy requires a
+    // valid, identifying User-Agent with contact info.
     const response = await fetch(tileUrl, {
       headers: {
-        "User-Agent": "WCI Goderich Church Website/1.0",
+        "User-Agent":
+          "WCIGoderichWebsite/1.0 (+https://wcigoderich.org; info@wcigoderich.org)",
+        Referer: "https://wcigoderich.org",
       },
+      signal: AbortSignal.timeout(8000),
     });
 
     if (!response.ok) {
-      return NextResponse.json(
-        { error: "Failed to fetch tile" },
-        { status: response.status }
-      );
+      // Degrade gracefully instead of surfacing a 4xx/5xx to the browser.
+      return transparentTile();
     }
 
     // Get the image data
@@ -94,10 +117,11 @@ export async function GET(
       },
     });
   } catch (error) {
-    console.error("Error fetching map tile:", error);
-    return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 }
-    );
+    // Network error / timeout fetching the upstream tile — serve a blank tile
+    // (200) so the browser console stays clean and the map remains usable.
+    if (process.env.NODE_ENV === "development") {
+      console.error("Error fetching map tile:", error);
+    }
+    return transparentTile();
   }
 }

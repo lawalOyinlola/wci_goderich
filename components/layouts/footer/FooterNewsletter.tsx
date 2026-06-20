@@ -45,13 +45,12 @@ export function FooterNewsletter() {
     };
   }, []);
 
-  const handleSubmit = async (values: { email: string }) => {
+  const handleSubmit = async (_values: { email: string }) => {
     try {
       setIsSubmitting(true);
       // TODO: hook up to your newsletter API
       // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      console.log("newsletter", values);
 
       // Show success toast
       toast.success("Successfully subscribed!", {
