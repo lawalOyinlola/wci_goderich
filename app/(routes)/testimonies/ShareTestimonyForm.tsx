@@ -27,6 +27,7 @@ import {
 } from "@/components/ui/field";
 import { PaperPlaneTiltIcon } from "@phosphor-icons/react";
 import { CHURCH_INFO, TESTIMONY_CATEGORIES } from "@/lib/constants";
+import { getDirectionsUrl } from "@/lib/utils";
 
 type TestimonyFormValues = {
   name?: string;
@@ -134,8 +135,7 @@ export default function ShareTestimonyForm() {
     address: churchAddress = "",
   } = CONTACT;
   const { lat, lng } = CHURCH_INFO.CHURCH_LOCATION.coordinates;
-  // Opens turn-by-turn directions — launches the device's map app on mobile.
-  const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`;
+  const directionsUrl = getDirectionsUrl(lat, lng);
 
   const form = useForm<TestimonyFormValues>({
     resolver: yupResolver(testimonySchema),

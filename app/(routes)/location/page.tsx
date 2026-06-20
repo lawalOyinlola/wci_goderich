@@ -7,7 +7,7 @@ import ChurchLocationMap from "@/components/homePage/ChurchLocationMap";
 import { Reveal, Stagger, StaggerItem } from "@/components/motion";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import { SERVICES, CHURCH_INFO } from "@/lib/constants";
-import { formatServiceSchedule } from "@/lib/utils";
+import { formatServiceSchedule, getDirectionsUrl } from "@/lib/utils";
 import {
   ArrowDownIcon,
   NavigationArrowIcon,
@@ -27,8 +27,7 @@ const { address, coordinates, parking, description, directions, accessibility } 
 const { lat, lng } = coordinates;
 
 const FULL_ADDRESS = `${address.street}, ${address.city}, ${address.region}, ${address.country}`;
-// Turn-by-turn directions — opens the device's map app on mobile.
-const DIRECTIONS_URL = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`;
+const DIRECTIONS_URL = getDirectionsUrl(lat, lng);
 
 export default function LocationPage() {
   return (

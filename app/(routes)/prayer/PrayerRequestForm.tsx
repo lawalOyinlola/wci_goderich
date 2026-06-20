@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/field";
 import { PaperPlaneTiltIcon } from "@phosphor-icons/react";
 import { CHURCH_INFO, PRAYER_CATEGORIES } from "@/lib/constants";
+import { getDirectionsUrl } from "@/lib/utils";
 import { Reveal } from "@/components/motion";
 
 type PrayerRequestFormValues = {
@@ -83,8 +84,7 @@ export default function PrayerRequestForm() {
     address: churchAddress = "",
   } = CONTACT;
   const { lat, lng } = CHURCH_INFO.CHURCH_LOCATION.coordinates;
-  // Opens turn-by-turn directions — launches the device's map app on mobile.
-  const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`;
+  const directionsUrl = getDirectionsUrl(lat, lng);
 
   const form = useForm<PrayerRequestFormValues>({
     resolver: yupResolver(prayerRequestSchema),

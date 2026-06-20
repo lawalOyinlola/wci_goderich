@@ -12,6 +12,7 @@ import {
   SignpostIcon,
 } from "@phosphor-icons/react";
 import { CHURCH_INFO } from "@/lib/constants";
+import { getDirectionsUrl } from "@/lib/utils";
 import "leaflet/dist/leaflet.css";
 
 const { NAME } = CHURCH_INFO;
@@ -19,8 +20,7 @@ const { address, coordinates } = CHURCH_INFO.CHURCH_LOCATION ?? {};
 const { city = "", country = "" } = address ?? {};
 const { lat, lng } = coordinates ?? {};
 
-// Turn-by-turn directions — opens the device's map app on mobile.
-const DIRECTIONS_URL = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`;
+const DIRECTIONS_URL = getDirectionsUrl(lat, lng);
 
 const MARKER_HTML = `
   <div style="
