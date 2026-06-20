@@ -27,7 +27,8 @@ const { address, coordinates, parking, description, directions, accessibility } 
 const { lat, lng } = coordinates;
 
 const FULL_ADDRESS = `${address.street}, ${address.city}, ${address.region}, ${address.country}`;
-const DIRECTIONS_URL = `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
+// Turn-by-turn directions — opens the device's map app on mobile.
+const DIRECTIONS_URL = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`;
 
 export default function LocationPage() {
   return (
