@@ -15,7 +15,7 @@ export default function Mission() {
 
         <Reveal variant="fade-up" className="p-4 bg-muted dark:bg-background/40 rounded-lg">
           <div className="flex flex-col gap-2">
-            <blockquote className="text-lg italic text-primary font-medium line-clamp-3">
+            <blockquote className="text-lg italic text-red-700 dark:text-primary font-medium line-clamp-3">
               &quot;Train up a child in the way he should go: and when he is
               old, he will not depart from it.&quot;
             </blockquote>

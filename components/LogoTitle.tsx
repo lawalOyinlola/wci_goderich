@@ -32,7 +32,7 @@ export function Logo({
 
   if (linkToHome) {
     return (
-      <Link href="/" aria-label="go home" className="size-fit">
+      <Link href="/" aria-label="Winners Chapel International Goderich — Home" className="size-fit">
         {logoImage}
       </Link>
     );
@@ -79,7 +79,7 @@ export function LogoTitle({
 
   if (linkToHome) {
     return (
-      <Link href="/" aria-label="go home">
+      <Link href="/" aria-label="Winners Chapel International Goderich — Home">
         {content}
       </Link>
     );

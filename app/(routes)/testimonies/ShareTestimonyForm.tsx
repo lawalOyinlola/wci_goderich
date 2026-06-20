@@ -453,7 +453,7 @@ export default function ShareTestimonyForm() {
                 <h2 className="mb-3 text-lg">Church Office</h2>
                 <Link
                   href={`mailto:${churchEmail}`}
-                  className="text-primary text-lg hover:underline break-all"
+                  className="text-red-700 dark:text-primary text-lg hover:underline break-all"
                 >
                   {churchEmail}
                 </Link>
@@ -463,7 +463,7 @@ export default function ShareTestimonyForm() {
             <div>
               <h2 className="mb-3 text-lg">Church Premises</h2>
               {/* NOTE: Fix to open directions in Google Maps */}
-              <p className="text-primary text-lg hover:underline">
+              <p className="text-red-700 dark:text-primary text-lg hover:underline">
                 {churchAddress}
               </p>
               <p className="mt-3 text-sm">

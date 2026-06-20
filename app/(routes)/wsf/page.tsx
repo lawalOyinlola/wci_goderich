@@ -272,9 +272,9 @@ export default function WSFPage() {
                           <Icon className="h-5 w-5 text-primary" weight="duotone" />
                         </div>
                         <div>
-                          <h4 className="font-semibold text-sm mb-1">
+                          <h3 className="heading-4 font-semibold text-sm mb-1">
                             {item.title}
-                          </h4>
+                          </h3>
                           <p className="text-muted-foreground text-sm leading-relaxed">
                             {item.description}
                           </p>
@@ -321,7 +321,7 @@ export default function WSFPage() {
             >
               <Card className="p-8 sm:p-10">
                 <div className="flex flex-col gap-2 mb-6">
-                  <h4>Tell us about you</h4>
+                  <h3 className="heading-4">Tell us about you</h3>
                   <p className="text-sm text-muted-foreground">
                     We&apos;ll use these details to connect you with the right
                     fellowship.

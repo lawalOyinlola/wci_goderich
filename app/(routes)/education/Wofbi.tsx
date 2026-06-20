@@ -40,7 +40,7 @@ export default function Wofbi() {
                             </p>
 
                             <div className="mb-4">
-                                <h4 className="font-semibold text-sm mb-2">Subjects:</h4>
+                                <p className="font-semibold text-sm mb-2">Subjects:</p>
                                 <div className="flex flex-wrap gap-2">
                                     {program.subjects.map((subject, i) => (
                                         <Badge key={i} variant="outline" className="text-xs">

@@ -168,7 +168,10 @@ export default function GivingDetails() {
             ))}
           </CardContent>
           <CardFooter>
-            <Badge variant="primary">
+            <Badge
+              variant="primary"
+              className="w-full items-start whitespace-normal text-left leading-relaxed"
+            >
               NOTE: Givers should specify the purpose of the giving e.g Offerings, Tithe, Shiloh Sacrifice etc
             </Badge>
           </CardFooter>

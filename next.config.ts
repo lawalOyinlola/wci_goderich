@@ -9,6 +9,9 @@ const nextConfig: NextConfig = {
   // Optimize images
   images: {
     formats: ["image/avif", "image/webp"],
+    // 75 = default for content images; 60 used for hero backgrounds that sit
+    // behind a dark overlay, where the extra compression is invisible.
+    qualities: [60, 75],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     minimumCacheTTL: 3600,

@@ -1,6 +1,8 @@
 import { Separator } from "./ui/separator";
 import { cn } from "@/lib/utils";
 
+type HeadingLevel = "h1" | "h2" | "h3" | "h4";
+
 interface SectionHeaderProps {
   title: string | React.ReactNode;
   subtitle?: string;
@@ -10,6 +12,8 @@ interface SectionHeaderProps {
   subtitleClassName?: string;
   descriptionClassName?: string;
   additionalText?: string;
+  /** Heading level for the title. Defaults to "h2" — use "h1" only for page heroes. */
+  as?: HeadingLevel;
 }
 
 const SectionHeader = ({
@@ -21,6 +25,7 @@ const SectionHeader = ({
   subtitleClassName,
   descriptionClassName,
   additionalText,
+  as: Heading = "h2",
 }: SectionHeaderProps) => {
   return (
     <div className={cn("text-center mb-12 max-w-5xl mx-auto", className)}>
@@ -38,7 +43,9 @@ const SectionHeader = ({
       )}
 
       {typeof title === "string" ? (
-        <h1 className={cn("mb-8 capitalize", titleClassName)}>{title}</h1>
+        <Heading className={cn("mb-8 capitalize heading-1", titleClassName)}>
+          {title}
+        </Heading>
       ) : (
         title
       )}

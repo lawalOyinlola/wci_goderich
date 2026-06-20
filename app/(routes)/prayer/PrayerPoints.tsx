@@ -169,7 +169,7 @@ export default function PrayerPoints({ initialCategory }: PrayerPointsProps) {
                   className="p-6 hover:shadow-lg transition-shadow"
                 >
                   <div className="flex items-start justify-between mb-4">
-                    <h4 className="text-lg">{point.title}</h4>
+                    <h3 className="heading-4 text-lg">{point.title}</h3>
                   </div>
                   {point.description && (
                     <p className="text-sm text-muted-foreground mb-4">
@@ -199,9 +199,9 @@ export default function PrayerPoints({ initialCategory }: PrayerPointsProps) {
                                   <div className="flex items-start gap-2">
                                     <BookOpenIcon
                                       size={16}
-                                      className="text-primary mt-0.5 shrink-0"
+                                      className="text-red-700 dark:text-primary mt-0.5 shrink-0"
                                     />
-                                    <p className="text-xs italic text-primary font-medium line-clamp-3">
+                                    <p className="text-xs italic text-red-700 dark:text-primary font-medium line-clamp-3">
                                       {intercession.scripture}
                                     </p>
                                   </div>
@@ -227,9 +227,9 @@ export default function PrayerPoints({ initialCategory }: PrayerPointsProps) {
                                 <div className="flex items-start gap-2">
                                   <BookOpenIcon
                                     size={16}
-                                    className="text-primary mt-0.5 shrink-0"
+                                    className="text-red-700 dark:text-primary mt-0.5 shrink-0"
                                   />
-                                  <p className="text-xs italic text-primary font-medium line-clamp-3">
+                                  <p className="text-xs italic text-red-700 dark:text-primary font-medium line-clamp-3">
                                     {point.personalThanksgiving.scripture}
                                   </p>
                                 </div>
@@ -258,9 +258,9 @@ export default function PrayerPoints({ initialCategory }: PrayerPointsProps) {
                             <div className="flex items-start gap-2">
                               <BookOpenIcon
                                 size={16}
-                                className="text-primary mt-0.5 shrink-0"
+                                className="text-red-700 dark:text-primary mt-0.5 shrink-0"
                               />
-                              <p className="text-xs italic text-primary font-medium line-clamp-3">
+                              <p className="text-xs italic text-red-700 dark:text-primary font-medium line-clamp-3">
                                 {point.scripture}
                               </p>
                             </div>

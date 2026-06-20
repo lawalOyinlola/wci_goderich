@@ -14,7 +14,7 @@ export function FooterSocial() {
           target="_blank"
           rel="noopener noreferrer"
           aria-label={social.ariaLabel}
-          className="group/social block"
+          className="group/social flex items-center justify-center p-2.5 min-h-11 min-w-11"
         >
           <IconComponent
             iconName={social.icon}

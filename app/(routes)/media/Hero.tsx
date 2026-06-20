@@ -9,7 +9,7 @@ export default function Hero() {
     <HeroTemplate
       title="Media Center"
       description="Explore our collection of sermons and teachings from our pastors. Watch live streams from headquarters, listen to DOMI Radio, and stay connected with inspiring worship and multimedia content."
-      backgroundImage="/images/techroom_screen.webp"
+      backgroundImage="/images/techroom_screen.jpg"
     >
       <AnimatedButton
         href="#sermons"

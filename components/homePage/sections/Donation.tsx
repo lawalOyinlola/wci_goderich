@@ -8,8 +8,9 @@ export default function Donation() {
     <section
       className="relative min-h-[500px] flex items-center justify-center overflow-hidden"
       style={{
-        backgroundImage:
-          "url('https://images.unsplash.com/photo-1544376664-80b17f09d399?w=1920&h=1080&fit=crop&q=80')",
+        // Local asset instead of a third-party (Unsplash) URL, which could fail
+        // to resolve and log a console error. It sits behind a dark blur overlay.
+        backgroundImage: "url('/images/church_welcome.jpeg')",
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundAttachment: "fixed",

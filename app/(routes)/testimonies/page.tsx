@@ -2,8 +2,11 @@ import Hero from "./Hero";
 // import TestimoniesContentWrapper from "./TestimoniesContentWrapper";
 import ShareTestimonyForm from "./ShareTestimonyForm";
 import CtaSection from "@/components/CtaSection";
+import { createMetadata } from "@/lib/seo";
 // import { Suspense } from "react";
 // import TestimoniesLoading from "./loading";
+
+export const metadata = createMetadata("testimonies");
 
 interface TestimoniesPageProps {
   searchParams: Promise<{ type?: string; page?: string }>;

@@ -5,6 +5,9 @@ import NigerianSchools from "./NigerianSchools";
 import CtaSection from "@/components/CtaSection";
 import { SCHOOLS } from "@/lib/constants";
 import Wofbi from "./Wofbi";
+import { createMetadata } from "@/lib/seo";
+
+export const metadata = createMetadata("education");
 
 export default function EducationPage() {
   const sierraLeoneSchools = [

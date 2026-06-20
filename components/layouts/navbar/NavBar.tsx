@@ -54,7 +54,7 @@ function MobileNav() {
 
       <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
         <SheetTrigger asChild>
-          <Button variant="ghost" size="icon">
+          <Button variant="ghost" size="icon" className="size-11">
             <ListIcon weight="bold" color="#f8fafc" className="size-7" />
 
             <span className="sr-only">Open menu</span>
@@ -161,7 +161,7 @@ function MobileNav() {
                     asChild
                     variant="ghost"
                     size="sm"
-                    className="text-xs text-[#f8fafc] hover:text-accent hover:bg-accent/10 rounded-lg py-2"
+                    className="text-xs text-[#f8fafc] hover:text-accent hover:bg-accent/10 rounded-lg min-h-11"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     <Link href="/contact">Contact</Link>
@@ -170,7 +170,7 @@ function MobileNav() {
                     asChild
                     variant="ghost"
                     size="sm"
-                    className="text-xs text-[#f8fafc] hover:text-accent hover:bg-accent/10 rounded-lg py-2"
+                    className="text-xs text-[#f8fafc] hover:text-accent hover:bg-accent/10 rounded-lg min-h-11"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     <Link href="/location">Location</Link>

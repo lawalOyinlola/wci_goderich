@@ -9,9 +9,15 @@ interface CaretButtonProps {
   href: string;
   text: string;
   className?: string;
+  "aria-label"?: string;
 }
 
-const CaretButton = ({ href, text, className }: CaretButtonProps) => {
+const CaretButton = ({
+  href,
+  text,
+  className,
+  "aria-label": ariaLabel,
+}: CaretButtonProps) => {
   return (
     <Button
       variant="link"
@@ -19,7 +25,7 @@ const CaretButton = ({ href, text, className }: CaretButtonProps) => {
       className={cn("group w-fit flex items-center gap-1", className)}
       asChild
     >
-      <SmoothLink href={href}>
+      <SmoothLink href={href} aria-label={ariaLabel}>
         {text}
         <CaretDoubleRightIcon className="opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-150 size-3" />
       </SmoothLink>

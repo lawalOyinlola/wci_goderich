@@ -2,6 +2,9 @@ import Hero from "./Hero";
 import Sermons from "./Sermons";
 import LiveStreamSection from "./LiveStreamSection";
 import CtaSection from "@/components/CtaSection";
+import { createMetadata } from "@/lib/seo";
+
+export const metadata = createMetadata("media");
 
 export default function MediaPage() {
   return (

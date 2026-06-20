@@ -253,9 +253,9 @@ export default function WofbiPage() {
           </Stagger>
 
           <Reveal variant="fade-up">
-            <h4 className="text-xs uppercase tracking-[0.3em] text-muted-foreground font-medium mb-4 text-center">
+            <h3 className="heading-4 text-xs uppercase tracking-[0.3em] text-muted-foreground font-medium mb-4 text-center">
               Contact Admissions
-            </h4>
+            </h3>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
                 href={`mailto:${WOFBI.admissionInfo.contact.email}`}

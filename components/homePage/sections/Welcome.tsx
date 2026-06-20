@@ -14,12 +14,12 @@ export default function Welcome() {
           className="md:w-1/2 relative h-[400px] md:h-auto"
         >
           <Image
-            src="/images/church.png"
+            src="/images/church.jpg"
             alt="WCI Goderich Church Welcome"
             fill
             className="object-cover"
             sizes="(max-width: 768px) 100vw, 50vw"
-            priority
+            preload
           />
         </Reveal>
         <Reveal
@@ -27,11 +27,11 @@ export default function Welcome() {
           variant="slide-left"
           className="md:w-1/2 py-20 flex flex-col gap-6 items-start px-4"
         >
-          <h2 className="uppercase text-sm text-foreground/90 font-light tracking-[0.4em]">
+          <p className="uppercase text-sm text-foreground/90 font-light tracking-[0.4em]">
             Welcome to WCI Goderich
-          </h2>
+          </p>
 
-          <h1>Connect, Grow and Serve with us</h1>
+          <h2 className="heading-1">Connect, Grow and Serve with us</h2>
 
           <div className="text-muted-foreground leading-7 max-lg:line-clamp-7">
             {ABOUT_US.map((about, index) => (
