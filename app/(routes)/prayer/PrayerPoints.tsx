@@ -182,9 +182,9 @@ export default function PrayerPoints({ initialCategory }: PrayerPointsProps) {
                     <div className="space-y-6">
                       {/* Intercessions */}
                       <div>
-                        <h5 className="text-sm font-semibold mb-3 text-primary">
+                        <h4 className="text-sm font-semibold mb-3 text-primary">
                           Intercessions
-                        </h5>
+                        </h4>
                         <div className="space-y-4">
                           {point.intercessions.map((intercession, index) => (
                             <div key={index} className="space-y-2 border-b ">
@@ -215,9 +215,9 @@ export default function PrayerPoints({ initialCategory }: PrayerPointsProps) {
                       {/* Personal Thanksgiving */}
                       {point.personalThanksgiving && (
                         <div>
-                          <h5 className="text-sm font-semibold mb-3 text-primary">
+                          <h4 className="text-sm font-semibold mb-3 text-primary">
                             Personal Thanksgiving
-                          </h5>
+                          </h4>
                           <div className="space-y-2">
                             <p className="text-sm leading-relaxed">
                               {point.personalThanksgiving.prayer}

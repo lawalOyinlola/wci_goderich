@@ -82,6 +82,9 @@ export default function PrayerRequestForm() {
     email: churchEmail = "",
     address: churchAddress = "",
   } = CONTACT;
+  const { lat, lng } = CHURCH_INFO.CHURCH_LOCATION.coordinates;
+  // Opens turn-by-turn directions — launches the device's map app on mobile.
+  const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`;
 
   const form = useForm<PrayerRequestFormValues>({
     resolver: yupResolver(prayerRequestSchema),
@@ -249,10 +252,15 @@ export default function PrayerRequestForm() {
             </div>
             <div>
               <h2 className="mb-3 text-lg">Church Premises</h2>
-              {/* NOTE: Fix to open directions in Google Maps */}
-              <p className="text-red-700 dark:text-primary text-lg hover:underline">
+              <a
+                href={directionsUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`Get directions to ${churchAddress}`}
+                className="text-red-700 dark:text-primary text-lg hover:underline"
+              >
                 {churchAddress}
-              </p>
+              </a>
               <p className="mt-3 text-sm">
                 You can submit your prayer request to the ushers during any of
                 our services.
