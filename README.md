@@ -24,7 +24,7 @@ The application is built with performance and accessibility in mind, featuring o
 - **Styling**: Tailwind CSS 4
 - **UI Components**: Radix UI primitives
 - **Forms**: React Hook Form with Yup validation
-- **Maps**: React Leaflet
+- **Maps**: Leaflet (vanilla, lazy-loaded)
 - **Animations**: Motion (Framer Motion)
 - **Icons**: Phosphor Icons & Lucide React
 - **Theme**: Dark/Light mode support with next-themes
@@ -44,7 +44,7 @@ The application is built with performance and accessibility in mind, featuring o
 - 📸 **Gallery** - Photo gallery with carousel showcasing church events and activities
 - 🎂 **Birthdays** - Member birthday celebrations and recognition
 - 💬 **Testimonies** - Share and read testimonies of God's faithfulness
-- 📍 **Church Location** - Interactive map with location details and directions
+- 📍 **Church Location** - Interactive Leaflet map with a church marker, one-tap "Get Directions", and a "View My Location" geolocation pin
 
 ### 📄 Dedicated Pages
 
@@ -73,14 +73,14 @@ The application is built with performance and accessibility in mind, featuring o
 - 🌓 **Theme Support** - Dark and light mode with system preference detection
 - 📱 **Responsive Design** - Mobile-first, fully responsive across all devices
 - ⚡ **Performance Optimized** - Fast load times, optimized images, and efficient rendering
-- ♿ **Accessible** - Built with accessibility best practices in mind
-- 🔍 **SEO Friendly** - Optimized for search engines and social media sharing
+- ♿ **Accessible** - WCAG AA color contrast, semantic heading order, a single `<main>` landmark per page, and 44px touch targets
+- 🔍 **SEO Optimized** - Per-page metadata, Open Graph & Twitter cards, JSON-LD structured data, `sitemap.xml`, `robots.txt`, and a web manifest
 - 🎭 **Smooth Animations** - Engaging animations using Motion (Framer Motion) and GSAP
 
 ## 📋 Prerequisites
 
-- Node.js 18+
-- pnpm 10.0.0+
+- Node.js 20.9+
+- pnpm 11+
 
 ## 🛠️ Getting Started
 
@@ -118,9 +118,12 @@ The application is built with performance and accessibility in mind, featuring o
 ```
 wci_goderich/
 ├── app/                           # Next.js app directory
-│   ├── layout.tsx                # Root layout with metadata and providers
+│   ├── layout.tsx                # Root layout with metadata, JSON-LD, and providers
 │   ├── page.tsx                  # Home page with all sections
 │   ├── globals.css               # Global styles and Tailwind imports
+│   ├── sitemap.ts                # Generated sitemap.xml
+│   ├── robots.ts                 # Generated robots.txt
+│   ├── manifest.ts               # Generated web app manifest
 │   └── (routes)/                 # Route groups
 │       ├── about/                # About page and sections
 │       ├── contact-us/           # Contact page with forms and FAQs
@@ -147,14 +150,17 @@ wci_goderich/
 │   │   ├── footer/               # Footer components
 │   │   └── navbar/               # Navigation components and menu items
 │   └── ui/                       # Reusable UI components (Radix UI based)
-├── lib/                          # Utility functions and constants
-│   ├── constants/                # Content constants and data
+├── lib/                          # Utilities, constants, and config
+│   ├── constants/                # Content constants + site/SEO config (site.ts)
+│   ├── data/                     # Server-side data fetchers (Supabase)
 │   ├── types/                    # TypeScript type definitions
-│   └── utils/                    # Utility functions
+│   ├── seo.ts                    # Metadata helpers and JSON-LD builders
+│   ├── utils.ts                  # Shared helpers (cn, getDirectionsUrl, etc.)
+│   └── utils/                    # Domain utilities (cloudinary, email, etc.)
 ├── public/                       # Static assets
 │   └── images/                   # Image files and assets
 ├── next.config.ts                # Next.js configuration
-├── tailwind.config.ts            # Tailwind CSS configuration
+├── postcss.config.mjs            # PostCSS + Tailwind CSS 4 setup
 ├── tsconfig.json                 # TypeScript configuration
 └── package.json                  # Dependencies and scripts
 ```
@@ -178,7 +184,7 @@ wci_goderich/
 - **Gallery** - Photo gallery with lazy loading and carousel
 - **BirthdaysWrapper** - Member birthday celebrations with Supabase integration
 - **TestimoniesWrapper** - Testimonies display with filtering
-- **ChurchLocationMap** - Interactive map using React Leaflet with location markers
+- **ChurchLocationMap** - Interactive Leaflet map with a church marker, "Get Directions" links, and a live "View My Location" geolocation pin
 
 ### Form & Input Components
 
@@ -223,7 +229,7 @@ To add more domains, update `next.config.ts`.
 
 The application includes several performance optimizations:
 
-- **Image Optimization**: Automatic image optimization with Next.js Image component
+- **Image Optimization**: Next.js Image serving AVIF/WebP with responsive `sizes` and `preload` for above-the-fold heroes; Cloudinary transforms resize gallery thumbnails on the fly
 - **Code Splitting**: Automatic code splitting with Next.js App Router
 - **Server Components**: Strategic use of Server Components for better performance
 - **Suspense Boundaries**: Loading states with Suspense for better perceived performance
@@ -231,6 +237,16 @@ The application includes several performance optimizations:
 - **Minification**: Automatic minification in production builds (SWC)
 - **Console Removal**: Console statements removed in production
 - **Source Maps**: Disabled in production for smaller bundle sizes
+
+### SEO & Metadata
+
+SEO is driven from a single source of truth in `lib/constants/site.ts`, with helpers in `lib/seo.ts`:
+
+- **Per-page metadata** — titles, descriptions, and canonical URLs for every route
+- **Open Graph & Twitter cards** — rich link previews for social sharing
+- **Structured data** — `Organization` and `WebSite` JSON-LD injected in the root layout
+- **`sitemap.xml`, `robots.txt`, and a web manifest** — generated from the same config
+- **Base URL** — set `NEXT_PUBLIC_SITE_URL` to your production domain (validated, with a sensible fallback)
 
 ### Environment Variables
 
@@ -249,6 +265,7 @@ cp .env.example .env.local
 
 #### Optional Variables
 
+- **NEXT_PUBLIC_SITE_URL** - Production base URL for SEO/metadata (defaults to `https://wcigoderich.org`)
 - **CLOUDINARY_UPLOAD_PRESET_BIRTHDAYS** - Cloudinary upload preset for birthday images
 - **CLOUDINARY_UPLOAD_PRESET_TESTIMONIES** - Cloudinary upload preset for testimony images
 
@@ -279,9 +296,13 @@ The application integrates with the following services:
 
 ## 👨‍💻 Developer
 
-**YERO** - Project Developer
+**Lawal Oyinlola (LAWAL)** — [lawaloyinlola.com](https://lawaloyinlola.com)
 
-Built with ❤️ by YERO for WCI Goderich
+- GitHub: [@lawalOyinlola](https://github.com/lawalOyinlola)
+- LinkedIn: [lawaloyinlola](https://www.linkedin.com/in/lawaloyinlola)
+- X: [@honeyzrich](https://x.com/honeyzrich)
+
+Built with ❤️ by LAWAL for WCI Goderich
 
 ## 📄 License
 

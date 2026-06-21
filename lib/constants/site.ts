@@ -38,7 +38,7 @@ export const AUTHOR = {
   email: "oyinlolalawal1705@gmail.com",
   socials: {
     portfolio: "https://lawaloyinlola.com",
-    github: "https://github.com/honeyzrich",
+    github: "https://github.com/lawalOyinlola",
     linkedin: "https://www.linkedin.com/in/lawaloyinlola",
     x: "https://x.com/honeyzrich",
   },
