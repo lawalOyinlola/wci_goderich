@@ -5,6 +5,12 @@ import type {
 } from "@/lib/types/prayer";
 import { SERVICES } from "./services";
 
+// 90 Minutes With Jesus — Midnight Intercessory Prayer Guidelines.
+// These are published weekly; update the intercessions, personalSupplication
+// and `date` for each group whenever a new guideline is issued.
+export const MIDNIGHT_PRAYER_WEEK_LABEL =
+  "90 Minutes With Jesus — Midnight Intercessory Prayer Guidelines, June 22nd – 27th, 2026";
+
 // Midnight Prayer Groups Data - Object with groupNumber as key
 // Each group is assigned to a specific day of the week (Group 1 = Monday, Group 2 = Tuesday, etc.)
 export const MIDNIGHT_PRAYER_GROUPS: MidnightPrayerGroups = {
@@ -20,43 +26,43 @@ export const MIDNIGHT_PRAYER_GROUPS: MidnightPrayerGroups = {
     contactPhone: "+232 88 123 456",
     maxMembers: 50,
     currentMembers: 32,
+    date: "2026-06-22",
     intercessions: [
       {
         prayer:
-          "Pray for divine breakthrough in every area of stagnation. Ask God to break every chain of limitation and bondage. Intercede for open doors and opportunities in career and business. Pray for financial breakthrough and divine provision.",
+          "Father, thank You for drafting unprecedented multitudes into our Service(s) last Sunday, and for healing every sickness and disease by the power of Your word.",
         scripture:
-          "Isaiah 45:2-3 - I will go before you and make the crooked places straight...",
+          "Psalm 118:23 - This is the Lord's doing; it is marvellous in our eyes.",
       },
       {
         prayer:
-          "Pray for healing and restoration in families. Intercede for broken relationships to be mended. Ask for God's peace and unity in homes. Pray for protection over family members.",
+          "Father, we decree the release of legions of Angels into our harvest field to uproot every satanic installation manipulating people from coming to this church this coming Sunday.",
         scripture:
-          "Psalm 133:1 - How good and pleasant it is when God's people live together in unity!",
+          "Psalm 103:20 - Bless the Lord, ye his angels, that excel in strength, that do his commandments, hearkening unto the voice of his word.",
       },
       {
         prayer:
-          "Pray for the church's growth and expansion. Intercede for souls to be saved and lives transformed. Pray for the pastor and leadership team. Ask for God's favor and blessing on the church.",
+          "Father, let Your Word continue to provoke signs, wonders and diverse miracles in our services, resulting in the invasion of multitudes into this church all through this Midst of the Year Season of Glory and beyond.",
         scripture:
-          "Acts 2:47 - And the Lord added to their number daily those who were being saved.",
+          "Acts 9:34-35 - And Peter said unto him, Aeneas, Jesus Christ maketh thee whole: arise, and make thy bed. And he arose immediately. And all that dwelt at Lydda and Saron saw him, and turned to the Lord.",
       },
       {
         prayer:
-          "Pray for the nation and its leaders. Intercede for peace and stability in the country. Pray for wisdom and guidance for those in authority. Ask for God's intervention in national affairs.",
+          "Father, crush all everlasting mountains and perpetual hills that may be hindering the lives and destinies of our new converts.",
         scripture:
-          "1 Timothy 2:1-2 - I urge, then, first of all, that petitions, prayers, intercession and thanksgiving be made for all people—for kings and all those in authority...",
+          "Habakkuk 3:6 - He stood, and measured the earth: he beheld, and drove asunder the nations; and the everlasting mountains were scattered, the perpetual hills did bow: his ways are everlasting.",
       },
       {
         prayer:
-          "Pray for divine protection over the church and its members. Intercede for protection during travels and journeys. Pray for protection over our children and youth. Ask for God's shield over our health and wellbeing.",
+          "Father, let the Holy Ghost take over our harvest field all through this week, granting supernatural audience with our contacts.",
         scripture:
-          "Psalm 91:1-2 - He who dwells in the secret place of the Most High...",
+          "Acts 16:14 - And a certain woman named Lydia, a seller of purple, of the city of Thyatira, which worshipped God, heard us: whose heart the Lord opened, that she attended unto the things which were spoken of Paul.",
       },
     ],
-    personalThanksgiving: {
+    personalSupplication: {
       prayer:
-        "Thank God for His faithfulness and provision. Express gratitude for answered prayers. Thank God for His protection and guidance. Praise God for His love and mercy.",
-      scripture:
-        "Psalm 100:4 - Enter his gates with thanksgiving and his courts with praise; give thanks to him and praise his name.",
+        "Father, let Your favour surround me as a shield; cause me to be preferred, accepted, and celebrated wherever I go all through this prophetic season and beyond, in Jesus' name.",
+      scripture: "Luke 2:52",
     },
   },
   2: {
@@ -70,42 +76,43 @@ export const MIDNIGHT_PRAYER_GROUPS: MidnightPrayerGroups = {
     contactEmail: "dawn@wcigoderich.org",
     maxMembers: 30,
     currentMembers: 18,
+    date: "2026-06-23",
     intercessions: [
       {
         prayer:
-          "Pray for wisdom and direction in decision making. Intercede for clarity and understanding. Pray for divine guidance in all endeavors. Ask for God's will to be revealed.",
-        scripture: "Proverbs 3:5-6 - Trust in the Lord with all your heart...",
+          "Father, we destroy every blindfolding power of the enemy targeted at preventing multitudes from getting saved and established in this church this week.",
+        scripture:
+          "2 Corinthians 4:4 - In whom the god of this world hath blinded the minds of them which believe not, lest the light of the glorious gospel of Christ, who is the image of God, should shine unto them.",
       },
       {
         prayer:
-          "Pray for breakthrough in business and career. Intercede for divine connections and partnerships. Pray for favor in the marketplace. Ask for opportunities for advancement.",
+          "Father, let every local assembly in this Commission be minimum double their current attendance before this Midst of the Year Season of Glory concludes.",
         scripture:
-          "Proverbs 16:3 - Commit to the Lord whatever you do, and he will establish your plans.",
+          "Acts 6:7 - And the word of God increased; and the number of the disciples multiplied in Jerusalem greatly; and a great company of the priests were obedient to the faith.",
       },
       {
         prayer:
-          "Pray for revival in the church. Intercede for spiritual awakening. Pray for the move of the Holy Spirit. Ask for God's presence to be manifested.",
+          "Father, make every service all through this season an encounter with Your prophetic Word, leading to the explosive growth of this church.",
         scripture:
-          "Habakkuk 3:2 - Lord, I have heard of your fame; I stand in awe of your deeds, Lord. Repeat them in our day...",
+          "Acts 13:44 - And the next sabbath day came almost the whole city together to hear the word of God.",
       },
       {
         prayer:
-          "Pray for the youth and young adults. Intercede for their education and future. Pray for godly relationships and marriages. Ask for protection from negative influences.",
+          "Father, let the Gentiles continue to come to the light of every Winner and kings to the brightness of our rising in this Midst of the Year Season of Glory and beyond.",
         scripture:
-          "1 Timothy 4:12 - Don't let anyone look down on you because you are young, but set an example for the believers...",
+          "Isaiah 60:3 - And the Gentiles shall come to thy light, and kings to the brightness of thy rising.",
       },
       {
         prayer:
-          "Pray for the sick and suffering. Intercede for healing and restoration. Pray for comfort and strength. Ask for God's healing power to manifest.",
+          "Father, let there be an outbreak of revelation in our Midweek Communion service tonight, resulting in diverse turnaround testimonies.",
         scripture:
-          "James 5:15 - And the prayer offered in faith will make the sick person well...",
+          "Isaiah 58:8 - Then shall thy light break forth as the morning, and thine health shall spring forth speedily: and thy righteousness shall go before thee; the glory of the Lord shall be thy rearward.",
       },
     ],
-    personalThanksgiving: {
+    personalSupplication: {
       prayer:
-        "Thank God for His guidance and direction. Express gratitude for His provision. Thank God for answered prayers. Praise God for His goodness.",
-      scripture:
-        "Psalm 107:1 - Give thanks to the Lord, for he is good; his love endures forever.",
+        "Father, restore every lost opportunity, relationship, blessing, and breakthrough that I have missed, and let the remaining part of this year be greater than my beginning.",
+      scripture: "Job 42:10",
     },
   },
   3: {
@@ -120,43 +127,43 @@ export const MIDNIGHT_PRAYER_GROUPS: MidnightPrayerGroups = {
     contactPhone: "+232 88 123 456",
     maxMembers: 50,
     currentMembers: 28,
+    date: "2026-06-24",
     intercessions: [
       {
         prayer:
-          "Pray for marriages and families. Intercede for unity and love. Pray for godly relationships. Ask for God's grace in relationships.",
+          "Father, let the seal of the Holy Ghost protect all our new converts from all satanic attacks so that they can be established in this Church for life.",
         scripture:
-          "Ephesians 5:33 - However, each one of you also must love his wife as he loves himself, and the wife must respect her husband.",
+          "Ephesians 1:13 - In whom ye also trusted, after that ye heard the word of truth, the gospel of your salvation: in whom also after that ye believed, ye were sealed with that holy Spirit of promise.",
       },
       {
         prayer:
-          "Pray for children and their future. Intercede for their protection and guidance. Pray for their education and career. Ask for God's favor upon them.",
+          "Father, let Kingdom advancement engagement remain every Winner's delight all through Operation Take Your Territory for Christ and beyond, leading to diverse open rewards within this Season of Glory.",
         scripture:
-          "Proverbs 22:6 - Train up a child in the way he should go, and when he is old he will not depart from it.",
+          "Matthew 6:33 - But seek ye first the kingdom of God, and his righteousness; and all these things shall be added unto you.",
       },
       {
         prayer:
-          "Pray for the community and neighborhood. Intercede for peace and safety. Pray for opportunities to serve. Ask for God's light to shine in the community.",
+          "Father, let every one of our services in this church be a repeat of Pentecost all through this Midst of the Year Season and beyond.",
         scripture:
-          "Matthew 5:16 - In the same way, let your light shine before others, that they may see your good deeds and glorify your Father in heaven.",
+          "Acts 2:1,41 - And when the day of Pentecost was fully come, they were all with one accord in one place. Then they that gladly received his word were baptized: and the same day there were added unto them about three thousand souls.",
       },
       {
         prayer:
-          "Pray for missionaries and evangelists. Intercede for their safety and effectiveness. Pray for souls to be saved through their ministry. Ask for provision and support for their work.",
+          "Father, let every Cell in this church be empowered to replicate minimum once before this Midst of the Year Season of Glory concludes.",
         scripture:
-          "Romans 10:15 - And how can anyone preach unless they are sent? As it is written: 'How beautiful are the feet of those who bring good news!'",
+          "Exodus 1:7 - And the children of Israel were fruitful, and increased abundantly, and multiplied, and waxed exceeding mighty; and the land was filled with them.",
       },
       {
         prayer:
-          "Pray for the elderly and widows. Intercede for their comfort and provision. Pray for their health and wellbeing. Ask for God's care and protection.",
+          "Father, this week, grant supernatural utterance to every soul-winner on the go-for-Christ as we intensify our outreaches, leading to massive salvation of souls.",
         scripture:
-          "James 1:27 - Religion that God our Father accepts as pure and faultless is this: to look after orphans and widows in their distress...",
+          "Acts 2:37,41 - Now when they heard this, they were pricked in their heart, and said...Men and brethren, what shall we do? Then they that gladly received his word were baptized: and the same day there were added unto them about three thousand souls.",
       },
     ],
-    personalThanksgiving: {
+    personalSupplication: {
       prayer:
-        "Thank God for His love and care. Express gratitude for family and relationships. Thank God for His protection. Praise God for His faithfulness.",
-      scripture:
-        "Psalm 127:1 - Unless the Lord builds the house, the builders labor in vain. Unless the Lord watches over the city, the guards stand watch in vain.",
+        "Father, restore every area of financial loss and release supernatural abundance upon the works of my hands.",
+      scripture: "Zechariah 9:12",
     },
   },
   4: {
@@ -171,43 +178,43 @@ export const MIDNIGHT_PRAYER_GROUPS: MidnightPrayerGroups = {
     contactPhone: "+232 88 123 456",
     maxMembers: 50,
     currentMembers: 25,
+    date: "2026-06-25",
     intercessions: [
       {
         prayer:
-          "Pray for students and educators. Intercede for academic excellence. Pray for wisdom and understanding. Ask for God's favor in education.",
+          "Father, scatter every confederacy and gang up of hell against the continuous growth of this church, thereby retaining this church as a city without walls.",
         scripture:
-          "Proverbs 2:6 - For the Lord gives wisdom; from his mouth come knowledge and understanding.",
+          "Psalm 68:1-2 - Let God arise, let his enemies be scattered: let them also that hate him flee before him. As smoke is driven away, so drive them away: as wax melteth before the fire, so let the wicked perish at the presence of God.",
       },
       {
         prayer:
-          "Pray for the media and entertainment industry. Intercede for godly content and influence. Pray for transformation in these sectors. Ask for God's light to shine through media.",
+          "Father, let the revival fire burn hotter than ever in all our churches, resulting in the record-breaking invasion of multitudes into our services all through this month and beyond.",
         scripture:
-          "Philippians 4:8 - Finally, brothers and sisters, whatever is true, whatever is noble, whatever is right, whatever is pure, whatever is lovely, whatever is admirable—if anything is excellent or praiseworthy—think about such things.",
+          "Leviticus 6:12-13 - And the fire upon the altar shall be burning in it; it shall not be put out: and the priest shall burn wood on it every morning... The fire shall ever be burning upon the altar; it shall never go out.",
       },
       {
         prayer:
-          "Pray for the economy and businesses. Intercede for financial stability. Pray for job opportunities. Ask for God's provision in times of need.",
+          "Father, by the power of Your Word, let there be waves of ear-tingling testimonies in all our services, thereby bringing many others to Christ and this Church.",
         scripture:
-          "Philippians 4:19 - And my God will meet all your needs according to the riches of his glory in Christ Jesus.",
+          "Zechariah 8:23 - Thus saith the Lord of hosts; In those days it shall come to pass, that ten men shall take hold out of all languages of the nations, even shall take hold of the skirt of him that is a Jew, saying, We will go with you: for we have heard that God is with you.",
       },
       {
         prayer:
-          "Pray for the healthcare system. Intercede for doctors, nurses, and healthcare workers. Pray for healing and medical breakthroughs. Ask for God's wisdom in healthcare.",
+          "Father, open the heart of our new converts and new members to actively participate in Cell meetings, thereby enjoying the blessings of fellowship.",
         scripture:
-          "Jeremiah 30:17 - But I will restore you to health and heal your wounds, declares the Lord...",
+          "Hebrews 10:25 - Not forsaking the assembling of ourselves together, as the manner of some is; but exhorting one another: and so much the more, as ye see the day approaching.",
       },
       {
         prayer:
-          "Pray for the justice system. Intercede for fairness and righteousness. Pray for judges and lawyers. Ask for God's justice to prevail.",
+          "Father, fire up the passion for soul-winning in every Winner towards the realization of our minimum one abiding soul before this Midst of the Year Season of Glory concludes.",
         scripture:
-          "Micah 6:8 - He has shown you, O mortal, what is good. And what does the Lord require of you? To act justly and to love mercy and to walk humbly with your God.",
+          "1 Corinthians 3:8 - Now he that planteth and he that watereth are one: and every man shall receive his own reward according to his own labour.",
       },
     ],
-    personalThanksgiving: {
+    personalSupplication: {
       prayer:
-        "Thank God for education and opportunities. Express gratitude for His provision. Thank God for His wisdom. Praise God for His justice and righteousness.",
-      scripture:
-        "Psalm 111:10 - The fear of the Lord is the beginning of wisdom; all who follow his precepts have good understanding.",
+        "Father, let Your healing power flow through my body, restoring my health, strength, and vitality completely.",
+      scripture: "Jeremiah 30:17",
     },
   },
   5: {
@@ -222,43 +229,43 @@ export const MIDNIGHT_PRAYER_GROUPS: MidnightPrayerGroups = {
     contactPhone: "+232 88 123 456",
     maxMembers: 50,
     currentMembers: 30,
+    date: "2026-06-26",
     intercessions: [
       {
         prayer:
-          "Pray for global peace and stability. Intercede for nations in conflict. Pray for refugees and displaced persons. Ask for God's intervention in world affairs.",
+          "Father, terminate every barrier standing in the way of the ingathering of great multitudes into our Service(s) this coming Sunday.",
         scripture:
-          "Isaiah 2:4 - He will judge between the nations and will settle disputes for many peoples. They will beat their swords into plowshares...",
+          "Psalm 24:7 - Lift up your heads, O ye gates; and be ye lift up, ye everlasting doors; and the King of glory shall come in.",
       },
       {
         prayer:
-          "Pray for the environment and creation. Intercede for stewardship of resources. Pray for solutions to environmental challenges. Ask for God's wisdom in caring for creation.",
+          "Father, let the attendance of this church be minimum double her current attendance before this Midst of the Year Season of Glory concludes.",
         scripture:
-          "Genesis 1:28 - God blessed them and said to them, 'Be fruitful and increase in number; fill the earth and subdue it. Rule over the fish in the sea and the birds in the sky and over every living creature that moves on the ground.'",
+          "Zechariah 9:12 - Turn you to the strong hold, ye prisoners of hope: even to day do I declare that I will render double unto thee.",
       },
       {
         prayer:
-          "Pray for technology and innovation. Intercede for ethical use of technology. Pray for positive impact of technology. Ask for God's guidance in technological advancement.",
+          "Father, give all our new converts a testimony of 'once I was blind, now I can see', so that they can abide in this church for life.",
         scripture:
-          "1 Corinthians 10:31 - So whether you eat or drink or whatever you do, do it all for the glory of God.",
+          "John 9:25 - He answered and said, Whether he be a sinner or no, I know not: one thing I know, that, whereas I was blind, now I see.",
       },
       {
         prayer:
-          "Pray for arts and culture. Intercede for godly expression through arts. Pray for transformation in culture. Ask for God's beauty to be reflected in arts.",
+          "Father, grant every Winner on-the-go for Christ today, a Word in season that will compel minimum one brand-new soul to Christ and this church this coming Sunday.",
         scripture:
-          "Philippians 4:8 - Finally, brothers and sisters, whatever is true, whatever is noble, whatever is right, whatever is pure, whatever is lovely, whatever is admirable—if anything is excellent or praiseworthy—think about such things.",
+          "Isaiah 50:4 - The Lord God hath given me the tongue of the learned, that I should know how to speak a word in season to him that is weary: he wakeneth morning by morning, he wakeneth mine ear to hear as the learned.",
       },
       {
         prayer:
-          "Pray for the next generation. Intercede for children and youth worldwide. Pray for their protection and guidance. Ask for God's hand upon the future.",
+          "Father, let the Holy Ghost come down as a 'Mighty, Rushing Wind', drafting unprecedented multitudes into this Church this coming Sunday.",
         scripture:
-          "Joel 2:28 - And afterward, I will pour out my Spirit on all people. Your sons and daughters will prophesy, your old men will dream dreams, your young men will see visions.",
+          "Numbers 11:31 - And there went forth a wind from the Lord, and brought quails from the sea, and let them fall by the camp...round about the camp, and as it were two cubits high upon the face of the earth.",
       },
     ],
-    personalThanksgiving: {
+    personalSupplication: {
       prayer:
-        "Thank God for His creation. Express gratitude for global opportunities. Thank God for His wisdom. Praise God for His sovereignty.",
-      scripture:
-        "Psalm 24:1 - The earth is the Lord's, and everything in it, the world, and all who live in it.",
+        "Father, by Your favour, open doors that no man can shut and move me from stagnation into supernatural advancement.",
+      scripture: "Revelation 3:8",
     },
   },
   6: {
@@ -273,46 +280,62 @@ export const MIDNIGHT_PRAYER_GROUPS: MidnightPrayerGroups = {
     contactPhone: "+232 88 123 456",
     maxMembers: 50,
     currentMembers: 22,
+    date: "2026-06-27",
     intercessions: [
       {
         prayer:
-          "Pray for the end-time harvest. Intercede for souls to be saved. Pray for revival across the nations. Ask for God's kingdom to come.",
+          "Father, we decree the rescue of every captive of hell unto salvation as we invade our harvest fields today, and let it manifest in our Service(s) this Sunday.",
         scripture:
-          "Matthew 9:37-38 - Then he said to his disciples, 'The harvest is plentiful but the workers are few. Ask the Lord of the harvest, therefore, to send out workers into his harvest field.'",
+          "Acts 13:48 - And when the Gentiles heard this, they were glad, and glorified the word of the Lord: and as many as were ordained to eternal life believed.",
       },
       {
         prayer:
-          "Pray for the persecuted church. Intercede for strength and courage. Pray for their protection and provision. Ask for God's comfort and encouragement.",
+          "Father, today, let the ears of every unsaved soul across our harvest field hear the compelling sound of the Holy Spirit and be drafted to this Church this Sunday.",
         scripture:
-          "Hebrews 13:3 - Continue to remember those in prison as if you were together with them in prison, and those who are mistreated as if you yourselves were suffering.",
+          "Isaiah 5:26 - And he will lift up an ensign to the nations from far, and will hiss unto them from the end of the earth: and, behold, they shall come with speed swiftly.",
       },
       {
         prayer:
-          "Pray for unity in the body of Christ. Intercede for reconciliation and restoration. Pray for love and understanding among believers. Ask for God's Spirit of unity.",
+          "Father, release Your legions of reaper-angels to wait upon all our new converts and invitees of the week, ensuring their presence in this church this Sunday.",
         scripture:
-          "Ephesians 4:3 - Make every effort to keep the unity of the Spirit through the bond of peace.",
+          "Matthew 26:53 - Thinkest thou that I cannot now pray to my Father, and he shall presently give me more than twelve legions of angels?",
       },
       {
         prayer:
-          "Pray for spiritual gifts and ministries. Intercede for the operation of the Holy Spirit. Pray for the manifestation of God's power. Ask for God's anointing upon His people.",
+          "Father, we decree perfect weather conditions and hitch-free movement of worshippers in and out of this church this Sunday.",
         scripture:
-          "1 Corinthians 12:7 - Now to each one the manifestation of the Spirit is given for the common good.",
+          "Philippians 2:10 - That at the name of Jesus every knee should bow, of things in heaven, and things in earth, and things under the earth.",
       },
       {
         prayer:
-          "Pray for the return of Christ. Intercede for readiness and preparation. Pray for the bride to be ready. Ask for God's will to be fulfilled.",
+          "Father, draft record-breaking multitudes into our Service(s) this Sunday, and settle marital destiny by the revelation of Your word.",
         scripture:
-          "Revelation 22:20 - He who testifies to these things says, 'Yes, I am coming soon.' Amen. Come, Lord Jesus.",
+          "Psalm 68:6 - God setteth the solitary in families: he bringeth out those which are bound with chains: but the rebellious dwell in a dry land.",
       },
     ],
-    personalThanksgiving: {
+    personalSupplication: {
       prayer:
-        "Thank God for salvation and redemption. Express gratitude for the church. Thank God for His promises. Praise God for the hope of His return.",
-      scripture:
-        "1 Thessalonians 5:18 - Give thanks in all circumstances; for this is God's will for you in Christ Jesus.",
+        "O Lord, restore all that the enemy has stolen and grant me double honour, joy, and testimony in place of every shame and delay.",
+      scripture: "Isaiah 61:7",
     },
   },
 };
+
+// Derive the displayed Midnight Prayer Points from MIDNIGHT_PRAYER_GROUPS so
+// the join-group cards and the points display always stay in sync.
+const midnightPrayerPoints: PrayerPoint[] = Object.entries(
+  MIDNIGHT_PRAYER_GROUPS,
+).map(([groupNumber, group]) => ({
+  id: `midnight-${groupNumber}`,
+  title: `${group.name} – ${group.day}`,
+  description: MIDNIGHT_PRAYER_WEEK_LABEL,
+  category: "midnight",
+  groupNumber: Number(groupNumber),
+  points: [],
+  intercessions: group.intercessions,
+  personalSupplication: group.personalSupplication,
+  date: group.date,
+}));
 
 
 // General Prayer Points
@@ -534,10 +557,8 @@ const specialPrayerPoints: PrayerPoint[] = [
 ];
 
 // Export all prayer points
-// NOTE: Midnight prayer points are intentionally excluded for now — the current
-// midnight data is placeholder, not the real points to display. The midnight tab
-// auto-hides while its count is 0; re-add midnight points here once they're ready.
 export const PRAYER_POINTS: PrayerPoint[] = [
+  ...midnightPrayerPoints,
   ...generalPrayerPoints,
   ...specialPrayerPoints,
 ];

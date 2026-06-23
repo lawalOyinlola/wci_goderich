@@ -7,7 +7,6 @@ import { Card } from "@/components/ui/card";
 import { FilterTabs, type TabConfig } from "@/components/ui/filter-tabs";
 import { BookOpenIcon } from "@phosphor-icons/react";
 import { PRAYER_POINTS } from "@/lib/constants";
-import { formatOrdinal } from "@/lib/utils";
 import { Reveal } from "@/components/motion";
 
 interface PrayerPointsProps {
@@ -15,37 +14,6 @@ interface PrayerPointsProps {
 }
 
 export default function PrayerPoints({ initialCategory }: PrayerPointsProps) {
-  // Footer label for midnight groups: "Week {cycleWeek} • Monday 5th 2026"
-  const getMidnightWeekLabel = (groupNumber: number) => {
-    const now = new Date();
-    const startOfYear = new Date(now.getFullYear(), 0, 1);
-    const daysSinceStart = Math.floor(
-      (now.getTime() - startOfYear.getTime()) / (1000 * 60 * 60 * 24),
-    );
-    const currentWeekOfYear = Math.floor(daysSinceStart / 7);
-    const cycleWeekNumber = (currentWeekOfYear % 6) + 1;
-
-    // Start of current week, then adjust to Monday
-    const weekStart = new Date(startOfYear);
-    weekStart.setDate(startOfYear.getDate() + currentWeekOfYear * 7);
-    const dayOfWeek = weekStart.getDay(); // 0=Sun,1=Mon,...6=Sat
-    const mondayOffset = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
-    weekStart.setDate(weekStart.getDate() + mondayOffset);
-
-    // Calculate the specific day for this group (0 = Monday, 1 = Tuesday, etc.)
-    const groupDayOffset = groupNumber - 1; // Group 1 = Monday (0), Group 2 = Tuesday (1), etc.
-    const groupDate = new Date(weekStart);
-    groupDate.setDate(weekStart.getDate() + groupDayOffset);
-
-    const weekday = groupDate.toLocaleDateString("en-US", {
-      weekday: "long",
-    });
-    const day = formatOrdinal(groupDate.getDate());
-    const year = groupDate.getFullYear();
-
-    return `Week ${cycleWeekNumber} • ${weekday} ${day} ${year}`;
-  };
-
   const searchParams = useSearchParams();
   const router = useRouter();
   const categoryParam = searchParams.get("category") || initialCategory;
@@ -212,17 +180,17 @@ export default function PrayerPoints({ initialCategory }: PrayerPointsProps) {
                         </div>
                       </div>
 
-                      {/* Personal Thanksgiving */}
-                      {point.personalThanksgiving && (
+                      {/* Personal Supplication */}
+                      {point.personalSupplication && (
                         <div>
                           <h4 className="text-sm font-semibold mb-3 text-primary">
-                            Personal Thanksgiving
+                            Personal Supplication
                           </h4>
                           <div className="space-y-2">
                             <p className="text-sm leading-relaxed">
-                              {point.personalThanksgiving.prayer}
+                              {point.personalSupplication.prayer}
                             </p>
-                            {point.personalThanksgiving.scripture && (
+                            {point.personalSupplication.scripture && (
                               <div className="p-2 bg-muted dark:bg-background/40 rounded-lg">
                                 <div className="flex items-start gap-2">
                                   <BookOpenIcon
@@ -230,7 +198,7 @@ export default function PrayerPoints({ initialCategory }: PrayerPointsProps) {
                                     className="text-red-700 dark:text-primary mt-0.5 shrink-0"
                                   />
                                   <p className="text-xs italic text-red-700 dark:text-primary font-medium line-clamp-3">
-                                    {point.personalThanksgiving.scripture}
+                                    {point.personalSupplication.scripture}
                                   </p>
                                 </div>
                               </div>
@@ -269,16 +237,16 @@ export default function PrayerPoints({ initialCategory }: PrayerPointsProps) {
                       )}
                     </ul>
                   )}
-                  {point.date &&
-                    (point.category === "midnight" && point.groupNumber ? (
-                      <p className="text-xs text-muted-foreground mt-4">
-                        {getMidnightWeekLabel(point.groupNumber)}
-                      </p>
-                    ) : (
-                      <p className="text-xs text-muted-foreground mt-4">
-                        {new Date(point.date).toLocaleDateString()}
-                      </p>
-                    ))}
+                  {point.date && (
+                    <p className="text-xs text-muted-foreground text-end italic mt-auto">
+                      {new Date(point.date).toLocaleDateString("en-US", {
+                        weekday: "long",
+                        month: "long",
+                        day: "numeric",
+                        year: "numeric",
+                      })}
+                    </p>
+                  )}
                 </Card>
               ))}
             </div>
