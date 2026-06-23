@@ -37,7 +37,7 @@ export type PrayerPoint = {
   // For midnight prayer groups (1-6)
   groupNumber?: number;
   intercessions?: PrayerWithScripture[];
-  personalThanksgiving?: PrayerWithScripture;
+  personalSupplication?: PrayerWithScripture;
   // For general prayers
   subcategory?:
     | "personal-growth"
@@ -63,7 +63,10 @@ export interface MidnightPrayerGroup {
   maxMembers?: number;
   currentMembers?: number;
   intercessions: PrayerWithScripture[];
-  personalThanksgiving: PrayerWithScripture;
+  personalSupplication: PrayerWithScripture;
+  // The calendar date this group's current intercessions apply to (ISO format),
+  // so the published guideline can be swapped out week to week.
+  date?: string;
 }
 
 // Structure for all midnight prayer groups (object with groupNumber as key)
