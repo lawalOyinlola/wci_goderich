@@ -134,7 +134,7 @@ export default function WSFPage() {
           name: data.name,
           phone: data.phone,
           email: data.email || undefined,
-          subject: `Satellite Fellowship — ${intentLabel}`,
+          subject: `Satellite Fellowship: ${intentLabel}`,
           message,
           isAnonymous: false,
         }),
@@ -174,7 +174,7 @@ export default function WSFPage() {
       {/* Hero */}
       <HeroTemplate
         title="Satellite Fellowship"
-        description="Faith grows best in community. Join a home cell near you, or open your home to host one — small groups gathering through the week for the Word, prayer, and genuine fellowship."
+        description="Faith grows best in community. Join a home cell near you, or open your home to host one. Small groups gathering through the week for the Word, prayer, and genuine fellowship."
         backgroundImage="/images/homecell_hero.jpeg"
         className="bg-linear-to-br from-slate-950 via-zinc-900 to-stone-900"
       >
@@ -200,7 +200,7 @@ export default function WSFPage() {
             <SectionHeader
               subtitle="Satellite Fellowship"
               title="Church, Closer to Home"
-              description="Satellite Fellowships are small groups that meet in homes across our community through the week — a place to belong between Sundays, where we study the Word, pray for one another, and do life together as a family of faith."
+              description="Satellite Fellowships are small groups that meet in homes across our community through the week, a place to belong between Sundays, where we study the Word, pray for one another, and do life together as a family of faith."
             />
           </Reveal>
 
@@ -238,8 +238,8 @@ export default function WSFPage() {
                   Open Your Home
                 </h3>
                 <p className="text-foreground/80 leading-relaxed text-sm">
-                  Have space and a heart to serve? Volunteer to host a cell —
-                  we&apos;ll provide the support, you provide the living room.
+                  Have space and a heart to serve? Volunteer to host a cell.
+                  We&apos;ll provide the support, you provide the living room.
                 </p>
               </button>
             </StaggerItem>
