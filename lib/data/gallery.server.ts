@@ -110,11 +110,21 @@ type ListResult = Awaited<ReturnType<typeof listImagesFromFolder>>;
  * `MAX_GALLERY_RESULTS` images it then throws most of away. `fetchFromCloudinary`
  * takes no arguments, so this is a single cache entry shared by every visitor
  * and every filter/seed combination, not one per request.
+ *
+ * Because that entry is shared, a failure must not be written into it: caching
+ * one transient Cloudinary outage would show every visitor the SAMPLE_IMAGES
+ * placeholder until the entry revalidates. So a lookup that errors throws, and
+ * the caller falls back outside this cached scope. An empty result is a real
+ * answer rather than a failure, so it stays cacheable.
  */
 async function fetchFromCloudinary(): Promise<ListResult | null> {
   "use cache";
   cacheLife("minutes");
   cacheTag("gallery");
+
+  // Distinguishes "Cloudinary is unreachable" from "the folder holds nothing",
+  // which the return value alone cannot express.
+  let lastError: unknown;
 
   try {
     const result = await listImagesByAssetFolder(GALLERY_FOLDER, {
@@ -127,6 +137,7 @@ async function fetchFromCloudinary(): Promise<ListResult | null> {
       return result;
     }
   } catch (e) {
+    lastError = e;
     console.warn(
       `Gallery: asset_folder search failed for "${GALLERY_FOLDER}"`,
       e,
@@ -143,9 +154,15 @@ async function fetchFromCloudinary(): Promise<ListResult | null> {
         return result;
       }
     } catch (e) {
+      lastError = e;
       console.warn(`Gallery: no images for prefix "${prefix}"`, e);
     }
   }
+
+  // Every lookup errored, so nothing here is worth caching. Throwing leaves the
+  // cache empty and lets the next request try Cloudinary again.
+  if (lastError) throw lastError;
+
   return null;
 }
 
