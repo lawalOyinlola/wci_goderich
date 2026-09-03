@@ -53,11 +53,14 @@ const MAX_ATTEMPTS = 3;
  */
 export class NeedsConfirmationError extends Error {
   submittedAt?: string;
+  /** Whether the existing row is already verified (from a prior year) rather than pending review. */
+  verified?: boolean;
 
-  constructor(message: string, submittedAt?: string) {
+  constructor(message: string, submittedAt?: string, verified?: boolean) {
     super(message);
     this.name = "NeedsConfirmationError";
     this.submittedAt = submittedAt;
+    this.verified = verified;
   }
 }
 
@@ -65,6 +68,7 @@ interface ParsedErrorBody {
   message: string;
   needsConfirmation: boolean;
   submittedAt?: string;
+  verified?: boolean;
 }
 
 async function readErrorBody(response: Response): Promise<ParsedErrorBody> {
@@ -86,6 +90,7 @@ async function readErrorBody(response: Response): Promise<ParsedErrorBody> {
         needsConfirmation: body.needsConfirmation === true,
         submittedAt:
           typeof body.submittedAt === "string" ? body.submittedAt : undefined,
+        verified: body.verified === true,
       };
     }
   } catch {
@@ -149,7 +154,11 @@ export async function submitBirthday(
     const body = await readErrorBody(response);
 
     if (body.needsConfirmation) {
-      throw new NeedsConfirmationError(body.message, body.submittedAt);
+      throw new NeedsConfirmationError(
+        body.message,
+        body.submittedAt,
+        body.verified
+      );
     }
 
     lastError = new Error(body.message);

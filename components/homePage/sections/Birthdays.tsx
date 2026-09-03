@@ -63,7 +63,8 @@ export default function MonthlyBirthdays({
   const [pendingConfirmation, setPendingConfirmation] = useState<{
     formData: FormData;
     name: string;
-    submittedAt?: string;
+    message: string;
+    verified?: boolean;
   } | null>(null);
   // CAPTCHA tokens (will be set when CAPTCHA is configured)
   const [hcaptchaToken, setHcaptchaToken] = useState<string | undefined>(
@@ -221,12 +222,16 @@ export default function MonthlyBirthdays({
 
         if (error instanceof NeedsConfirmationError && !confirmOverride) {
           // Not a failure - hand the decision to the user via the confirm
-          // dialog instead of showing it as an error.
+          // dialog instead of showing it as an error. The server's message
+          // already distinguishes "still pending" from "already verified in
+          // a prior year", so the dialog just renders it rather than
+          // guessing which case applies.
           toast.dismiss(toastId);
           setPendingConfirmation({
             formData,
             name,
-            submittedAt: error.submittedAt,
+            message: error.message,
+            verified: error.verified,
           });
           return;
         }
@@ -510,14 +515,12 @@ export default function MonthlyBirthdays({
       >
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Replace your pending submission?</DialogTitle>
-            <DialogDescription>
-              <span className="font-medium text-foreground">
-                {pendingConfirmation?.name}
-              </span>{" "}
-              is already awaiting review. Continuing replaces it with this
-              submission.
-            </DialogDescription>
+            <DialogTitle>
+              {pendingConfirmation?.verified
+                ? "Replace last year's photo?"
+                : "Replace your pending submission?"}
+            </DialogTitle>
+            <DialogDescription>{pendingConfirmation?.message}</DialogDescription>
           </DialogHeader>
           <DialogFooter>
             <Button
