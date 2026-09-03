@@ -76,8 +76,7 @@ CREATE TABLE IF NOT EXISTS birthdays (
   verified BOOLEAN DEFAULT false,
   featured BOOLEAN DEFAULT false,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  CONSTRAINT unique_birthday UNIQUE (name, month, day)
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
 -- Migration for a birthdays table created before the `year` column existed.
@@ -87,6 +86,18 @@ ALTER TABLE birthdays ADD COLUMN IF NOT EXISTS year INTEGER;
 UPDATE birthdays SET year = EXTRACT(YEAR FROM created_at)::INTEGER WHERE year IS NULL;
 ALTER TABLE birthdays ALTER COLUMN year SET NOT NULL;
 ALTER TABLE birthdays ALTER COLUMN year SET DEFAULT EXTRACT(YEAR FROM NOW())::INTEGER;
+
+-- Case-insensitive identity: the app looks up an existing row with
+-- `.ilike("name", ...)` (see findExistingBirthday in app/api/birthdays/route.ts),
+-- so the uniqueness constraint has to match on the same terms - a plain
+-- UNIQUE(name, month, day) would let "John Doe" and "JOHN DOE" coexist as two
+-- rows for the same identity, which the app's own case-insensitive lookup
+-- would then treat as one (and .maybeSingle() would error on the ambiguity).
+-- Drop the old case-sensitive constraint (only present on a table created
+-- before this migration existed) and replace it with an expression index.
+ALTER TABLE birthdays DROP CONSTRAINT IF EXISTS unique_birthday;
+CREATE UNIQUE INDEX IF NOT EXISTS unique_birthday_ci
+  ON birthdays (lower(name), month, day);
 
 -- Indexes for birthdays
 CREATE INDEX IF NOT EXISTS idx_birthdays_month ON birthdays(month);
