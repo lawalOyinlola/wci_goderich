@@ -6,6 +6,7 @@
  * url, alt, title come from Cloudinary metadata or SAMPLE_IMAGES.
  */
 
+import { cacheLife, cacheTag } from "next/cache";
 import {
   listImagesFromFolder,
   listImagesByAssetFolder,
@@ -23,6 +24,7 @@ import type {
   GalleryOrientation,
 } from "@/lib/types/gallery";
 import { optimizeCloudinaryUrl } from "@/lib/utils/cloudinary";
+import { seededShuffle } from "@/lib/utils/shuffle";
 
 /** Prefixes to try when listing gallery images (Cloudinary folder structure can vary). */
 const GALLERY_PREFIXES = [
@@ -100,8 +102,30 @@ type ListResult = Awaited<ReturnType<typeof listImagesFromFolder>>;
  * accounts, where the folder is metadata rather than part of the public_id).
  * Falls back to the legacy public_id `prefix` listing for assets uploaded the
  * old way (folder baked into the public_id).
+ *
+ * Cached: infinite scroll re-derives this same full list on every page (each
+ * page request re-runs `getGalleryImagesServer`, filters/shuffles/paginates
+ * in memory), so without caching, one gallery visit issued a Cloudinary
+ * Admin/Search API call per scroll - each one ~1-2s and fetching up to
+ * `MAX_GALLERY_RESULTS` images it then throws most of away. `fetchFromCloudinary`
+ * takes no arguments, so this is a single cache entry shared by every visitor
+ * and every filter/seed combination, not one per request.
+ *
+ * Because that entry is shared, a failure must not be written into it: caching
+ * one transient Cloudinary outage would show every visitor the SAMPLE_IMAGES
+ * placeholder until the entry revalidates. So a lookup that errors throws, and
+ * the caller falls back outside this cached scope. An empty result is a real
+ * answer rather than a failure, so it stays cacheable.
  */
 async function fetchFromCloudinary(): Promise<ListResult | null> {
+  "use cache";
+  cacheLife("minutes");
+  cacheTag("gallery");
+
+  // Distinguishes "Cloudinary is unreachable" from "the folder holds nothing",
+  // which the return value alone cannot express.
+  let lastError: unknown;
+
   try {
     const result = await listImagesByAssetFolder(GALLERY_FOLDER, {
       max_results: MAX_GALLERY_RESULTS,
@@ -113,6 +137,7 @@ async function fetchFromCloudinary(): Promise<ListResult | null> {
       return result;
     }
   } catch (e) {
+    lastError = e;
     console.warn(
       `Gallery: asset_folder search failed for "${GALLERY_FOLDER}"`,
       e,
@@ -129,9 +154,15 @@ async function fetchFromCloudinary(): Promise<ListResult | null> {
         return result;
       }
     } catch (e) {
+      lastError = e;
       console.warn(`Gallery: no images for prefix "${prefix}"`, e);
     }
   }
+
+  // Every lookup errored, so nothing here is worth caching. Throwing leaves the
+  // cache empty and lets the next request try Cloudinary again.
+  if (lastError) throw lastError;
+
   return null;
 }
 
@@ -238,10 +269,16 @@ export async function getGalleryImagesServer(
       });
     }
 
-    images.sort((a, b) => {
-      if (b.displayOrder !== a.displayOrder) return b.displayOrder - a.displayOrder;
-      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-    });
+    if (filters?.seed) {
+      // Same seed, same order: paging over a shuffled gallery stays coherent.
+      images = seededShuffle(images, filters.seed);
+    } else {
+      images.sort((a, b) => {
+        if (b.displayOrder !== a.displayOrder)
+          return b.displayOrder - a.displayOrder;
+        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+      });
+    }
 
     return paginate(images);
   } catch (e) {

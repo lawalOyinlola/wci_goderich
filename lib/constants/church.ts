@@ -130,7 +130,7 @@ export const CHURCH_INFO = {
   HERO_IMAGE: "/images/2026_theme.png",
   OFFICE_HOUR: "Monday - Friday: 8:00 AM - 5:00 PM",
   CONTACT: {
-    phone: "+232 88 123 456",
+    phone: "+232 79 211003",
     email: "info@wcigoderich.org",
     whatsapp: "+232 88 123 456",
     address: "Main Street, Goderich, Western Area, Sierra Leone",

@@ -25,4 +25,9 @@ export {
   SERMONS,
   SERMONS_ENABLED,
   FEATURED_SERMONS,
+  ABOUT_VIDEO,
+  CHURCH_VIDEOS,
+  getCloudinaryVideoUrls,
+  getCloudinaryVideoPoster,
 } from "./media";
+export type { ChurchVideo } from "./media";

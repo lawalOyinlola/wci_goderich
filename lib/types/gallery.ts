@@ -54,4 +54,9 @@ export interface GalleryFilters {
   pastYears?: boolean; // Filter for images from previous years (not current year)
   page?: number;
   limit?: number;
+  /**
+   * Randomises the order. One seed is minted per visit and replayed on every
+   * page request, so paging stays consistent while the order varies per visit.
+   */
+  seed?: string;
 }

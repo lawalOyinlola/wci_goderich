@@ -5,7 +5,16 @@ import { AnimatedButton } from "@/components/ui/animated-button";
 import { VideoDialog, type VideoDialogRef } from "@/components/ui/video-dialog";
 import { ArrowDownIcon, PlayCircleIcon } from "@phosphor-icons/react";
 import { Reveal, Stagger, StaggerItem } from "@/components/motion";
-import { CHURCH_INFO } from "@/lib/constants";
+import { ABOUT_VIDEO, CHURCH_INFO, CHURCH_VIDEOS } from "@/lib/constants";
+
+/** The hero opens the whole reel, starting on the intro video. */
+const VIDEO_PLAYLIST = CHURCH_VIDEOS.map((video) => ({
+  src: video.hls,
+  fallbackSrc: video.mp4,
+  poster: video.poster,
+  title: video.title,
+  orientation: video.orientation,
+}));
 
 export default function HeroSection() {
   const { CORE_VALUES } = CHURCH_INFO;
@@ -69,9 +78,11 @@ export default function HeroSection() {
               <div className="bg-background rounded-(--radius) shadow-foreground/10 ring-foreground/5 relative h-full -translate-y-12 skew-x-6 overflow-hidden border border-transparent shadow-md ring-1">
                 <VideoDialog
                   ref={videoDialogRef}
-                  videoSrc="/videos/about_us_hero.mp4"
-                  thumbnailSrc="/images/about_us_hero.jpg"
-                  thumbnailAlt="About Us Hero"
+                  videoSrc={ABOUT_VIDEO.hls}
+                  fallbackVideoSrc={ABOUT_VIDEO.mp4}
+                  playlist={VIDEO_PLAYLIST}
+                  thumbnailSrc={ABOUT_VIDEO.poster}
+                  thumbnailAlt={ABOUT_VIDEO.title}
                   className="h-full"
                   imgWidth={1600}
                   imgHeight={887}

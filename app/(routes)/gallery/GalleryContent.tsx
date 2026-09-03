@@ -141,6 +141,11 @@ export default function GalleryContent({
   // Page most recently fetched. Infinite scroll has no URL-addressable page,
   // so this lives in component state rather than the query string.
   const pageRef = useRef(1);
+  // One shuffle seed per visit. Minted on the client so the order differs each
+  // time the page is opened, and held steady so every appended page is drawn
+  // from the same ordering instead of reshuffling under the reader. Filled on
+  // first fetch rather than during render, which must stay pure.
+  const seedRef = useRef("");
   const sentinelRef = useRef<HTMLDivElement | null>(null);
   // The floating load-more control should only float over the gallery itself.
   const sectionRef = useRef<HTMLElement | null>(null);
@@ -180,8 +185,12 @@ export default function GalleryContent({
       setError(null); // Clear any previous errors
       try {
         const params = new URLSearchParams();
+        if (!seedRef.current) {
+          seedRef.current = Math.random().toString(36).slice(2, 12);
+        }
         params.append("page", String(page));
         params.append("limit", String(DEFAULT_GALLERY_LIMIT));
+        params.append("seed", seedRef.current);
         if (category) params.append("category", category);
         if (orientation) params.append("orientation", orientation);
         if (pastYears) {
