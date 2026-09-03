@@ -60,6 +60,58 @@ function useColumnCount() {
   return columns;
 }
 
+/**
+ * Whether `ref`'s element currently occupies the scroll "window": its top
+ * edge has scrolled up to within `topFraction` of the viewport height from
+ * the top, and its bottom edge hasn't yet risen within `bottomFraction` of
+ * the viewport height from the bottom. Used to show the floating load-more
+ * control only while the gallery section itself is what's on screen, not for
+ * the whole page (the hero above it, or whatever follows it below).
+ */
+function useInViewWindow(
+  ref: React.RefObject<HTMLElement | null>,
+  {
+    topFraction,
+    bottomFraction,
+  }: { topFraction: number; bottomFraction: number },
+) {
+  const [inView, setInView] = useState(false);
+
+  useEffect(() => {
+    let raf = 0;
+
+    const update = () => {
+      raf = 0;
+      const el = ref.current;
+      if (!el) {
+        setInView(false);
+        return;
+      }
+      const rect = el.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const topHasReachedZone = rect.top <= vh * topFraction;
+      const bottomHasNotLeftZone = rect.bottom > vh * (1 - bottomFraction);
+      setInView(topHasReachedZone && bottomHasNotLeftZone);
+    };
+
+    const onScrollOrResize = () => {
+      if (raf) return;
+      raf = requestAnimationFrame(update);
+    };
+
+    update();
+    window.addEventListener("scroll", onScrollOrResize, { passive: true });
+    window.addEventListener("resize", onScrollOrResize);
+    return () => {
+      window.removeEventListener("scroll", onScrollOrResize);
+      window.removeEventListener("resize", onScrollOrResize);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, [ref, topFraction, bottomFraction]);
+
+  return inView;
+}
+
 /** Image height per unit width, used to balance masonry columns. */
 function aspectHeight(image: GalleryImage) {
   if (image.width && image.height) return image.height / image.width;
@@ -90,6 +142,8 @@ export default function GalleryContent({
   // so this lives in component state rather than the query string.
   const pageRef = useRef(1);
   const sentinelRef = useRef<HTMLDivElement | null>(null);
+  // The floating load-more control should only float over the gallery itself.
+  const sectionRef = useRef<HTMLElement | null>(null);
 
   const category = searchParams.get("category") || initialCategory;
   const orientation = searchParams.get("orientation") || initialOrientation;
@@ -109,7 +163,7 @@ export default function GalleryContent({
   useEffect(() => {
     form.setValue(
       "month",
-      pastYears ? "past-years" : month ? String(month) : "all"
+      pastYears ? "past-years" : month ? String(month) : "all",
     );
   }, [month, pastYears, form]);
 
@@ -147,7 +201,7 @@ export default function GalleryContent({
 
         if (data.success) {
           setImages((prev) =>
-            append ? [...prev, ...(data.data || [])] : data.data || []
+            append ? [...prev, ...(data.data || [])] : data.data || [],
           );
           setPagination(data.pagination);
           pageRef.current = page;
@@ -172,12 +226,12 @@ export default function GalleryContent({
           // Only clear images and pagination if this is the initial load (no images yet)
           // Use functional updates to check current state without dependency
           setImages((prevImages) =>
-            prevImages.length === 0 ? [] : prevImages
+            prevImages.length === 0 ? [] : prevImages,
           );
           setPagination((prevPagination) =>
             prevPagination && prevPagination.totalItems > 0
               ? prevPagination
-              : null
+              : null,
           );
         }
       } finally {
@@ -185,7 +239,7 @@ export default function GalleryContent({
         else setLoading(false);
       }
     },
-    [category, orientation, month, pastYears]
+    [category, orientation, month, pastYears],
   );
 
   // Initial load and every filter change: reset to page 1 and replace (not
@@ -209,7 +263,7 @@ export default function GalleryContent({
           fetchImages(pageRef.current + 1, { append: true });
         }
       },
-      { rootMargin: "600px" } // start the fetch well before the sentinel is actually on screen
+      { rootMargin: "600px" }, // start the fetch well before the sentinel is actually on screen
     );
     observer.observe(el);
     return () => observer.disconnect();
@@ -237,7 +291,7 @@ export default function GalleryContent({
   }, []);
 
   const updateSearchParams = (
-    updates: Record<string, string | number | null | undefined>
+    updates: Record<string, string | number | null | undefined>,
   ) => {
     const params = new URLSearchParams(searchParams.toString());
 
@@ -270,8 +324,19 @@ export default function GalleryContent({
   // normal block flow (not CSS multi-column), so native lazy-loading works and
   // images never jump between columns as later images load in.
   const columnCount = useColumnCount();
+  // Show the floating control once the gallery section's top has scrolled up
+  // to within 20% of the viewport height from the top, and hide it again
+  // once its bottom rises to within 15% of the viewport height from the
+  // bottom - i.e. only while the gallery is substantially what's on screen.
+  const isGalleryInView = useInViewWindow(sectionRef, {
+    topFraction: 0.2,
+    bottomFraction: 0.15,
+  });
   const columns = useMemo(() => {
-    const cols: GalleryImage[][] = Array.from({ length: columnCount }, () => []);
+    const cols: GalleryImage[][] = Array.from(
+      { length: columnCount },
+      () => [],
+    );
     const heights = new Array<number>(columnCount).fill(0);
 
     images.forEach((image) => {
@@ -300,7 +365,7 @@ export default function GalleryContent({
   }
 
   return (
-    <section id="gallery" className="py-20">
+    <section id="gallery" ref={sectionRef} className="py-20">
       <div className="container max-w-screen">
         <SectionHeader
           title="Photo Gallery"
@@ -343,7 +408,10 @@ export default function GalleryContent({
         ) : (
           <div className="flex items-start gap-3 mb-6">
             {columns.map((column, colIndex) => (
-              <div key={colIndex} className="flex flex-1 flex-col gap-3 min-w-0">
+              <div
+                key={colIndex}
+                className="flex flex-1 flex-col gap-3 min-w-0"
+              >
                 {column.map((image) => (
                   <GalleryImageCard
                     key={image.id}
@@ -417,14 +485,15 @@ export default function GalleryContent({
       </div>
 
       {/* Floating control: while auto-loading, lets the user stop it; once
-          stopped (or after a load fails), becomes a manual "load more" button. */}
-      {pagination?.hasNextPage && (
+          stopped (or after a load fails), becomes a manual "load more" button.
+          Only shown while the gallery section itself is on screen. */}
+      {pagination?.hasNextPage && isGalleryInView && (
         <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40">
           {autoLoad ? (
             <button
               type="button"
               onClick={() => setAutoLoad(false)}
-              className="flex items-center gap-2 rounded-full bg-foreground text-background pl-4 pr-5 py-2.5 text-sm font-medium shadow-lg hover:opacity-90 transition-opacity"
+              className="flex items-center gap-2 rounded-full bg-background text-foreground border border-border pl-4 pr-5 py-2.5 text-sm font-medium shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200 cursor-pointer"
             >
               {loadingMore ? (
                 <SpinnerGapIcon className="size-4 animate-spin" weight="bold" />
@@ -438,7 +507,7 @@ export default function GalleryContent({
               type="button"
               onClick={loadMoreManually}
               disabled={loadingMore}
-              className="flex items-center gap-2 rounded-full bg-foreground text-background pl-4 pr-5 py-2.5 text-sm font-medium shadow-lg hover:opacity-90 transition-opacity disabled:opacity-60"
+              className="flex items-center gap-2 rounded-full bg-background text-foreground border border-border pl-4 pr-5 py-2.5 text-sm font-medium shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-60 disabled:hover:shadow-lg disabled:hover:translate-y-0 cursor-pointer"
             >
               {loadingMore ? (
                 <SpinnerGapIcon className="size-4 animate-spin" weight="bold" />
@@ -484,7 +553,7 @@ function GalleryImageCard({
         "group relative block w-full overflow-hidden shadow-lg cursor-pointer rounded-lg bg-muted",
         "hover:shadow-2xl transition-all duration-300 hover:scale-[1.02]",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
-        !aspectStyle && aspectFallback
+        !aspectStyle && aspectFallback,
       )}
     >
       <GalleryThumbnailImage
@@ -494,7 +563,9 @@ function GalleryImageCard({
       />
       <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg" />
       <div className="absolute inset-x-0 bottom-0 p-4 text-left transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-        <p className="text-white/90 text-sm line-clamp-3">{image.description ?? image.title}</p>
+        <p className="text-white/90 text-sm line-clamp-3">
+          {image.description ?? image.title}
+        </p>
       </div>
     </button>
   );
@@ -513,17 +584,15 @@ function GalleryErrorState({
         <EmptyMedia variant="icon" className="mb-4">
           <div className="relative">
             <div className="absolute inset-0 bg-linear-to-br from-destructive/20 via-destructive/10 to-destructive/20 rounded-full blur-xl" />
-            <AlertCircle
-              size={64}
-              className="relative text-destructive"
-            />
+            <AlertCircle size={64} className="relative text-destructive" />
           </div>
         </EmptyMedia>
         <EmptyTitle className="text-3xl font-bold mb-3">
           Unable to Load Gallery
         </EmptyTitle>
         <EmptyDescription className="text-base max-w-md">
-          {error || "We encountered an issue loading the gallery. This might be due to a network connection problem."}
+          {error ||
+            "We encountered an issue loading the gallery. This might be due to a network connection problem."}
         </EmptyDescription>
       </EmptyHeader>
       <EmptyContent className="mt-6">
