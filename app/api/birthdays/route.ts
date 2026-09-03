@@ -312,14 +312,21 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (existing && existingIsSameYear && !confirmOverride) {
-      // Don't block outright: the earlier attempt is still awaiting review, so
-      // let the caller decide whether this new submission should replace it.
+    // Any other existing row - same-year pending, or a prior year's row
+    // (verified or not) - requires explicit confirmation before this request
+    // is allowed to replace it. There's no account system here, so this can't
+    // verify the caller is the original submitter; requiring confirmation is
+    // what keeps a replace deliberate rather than something that happens
+    // just because someone typed a name and date that already has a photo
+    // attached to it, including a previous year's already-approved one.
+    if (existing && !confirmOverride) {
       return NextResponse.json(
         {
-          error:
-            "A submission for this name and date is already pending review.",
+          error: existing.verified
+            ? `A birthday for this name and date was already verified in ${existing.year}. Continuing will replace it with this new submission.`
+            : "A submission for this name and date is already pending review.",
           needsConfirmation: true,
+          verified: existing.verified,
           submittedAt: existing.created_at,
         },
         { status: 409 }
@@ -327,10 +334,8 @@ export async function POST(request: NextRequest) {
     }
 
     // Everything about the request is well-formed and authenticated, so this
-    // counts as a real attempt against the caller's quota. Reached either with
-    // no existing row, a prior year's row (this year's first attempt - no
-    // confirmation needed), or a same-year pending row the caller confirmed
-    // replacing.
+    // counts as a real attempt against the caller's quota. Reached either
+    // with no existing row, or an existing one the caller confirmed replacing.
     const consumed = consumeRateLimit(request, rateLimitOptions);
     if (!consumed.allowed) {
       return consumed.response!;
@@ -366,14 +371,17 @@ export async function POST(request: NextRequest) {
     const verified = false; // Always false for public submissions
 
     if (existing) {
-      // Either this year's first attempt on a row left over from a previous
-      // year (a routine annual refresh, no confirmation needed) or a
-      // confirmed replace of a same-year pending submission. Either way,
-      // update the same row rather than insert a second one for this
-      // identity. Guard on (year, verified) exactly as read: if either
-      // changed between our check above and this write - an admin verifying
-      // it, or a concurrent request already refreshing it - the update
-      // matches 0 rows instead of overwriting that change.
+      // Confirmed replace of the existing row - either a same-year pending
+      // submission or a prior year's row (verified or not). Update the same
+      // row rather than insert a second one for this identity.
+      //
+      // Guard on (year, verified, image) exactly as read. `image` is the part
+      // that matters most: it changes on every successful write to this row,
+      // so it doubles as an optimistic-concurrency token. Without it, two
+      // concurrent replace requests for the same row would both still match
+      // on (year, verified) - neither of those columns changes across the
+      // race - so the second write would silently clobber the first instead
+      // of failing. With it, the loser's update matches 0 rows (PGRST116).
       const { data, error } = await withRetry<BirthdayRow>(async () =>
         supabaseServer
           .from("birthdays")
@@ -381,15 +389,43 @@ export async function POST(request: NextRequest) {
           .eq("id", existing.id)
           .eq("year", existing.year)
           .eq("verified", existing.verified)
+          .eq("image", existing.image)
           .select()
           .single()
       );
 
       if (error) {
-        await rollbackUpload(imagePublicId);
-
-        // PGRST116: update matched no rows - see the guard comment above.
+        // PGRST116: update matched no rows - either a genuine race (someone
+        // else's write already changed year/verified/image), or this is a
+        // retry of our own update whose first attempt actually committed but
+        // whose response never made it back (a dropped connection, a
+        // mid-flight 5xx). Those look identical from the guard alone, so
+        // re-read the row: if it already holds exactly what we were trying to
+        // write, our own retry won and this is a success, not a conflict.
         if (error.code === "PGRST116") {
+          const { data: current } = await supabaseServer
+            .from("birthdays")
+            .select("*")
+            .eq("id", existing.id)
+            .maybeSingle();
+
+          if (
+            current?.image === imageUrl &&
+            current?.year === currentYear &&
+            current?.name === name
+          ) {
+            // Our own retry's write already landed - including its own
+            // best-effort cleanup of the old image - so there's nothing left
+            // to roll back or clean up here.
+            return NextResponse.json(
+              { data: current, success: true },
+              { status: 200 }
+            );
+          }
+
+          // Another write genuinely won the race: the image we just uploaded
+          // belongs to no row, so roll it back.
+          await rollbackUpload(imagePublicId);
           return NextResponse.json(
             {
               error:
@@ -399,6 +435,7 @@ export async function POST(request: NextRequest) {
           );
         }
 
+        await rollbackUpload(imagePublicId);
         console.error("Error replacing existing birthday:", {
           code: error.code,
           message: error.message,
