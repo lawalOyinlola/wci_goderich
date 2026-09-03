@@ -49,6 +49,13 @@ export async function GET(request: NextRequest) {
       filters.pastYears = true;
     }
 
+    // Randomised ordering. Bounded and stripped of anything exotic since it is
+    // caller-supplied; it only ever feeds the shuffle's hash.
+    const seed = searchParams.get("seed");
+    if (seed) {
+      filters.seed = seed.replace(/[^a-zA-Z0-9_-]/g, "").slice(0, 64);
+    }
+
     // Validate pagination
     if (filters.page! < 1) {
       return NextResponse.json(

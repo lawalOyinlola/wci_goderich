@@ -23,6 +23,7 @@ import type {
   GalleryOrientation,
 } from "@/lib/types/gallery";
 import { optimizeCloudinaryUrl } from "@/lib/utils/cloudinary";
+import { seededShuffle } from "@/lib/utils/shuffle";
 
 /** Prefixes to try when listing gallery images (Cloudinary folder structure can vary). */
 const GALLERY_PREFIXES = [
@@ -238,10 +239,16 @@ export async function getGalleryImagesServer(
       });
     }
 
-    images.sort((a, b) => {
-      if (b.displayOrder !== a.displayOrder) return b.displayOrder - a.displayOrder;
-      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-    });
+    if (filters?.seed) {
+      // Same seed, same order: paging over a shuffled gallery stays coherent.
+      images = seededShuffle(images, filters.seed);
+    } else {
+      images.sort((a, b) => {
+        if (b.displayOrder !== a.displayOrder)
+          return b.displayOrder - a.displayOrder;
+        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+      });
+    }
 
     return paginate(images);
   } catch (e) {
