@@ -9,7 +9,7 @@ import { SERVICES } from "./services";
 // These are published weekly; update the intercessions, personalSupplication
 // and `date` for each group whenever a new guideline is issued.
 export const MIDNIGHT_PRAYER_WEEK_LABEL =
-  "90 Minutes With Jesus — Midnight Intercessory Prayer Guidelines, June 22nd – 27th, 2026";
+  "90 Minutes With Jesus: Midnight Intercessory Prayer Guidelines, June 22nd – 27th, 2026";
 
 // Midnight Prayer Groups Data - Object with groupNumber as key
 // Each group is assigned to a specific day of the week (Group 1 = Monday, Group 2 = Tuesday, etc.)
@@ -336,7 +336,6 @@ const midnightPrayerPoints: PrayerPoint[] = Object.entries(
   personalSupplication: group.personalSupplication,
   date: group.date,
 }));
-
 
 // General Prayer Points
 const generalPrayerPoints: PrayerPoint[] = [
