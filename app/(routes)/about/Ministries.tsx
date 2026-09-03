@@ -10,7 +10,7 @@ export default function Ministries() {
   const { title, subtitle, description, ministries } = MINISTRIES;
 
   const filteredMinistries = ministries.filter(
-    (ministry) => ministry.title !== "Pastors"
+    (ministry) => ministry.title !== "Pastors",
   );
 
   return (
@@ -28,7 +28,7 @@ export default function Ministries() {
         <Reveal variant="fade">
           <Image
             className="rounded-(--radius) grayscale"
-            src="/images/ministries.jpeg"
+            src="https://res.cloudinary.com/dnw48gzss/image/upload/v1769415368/choir_ministering_sj09sr.webp"
             alt="Church ministries team"
             width={2940}
             height={1960}
@@ -37,7 +37,10 @@ export default function Ministries() {
 
         <Stagger className="relative mx-auto grid grid-cols-2 gap-x-3 gap-y-6 sm:gap-8 lg:grid-cols-4">
           {filteredMinistries.map((ministry) => (
-            <StaggerItem key={ministry?.id} className="space-y-3 cursor-pointer">
+            <StaggerItem
+              key={ministry?.id}
+              className="space-y-3 cursor-pointer"
+            >
               <div className="flex items-center gap-2">
                 <Zap className="size-4" />
                 <h3 className="text-sm font-medium">{ministry.title}</h3>
