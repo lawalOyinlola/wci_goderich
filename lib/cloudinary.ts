@@ -45,16 +45,21 @@ export interface UploadImageOptions {
   };
 }
 
+export interface UploadImageResult {
+  secure_url: string;
+  public_id: string;
+}
+
 /**
  * Uploads an image file (Blob or Buffer) to Cloudinary
  * @param file - The image file as Blob, File, or Buffer
  * @param options - Upload options (folder, transformations, etc.)
- * @returns Promise with the uploaded image URL
+ * @returns Promise with the uploaded image URL and its public_id
  */
-export async function uploadImage(
+export async function uploadImageDetailed(
   file: Blob | File | Buffer,
   options: UploadImageOptions = {},
-): Promise<string> {
+): Promise<UploadImageResult> {
   ensureCloudinaryConfigured();
   const { folder, public_id, upload_preset, transformation } = options;
 
@@ -113,11 +118,28 @@ export async function uploadImage(
       uploadOptions,
     );
 
-    return uploadResult.secure_url;
+    return {
+      secure_url: uploadResult.secure_url,
+      public_id: uploadResult.public_id,
+    };
   } catch (error) {
     console.error("Error uploading image to Cloudinary:", error);
     throw new Error("Failed to upload image. Please try again.");
   }
+}
+
+/**
+ * Uploads an image and returns only its URL.
+ * Prefer `uploadImageDetailed` when the caller may need to roll the upload back:
+ * deleting by the returned `public_id` is exact, whereas re-deriving it from the
+ * URL breaks under Cloudinary's dynamic-folders mode (see extractPublicId).
+ */
+export async function uploadImage(
+  file: Blob | File | Buffer,
+  options: UploadImageOptions = {},
+): Promise<string> {
+  const { secure_url } = await uploadImageDetailed(file, options);
+  return secure_url;
 }
 
 /**
@@ -155,6 +177,11 @@ function extractPublicId(url: string): string | null {
  * @throws Error if the URL is invalid or deletion fails
  * @returns Promise with deletion result
  */
+export async function deleteImageByPublicId(publicId: string): Promise<void> {
+  ensureCloudinaryConfigured();
+  await cloudinary.uploader.destroy(publicId, { resource_type: "image" });
+}
+
 export async function deleteImage(imageUrl: string): Promise<void> {
   ensureCloudinaryConfigured();
   const publicId = extractPublicId(imageUrl);
