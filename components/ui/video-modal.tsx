@@ -231,6 +231,10 @@ export function VideoModal({
         return;
       }
       if (!hasQueue) return;
+      // A focused <video controls> seeks with the arrow keys. Skipping to
+      // another clip when the viewer meant to scrub would be the wrong call,
+      // so leave arrows to the player and only navigate from elsewhere.
+      if (e.target instanceof HTMLMediaElement) return;
       if (e.key === "ArrowRight") goTo(safeIndex + 1);
       if (e.key === "ArrowLeft") goTo(safeIndex - 1);
     };
