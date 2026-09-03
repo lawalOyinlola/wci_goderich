@@ -219,7 +219,7 @@ export default function YouthAlivePage() {
             <SectionHeader
               subtitle="Focus Areas"
               title="Where We Grow"
-              description="We pursue holistic development — spirit, career, finances, and leadership — so you thrive in every season."
+              description="We pursue holistic development in spirit, career, finances, and leadership, so you thrive in every season."
             />
           </Reveal>
 
@@ -246,7 +246,7 @@ export default function YouthAlivePage() {
             <SectionHeader
               subtitle="Schedule"
               title="When We Meet"
-              description="Join us every Sunday — concurrent with the main service."
+              description="Join us every Sunday, concurrent with the main service."
             />
           </Reveal>
 
