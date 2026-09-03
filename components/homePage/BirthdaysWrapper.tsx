@@ -20,6 +20,7 @@ export default async function BirthdaysWrapper() {
           name: bday.name,
           month: bday.month,
           day: bday.day,
+          year: bday.year ?? new Date().getFullYear(),
           image: bday.image,
           verified: bday.verified ?? true,
           featured: bday.featured ?? true,
