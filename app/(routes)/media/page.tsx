@@ -1,4 +1,5 @@
 import Hero from "./Hero";
+import ChurchVideos from "./ChurchVideos";
 import Sermons from "./Sermons";
 import LiveStreamSection from "./LiveStreamSection";
 import CtaSection from "@/components/CtaSection";
@@ -10,6 +11,7 @@ export default function MediaPage() {
   return (
     <>
       <Hero />
+      <ChurchVideos />
       <Sermons />
       <LiveStreamSection />
       <CtaSection

@@ -77,3 +77,84 @@ export const FEATURED_SERMONS = [...SERMONS]
     return b.id - a.id;
   })
   .slice(0, 3);
+
+const CLOUDINARY_CLOUD_NAME =
+  process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME ?? "";
+
+const CLOUDINARY_VIDEO_BASE = `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/video/upload`;
+
+/**
+ * Build the two delivery URLs for a Cloudinary video.
+ *
+ * `hls` is an adaptive bitrate manifest: Cloudinary's `sp_auto` streaming
+ * profile serves 480p/540p/720p renditions and the player switches between
+ * them as the viewer's bandwidth changes, so a phone on mobile data never
+ * downloads the full-size file. `mp4` is the progressive fallback for the
+ * rare browser that cannot play HLS (`q_auto` still picks a sane bitrate).
+ */
+export function getCloudinaryVideoUrls(publicId: string) {
+  return {
+    hls: `${CLOUDINARY_VIDEO_BASE}/sp_auto/${publicId}.m3u8`,
+    mp4: `${CLOUDINARY_VIDEO_BASE}/q_auto,f_auto/${publicId}.mp4`,
+  };
+}
+
+/**
+ * Poster frame pulled straight from the video, so a thumbnail can never drift
+ * out of sync with the clip it represents. `so_` picks the second to grab.
+ */
+export function getCloudinaryVideoPoster(
+  publicId: string,
+  { second = 0, width = 1280 }: { second?: number; width?: number } = {},
+) {
+  return `${CLOUDINARY_VIDEO_BASE}/so_${second},w_${width},c_fill,q_auto,f_auto/${publicId}.jpg`;
+}
+
+export interface ChurchVideo {
+  id: string;
+  title: string;
+  description: string;
+  /** Portrait clips are filmed on a phone and need a 9:16 frame, not 16:9. */
+  orientation: "landscape" | "portrait";
+  hls: string;
+  mp4: string;
+  poster: string;
+}
+
+function buildVideo(
+  publicId: string,
+  meta: Omit<ChurchVideo, "hls" | "mp4" | "poster" | "id"> & {
+    id: string;
+    posterSecond?: number;
+  },
+): ChurchVideo {
+  const { posterSecond = 0, ...rest } = meta;
+  return {
+    ...rest,
+    ...getCloudinaryVideoUrls(publicId),
+    poster: getCloudinaryVideoPoster(publicId, { second: posterSecond }),
+  };
+}
+
+/** Church videos, newest first. Played through the shared video modal. */
+export const CHURCH_VIDEOS: ChurchVideo[] = [
+  buildVideo("v1788454422/First_Test_b3kxqc", {
+    id: "welcome",
+    title: "Welcome to Winners Chapel Goderich",
+    description:
+      "A look inside our communion service with the sharing of his flesh and blood.",
+    orientation: "landscape",
+    posterSecond: 2,
+  }),
+  buildVideo("VIDEO-2026-05-21-17-45-54_gdehe5", {
+    id: "service-moment",
+    title: "Moments from Our Service",
+    description:
+      "A glimpse of thanksgiving and praises at Winners Chapel Goderich.",
+    orientation: "portrait",
+    posterSecond: 2,
+  }),
+];
+
+/** Intro video played from the About page hero. */
+export const ABOUT_VIDEO = CHURCH_VIDEOS[0];

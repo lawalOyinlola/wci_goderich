@@ -2,12 +2,14 @@
 
 import Image from "next/image";
 import { useState, forwardRef, useImperativeHandle } from "react";
-import { VideoModal } from "./video-modal";
+import { VideoModal, type PlaylistItem } from "./video-modal";
 import { Play } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface VideoDialogProps {
   videoSrc: string;
+  /** Progressive fallback used when the browser cannot play an HLS `videoSrc`. */
+  fallbackVideoSrc?: string;
   thumbnailSrc: string;
   thumbnailAlt?: string;
   className?: string;
@@ -18,6 +20,10 @@ interface VideoDialogProps {
   imgSizes?: string;
   animationStyle?: Parameters<typeof VideoModal>[0]["animationStyle"];
   videoTitle?: string;
+  /** Queue opened alongside `videoSrc`, enabling next/previous in the modal. */
+  playlist?: PlaylistItem[];
+  /** Index within `playlist` to open on. */
+  startIndex?: number;
 }
 
 export interface VideoDialogRef {
@@ -28,6 +34,7 @@ export const VideoDialog = forwardRef<VideoDialogRef, VideoDialogProps>(
   function VideoDialog(
     {
       videoSrc,
+      fallbackVideoSrc,
       thumbnailSrc,
       thumbnailAlt = "Video thumbnail",
       className,
@@ -37,6 +44,8 @@ export const VideoDialog = forwardRef<VideoDialogRef, VideoDialogProps>(
       imgSizes = "(max-width: 768px) 100vw, 640px",
       animationStyle = "from-center",
       videoTitle = "Video player",
+      playlist,
+      startIndex,
     },
     ref
   ) {
@@ -98,8 +107,12 @@ export const VideoDialog = forwardRef<VideoDialogRef, VideoDialogProps>(
           isOpen={isVideoOpen}
           onClose={() => setIsVideoOpen(false)}
           videoSrc={videoSrc}
+          fallbackSrc={fallbackVideoSrc}
+          poster={thumbnailSrc}
           videoTitle={videoTitle}
           animationStyle={animationStyle}
+          playlist={playlist}
+          startIndex={startIndex}
         />
       </>
     );
