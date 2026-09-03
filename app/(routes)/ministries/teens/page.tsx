@@ -219,7 +219,7 @@ export default function TeensChurchPage() {
             <SectionHeader
               subtitle="Topics"
               title="Real Talk for Real Life"
-              description="We tackle the topics teens actually face — honestly, biblically, and without judgment."
+              description="We tackle the topics teens actually face, honestly, biblically, and without judgment."
             />
           </Reveal>
 
@@ -246,7 +246,7 @@ export default function TeensChurchPage() {
             <SectionHeader
               subtitle="Schedule"
               title="When We Meet"
-              description="Join us every Sunday — concurrent with the main service."
+              description="Join us every Sunday, concurrent with the main service."
             />
           </Reveal>
 

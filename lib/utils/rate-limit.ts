@@ -42,6 +42,13 @@ export interface RateLimitOptions {
   maxRequests: number; // Maximum requests allowed
   windowMs: number; // Time window in milliseconds
   identifier?: string; // Optional custom identifier (defaults to IP)
+  /**
+   * When false, report the current state without consuming a slot. Lets a route
+   * reject an already-limited client up front but only charge the quota once the
+   * request turns out to be a genuine, well-formed attempt — so a failed CAPTCHA
+   * or a validation error doesn't eat the caller's budget.
+   */
+  count?: boolean;
 }
 
 export interface RateLimitResult {
@@ -62,37 +69,59 @@ export function rateLimit(
   cleanupExpiredEntries();
 
   const identifier = options.identifier || getClientIdentifier(request);
+  const consume = options.count !== false;
   const now = Date.now();
   const key = `${identifier}:${options.windowMs}`;
+
+  // Without a proxy in front (plain `next dev` over localhost) there is no
+  // x-forwarded-for, so every caller collapses into a single "unknown" bucket
+  // and the first few requests lock out the whole machine. Behind Vercel the
+  // header is always present, so this only relaxes local development.
+  if (identifier === "unknown" && process.env.NODE_ENV === "development") {
+    return {
+      success: true,
+      limit: options.maxRequests,
+      remaining: options.maxRequests,
+      resetAt: now + options.windowMs,
+    };
+  }
 
   const entry = rateLimitStore.get(key);
 
   if (!entry || entry.resetAt < now) {
-    // Create new entry or reset expired entry
-    const newEntry: RateLimitEntry = {
-      count: 1,
-      resetAt: now + options.windowMs,
-    };
-    rateLimitStore.set(key, newEntry);
+    const resetAt = now + options.windowMs;
+    if (consume) {
+      rateLimitStore.set(key, { count: 1, resetAt });
+    }
 
     return {
       success: true,
       limit: options.maxRequests,
-      remaining: options.maxRequests - 1,
-      resetAt: newEntry.resetAt,
+      remaining: options.maxRequests - (consume ? 1 : 0),
+      resetAt,
     };
   }
 
-  // Increment count
-  entry.count += 1;
-  const remaining = Math.max(0, options.maxRequests - entry.count);
+  const count = consume ? (entry.count += 1) : entry.count + 1;
+  const remaining = Math.max(0, options.maxRequests - count);
 
   return {
-    success: entry.count <= options.maxRequests,
+    success: count <= options.maxRequests,
     limit: options.maxRequests,
     remaining,
     resetAt: entry.resetAt,
   };
+}
+
+/**
+ * Consume one slot and return an error response if the caller is over budget.
+ * Use after a request has been validated, so only genuine attempts are charged.
+ */
+export function consumeRateLimit(
+  request: NextRequest,
+  options: RateLimitOptions
+): { allowed: boolean; response?: Response } {
+  return checkRateLimit(request, { ...options, count: true });
 }
 
 /**

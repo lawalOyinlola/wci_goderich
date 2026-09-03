@@ -60,11 +60,18 @@ END;
 $$ LANGUAGE plpgsql IMMUTABLE;
 
 -- Birthdays Table
+-- `year` tracks the calendar year a row's name/image was last submitted or
+-- approved. It is not part of the row's identity (name, month, day) still
+-- uniquely identifies a celebrant, so a resubmission updates the same row
+-- rather than creating a duplicate that would show twice in the birthday
+-- grid. The API assigns it server-side from the current year; it is never
+-- accepted from the client.
 CREATE TABLE IF NOT EXISTS birthdays (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   name TEXT NOT NULL,
   month INTEGER NOT NULL CHECK (month >= 1 AND month <= 12),
   day INTEGER NOT NULL CHECK (is_valid_date(month, day)),
+  year INTEGER NOT NULL DEFAULT EXTRACT(YEAR FROM NOW())::INTEGER,
   image TEXT NOT NULL, -- Cloudinary URL
   verified BOOLEAN DEFAULT false,
   featured BOOLEAN DEFAULT false,
@@ -73,9 +80,18 @@ CREATE TABLE IF NOT EXISTS birthdays (
   CONSTRAINT unique_birthday UNIQUE (name, month, day)
 );
 
+-- Migration for a birthdays table created before the `year` column existed.
+-- No-ops against a table that already has it (including one just created
+-- above). Safe to re-run.
+ALTER TABLE birthdays ADD COLUMN IF NOT EXISTS year INTEGER;
+UPDATE birthdays SET year = EXTRACT(YEAR FROM created_at)::INTEGER WHERE year IS NULL;
+ALTER TABLE birthdays ALTER COLUMN year SET NOT NULL;
+ALTER TABLE birthdays ALTER COLUMN year SET DEFAULT EXTRACT(YEAR FROM NOW())::INTEGER;
+
 -- Indexes for birthdays
 CREATE INDEX IF NOT EXISTS idx_birthdays_month ON birthdays(month);
 CREATE INDEX IF NOT EXISTS idx_birthdays_month_day ON birthdays(month, day);
+CREATE INDEX IF NOT EXISTS idx_birthdays_year ON birthdays(year);
 CREATE INDEX IF NOT EXISTS idx_birthdays_verified ON birthdays(verified);
 CREATE INDEX IF NOT EXISTS idx_birthdays_featured ON birthdays(featured);
 

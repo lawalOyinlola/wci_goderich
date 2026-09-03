@@ -157,7 +157,7 @@ export default function ServiceUnitsPage() {
             <SectionHeader
               subtitle="Serve With Us"
               title="Every Hand Has a Place"
-              description="Service units are the teams that make worship happen — from the welcome at the door to the sound in your ears. Serving is how we grow, build community, and put our faith to work. Whatever your gift, there's a unit ready for you."
+              description="Service units are the teams that make worship happen, from the welcome at the door to the sound in your ears. Serving is how we grow, build community, and put our faith to work. Whatever your gift, there's a unit ready for you."
             />
           </Reveal>
         </div>
@@ -223,7 +223,7 @@ export default function ServiceUnitsPage() {
                 create a place where lives are changed week after week.
               </p>
               <p className="text-muted-foreground leading-relaxed mb-8">
-                No experience needed — just a willing heart. Our unit leaders
+                No experience needed, just a willing heart. Our unit leaders
                 will guide you every step of the way.
               </p>
               <AnimatedButton

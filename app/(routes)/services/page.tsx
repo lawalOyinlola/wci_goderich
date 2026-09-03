@@ -186,7 +186,7 @@ export default function ServicesPage() {
       <CtaSection
         title="We've Saved You a Seat"
         description="Whether it's your first time or you're coming home, you are always welcome here."
-        mainText="Plan your visit, find directions to our auditorium, and join us this week. Come as you are — we can't wait to worship with you."
+        mainText="Plan your visit, find directions to our auditorium, and join us this week. Come as you are. We can't wait to worship with you."
         buttons={[
           { text: "Plan Your Visit", href: "/location" },
           { text: "Contact Us", href: "/contact-us?subject=visitor#contact-form" },
