@@ -9,7 +9,6 @@ export const metadata = createMetadata("gallery");
 
 interface GalleryPageProps {
   searchParams: Promise<{
-    page?: string;
     category?: string;
     orientation?: string;
     month?: string;
@@ -18,7 +17,6 @@ interface GalleryPageProps {
 
 export default async function GalleryPage({ searchParams }: GalleryPageProps) {
   const params = await searchParams;
-  const page = parseInt(params.page || "1", 10);
   const category = params.category;
   const orientation = params.orientation;
   const month = params.month ? parseInt(params.month, 10) : undefined;
@@ -28,7 +26,6 @@ export default async function GalleryPage({ searchParams }: GalleryPageProps) {
       <Hero />
       <Suspense fallback={<GallerySkeleton />}>
         <GalleryContent
-          initialPage={page}
           initialCategory={category}
           initialOrientation={orientation}
           initialMonth={month}

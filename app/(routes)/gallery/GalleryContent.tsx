@@ -3,6 +3,7 @@
 import {
   useState,
   useEffect,
+  useRef,
   useMemo,
   useCallback,
   startTransition,
@@ -13,7 +14,6 @@ import GalleryLightbox from "./GalleryLightbox";
 import GallerySkeleton from "./GallerySkeleton";
 import SectionHeader from "@/components/SectionHeader";
 import { SelectField } from "@/components/form/SelectField";
-import { Pagination } from "@/components/ui/pagination";
 import {
   Empty,
   EmptyContent,
@@ -23,7 +23,13 @@ import {
   EmptyTitle,
 } from "@/components/ui/empty";
 import { AnimatedButton } from "@/components/ui/animated-button";
-import { ImagesIcon, CameraIcon } from "@phosphor-icons/react";
+import {
+  ImagesIcon,
+  CameraIcon,
+  PauseIcon,
+  ArrowDownIcon,
+  SpinnerGapIcon,
+} from "@phosphor-icons/react";
 import { AlertCircle } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { cn } from "@/lib/utils";
@@ -32,7 +38,6 @@ import { MONTHS } from "@/lib/constants";
 import { DEFAULT_GALLERY_LIMIT } from "@/lib/constants/gallery";
 
 interface GalleryContentProps {
-  initialPage?: number;
   initialCategory?: string;
   initialOrientation?: string;
   initialMonth?: number;
@@ -64,7 +69,6 @@ function aspectHeight(image: GalleryImage) {
 }
 
 export default function GalleryContent({
-  initialPage = 1,
   initialCategory,
   initialOrientation,
   initialMonth,
@@ -74,14 +78,19 @@ export default function GalleryContent({
   const [images, setImages] = useState<GalleryImage[]>([]);
   const [pagination, setPagination] = useState<PaginationMeta | null>(null);
   const [loading, setLoading] = useState(true);
+  // Fetching the next page to append, as opposed to the initial/filtered load.
+  const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  // false once the user taps the floating button to stop auto-loading on
+  // scroll; further pages then only load via the manual "Load more" button.
+  const [autoLoad, setAutoLoad] = useState(true);
   // Index of the image currently open in the lightbox (null = closed).
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  // Page most recently fetched. Infinite scroll has no URL-addressable page,
+  // so this lives in component state rather than the query string.
+  const pageRef = useRef(1);
+  const sentinelRef = useRef<HTMLDivElement | null>(null);
 
-  const currentPage = parseInt(
-    searchParams.get("page") || String(initialPage),
-    10
-  );
   const category = searchParams.get("category") || initialCategory;
   const orientation = searchParams.get("orientation") || initialOrientation;
   const monthParam = searchParams.get("month");
@@ -104,81 +113,119 @@ export default function GalleryContent({
     );
   }, [month, pastYears, form]);
 
-  const fetchImages = useCallback(async () => {
-    setLoading(true);
-    setError(null); // Clear any previous errors
-    try {
-      const params = new URLSearchParams();
-      params.append("page", String(currentPage));
-      params.append("limit", String(DEFAULT_GALLERY_LIMIT));
-      if (category) params.append("category", category);
-      if (orientation) params.append("orientation", orientation);
-      if (pastYears) {
-        params.append("pastYears", "true");
-      } else if (month) {
-        params.append("month", String(month));
-      }
-
-      const response = await fetch(`/api/gallery?${params.toString()}`);
-
-      // Check if response is ok
-      if (!response.ok) {
-        throw new Error(`Failed to load gallery: ${response.statusText}`);
-      }
-
-      const data = await response.json();
-
-      if (data.success) {
-        setImages(data.data || []);
-        setPagination(data.pagination);
-        setError(null); // Clear error on success
+  const fetchImages = useCallback(
+    async (page: number, { append }: { append: boolean }) => {
+      if (append) {
+        setLoadingMore(true);
       } else {
-        throw new Error(data.error || "Failed to load gallery images");
+        setLoading(true);
+        // Re-arm auto-loading on every fresh (non-append) fetch, i.e. the
+        // initial load and every filter change.
+        setAutoLoad(true);
       }
-    } catch (error) {
-      console.error("Error fetching gallery images:", error);
-      const errorMessage =
-        error instanceof Error
-          ? error.message
-          : "Unable to load gallery images. Please check your connection and try again.";
-      setError(errorMessage);
-
-      // Only clear images and pagination if this is the initial load (no images yet)
-      // Use functional updates to check current state without dependency
-      setImages((prevImages) => {
-        if (prevImages.length === 0) {
-          return [];
+      setError(null); // Clear any previous errors
+      try {
+        const params = new URLSearchParams();
+        params.append("page", String(page));
+        params.append("limit", String(DEFAULT_GALLERY_LIMIT));
+        if (category) params.append("category", category);
+        if (orientation) params.append("orientation", orientation);
+        if (pastYears) {
+          params.append("pastYears", "true");
+        } else if (month) {
+          params.append("month", String(month));
         }
-        return prevImages; // Keep existing images on error
-      });
 
-      setPagination((prevPagination) => {
-        // Only clear pagination if we have no images
-        if (prevPagination && prevPagination.totalItems > 0) {
-          return prevPagination; // Keep existing pagination if we have images
+        const response = await fetch(`/api/gallery?${params.toString()}`);
+
+        // Check if response is ok
+        if (!response.ok) {
+          throw new Error(`Failed to load gallery: ${response.statusText}`);
         }
-        return null;
-      });
-    } finally {
-      setLoading(false);
-    }
-  }, [currentPage, category, orientation, month, pastYears]);
 
+        const data = await response.json();
+
+        if (data.success) {
+          setImages((prev) =>
+            append ? [...prev, ...(data.data || [])] : data.data || []
+          );
+          setPagination(data.pagination);
+          pageRef.current = page;
+          setError(null); // Clear error on success
+        } else {
+          throw new Error(data.error || "Failed to load gallery images");
+        }
+      } catch (error) {
+        console.error("Error fetching gallery images:", error);
+        const errorMessage =
+          error instanceof Error
+            ? error.message
+            : "Unable to load gallery images. Please check your connection and try again.";
+        setError(errorMessage);
+
+        if (append) {
+          // A failed "load more" keeps everything already on screen; just stop
+          // auto-loading so a flaky connection doesn't retry in a loop, and
+          // let the floating button offer a manual retry instead.
+          setAutoLoad(false);
+        } else {
+          // Only clear images and pagination if this is the initial load (no images yet)
+          // Use functional updates to check current state without dependency
+          setImages((prevImages) =>
+            prevImages.length === 0 ? [] : prevImages
+          );
+          setPagination((prevPagination) =>
+            prevPagination && prevPagination.totalItems > 0
+              ? prevPagination
+              : null
+          );
+        }
+      } finally {
+        if (append) setLoadingMore(false);
+        else setLoading(false);
+      }
+    },
+    [category, orientation, month, pastYears]
+  );
+
+  // Initial load and every filter change: reset to page 1 and replace (not
+  // append) - fetchImages re-arms autoLoad itself for a non-append fetch.
   useEffect(() => {
-    fetchImages();
+    fetchImages(1, { append: false });
+  }, [fetchImages]);
+
+  // Auto-load the next page once the sentinel below the grid scrolls into
+  // view, as long as the user hasn't tapped "stop" and there's more to load.
+  useEffect(() => {
+    if (!autoLoad || loading || loadingMore || !pagination?.hasNextPage) {
+      return;
+    }
+    const el = sentinelRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          fetchImages(pageRef.current + 1, { append: true });
+        }
+      },
+      { rootMargin: "600px" } // start the fetch well before the sentinel is actually on screen
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [autoLoad, loading, loadingMore, pagination?.hasNextPage, fetchImages]);
+
+  const loadMoreManually = useCallback(() => {
+    fetchImages(pageRef.current + 1, { append: true });
   }, [fetchImages]);
 
   const handleMonthChange = (value: string) => {
     if (value === "past-years") {
-      updateSearchParams({ month: null, pastYears: "true", page: 1 });
+      updateSearchParams({ month: null, pastYears: "true" });
     } else if (value && value !== "all") {
-      updateSearchParams({
-        month: parseInt(value, 10),
-        pastYears: null,
-        page: 1,
-      });
+      updateSearchParams({ month: parseInt(value, 10), pastYears: null });
     } else {
-      updateSearchParams({ month: null, pastYears: null, page: 1 });
+      updateSearchParams({ month: null, pastYears: null });
     }
   };
 
@@ -208,12 +255,7 @@ export default function GalleryContent({
     });
   };
 
-  const handlePageChange = (newPage: number) => {
-    updateSearchParams({ page: newPage });
-    // Don't scroll to top - skeleton will show loading state
-  };
-
-  // Clear every active filter and return to the full gallery (page 1).
+  // Clear every active filter and return to the full, unfiltered gallery.
   const resetFilters = () => {
     form.setValue("month", "all");
     updateSearchParams({
@@ -221,7 +263,6 @@ export default function GalleryContent({
       pastYears: null,
       category: null,
       orientation: null,
-      page: 1,
     });
   };
 
@@ -290,14 +331,17 @@ export default function GalleryContent({
 
         {/* Gallery Masonry Layout, Error State, or Empty State */}
         {error && images.length === 0 ? (
-          <GalleryErrorState error={error} onRetry={() => fetchImages()} />
+          <GalleryErrorState
+            error={error}
+            onRetry={() => fetchImages(1, { append: false })}
+          />
         ) : images.length === 0 ? (
           <GalleryEmptyState
             hasFilter={hasActiveFilter}
             onReset={resetFilters}
           />
         ) : (
-          <div className="flex items-start gap-3 mb-12">
+          <div className="flex items-start gap-3 mb-6">
             {columns.map((column, colIndex) => (
               <div key={colIndex} className="flex flex-1 flex-col gap-3 min-w-0">
                 {column.map((image) => (
@@ -322,34 +366,90 @@ export default function GalleryContent({
           onClose={() => setLightboxIndex(null)}
         />
 
-        {/* Show error banner if there's an error but we have cached images */}
+        {/* Show error banner if there's an error but we have cached images -
+            i.e. a "load more" fetch failed. Auto-load already stopped itself;
+            this offers a manual retry of the same next page. */}
         {error && images.length > 0 && (
           <div className="mb-6 p-4 bg-destructive/10 border border-destructive/20 rounded-lg">
             <div className="flex items-center justify-between">
               <p className="text-sm text-destructive">
-                {error} Some images may not be up to date.
+                {error} Some images may not have loaded.
               </p>
               <AnimatedButton
                 size="sm"
                 text="Retry"
-                onClick={() => fetchImages()}
+                onClick={loadMoreManually}
                 variant="outline"
               />
             </div>
           </div>
         )}
 
-        {/* Pagination */}
-        {pagination && (
-          <Pagination
-            pagination={pagination}
-            currentPage={currentPage}
-            onPageChange={handlePageChange}
-            className="mt-12"
-            itemName="images"
-          />
+        {/* Invisible sentinel that triggers the next page once it scrolls
+            into view; sits ahead of the actual end of the grid via rootMargin. */}
+        {pagination?.hasNextPage && (
+          <div ref={sentinelRef} aria-hidden className="h-px" />
         )}
+
+        {/* Inline skeleton row while a "load more" fetch is in flight */}
+        {loadingMore && (
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 mb-6">
+            {Array.from({ length: columnCount }).map((_, i) => (
+              <div
+                key={i}
+                className="aspect-square bg-muted animate-pulse rounded-lg"
+              />
+            ))}
+          </div>
+        )}
+
+        {/* End of the gallery */}
+        {!loading &&
+          !loadingMore &&
+          images.length > 0 &&
+          pagination &&
+          !pagination.hasNextPage && (
+            <p className="text-center text-sm text-muted-foreground mb-6">
+              You&apos;ve reached the end. {pagination.totalItems} photo
+              {pagination.totalItems === 1 ? "" : "s"} in total.
+            </p>
+          )}
       </div>
+
+      {/* Floating control: while auto-loading, lets the user stop it; once
+          stopped (or after a load fails), becomes a manual "load more" button. */}
+      {pagination?.hasNextPage && (
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40">
+          {autoLoad ? (
+            <button
+              type="button"
+              onClick={() => setAutoLoad(false)}
+              className="flex items-center gap-2 rounded-full bg-foreground text-background pl-4 pr-5 py-2.5 text-sm font-medium shadow-lg hover:opacity-90 transition-opacity"
+            >
+              {loadingMore ? (
+                <SpinnerGapIcon className="size-4 animate-spin" weight="bold" />
+              ) : (
+                <PauseIcon className="size-4" weight="fill" />
+              )}
+              Stop loading
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={loadMoreManually}
+              disabled={loadingMore}
+              className="flex items-center gap-2 rounded-full bg-foreground text-background pl-4 pr-5 py-2.5 text-sm font-medium shadow-lg hover:opacity-90 transition-opacity disabled:opacity-60"
+            >
+              {loadingMore ? (
+                <SpinnerGapIcon className="size-4 animate-spin" weight="bold" />
+              ) : (
+                <ArrowDownIcon className="size-4" weight="bold" />
+              )}
+              {loadingMore ? "Loading..." : "Load more photos"}
+            </button>
+          )}
+        </div>
+      )}
     </section>
   );
 }
