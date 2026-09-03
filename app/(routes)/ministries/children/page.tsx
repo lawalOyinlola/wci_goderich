@@ -295,7 +295,7 @@ export default function ChildrenMinistryPage() {
       <CtaSection
         title="Bring Your Child Along"
         description="Every child is welcome to join us for a fun, safe, and faith-filled experience."
-        mainText="We believe every child deserves to know God's love. Join us on Sundays for an engaging time designed just for little ones — parents are always welcome to come and see what we're all about."
+        mainText="We believe every child deserves to know God's love. Join us on Sundays for an engaging time designed just for little ones. Parents are always welcome to come and see what we're all about."
         buttons={[
           { text: "Contact Us", href: "/contact-us?subject=ministry#contact-form" },
           { text: "All Ministries", href: "/about" },
