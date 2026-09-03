@@ -138,7 +138,7 @@ function buildVideo(
 
 /** Church videos, newest first. Played through the shared video modal. */
 export const CHURCH_VIDEOS: ChurchVideo[] = [
-  buildVideo("v1788454422/First_Test_b3kxqc", {
+  buildVideo("Communion_Highlight_efqg0v", {
     id: "welcome",
     title: "Welcome to Winners Chapel Goderich",
     description:
