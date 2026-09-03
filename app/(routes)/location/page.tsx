@@ -138,7 +138,7 @@ export default function LocationPage() {
             <SectionHeader
               subtitle="Service Times"
               title="When We Gather"
-              description="Come and worship with us — there's a service for every day of the week."
+              description="Come and worship with us. There's a service for every day of the week."
             />
           </Reveal>
 
@@ -271,7 +271,7 @@ export default function LocationPage() {
       <CtaSection
         title="We'd Love to See You"
         description={`Plan a visit to ${NAME} and experience worship with our family.`}
-        mainText="Whether it's your first time or you're returning, you're always welcome here. Come as you are — we've saved a seat for you."
+        mainText="Whether it's your first time or you're returning, you're always welcome here. Come as you are. We've saved a seat for you."
         buttons={[
           { text: "Get Directions", href: DIRECTIONS_URL },
           { text: "View Our Services", href: "/services" },
