@@ -6,6 +6,7 @@
  * url, alt, title come from Cloudinary metadata or SAMPLE_IMAGES.
  */
 
+import { cacheLife, cacheTag } from "next/cache";
 import {
   listImagesFromFolder,
   listImagesByAssetFolder,
@@ -101,8 +102,20 @@ type ListResult = Awaited<ReturnType<typeof listImagesFromFolder>>;
  * accounts, where the folder is metadata rather than part of the public_id).
  * Falls back to the legacy public_id `prefix` listing for assets uploaded the
  * old way (folder baked into the public_id).
+ *
+ * Cached: infinite scroll re-derives this same full list on every page (each
+ * page request re-runs `getGalleryImagesServer`, filters/shuffles/paginates
+ * in memory), so without caching, one gallery visit issued a Cloudinary
+ * Admin/Search API call per scroll - each one ~1-2s and fetching up to
+ * `MAX_GALLERY_RESULTS` images it then throws most of away. `fetchFromCloudinary`
+ * takes no arguments, so this is a single cache entry shared by every visitor
+ * and every filter/seed combination, not one per request.
  */
 async function fetchFromCloudinary(): Promise<ListResult | null> {
+  "use cache";
+  cacheLife("minutes");
+  cacheTag("gallery");
+
   try {
     const result = await listImagesByAssetFolder(GALLERY_FOLDER, {
       max_results: MAX_GALLERY_RESULTS,
