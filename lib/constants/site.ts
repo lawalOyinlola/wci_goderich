@@ -58,7 +58,7 @@ export const AUTHOR_SOCIAL_LINKS: ReadonlyArray<{
 /** Church social profiles (used for Organization JSON-LD `sameAs`). */
 export const CHURCH_SOCIAL_LINKS: ReadonlyArray<string> =
   CHURCH_INFO.SOCIAL_LINKS.map((s) => s.href).filter(
-    (href) => href && href !== "#"
+    (href) => href && href !== "#",
   );
 
 /** Resident & associate pastors surfaced in SEO keywords and structured data. */
@@ -74,9 +74,9 @@ export const SITE_CONFIG = {
   legalName: CHURCH_INFO.NAME,
   /** Used as the default suffix in the title template, e.g. "About | WCI Goderich". */
   titleTemplate: "%s | WCI Goderich",
-  defaultTitle: "WCI Goderich — Winners Chapel International, Goderich",
+  defaultTitle: "WCI Goderich | Winners Chapel International, Goderich",
   description:
-    "Winners Chapel International, Goderich (Living Faith Church Worldwide) — a Word of Faith church in Goderich, Freetown, Sierra Leone, led by Resident Pastor Abel Ukweni and Associate Pastor Lungay Sellu. Join our services, prayer, and community programs.",
+    "Winners Chapel International, Goderich (Living Faith Church Worldwide) is a Word of Faith church in Goderich, Freetown, Sierra Leone, led by Resident Pastor Abel Ukweni and Associate Pastor Lungay Sellu. Join our services, prayer, and community programs.",
   locale: "en_GB",
   /** 1200×630 recommended for social cards. Relative to the site root. */
   ogImage: "/images/church_welcome.jpeg",
@@ -151,7 +151,7 @@ export const PAGE_SEO: Record<PageSeoKey, PageSeo> = {
     title: "About Us",
     path: "/about",
     description:
-      "Learn about Winners Chapel International, Goderich — our vision, mission, leadership under Resident Pastor Abel Ukweni and Associate Pastor Lungay Sellu, and the 12 Pillars of our Commission within the Living Faith Church Worldwide.",
+      "Learn about Winners Chapel International, Goderich: our vision, mission, leadership under Resident Pastor Abel Ukweni and Associate Pastor Lungay Sellu, and the 12 Pillars of our Commission within the Living Faith Church Worldwide.",
     image: "/images/about_us_hero.jpg",
   },
   "contact-us": {
@@ -164,7 +164,7 @@ export const PAGE_SEO: Record<PageSeoKey, PageSeo> = {
     title: "Education",
     path: "/education",
     description:
-      "Discover the educational mission of Winners Chapel International — our schools across Sierra Leone and Nigeria, and the World of Faith Bible Institute (WOFBI).",
+      "Discover the educational mission of Winners Chapel International: our schools across Sierra Leone and Nigeria, and the World of Faith Bible Institute (WOFBI).",
     image: "/images/education_school_hero.jpeg",
   },
   events: {
@@ -210,7 +210,7 @@ export const PAGE_SEO: Record<PageSeoKey, PageSeo> = {
     title: "Businessmen's Fellowship",
     path: "/ministries/businessmen",
     description:
-      "Join the Businessmen's Fellowship at Winners Chapel International, Goderich — raising kingdom-minded entrepreneurs and professionals.",
+      "Join the Businessmen's Fellowship at Winners Chapel International, Goderich, raising kingdom-minded entrepreneurs and professionals.",
     image: "/images/businessmen_fellowship_hero.jpeg",
   },
   "ministries-children": {
@@ -269,7 +269,7 @@ export const PAGE_SEO: Record<PageSeoKey, PageSeo> = {
     title: "Winners Satellite Fellowship",
     path: "/wsf",
     description:
-      "Join a Winners Satellite Fellowship (WSF) near you — extending the reach of Winners Chapel International, Goderich into communities.",
+      "Join a Winners Satellite Fellowship (WSF) near you, extending the reach of Winners Chapel International, Goderich into communities.",
     image: "/images/homecell_hero.jpeg",
   },
 };
