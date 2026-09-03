@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import SectionHeader from "@/components/SectionHeader";
 import {
   Accordion,
@@ -6,12 +9,20 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { Reveal } from "@/components/motion";
 import { CHURCH_INFO } from "@/lib/constants";
 
 const Pillars = () => {
   const { title, subtitle, description, pillars } =
     CHURCH_INFO.PILLARS_OF_FAITH;
+
+  // Controlled so each trigger's tooltip can name the action that click performs.
+  const [openPillars, setOpenPillars] = useState(["1", "2", "3"]);
 
   return (
     <section className="bg-muted/30">
@@ -29,7 +40,8 @@ const Pillars = () => {
         <Reveal variant="fade-up" className="mt-12 md:mt-24">
           <Accordion
             className="max-w-6xl mx-auto grid gap-6 sm:grid-cols-2 lg:grid-cols-3 items-start"
-            defaultValue={["1", "2", "3"]}
+            value={openPillars}
+            onValueChange={setOpenPillars}
             type="multiple"
           >
             {pillars.map((pillar) => (
@@ -38,17 +50,26 @@ const Pillars = () => {
                 key={pillar.id}
                 value={String(pillar.id)}
               >
-                <AccordionTrigger className="justify-start gap-3 py-2 text-[15px] leading-6 hover:no-underline focus-visible:ring-0">
-                  <div className="flex flex-col items-start gap-1 grow">
-                    <span className="text-xs text-muted-foreground font-mono">
-                      _{String(pillar.id).padStart(2, "0")}
-                    </span>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <AccordionTrigger className="justify-start gap-3 py-2 text-[15px] leading-6 hover:no-underline focus-visible:ring-0 cursor-pointer">
+                      <div className="flex flex-col items-start gap-1 grow">
+                        <span className="text-xs text-muted-foreground font-mono">
+                          _{String(pillar.id).padStart(2, "0")}
+                        </span>
 
-                    <h3 className="text-lg font-semibold tracking-tight capitalize">
-                      {pillar.title}
-                    </h3>
-                  </div>
-                </AccordionTrigger>
+                        <h3 className="text-lg font-semibold tracking-tight capitalize">
+                          {pillar.title}
+                        </h3>
+                      </div>
+                    </AccordionTrigger>
+                  </TooltipTrigger>
+                  <TooltipContent side="top">
+                    {openPillars.includes(String(pillar.id))
+                      ? "Click to close"
+                      : "Click to read more"}
+                  </TooltipContent>
+                </Tooltip>
                 <AccordionContent className="pb-2 pt-4 text-muted-foreground flex flex-col gap-4">
                   <p className="text-sm text-muted-foreground leading-relaxed grow">
                     &ldquo;{pillar.description}&rdquo;
