@@ -24,7 +24,15 @@ import { Reveal, Stagger, StaggerItem } from "@/components/motion";
 import type { Birthday } from "@/lib/types/birthdays";
 import { formatOrdinal } from "@/lib/utils";
 import { MONTHS, SAMPLE_BIRTHDAYS } from "@/lib/constants";
-import { submitBirthday } from "@/lib/data/birthdays";
+import { submitBirthday, NeedsConfirmationError } from "@/lib/data/birthdays";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 interface MonthlyBirthdaysProps {
   initialBirthdays?: Birthday[];
@@ -49,6 +57,14 @@ export default function MonthlyBirthdays({
   const [showCelebration, setShowCelebration] = useState(false);
   const [celebrantName, setCelebrantName] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  // Set when the API reports a still-pending submission for the same name and
+  // date. Holds what's needed to replay the same request with confirmOverride
+  // if the user chooses to replace it.
+  const [pendingConfirmation, setPendingConfirmation] = useState<{
+    formData: FormData;
+    name: string;
+    submittedAt?: string;
+  } | null>(null);
   // CAPTCHA tokens (will be set when CAPTCHA is configured)
   const [hcaptchaToken, setHcaptchaToken] = useState<string | undefined>(
     undefined
@@ -154,6 +170,81 @@ export default function MonthlyBirthdays({
     }, 250);
   }, []);
 
+  const celebrate = useCallback(
+    (name: string) => {
+      setCelebrantName(name);
+      setShowCelebration(true);
+      triggerConfetti();
+
+      form.reset({ name: "", day: null });
+      setImageBlob(null);
+      setUploaderResetToken((t) => t + 1);
+
+      // Close popover and hide celebration message after delay
+      setTimeout(() => {
+        setOpen(false);
+        setTimeout(() => {
+          setShowCelebration(false);
+          setCelebrantName("");
+        }, 3000);
+      }, 500);
+    },
+    [form, triggerConfetti]
+  );
+
+  /**
+   * Submits (or re-submits with confirmOverride) one FormData payload.
+   *
+   * Manages its own toast rather than using `toast.promise(...)`, whose return
+   * value is the toast handle, not the request promise - awaiting it directly
+   * resolves immediately, before the API call settles. That bug is what
+   * previously let the confetti/celebration fire on every submit, including
+   * failed ones, and re-enabled the button while the request was still
+   * in flight.
+   */
+  const submitAndHandle = useCallback(
+    async (formData: FormData, name: string, confirmOverride = false) => {
+      setImageError(null);
+      setIsSubmitting(true);
+      const toastId = toast.loading("Submitting your birthday details...");
+
+      try {
+        await submitBirthday(formData, { confirmOverride });
+
+        toast.success("Birthday details received!", { id: toastId });
+        setPendingConfirmation(null);
+        celebrate(name);
+      } catch (error) {
+        if (process.env.NODE_ENV === "development") {
+          console.error("Error submitting birthday:", error);
+        }
+
+        if (error instanceof NeedsConfirmationError && !confirmOverride) {
+          // Not a failure - hand the decision to the user via the confirm
+          // dialog instead of showing it as an error.
+          toast.dismiss(toastId);
+          setPendingConfirmation({
+            formData,
+            name,
+            submittedAt: error.submittedAt,
+          });
+          return;
+        }
+
+        const message =
+          error instanceof Error
+            ? error.message
+            : "Failed to submit. Please try again.";
+        toast.error(message, { id: toastId });
+        setImageError(message);
+        setPendingConfirmation(null);
+      } finally {
+        setIsSubmitting(false);
+      }
+    },
+    [celebrate]
+  );
+
   const handleFormSubmit = useCallback(
     async (values: BirthdayFormValues) => {
       // Validate image upload
@@ -167,90 +258,47 @@ export default function MonthlyBirthdays({
         return;
       }
 
-      setImageError(null);
-      setIsSubmitting(true);
+      // Prepare FormData for API
+      const formData = new FormData();
+      formData.append("name", values.name);
+      formData.append("month", currentMonthIndex.toString());
+      formData.append("day", values.day!.toString());
 
-      try {
-        // Prepare FormData for API
-        const formData = new FormData();
-        formData.append("name", values.name);
-        formData.append("month", currentMonthIndex.toString());
-        formData.append("day", values.day!.toString());
-
-        // Convert blob to File for FormData
-        const imageFile = new File(
-          [imageBlob],
-          `birthday-${values.name}-${Date.now()}.jpg`,
-          {
-            type: "image/jpeg",
-          }
-        );
-        formData.append("image", imageFile);
-
-        // Only append CAPTCHA tokens if they exist
-        if (hcaptchaToken) {
-          formData.append("hcaptchaToken", hcaptchaToken);
+      // Convert blob to File for FormData
+      const imageFile = new File(
+        [imageBlob],
+        `birthday-${values.name}-${Date.now()}.jpg`,
+        {
+          type: "image/jpeg",
         }
-        if (recaptchaToken) {
-          formData.append("recaptchaToken", recaptchaToken);
-        }
+      );
+      formData.append("image", imageFile);
 
-        // Submit to API with promise toast
-        await toast.promise(submitBirthday(formData), {
-          loading: "Submitting your birthday details...",
-          success: "Birthday details received!",
-          error: (err) =>
-            err instanceof Error
-              ? err.message
-              : "Failed to submit. Please try again.",
-        });
-
-        // Show celebration message
-        setCelebrantName(values.name);
-        setShowCelebration(true);
-
-        triggerConfetti();
-
-        // Reset form and close popover
-        form.reset({ name: "", day: null });
-        setImageBlob(null);
-        setUploaderResetToken((t) => t + 1);
-
-        // Close popover and hide celebration message after delay
-        setTimeout(() => {
-          setOpen(false);
-          setTimeout(() => {
-            setShowCelebration(false);
-            setCelebrantName("");
-          }, 3000);
-        }, 500);
-      } catch (error) {
-        // Log for debugging (only in development)
-        if (process.env.NODE_ENV === "development") {
-          console.error("Error submitting birthday:", error);
-        }
-        const errorMessage =
-          error instanceof Error
-            ? error.message
-            : "Failed to submit. Please try again.";
-        setImageError(errorMessage);
-        toast.error("Submission Failed", {
-          description: errorMessage,
-          duration: 8000,
-        });
-      } finally {
-        setIsSubmitting(false);
+      // Only append CAPTCHA tokens if they exist
+      if (hcaptchaToken) {
+        formData.append("hcaptchaToken", hcaptchaToken);
       }
+      if (recaptchaToken) {
+        formData.append("recaptchaToken", recaptchaToken);
+      }
+
+      await submitAndHandle(formData, values.name);
     },
-    [
-      imageBlob,
-      currentMonthIndex,
-      form,
-      triggerConfetti,
-      hcaptchaToken,
-      recaptchaToken,
-    ]
+    [imageBlob, currentMonthIndex, hcaptchaToken, recaptchaToken, submitAndHandle]
   );
+
+  const handleConfirmReplace = useCallback(() => {
+    if (!pendingConfirmation) return;
+    void submitAndHandle(
+      pendingConfirmation.formData,
+      pendingConfirmation.name,
+      true
+    );
+  }, [pendingConfirmation, submitAndHandle]);
+
+  const handleCancelConfirmation = useCallback(() => {
+    setPendingConfirmation(null);
+  }, []);
 
   // Don't render until we have the date to prevent hydration mismatch
   if (!now || !currentMonth) {
@@ -453,6 +501,45 @@ export default function MonthlyBirthdays({
           </Popover>
         </CtaContainer>
       </div>
+
+      <Dialog
+        open={!!pendingConfirmation}
+        onOpenChange={(nextOpen) => {
+          if (!nextOpen) handleCancelConfirmation();
+        }}
+      >
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Replace your pending submission?</DialogTitle>
+            <DialogDescription>
+              <span className="font-medium text-foreground">
+                {pendingConfirmation?.name}
+              </span>{" "}
+              is already awaiting review. Continuing replaces it with this
+              submission.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={handleCancelConfirmation}
+              disabled={isSubmitting}
+            >
+              Cancel
+            </Button>
+            <Button onClick={handleConfirmReplace} disabled={isSubmitting}>
+              {isSubmitting ? (
+                <>
+                  <span className="inline-block size-3 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                  Replacing...
+                </>
+              ) : (
+                "Yes, use this instead"
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </section>
   );
 }
