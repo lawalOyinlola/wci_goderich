@@ -17,6 +17,17 @@ The WCI Goderich Church Website is a complete digital solution for church manage
 
 The application is built with performance and accessibility in mind, featuring optimized images, server-side rendering, and a responsive design that works seamlessly across all devices.
 
+## 🚧 Feature Status
+
+A few features are fully built but intentionally switched off until real content replaces the placeholder data:
+
+- **Homepage Upcoming Events & Sermons** - `UpcomingEvents` and `FeaturedSermons` exist as components but are commented out in `app/page.tsx`; their data in `lib/constants` is template content
+- **Testimonies browsing** - both the homepage testimonies teaser (`TestimoniesWrapper`) and the dedicated `/testimonies` filtering/listing view (`TestimoniesContentWrapper`) are commented out. Submitting a new testimony via `/testimonies` still works
+- **`/events`** and **`/library`** currently render a "Coming Soon" placeholder (`components/ComingSoon.tsx`) rather than real content
+- **Sermons on `/media`** are gated behind `SERMONS_ENABLED` in `lib/constants/media.ts` (currently `false`)
+
+Turn one on by uncommenting the relevant import/JSX and replacing the sample data with real records.
+
 ## 🚀 Tech Stack
 
 - **Framework**: [Next.js 16](https://nextjs.org/) with App Router
@@ -24,8 +35,10 @@ The application is built with performance and accessibility in mind, featuring o
 - **Styling**: Tailwind CSS 4
 - **UI Components**: Radix UI primitives
 - **Forms**: React Hook Form with Yup validation
+- **Database**: Supabase (Postgres) for birthdays, testimonies, prayer requests, and contact messages
+- **Media**: Cloudinary for image and video hosting, with adaptive bitrate (HLS) video streaming via hls.js
 - **Maps**: Leaflet (vanilla, lazy-loaded)
-- **Animations**: Motion (Framer Motion)
+- **Animations**: Motion (Framer Motion) & GSAP
 - **Icons**: Phosphor Icons & Lucide React
 - **Theme**: Dark/Light mode support with next-themes
 - **Package Manager**: pnpm
@@ -38,34 +51,31 @@ The application is built with performance and accessibility in mind, featuring o
 - 🎯 **Features Section** - Highlight key church features and values
 - 👋 **Welcome Section** - Church introduction, mission, and vision
 - ⛪ **Church Services** - Service times, schedules, and worship information
-- 📅 **Upcoming Events** - Event calendar with detailed listings and special programs
-- 📖 **Sermons** - Sermon archive with audio/video content access
+- 📅 **Upcoming Events** - Event calendar with detailed listings and special programs _(built, currently disabled, see [Feature Status](#-feature-status))_
+- 📖 **Sermons** - Sermon archive with audio/video content access _(built, currently disabled, see [Feature Status](#-feature-status))_
 - 💝 **Donations** - Secure online giving and tithe integration
-- 📸 **Gallery** - Photo gallery with carousel showcasing church events and activities
-- 🎂 **Birthdays** - Member birthday celebrations and recognition
-- 💬 **Testimonies** - Share and read testimonies of God's faithfulness
+- 📸 **Gallery** - Photo gallery preview carousel showcasing church events and activities
+- 🎂 **Birthdays** - Member birthday celebrations and recognition, with sample fallback data when no birthdays are on file
+- 💬 **Testimonies** - Share and read testimonies of God's faithfulness _(browsing built, currently disabled, see [Feature Status](#-feature-status))_
 - 📍 **Church Location** - Interactive Leaflet map with a church marker, one-tap "Get Directions", and a "View My Location" geolocation pin
 
 ### 📄 Dedicated Pages
 
-- **About** - Church history, mission, vision, leadership team, and core pillars
-- **Ministries** - Comprehensive pages for:
-  - Children's Ministry (Ages 3-12)
-  - Teens Church
-  - Youth Alive (Ages 13-18)
-  - Businessmen Fellowship
-  - Pastors & Leadership
-- **Education** - Educational programs, WOFBI enrollment, Nigerian and Sierra Leone schools
+- **About** - Church history, mission & vision, the 12 Pillars of our Commission (accordion with a tooltip-guided expand/collapse), a ministries overview, and the leadership team
+- **Services** - Sunday service flow, what to expect as a first-time guest, and service times
+- **Ministries** - Comprehensive pages for Children's Ministry (Ages 3-12), Teens Church, Youth Alive (Ages 13-18), and Businessmen Fellowship
+- **Education** - Educational programs, WOFBI enrollment (with a 40th-anniversary hero), Nigerian and Sierra Leone schools
 - **Prayer** - Prayer request submission, prayer sessions, answered prayers, and prayer points
-- **Testimonies** - Browse and share testimonies with filtering and categorization
-- **Gallery** - Full photo gallery with event-based organization
+- **Testimonies** - Share a testimony (browsing/filtering is built but currently disabled, see [Feature Status](#-feature-status))
+- **Gallery** - Full photo gallery with infinite scroll, a randomized (per-visit) image order that stays consistent across pages, and event-based organization
+- **Giving** - Ways to give, giving details, and Living Faith Worldwide giving information
 - **Contact** - Contact forms, FAQs, and church information
 - **Resources**:
-  - Media Library - Sermons, live streams, and multimedia content
-  - Book Library - Digital library of books and teachings
+  - Media Library - Church videos streamed via Cloudinary HLS with a next/previous playlist modal, plus live streams (sermon archive built but currently disabled, see [Feature Status](#-feature-status))
+  - Book Library - _"Coming Soon" placeholder, not yet built out_
   - Service Units - Information about volunteer opportunities
   - Satellite Fellowship (WSF) - Small group locations and information
-  - Events - Upcoming events and special programs
+  - Events - _"Coming Soon" placeholder, not yet built out_
   - Location - Church location and directions
 
 ### 🎨 User Experience
@@ -124,15 +134,18 @@ wci_goderich/
 │   ├── sitemap.ts                # Generated sitemap.xml
 │   ├── robots.ts                 # Generated robots.txt
 │   ├── manifest.ts               # Generated web app manifest
+│   ├── api/                      # Route handlers: birthdays, contact, gallery,
+│   │                             # prayer, testimonies, upload, map-tiles proxy
 │   └── (routes)/                 # Route groups
 │       ├── about/                # About page and sections
 │       ├── contact-us/           # Contact page with forms and FAQs
 │       ├── education/            # Education programs and schools
-│       ├── events/               # Events page
+│       ├── events/               # Events page (Coming Soon placeholder)
 │       ├── gallery/              # Photo gallery with loading states
-│       ├── library/              # Digital library
+│       ├── giving/               # Giving / online donations
+│       ├── library/              # Digital library (Coming Soon placeholder)
 │       ├── location/             # Church location
-│       ├── media/                # Media library
+│       ├── media/                # Media library (church videos, sermons, live streams)
 │       ├── ministries/           # Ministry pages (children, teens, youth, businessmen)
 │       ├── prayer/               # Prayer requests and sessions
 │       ├── service-units/        # Service units information
@@ -144,19 +157,23 @@ wci_goderich/
 │   ├── form/                     # Form components and inputs
 │   ├── homePage/                 # Home page sections
 │   │   ├── sections/             # Individual homepage sections
-│   │   ├── BirthdaysWrapper.tsx  # Birthdays with Supabase
-│   │   └── TestimoniesWrapper.tsx # Testimonies with Supabase
+│   │   ├── BirthdaysWrapper.tsx  # Birthdays with Supabase (+ sample fallback)
+│   │   └── TestimoniesWrapper.tsx # Testimonies with Supabase (not currently rendered)
 │   ├── layouts/                  # Layout components
 │   │   ├── footer/               # Footer components
 │   │   └── navbar/               # Navigation components and menu items
+│   ├── motion/                   # Reveal, Stagger, Parallax, AnimatedText helpers
 │   └── ui/                       # Reusable UI components (Radix UI based)
 ├── lib/                          # Utilities, constants, and config
 │   ├── constants/                # Content constants + site/SEO config (site.ts)
-│   ├── data/                     # Server-side data fetchers (Supabase)
+│   ├── data/                     # Server-side data fetchers (Cloudinary gallery, Supabase birthdays/testimonies)
 │   ├── types/                    # TypeScript type definitions
+│   ├── supabase/                 # Supabase client/server instances
+│   ├── hooks/                    # Shared React hooks (e.g. useSmoothScroll)
+│   ├── cloudinary.ts             # Server-side Cloudinary SDK config and upload/list helpers
 │   ├── seo.ts                    # Metadata helpers and JSON-LD builders
 │   ├── utils.ts                  # Shared helpers (cn, getDirectionsUrl, etc.)
-│   └── utils/                    # Domain utilities (cloudinary, email, etc.)
+│   └── utils/                    # Domain utilities (cloudinary URLs, email, shuffle, rate-limit, etc.)
 ├── public/                       # Static assets
 │   └── images/                   # Image files and assets
 ├── next.config.ts                # Next.js configuration
@@ -178,12 +195,12 @@ wci_goderich/
 - **Features** - Highlighted church features and values
 - **Welcome** - Church introduction and mission statement
 - **ChurchServices** - Service times and worship information
-- **UpcomingEvents** - Event listings with dates and details
-- **Sermons** - Sermon archive with media player integration
+- **UpcomingEvents** - Event listings with dates and details _(built, not currently rendered)_
+- **FeaturedSermons** - Sermon archive with media player integration _(built, not currently rendered)_
 - **Donation** - Online giving interface
-- **Gallery** - Photo gallery with lazy loading and carousel
-- **BirthdaysWrapper** - Member birthday celebrations with Supabase integration
-- **TestimoniesWrapper** - Testimonies display with filtering
+- **Gallery** - Photo gallery preview with lazy loading and carousel
+- **BirthdaysWrapper** - Member birthday celebrations with Supabase integration (falls back to sample data when empty)
+- **TestimoniesWrapper** - Testimonies display with filtering _(built, not currently rendered)_
 - **ChurchLocationMap** - Interactive Leaflet map with a church marker, "Get Directions" links, and a live "View My Location" geolocation pin
 
 ### Form & Input Components
@@ -197,6 +214,7 @@ wci_goderich/
 ### UI Components
 
 - **Reusable UI Components** - Built with Radix UI primitives for accessibility
+- **VideoDialog / VideoModal** - Adaptive HLS video player (hls.js, with a progressive mp4 fallback) supporting a next/previous playlist queue, arrow-key navigation, and auto-advance
 - **Loading Skeletons** - Suspense boundaries with skeleton loaders for better UX
 - **Error Boundaries** - Graceful error handling for async components
 
@@ -212,24 +230,24 @@ For more deployment options, check out the [Next.js deployment documentation](ht
 
 ## 📝 Configuration
 
-### Image Domains
+### Image & Video Sources
 
-The project is configured to allow images from:
+`remotePatterns` in `next.config.ts` controls which hosts `next/image` may optimize. Video files (`.m3u8`/`.mp4`) play through a `<video>` element via hls.js and aren't affected by this list. Only their Cloudinary-generated poster images are.
 
-- picsum.photos
-- images.unsplash.com
-- images.pexels.com
-- via.placeholder.com
-- placehold.co
-- res.cloudinary.com (for Cloudinary image hosting)
+- **res.cloudinary.com** - the primary source for all dynamic content: gallery photos, video poster frames, and every user-uploaded image (birthday photos, testimony images)
+- **images.unsplash.com** - still referenced in three places: the About page's leadership team photos, and the `SAMPLE_BIRTHDAYS` / `SAMPLE_TESTIMONIES` fallback data shown only when the corresponding Supabase table is empty
+- **picsum.photos** - only used by the sermon placeholder data in `lib/constants/media.ts`; sermons are currently disabled (see [Feature Status](#-feature-status)), so nothing actually loads from here right now
+- **images.pexels.com**, **via.placeholder.com**, **placehold.co** - allowed but not referenced anywhere in the codebase; safe to remove if you don't plan to use them
 
-To add more domains, update `next.config.ts`.
+To add more domains, update `remotePatterns` in `next.config.ts`.
 
 ### Performance Optimizations
 
 The application includes several performance optimizations:
 
 - **Image Optimization**: Next.js Image serving AVIF/WebP with responsive `sizes` and `preload` for above-the-fold heroes; Cloudinary transforms resize gallery thumbnails on the fly
+- **Adaptive Video Streaming**: Church videos serve as Cloudinary-generated HLS renditions (480p-720p) via hls.js instead of one fixed-quality file, so playback quality adapts to the viewer's bandwidth
+- **Cached Gallery Data**: The Cloudinary gallery fetch is cached with Next.js `use cache` (Cache Components) so infinite scroll doesn't re-fetch the full image list on every page
 - **Code Splitting**: Automatic code splitting with Next.js App Router
 - **Server Components**: Strategic use of Server Components for better performance
 - **Suspense Boundaries**: Loading states with Suspense for better perceived performance
@@ -242,11 +260,11 @@ The application includes several performance optimizations:
 
 SEO is driven from a single source of truth in `lib/constants/site.ts`, with helpers in `lib/seo.ts`:
 
-- **Per-page metadata** — titles, descriptions, and canonical URLs for every route
-- **Open Graph & Twitter cards** — rich link previews for social sharing
-- **Structured data** — `Organization` and `WebSite` JSON-LD injected in the root layout
-- **`sitemap.xml`, `robots.txt`, and a web manifest** — generated from the same config
-- **Base URL** — set `NEXT_PUBLIC_SITE_URL` to your production domain (validated, with a sensible fallback)
+- **Per-page metadata** - titles, descriptions, and canonical URLs for every route
+- **Open Graph & Twitter cards** - rich link previews for social sharing
+- **Structured data** - `Organization` and `WebSite` JSON-LD injected in the root layout
+- **`sitemap.xml`, `robots.txt`, and a web manifest** - generated from the same config
+- **Base URL** - set `NEXT_PUBLIC_SITE_URL` to your production domain (validated, with a sensible fallback)
 
 ### Environment Variables
 
@@ -262,12 +280,18 @@ cp .env.example .env.local
 - **NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY** - Supabase publishable key (or use legacy `NEXT_PUBLIC_SUPABASE_ANON_KEY`)
 - **SUPABASE_SECRET_KEY** - Supabase secret key for server-side operations (or use legacy `SUPABASE_SERVICE_ROLE_KEY`)
 - **CLOUDINARY_URL** - Cloudinary configuration URL (or use individual `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`)
+- **NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME** - Public cloud name (the `cloud_name` portion of `CLOUDINARY_URL`) used client-side to build gallery image and video delivery URLs
+- **NEXT_PUBLIC_TURNSTILE_SITE_KEY** / **TURNSTILE_SECRET_KEY** - [Cloudflare Turnstile](https://developers.cloudflare.com/turnstile/) keys for the bot check on every form. In production, submissions are refused until the secret is set. In development you can leave both unset to skip the check, or use Cloudflare's always-pass test keys listed in `.env.example`
 
 #### Optional Variables
 
 - **NEXT_PUBLIC_SITE_URL** - Production base URL for SEO/metadata (defaults to `https://wcigoderich.org`)
 - **CLOUDINARY_UPLOAD_PRESET_BIRTHDAYS** - Cloudinary upload preset for birthday images
 - **CLOUDINARY_UPLOAD_PRESET_TESTIMONIES** - Cloudinary upload preset for testimony images
+- **RESEND_API_KEY** / **RESEND_FROM_EMAIL** - Sends contact-form emails via [Resend](https://resend.com) (tried first)
+- **SMTP_HOST** / **SMTP_PORT** / **SMTP_USER** / **SMTP_PASS** / **SMTP_FROM_EMAIL** - Sends contact-form emails via SMTP instead (fallback if Resend isn't configured)
+- **ADMIN_API_KEY** - Unlocks the admin routes (editing, approving or deleting testimonies and prayer requests), sent as the `x-admin-api-key` header. Without it those routes refuse every request
+If neither email option is configured, the contact form still saves each message to the `contact_messages` table and shows the sender a success message, but nobody gets an email. In development the message is also logged to the console, so you can see what would have been sent. In production nothing is logged, so check the table or configure Resend or SMTP before launch.
 
 See `.env.example` for detailed descriptions and where to obtain these values.
 
@@ -277,15 +301,28 @@ See `.env.example` for detailed descriptions and where to obtain these values.
 
 The application integrates with the following services:
 
-- **Supabase** - Database and backend services for:
+- **Supabase** - Postgres database for:
   - Member birthdays storage and retrieval
   - Testimonies storage, filtering, and management
-  - User authentication (if implemented)
-- **Cloudinary** - Image hosting and optimization for:
+  - Prayer requests and prayer group sign-ups
+  - Contact form messages
+
+  No user authentication is implemented. Every one of these is an anonymous public submission. All reads and writes go through the API routes using the secret key; the publishable key can only read approved birthdays and testimonies.
+
+### Database setup and moderation
+
+For a new project, run `supabase/schema.sql` in the Supabase SQL editor. For an existing project, run each file in `supabase/migrations/` that you haven't run yet, before deploying the code that goes with it.
+
+Submissions arrive unapproved and stay off the site until you set `verified` to `true` on the row in the Supabase table editor.
+
+A birthday that's already on file can't be overwritten from the website. When someone resubmits a name and date, the new photo goes into `pending_image` and the current photo stays up. To accept it, run `SELECT approve_birthday_replacement('<row id>');` in the SQL editor. To reject it, clear `pending_image` and `pending_submitted_at`. Either way the old photo is left in Cloudinary for you to delete.
+- **Cloudinary** - Image and video hosting and optimization for:
   - Birthday member photos
   - Testimony images
   - User-uploaded content
-- **Email Services** - For contact forms and notifications (configured via environment variables)
+  - Gallery photos (fetched live, cached with `use cache`)
+  - Church videos, delivered as adaptive HLS streams
+- **Email** - Contact form notifications via [Resend](https://resend.com) (tried first) or SMTP/nodemailer (fallback). If neither is configured, messages are only saved to Supabase (see [Environment Variables](#environment-variables))
 
 ## 🤝 Contributing
 
@@ -296,7 +333,7 @@ The application integrates with the following services:
 
 ## 👨‍💻 Developer
 
-**Lawal Oyinlola (LAWAL)** — [lawaloyinlola.com](https://lawaloyinlola.com)
+**Lawal Oyinlola (LAWAL)**: [lawaloyinlola.com](https://lawaloyinlola.com)
 
 - GitHub: [@lawalOyinlola](https://github.com/lawalOyinlola)
 - LinkedIn: [lawaloyinlola](https://www.linkedin.com/in/lawaloyinlola)
