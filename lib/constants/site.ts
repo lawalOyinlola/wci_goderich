@@ -66,7 +66,7 @@ export const CHURCH_SOCIAL_LINKS: ReadonlyArray<string> =
 
 /** Resident & associate pastors surfaced in SEO keywords and structured data. */
 export const SITE_PASTORS = [
-  { name: "Pastor Abel Enun Ukweni", title: "Resident Pastor" },
+  { name: "Pastor Abejirin Femi Miracle", title: "Resident Pastor" },
   { name: "Pastor Lungay Sellu", title: "Associate Pastor" },
 ] as const;
 
@@ -79,7 +79,7 @@ export const SITE_CONFIG = {
   titleTemplate: "%s | WCI Goderich",
   defaultTitle: "WCI Goderich | Winners Chapel International, Goderich",
   description:
-    "Winners Chapel International, Goderich (Living Faith Church Worldwide) is a Word of Faith church in Goderich, Freetown, Sierra Leone, led by Resident Pastor Abel Ukweni and Associate Pastor Lungay Sellu. Join our services, prayer, and community programs.",
+    "Winners Chapel International, Goderich (Living Faith Church Worldwide) is a Word of Faith church in Goderich, Freetown, Sierra Leone, led by Resident Pastor Abejirin Femi Miracle and Associate Pastor Lungay Sellu. Join our services, prayer, and community programs.",
   locale: "en_GB",
   /** 1200×630 recommended for social cards. Relative to the site root. */
   ogImage: "/images/church_welcome.jpeg",
@@ -96,8 +96,8 @@ export const SITE_CONFIG = {
     "Sunday service",
     "WOFBI",
     // Resident & associate pastors
-    "Pastor Abel Ukweni",
-    "Pastor Abel Enun Ukweni",
+    "Pastor Abejirin Femi Miracle",
+    "Pastor Femi Abejirin",
     "Resident Pastor WCI Goderich",
     "Pastor Lungay Sellu",
     "Pastor Lungi",
@@ -154,7 +154,7 @@ export const PAGE_SEO: Record<PageSeoKey, PageSeo> = {
     title: "About Us",
     path: "/about",
     description:
-      "Learn about Winners Chapel International, Goderich: our vision, mission, leadership under Resident Pastor Abel Ukweni and Associate Pastor Lungay Sellu, and the 12 Pillars of our Commission within the Living Faith Church Worldwide.",
+      "Learn about Winners Chapel International, Goderich: our vision, mission, leadership under Resident Pastor Abejirin Femi Miracle and Associate Pastor Lungay Sellu, and the 12 Pillars of our Commission within the Living Faith Church Worldwide.",
     image: ABOUT_OG_IMAGE,
   },
   "contact-us": {

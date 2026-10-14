@@ -12,7 +12,7 @@ interface ImageWithRetryProps extends Omit<ImageProps, "src"> {
 
 /**
  * Image component with automatic retry logic for failed image loads
- * Specifically handles PST_ABEL_IMG, PST_LUNGI_IMG, and BOARD_IMG
+ * Specifically handles PST_FEMI_IMG, PST_LUNGI_IMG, and BOARD_IMG
  */
 export function ImageWithRetry({
   src,
@@ -27,7 +27,7 @@ export function ImageWithRetry({
 
   // Check if this is one of the leadership images that needs retry logic
   const isLeadershipImage =
-    src.includes("pst_abel_close_shot_jrplde") ||
+    src.includes("pastor_femi_wci") ||
     src.includes("pst_lungi_standing_rwdbll") ||
     src.includes("open_bible_xy3r0a");
 
@@ -46,8 +46,8 @@ export function ImageWithRetry({
       
       // Find which image this is and use the retry version
       let retrySrc = src;
-      if (src.includes("pst_abel_close_shot_jrplde")) {
-        retrySrc = retryImages.PST_ABEL_IMG;
+      if (src.includes("pastor_femi_wci")) {
+        retrySrc = retryImages.PST_FEMI_IMG;
       } else if (src.includes("pst_lungi_standing_rwdbll")) {
         retrySrc = retryImages.PST_LUNGI_IMG;
       } else if (src.includes("open_bible_xy3r0a")) {

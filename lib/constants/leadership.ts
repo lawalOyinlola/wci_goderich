@@ -1,4 +1,4 @@
-import { BOARD_IMG, PST_ABEL_IMG, PST_LUNGI_IMG } from "./gallery";
+import { BOARD_IMG, PST_FEMI_IMG, PST_LUNGI_IMG } from "./gallery";
 import { LeadershipRole } from "../types/leadership";
 
 export const LEADERSHIP = {
@@ -8,39 +8,13 @@ export const LEADERSHIP = {
   PASTORS: [
     {
       id: "1",
-      name: "Pastor Abel Enun Ukweni",
+      name: "Pastor Abejirin Femi Miracle",
       title: "Resident Pastor",
       role: LeadershipRole.RESIDENT_PASTOR,
-      bio: "Pastor Abel Ukweni has been serving as Resident Pastor of WCI Goderich since 2015. With over 15 years of ministry experience, he is passionate about teaching God's Word and building strong believers. He holds a Master's degree in Theology and is known for his practical and inspiring messages.",
-      image: PST_ABEL_IMG,
-      email: "pastor.abel@wcigoderich.org",
+      bio: "Pastor Abejirin Femi Miracle is the Resident Pastor of Winners Chapel International, Goderich.",
+      image: PST_FEMI_IMG,
       phone: "+232 88 123 456",
-      education: [
-        "Master of Theology - Living Faith Bible College",
-        "Bachelor of Divinity - Sierra Leone Theological College",
-        "Certificate in Pastoral Ministry - International Bible Institute",
-      ],
-      experience: [
-        "Resident Pastor - WCI Goderich (2015-Present)",
-        "Associate Pastor - WCI Freetown (2010-2015)",
-        "Youth Pastor - WCI Bo (2008-2010)",
-        "Ministry Intern - WCI Kenema (2006-2008)",
-      ],
-      specialties: [
-        "Biblical Teaching",
-        "Leadership Development",
-        "Pastoral Care",
-        "Church Growth",
-        "Prayer Ministry",
-      ],
-      socialMedia: {
-        facebook: "https://facebook.com/pastorabelukweni",
-        twitter: "https://twitter.com/pastorabelukweni",
-        instagram: "https://instagram.com/pastorabelukweni",
-      },
       featured: true,
-      ordinationDate: "2008",
-      yearsInMinistry: 16,
     },
     {
       id: "2",

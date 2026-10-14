@@ -6,7 +6,7 @@ export const UPCOMING_EVENTS = [
     date: "2025-10-15",
     startTime: "8:30am",
     endTime: "11:30am",
-    by: "Pastor Abel Ukweni",
+    by: "Pastor Abejirin Femi Miracle",
     address: "WCI Goderich Church, Sierra Leone",
     image: "/images/church_welcome.jpeg",
   },
