@@ -1,4 +1,7 @@
 import { CHURCH_INFO } from "./church";
+import { ABOUT_OG_IMAGE } from "./media";
+
+const CHURCH_ADDRESS = CHURCH_INFO.CHURCH_LOCATION.address.full;
 
 /**
  * Central SEO / site configuration.
@@ -152,13 +155,12 @@ export const PAGE_SEO: Record<PageSeoKey, PageSeo> = {
     path: "/about",
     description:
       "Learn about Winners Chapel International, Goderich: our vision, mission, leadership under Resident Pastor Abel Ukweni and Associate Pastor Lungay Sellu, and the 12 Pillars of our Commission within the Living Faith Church Worldwide.",
-    image: "/images/about_us_hero.jpg",
+    image: ABOUT_OG_IMAGE,
   },
   "contact-us": {
     title: "Contact Us",
     path: "/contact-us",
-    description:
-      "Get in touch with Winners Chapel International, Goderich. Reach us by phone, email, or visit us in Goderich, Freetown, Sierra Leone.",
+    description: `Get in touch with Winners Chapel International, Goderich. Reach us by phone, email, or visit us on ${CHURCH_ADDRESS}.`,
   },
   education: {
     title: "Education",
@@ -196,8 +198,7 @@ export const PAGE_SEO: Record<PageSeoKey, PageSeo> = {
   location: {
     title: "Location & Directions",
     path: "/location",
-    description:
-      "Find Winners Chapel International, Goderich on Femi Turner Drive, Goderich, Freetown, Sierra Leone. Get directions and service times.",
+    description: `Find Winners Chapel International, Goderich on ${CHURCH_ADDRESS}. Get directions and service times.`,
     image: "/images/location_hero.jpeg",
   },
   media: {

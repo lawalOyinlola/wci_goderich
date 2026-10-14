@@ -102,12 +102,21 @@ export function getCloudinaryVideoUrls(publicId: string) {
 /**
  * Poster frame pulled straight from the video, so a thumbnail can never drift
  * out of sync with the clip it represents. `so_` picks the second to grab.
+ * Pass `height` to crop to an exact size, and `format: "jpg"` where the
+ * consumer is a crawler (Open Graph) rather than a browser, since `f_auto`
+ * negotiates on the Accept header.
  */
 export function getCloudinaryVideoPoster(
   publicId: string,
-  { second = 0, width = 1280 }: { second?: number; width?: number } = {},
+  {
+    second = 0,
+    width = 1280,
+    height,
+    format = "auto",
+  }: { second?: number; width?: number; height?: number; format?: "auto" | "jpg" } = {},
 ) {
-  return `${CLOUDINARY_VIDEO_BASE}/so_${second},w_${width},c_fill,q_auto,f_auto/${publicId}.jpg`;
+  const size = height ? `w_${width},h_${height}` : `w_${width}`;
+  return `${CLOUDINARY_VIDEO_BASE}/so_${second},${size},c_fill,q_auto,f_${format}/${publicId}.jpg`;
 }
 
 export interface ChurchVideo {
@@ -136,9 +145,22 @@ function buildVideo(
   };
 }
 
+const ABOUT_VIDEO_PUBLIC_ID = "Communion_Highlight_efqg0v";
+
+/**
+ * Social share image for the About page: a 1200x630 frame from the church's
+ * own service video (the pastor preaching to the congregation at 2s).
+ */
+export const ABOUT_OG_IMAGE = getCloudinaryVideoPoster(ABOUT_VIDEO_PUBLIC_ID, {
+  second: 2,
+  width: 1200,
+  height: 630,
+  format: "jpg",
+});
+
 /** Church videos, newest first. Played through the shared video modal. */
 export const CHURCH_VIDEOS: ChurchVideo[] = [
-  buildVideo("Communion_Highlight_efqg0v", {
+  buildVideo(ABOUT_VIDEO_PUBLIC_ID, {
     id: "welcome",
     title: "Welcome to Winners Chapel Goderich",
     description:
