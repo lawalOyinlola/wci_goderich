@@ -17,7 +17,7 @@ import "leaflet/dist/leaflet.css";
 
 const { NAME } = CHURCH_INFO;
 const { address, coordinates } = CHURCH_INFO.CHURCH_LOCATION ?? {};
-const { city = "", country = "" } = address ?? {};
+const { area = "", city = "" } = address ?? {};
 const { lat, lng } = coordinates ?? {};
 
 const DIRECTIONS_URL = getDirectionsUrl(lat, lng);
@@ -53,7 +53,7 @@ const POPUP_HTML = `
       <h3 style="font-weight:700;font-size:0.95rem;line-height:1.25;margin:0 0 5px;color:#0f172a">${NAME}</h3>
       <p style="display:inline-flex;align-items:center;gap:6px;font-size:0.68rem;text-transform:uppercase;letter-spacing:0.07em;color:#64748b;margin:0">
         <span style="width:6px;height:6px;border-radius:50%;background:#dc2626;flex:none"></span>
-        ${city}, ${country}
+        ${area}, ${city}
       </p>
     </div>
     <a href="${DIRECTIONS_URL}" target="_blank" rel="noopener noreferrer"

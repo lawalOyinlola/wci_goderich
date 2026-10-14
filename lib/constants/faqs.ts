@@ -1,3 +1,5 @@
+import { CHURCH_INFO } from "./church";
+
 export const FAQS = {
   title: "Finding Your Way at Winners Chapel Goderich?",
   subtitle: "Get Answers",
@@ -13,8 +15,7 @@ export const FAQS = {
     {
       id: "2",
       question: "Where is the church located and where should I park?",
-      answer:
-        "Our church is located at Main Street, Goderich, Western Area, Sierra Leone. We offer free parking available on church premises and surrounding streets. The church is easily accessible by public transport and is wheelchair accessible.",
+      answer: `Our church is located at ${CHURCH_INFO.CHURCH_LOCATION.address.full}. We offer free parking available on church premises and surrounding streets. The church is easily accessible by public transport and is wheelchair accessible.`,
     },
     {
       id: "3",

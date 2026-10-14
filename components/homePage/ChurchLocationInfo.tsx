@@ -18,11 +18,7 @@ import { formatServiceSchedule } from "@/lib/utils";
 import { SERVICES, CHURCH_INFO } from "@/lib/constants";
 
 const { CHURCH_LOCATION, CONTACT } = CHURCH_INFO;
-const {
-  street = "",
-  city = "",
-  province = "",
-} = CHURCH_LOCATION?.address ?? {};
+const { full: fullAddress = "" } = CHURCH_LOCATION?.address ?? {};
 const { phone, email, officeHours } = CONTACT;
 
 export default function ChurchLocationInfo() {
@@ -34,7 +30,7 @@ export default function ChurchLocationInfo() {
           <div className="flex-1 space-y-2">
             <h3 className="font-semibold text-lg">Church Address</h3>
             <p className="text-muted-foreground">
-              {`${street}, ${city}, ${province}, SL`}
+              {fullAddress}
             </p>
             <AnimatedButton
               text="Get Directions"
