@@ -111,15 +111,20 @@ type ListResult = Awaited<ReturnType<typeof listImagesFromFolder>>;
  * takes no arguments, so this is a single cache entry shared by every visitor
  * and every filter/seed combination, not one per request.
  *
- * Because that entry is shared, a failure must not be written into it: caching
- * one transient Cloudinary outage would show every visitor the SAMPLE_IMAGES
- * placeholder until the entry revalidates. So a lookup that errors throws, and
- * the caller falls back outside this cached scope. An empty result is a real
- * answer rather than a failure, so it stays cacheable.
+ * Because that entry is shared, a failure must not sit in it for long: one
+ * transient Cloudinary outage would otherwise show every visitor the
+ * SAMPLE_IMAGES placeholder for minutes. So a lookup that errors returns
+ * "unavailable" under the `seconds` profile (revalidates after a second),
+ * while real answers, including an empty folder, keep the `minutes` profile.
+ *
+ * It returns rather than throws on failure: an error thrown inside a
+ * `use cache` scope fails the prerender even when the caller catches it, so a
+ * Cloudinary hiccup during `next build` used to fail the whole deploy.
  */
-async function fetchFromCloudinary(): Promise<ListResult | null> {
+async function fetchFromCloudinary(): Promise<
+  ListResult | null | "unavailable"
+> {
   "use cache";
-  cacheLife("minutes");
   cacheTag("gallery");
 
   // Distinguishes "Cloudinary is unreachable" from "the folder holds nothing",
@@ -134,6 +139,7 @@ async function fetchFromCloudinary(): Promise<ListResult | null> {
       console.info(
         `Gallery: found ${result.resources.length} images in asset_folder "${GALLERY_FOLDER}"`,
       );
+      cacheLife("minutes");
       return result;
     }
   } catch (e) {
@@ -151,6 +157,7 @@ async function fetchFromCloudinary(): Promise<ListResult | null> {
       });
       if (result.resources.length > 0) {
         console.info(`Gallery: found ${result.resources.length} images for prefix "${prefix}"`);
+        cacheLife("minutes");
         return result;
       }
     } catch (e) {
@@ -159,16 +166,27 @@ async function fetchFromCloudinary(): Promise<ListResult | null> {
     }
   }
 
-  // Every lookup errored, so nothing here is worth caching. Throwing leaves the
-  // cache empty and lets the next request try Cloudinary again.
-  if (lastError) throw lastError;
+  // Every lookup errored: cache that only briefly so the next request
+  // retries Cloudinary almost immediately.
+  if (lastError) {
+    cacheLife("seconds");
+    return "unavailable";
+  }
 
+  cacheLife("minutes");
   return null;
 }
 
+/**
+ * Fixed timestamp for the placeholder images. Calling `new Date()` here broke
+ * the build whenever Cloudinary was unreachable during prerendering: with
+ * Cache Components, reading the clock in a prerender is an error.
+ */
+const SAMPLE_TIMESTAMP = "2026-01-01T00:00:00.000Z";
+
 /** Map SAMPLE_IMAGES to GalleryImage[] for fallback when Cloudinary folder is empty. */
 function sampleImagesAsGallery(): GalleryImage[] {
-  const now = new Date().toISOString();
+  const now = SAMPLE_TIMESTAMP;
   return SAMPLE_IMAGES.map((img, i) => ({
     id: `sample-${i}`,
     title: img.title,
@@ -218,7 +236,10 @@ export async function getGalleryImagesServer(
   try {
     const result = await fetchFromCloudinary();
 
-    if (result) {
+    if (result === "unavailable") {
+      console.error("Gallery: Cloudinary unavailable, using SAMPLE_IMAGES");
+      images = sampleImagesAsGallery();
+    } else if (result) {
       images = result.resources.map((r, i) => {
         const orientation = getOrientation(r.width, r.height);
         const title = getTitle(r);
