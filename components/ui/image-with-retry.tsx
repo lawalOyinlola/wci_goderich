@@ -27,7 +27,7 @@ export function ImageWithRetry({
 
   // Check if this is one of the leadership images that needs retry logic
   const isLeadershipImage =
-    src.includes("pastor_femi_wci") ||
+    src.includes("pastor_femi") ||
     src.includes("pst_lungi_standing_rwdbll") ||
     src.includes("open_bible_xy3r0a");
 
@@ -46,7 +46,7 @@ export function ImageWithRetry({
       
       // Find which image this is and use the retry version
       let retrySrc = src;
-      if (src.includes("pastor_femi_wci")) {
+      if (src.includes("pastor_femi")) {
         retrySrc = retryImages.PST_FEMI_IMG;
       } else if (src.includes("pst_lungi_standing_rwdbll")) {
         retrySrc = retryImages.PST_LUNGI_IMG;
