@@ -14,7 +14,7 @@ import {
 export async function POST(request: NextRequest) {
   try {
     // Rate limiting: 5 requests per 15 minutes per IP
-    const rateLimitResult = checkRateLimit(request, {
+    const rateLimitResult = await checkRateLimit(request, {
       maxRequests: 5,
       windowMs: 15 * 60 * 1000, // 15 minutes
     });

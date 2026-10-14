@@ -6,6 +6,7 @@ import {
 } from "@/lib/data/testimonies";
 import { checkRateLimit } from "@/lib/utils/rate-limit";
 import { checkAuth } from "@/lib/utils/auth";
+import { isOwnCloudinaryUrl } from "@/lib/cloudinary";
 import { parseRequestBody, normalizeStringField } from "@/lib/utils/validation";
 
 /**
@@ -31,7 +32,6 @@ export async function GET(request: NextRequest) {
     const featured = searchParams.get("featured"); // Optional filter for featured only
     const limit = searchParams.get("limit"); // Optional limit
     const page = searchParams.get("page"); // Optional page number for pagination
-    const verified = searchParams.get("verified"); // Optional filter by verified status (defaults to true)
 
     // Pagination parsing and validation
     const MAX_LIMIT = 100; // Maximum items per page to prevent huge responses
@@ -92,7 +92,9 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    const showVerified = !(verified === "false" || verified === "0");
+    // Public route: only approved testimonies, always. Unreviewed submissions
+    // are moderated in Supabase, not browsed through this endpoint.
+    const showVerified = true;
     const onlyFeatured = featured === "true";
 
     // Filters shared by every query (verified, category, featured). Deliberately
@@ -215,7 +217,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     // Rate limiting: 3 requests per 30 minutes per IP
-    const rateLimitResult = checkRateLimit(request, {
+    const rateLimitResult = await checkRateLimit(request, {
       maxRequests: 3,
       windowMs: 30 * 60 * 1000, // 30 minutes
     });
@@ -312,6 +314,19 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Media must be something our own upload routes produced. Anything else
+    // would let a visitor store (and later have us display) an arbitrary URL.
+    if (
+      (image && !isOwnCloudinaryUrl(image, "image")) ||
+      (videoUrl && !isOwnCloudinaryUrl(videoUrl, "video")) ||
+      (audioUrl && !isOwnCloudinaryUrl(audioUrl, "video"))
+    ) {
+      return NextResponse.json(
+        { error: "Media must be uploaded through this site" },
+        { status: 400 }
+      );
+    }
+
     // Use default values for optional fields
     // Database requires NOT NULL, so provide defaults
     const submissionName = name || "Anonymous";
@@ -339,36 +354,10 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (error) {
-      // Clean up uploaded files if database insert fails
-      const { deleteImage, deleteMedia } = await import("@/lib/cloudinary");
-      if (submissionImage) {
-        try {
-          await deleteImage(submissionImage);
-        } catch (deleteError) {
-          if (process.env.NODE_ENV === "development") {
-            console.error("Error deleting image during cleanup:", deleteError);
-          }
-        }
-      }
-      if (videoUrl) {
-        try {
-          await deleteMedia(videoUrl);
-        } catch (deleteError) {
-          if (process.env.NODE_ENV === "development") {
-            console.error("Error deleting video during cleanup:", deleteError);
-          }
-        }
-      }
-      if (audioUrl) {
-        try {
-          await deleteMedia(audioUrl);
-        } catch (deleteError) {
-          if (process.env.NODE_ENV === "development") {
-            console.error("Error deleting audio during cleanup:", deleteError);
-          }
-        }
-      }
-
+      // No server-side cleanup here: these URLs come from the request body,
+      // so deleting them would let anyone delete any asset by submitting its
+      // URL with an invalid date. The form deletes its own uploads through
+      // /api/upload/cleanup using the signed tokens the upload routes issued.
       if (process.env.NODE_ENV === "development") {
         console.error("Error creating testimony:", error);
       }

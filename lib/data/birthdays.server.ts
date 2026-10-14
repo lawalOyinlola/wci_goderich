@@ -5,7 +5,7 @@
 
 import { headers } from "next/headers";
 import { supabaseServer } from "@/lib/supabase/server";
-import type { Birthday } from "@/lib/types/birthdays";
+import { BIRTHDAY_PUBLIC_COLUMNS, type Birthday } from "@/lib/types/birthdays";
 
 /**
  * Fetches birthdays from Supabase on the server
@@ -22,7 +22,7 @@ export async function getBirthdaysServer(options?: {
   try {
     let query = supabaseServer
       .from("birthdays")
-      .select("*")
+      .select(BIRTHDAY_PUBLIC_COLUMNS)
       .order("month", { ascending: true })
       .order("day", { ascending: true });
 

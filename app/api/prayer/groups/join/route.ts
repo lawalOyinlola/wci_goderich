@@ -7,7 +7,7 @@ import { checkAuth } from "@/lib/utils/auth";
 export async function POST(request: NextRequest) {
   try {
     // Rate limiting: 3 requests per 30 minutes per IP
-    const rateLimitResult = checkRateLimit(request, {
+    const rateLimitResult = await checkRateLimit(request, {
       maxRequests: 3,
       windowMs: 30 * 60 * 1000, // 30 minutes
     });

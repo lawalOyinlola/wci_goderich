@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, useEffect, useCallback } from "react";
+import { useMemo, useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -10,6 +10,10 @@ import AvatarCropUploader from "@/components/AvatarCropUploader";
 import CtaContainer from "@/components/CtaContainer";
 import { InputField } from "@/components/form/InputField";
 import { SelectField } from "@/components/form/SelectField";
+import Turnstile, {
+  isTurnstileEnabled,
+  type TurnstileHandle,
+} from "@/components/form/Turnstile";
 import { Button } from "@/components/ui/button";
 import { Highlighter } from "@/components/ui/highlighter";
 import { Separator } from "@/components/ui/separator";
@@ -66,13 +70,10 @@ export default function MonthlyBirthdays({
     message: string;
     verified?: boolean;
   } | null>(null);
-  // CAPTCHA tokens (will be set when CAPTCHA is configured)
-  const [hcaptchaToken, setHcaptchaToken] = useState<string | undefined>(
-    undefined
-  );
-  const [recaptchaToken, setRecaptchaToken] = useState<string | undefined>(
-    undefined
-  );
+  // Bot check. The token is single-use, so the widget is reset after every
+  // attempt the server actually verified (see submitAndHandle).
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const turnstileRef = useRef<TurnstileHandle>(null);
 
   useEffect(() => {
     // Set date on mount to prevent hydration mismatch between server and client
@@ -214,6 +215,7 @@ export default function MonthlyBirthdays({
 
         toast.success("Birthday details received!", { id: toastId });
         setPendingConfirmation(null);
+        turnstileRef.current?.reset();
         celebrate(name);
       } catch (error) {
         if (process.env.NODE_ENV === "development") {
@@ -225,7 +227,9 @@ export default function MonthlyBirthdays({
           // dialog instead of showing it as an error. The server's message
           // already distinguishes "still pending" from "already verified in
           // a prior year", so the dialog just renders it rather than
-          // guessing which case applies.
+          // guessing which case applies. The server stops before checking the
+          // CAPTCHA on this path, so the token is still unspent for the
+          // confirmed resubmission.
           toast.dismiss(toastId);
           setPendingConfirmation({
             formData,
@@ -243,6 +247,7 @@ export default function MonthlyBirthdays({
         toast.error(message, { id: toastId });
         setImageError(message);
         setPendingConfirmation(null);
+        turnstileRef.current?.reset();
       } finally {
         setIsSubmitting(false);
       }
@@ -279,27 +284,32 @@ export default function MonthlyBirthdays({
       );
       formData.append("image", imageFile);
 
-      // Only append CAPTCHA tokens if they exist
-      if (hcaptchaToken) {
-        formData.append("hcaptchaToken", hcaptchaToken);
+      if (isTurnstileEnabled && !turnstileToken) {
+        toast.warning("Please complete the verification check.");
+        return;
       }
-      if (recaptchaToken) {
-        formData.append("recaptchaToken", recaptchaToken);
+      if (turnstileToken) {
+        formData.append("turnstileToken", turnstileToken);
       }
 
       await submitAndHandle(formData, values.name);
     },
-    [imageBlob, currentMonthIndex, hcaptchaToken, recaptchaToken, submitAndHandle]
+    [imageBlob, currentMonthIndex, turnstileToken, submitAndHandle]
   );
 
   const handleConfirmReplace = useCallback(() => {
     if (!pendingConfirmation) return;
+    // The widget refreshes a token that expired while the dialog was open,
+    // so send whichever token is current.
+    if (turnstileToken) {
+      pendingConfirmation.formData.set("turnstileToken", turnstileToken);
+    }
     void submitAndHandle(
       pendingConfirmation.formData,
       pendingConfirmation.name,
       true
     );
-  }, [pendingConfirmation, submitAndHandle]);
+  }, [pendingConfirmation, submitAndHandle, turnstileToken]);
 
   const handleCancelConfirmation = useCallback(() => {
     setPendingConfirmation(null);
@@ -489,6 +499,12 @@ export default function MonthlyBirthdays({
                   </div>
                 </FieldGroup>
 
+                <Turnstile
+                  ref={turnstileRef}
+                  onToken={setTurnstileToken}
+                  className="pt-3"
+                />
+
                 <div className="flex justify-end pt-1">
                   <Button size="sm" type="submit" disabled={isSubmitting}>
                     {isSubmitting ? (
@@ -534,10 +550,10 @@ export default function MonthlyBirthdays({
               {isSubmitting ? (
                 <>
                   <span className="inline-block size-3 animate-spin rounded-full border-2 border-current border-t-transparent" />
-                  Replacing...
+                  Sending...
                 </>
               ) : (
-                "Yes, use this instead"
+                "Send for review"
               )}
             </Button>
           </DialogFooter>
