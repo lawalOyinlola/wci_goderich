@@ -3,7 +3,6 @@ import Hero from "./Hero";
 import PrayerInspiration from "./PrayerInspiration";
 import PrayerRequestForm from "./PrayerRequestForm";
 import PrayerPoints from "./PrayerPoints";
-import PrayerSessions from "./PrayerSessions";
 import AnsweredPrayers from "./AnsweredPrayers";
 import AnsweredPrayersSkeleton from "./loading";
 import CtaSection from "@/components/CtaSection";
@@ -23,7 +22,6 @@ export default async function PrayerPage({ searchParams }: PrayerPageProps) {
     <>
       <Hero />
       <PrayerInspiration />
-      <PrayerSessions />
       <PrayerPoints initialCategory={categoryParam} />
       <PrayerRequestForm />
       <Suspense fallback={<AnsweredPrayersSkeleton />}>

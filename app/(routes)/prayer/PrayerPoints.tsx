@@ -19,11 +19,6 @@ export default function PrayerPoints({ initialCategory }: PrayerPointsProps) {
   const categoryParam = searchParams.get("category") || initialCategory;
 
   const tabs = useMemo<TabConfig[]>(() => {
-    // Count midnight groups (all groups together)
-    const midnightCount = PRAYER_POINTS.filter(
-      (point) => point.category === "midnight",
-    ).length;
-
     // Count general subcategories
     const generalSubcategories = [
       { value: "personal-growth", label: "Personal Growth" },
@@ -53,11 +48,6 @@ export default function PrayerPoints({ initialCategory }: PrayerPointsProps) {
         label: "All Points",
         count: PRAYER_POINTS.length,
       },
-      {
-        value: "midnight",
-        label: "Midnight Groups",
-        count: midnightCount,
-      },
       ...generalSubcategories,
       {
         value: "special",
@@ -67,7 +57,7 @@ export default function PrayerPoints({ initialCategory }: PrayerPointsProps) {
     ];
 
     // Only render a tab when it actually has points (always keep "All Points"
-    // as the home tab). This auto-hides e.g. Midnight Groups while it's empty.
+    // as the home tab), so an empty category never shows as a dead tab.
     return allTabs.filter((tab) => tab.value === "all" || (tab.count ?? 0) > 0);
   }, []);
 
@@ -80,10 +70,6 @@ export default function PrayerPoints({ initialCategory }: PrayerPointsProps) {
   const filteredPoints = useMemo(() => {
     if (activeTab === "all") {
       return PRAYER_POINTS;
-    }
-
-    if (activeTab === "midnight") {
-      return PRAYER_POINTS.filter((point) => point.category === "midnight");
     }
 
     if (activeTab.startsWith("general-")) {
@@ -114,13 +100,13 @@ export default function PrayerPoints({ initialCategory }: PrayerPointsProps) {
   };
 
   return (
-    <section>
+    <section id="prayer-points" className="scroll-mt-24">
       <div className="small-container">
         <Reveal>
           <SectionHeader
             title="Prayer Points"
             subtitle="Guided Prayer"
-            description="Use these prayer points to guide your prayer time. We especially focus on our weekly midnight prayer groups that meet to intercede for breakthrough and victory."
+            description="Use these prayer points to guide your prayer time, for yourself, your family, the church and the world."
           />
         </Reveal>
 
@@ -145,98 +131,31 @@ export default function PrayerPoints({ initialCategory }: PrayerPointsProps) {
                     </p>
                   )}
 
-                  {/* Display midnight group prayers (intercessions + personal thanksgiving) */}
-                  {point.category === "midnight" && point.intercessions && (
-                    <div className="space-y-6">
-                      {/* Intercessions */}
-                      <div>
-                        <h4 className="text-sm font-semibold mb-3 text-primary">
-                          Intercessions
-                        </h4>
-                        <div className="space-y-4">
-                          {point.intercessions.map((intercession, index) => (
-                            <div key={index} className="space-y-2 border-b ">
-                              <p className="text-sm leading-relaxed">
-                                <span className="font-bold mr-2">
-                                  {index + 1}.
-                                </span>
-                                <span>{intercession.prayer}</span>
-                              </p>
-                              {intercession.scripture && (
-                                <div className="p-2 bg-muted dark:bg-background/40 rounded-lg">
-                                  <div className="flex items-start gap-2">
-                                    <BookOpenIcon
-                                      size={16}
-                                      className="text-red-700 dark:text-primary mt-0.5 shrink-0"
-                                    />
-                                    <p className="text-xs italic text-red-700 dark:text-primary font-medium line-clamp-3">
-                                      {intercession.scripture}
-                                    </p>
-                                  </div>
-                                </div>
-                              )}
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-
-                      {/* Personal Supplication */}
-                      {point.personalSupplication && (
-                        <div>
-                          <h4 className="text-sm font-semibold mb-3 text-primary">
-                            Personal Supplication
-                          </h4>
-                          <div className="space-y-2">
-                            <p className="text-sm leading-relaxed">
-                              {point.personalSupplication.prayer}
+                  <ul className="space-y-2">
+                    {point.points.map((prayerPoint, index) => (
+                      <li key={index} className="flex items-start gap-2">
+                        <span className="text-primary font-bold mt-1 text-xs">
+                          •
+                        </span>
+                        <span className="text-sm">{prayerPoint}</span>
+                      </li>
+                    ))}
+                    {point.scripture && (
+                      <li className="mt-3">
+                        <div className="p-2 bg-muted dark:bg-background/40 rounded-lg">
+                          <div className="flex items-start gap-2">
+                            <BookOpenIcon
+                              size={16}
+                              className="text-red-700 dark:text-primary mt-0.5 shrink-0"
+                            />
+                            <p className="text-xs italic text-red-700 dark:text-primary font-medium line-clamp-3">
+                              {point.scripture}
                             </p>
-                            {point.personalSupplication.scripture && (
-                              <div className="p-2 bg-muted dark:bg-background/40 rounded-lg">
-                                <div className="flex items-start gap-2">
-                                  <BookOpenIcon
-                                    size={16}
-                                    className="text-red-700 dark:text-primary mt-0.5 shrink-0"
-                                  />
-                                  <p className="text-xs italic text-red-700 dark:text-primary font-medium line-clamp-3">
-                                    {point.personalSupplication.scripture}
-                                  </p>
-                                </div>
-                              </div>
-                            )}
                           </div>
                         </div>
-                      )}
-                    </div>
-                  )}
-
-                  {/* Display general/special prayers as list */}
-                  {point.category !== "midnight" && (
-                    <ul className="space-y-2">
-                      {point.points.map((prayerPoint, index) => (
-                        <li key={index} className="flex items-start gap-2">
-                          <span className="text-primary font-bold mt-1 text-xs">
-                            •
-                          </span>
-                          <span className="text-sm">{prayerPoint}</span>
-                        </li>
-                      ))}
-                      {point.scripture && (
-                        <li className="mt-3">
-                          <div className="p-2 bg-muted dark:bg-background/40 rounded-lg">
-                            <div className="flex items-start gap-2">
-                              <BookOpenIcon
-                                size={16}
-                                className="text-red-700 dark:text-primary mt-0.5 shrink-0"
-                              />
-                              <p className="text-xs italic text-red-700 dark:text-primary font-medium line-clamp-3">
-                                {point.scripture}
-                              </p>
-                            </div>
-                          </div>
-                        </li>
-                      )}
-                    </ul>
-                  )}
+                      </li>
+                    )}
+                  </ul>
                   {point.date && (
                     <p className="text-xs text-muted-foreground text-end italic mt-auto">
                       {new Date(point.date).toLocaleDateString("en-US", {

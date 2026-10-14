@@ -10,7 +10,7 @@ export const FAQS = {
       id: "1",
       question: "When are your service times?",
       answer:
-        "We have multiple service times to accommodate everyone. Our Sunday Worship services are held at 7:00 AM, 9:00 AM, and 11:00 AM. We also have mid-week services including 90 Min with Jesus on Mondays at 6:00 PM, Communion Service on Wednesdays at 6:00 PM, and Covenant Hour of Prayer weekdays at 6:00 AM (7:00 AM on Saturdays). Satellite Fellowship meetings are held on Saturdays at 5:00 PM.",
+        "We have multiple service times to accommodate everyone. Our Sunday Worship services are held at 7:00 AM, 9:00 AM, and 11:00 AM. We also have mid-week services including Communion Service on Wednesdays at 6:00 PM and Covenant Hour of Prayer weekdays at 6:00 AM (7:00 AM on Saturdays). Satellite Fellowship meetings are held on Saturdays at 5:00 PM.",
     },
     {
       id: "2",
@@ -33,13 +33,13 @@ export const FAQS = {
       id: "5",
       question: "How can I submit a prayer request?",
       answer:
-        "You can submit prayer requests through our website's prayer request or contact form, contact us directly via phone or email, or submit them during our services. We also have dedicated prayer times including our daily Covenant Hour of Prayer at 6:00 AM (7:00 AM on Saturdays) where we intercede for all prayer requests. Additionally, we have prayer groups that pray at midnight for one hour until 1:00 AM, interceding for self and all submitted requests.",
+        "You can submit prayer requests through our website's prayer request or contact form, contact us directly via phone or email, or submit them during our services. We also have dedicated prayer times including our daily Covenant Hour of Prayer at 6:00 AM (7:00 AM on Saturdays) where we intercede for all prayer requests.",
     },
     {
       id: "6",
       question: "What is a prayer group?",
       answer:
-        "A prayer group is a small gathering of believers who meet regularly to pray together, intercede for the church, community, and personal needs. We have various prayer groups including our daily Covenant Hour of Prayer, prayer teams, and small group prayer meetings. We also have special prayer groups divided in such a way that every member is assigned to a group, with each group having an assigned day of the week for prayer at midnight until 1:00 AM. It is encouraged for every member to be in at least one group and pray on the day assigned to their group, providing intensive intercession for prayer requests. These groups provide support, encouragement, and a powerful atmosphere for answered prayers.",
+        "A prayer group is a small gathering of believers who meet regularly to pray together, intercede for the church, community, and personal needs. We have various prayer groups including our daily Covenant Hour of Prayer, prayer teams, and small group prayer meetings. These groups provide support, encouragement, and a powerful atmosphere for answered prayers.",
     },
     {
       id: "7",

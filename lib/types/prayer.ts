@@ -11,81 +11,18 @@ export type PrayerRequest = {
   updatedAt?: string;
 };
 
-export type PrayerGroup = {
-  id: string;
-  name: string;
-  description: string;
-  day: string;
-  time: string;
-  location: string;
-  isSpecial?: boolean; // For midnight prayer groups
-  contactPerson?: string;
-  contactEmail?: string;
-  contactPhone?: string;
-  maxMembers?: number;
-  currentMembers?: number;
-};
-
 export type PrayerPoint = {
   id: string;
   title: string;
   description: string;
-  category: "midnight" | "general" | "special";
+  category: "general" | "special";
   points: string[];
   scripture?: string;
   date?: string;
-  // For midnight prayer groups (1-6)
-  groupNumber?: number;
-  intercessions?: PrayerWithScripture[];
-  personalSupplication?: PrayerWithScripture;
   // For general prayers
   subcategory?:
     | "personal-growth"
     | "family-relationships"
     | "church-community"
     | "global-concerns";
-};
-
-export interface PrayerWithScripture {
-  prayer: string;
-  scripture: string;
-}
-
-export interface MidnightPrayerGroup {
-  name: string;
-  description: string;
-  day: string; // e.g., "Monday", "Tuesday", etc.
-  time: string; // e.g., "12:00 AM"
-  location: string;
-  contactPerson?: string;
-  contactEmail?: string;
-  contactPhone?: string;
-  maxMembers?: number;
-  currentMembers?: number;
-  intercessions: PrayerWithScripture[];
-  personalSupplication: PrayerWithScripture;
-  // The calendar date this group's current intercessions apply to (ISO format),
-  // so the published guideline can be swapped out week to week.
-  date?: string;
-}
-
-// Structure for all midnight prayer groups (object with groupNumber as key)
-export type MidnightPrayerGroups = {
-  [groupNumber: number]: MidnightPrayerGroup;
-};
-
-export type PrayerSession = {
-  id: string;
-  name: string;
-  description: string;
-  day: string;
-  times: string[];
-  /**
-   * Optional breakdown of multiple schedules within one session (e.g. Weekdays
-   * vs Saturday). When present, rendered as side-by-side day/time columns.
-   */
-  schedules?: { day: string; times: string[] }[];
-  location: string;
-  type: "service" | "prayer" | "group";
-  isSpecial?: boolean;
 };
