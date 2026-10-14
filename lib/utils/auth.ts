@@ -1,4 +1,4 @@
-import { createHash, timingSafeEqual } from "node:crypto";
+import { timingSafeEqual } from "node:crypto";
 import { NextRequest, NextResponse } from "next/server";
 
 const TURNSTILE_VERIFY_URL =
@@ -146,11 +146,12 @@ export function requireAdmin(
   const provided = request.headers.get("x-admin-api-key");
 
   if (expected && provided) {
-    // Hash both sides so timingSafeEqual gets equal-length buffers and the
-    // key's length doesn't leak through an early return.
-    const a = createHash("sha256").update(expected).digest();
-    const b = createHash("sha256").update(provided).digest();
-    if (timingSafeEqual(a, b)) {
+    // timingSafeEqual needs equal-length buffers. The length check returns
+    // early, but that only reveals the key's length, which isn't secret for
+    // a generated key (`openssl rand -base64 32` is always 44 characters).
+    const a = Buffer.from(expected);
+    const b = Buffer.from(provided);
+    if (a.length === b.length && timingSafeEqual(a, b)) {
       return { allowed: true };
     }
   }
