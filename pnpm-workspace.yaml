@@ -1,3 +1,17 @@
+# Floors for transitive dependencies with published advisories (pnpm audit,
+# 2026-10-14). Drop an entry once the packages that pull it in require a
+# patched version themselves.
+overrides:
+  browserslist: ^4.28.7
+  source-map-js: ^1.2.2
+  baseline-browser-mapping: 2.11.25
+  # Build and lint tooling only (Tailwind, ESLint)
+  postcss: 8.5.28
+  nanoid@3: 3.3.19
+  brace-expansion@1: 1.1.21
+  brace-expansion@5: 5.0.12
+  js-yaml@4: 4.3.2
+
 allowBuilds:
   sharp: true
   unrs-resolver: true
