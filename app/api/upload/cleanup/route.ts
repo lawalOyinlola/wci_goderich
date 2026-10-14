@@ -61,7 +61,13 @@ export async function POST(request: NextRequest) {
             resource_type: asset!.resourceType,
           });
         } catch (error) {
-          console.error(`Error deleting file ${asset!.publicId}:`, error);
+          // Constant format string, and the id JSON-quoted so it can't
+          // break the log line.
+          console.error(
+            "Error deleting uploaded file:",
+            JSON.stringify(asset!.publicId),
+            error
+          );
           // Continue with other files even if one fails
         }
       })
