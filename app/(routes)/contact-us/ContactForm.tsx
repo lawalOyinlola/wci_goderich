@@ -1,11 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { toast } from "sonner";
+import Turnstile, {
+  isTurnstileEnabled,
+  type TurnstileHandle,
+} from "@/components/form/Turnstile";
 import SectionHeader from "@/components/SectionHeader";
 import { InputField } from "@/components/form/InputField";
 import { SelectField } from "@/components/form/SelectField";
@@ -94,13 +98,10 @@ export default function ContactForm() {
     title: pastorTitle = "",
   } = residentPastor ?? {};
 
-  // CAPTCHA tokens (will be set when CAPTCHA is configured)
-  const [hcaptchaToken, setHcaptchaToken] = useState<string | undefined>(
-    undefined
-  );
-  const [recaptchaToken, setRecaptchaToken] = useState<string | undefined>(
-    undefined
-  );
+  // Bot check. Tokens are single-use, so the widget is reset after each
+  // submission attempt.
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const turnstileRef = useRef<TurnstileHandle>(null);
 
   const form = useForm<ContactFormValues>({
     resolver: yupResolver(contactSchema),
@@ -145,6 +146,10 @@ export default function ContactForm() {
   }, [emailValue, phoneValue, isAnonymous, form]);
 
   const onSubmit = async (data: ContactFormValues) => {
+    if (isTurnstileEnabled && !turnstileToken) {
+      toast.warning("Please complete the verification check.");
+      return;
+    }
     // Check if at least one contact method is provided
     const hasEmail = data.email && data.email.trim().length > 0;
     const hasPhone = data.phone && data.phone.trim().length > 0;
@@ -169,12 +174,8 @@ export default function ContactForm() {
         ...data,
       };
 
-      // Only include CAPTCHA tokens if they exist
-      if (hcaptchaToken) {
-        requestBody.hcaptchaToken = hcaptchaToken;
-      }
-      if (recaptchaToken) {
-        requestBody.recaptchaToken = recaptchaToken;
+      if (turnstileToken) {
+        requestBody.turnstileToken = turnstileToken;
       }
 
       const response = await fetch("/api/contact", {
@@ -191,12 +192,14 @@ export default function ContactForm() {
       }
 
       // Show success toast
+      turnstileRef.current?.reset();
       toast.success("Message Sent!", {
         description: "Thank you for contacting us! We'll get back to you soon.",
         duration: 8000,
       });
       form.reset();
     } catch (error) {
+      turnstileRef.current?.reset();
       // Log for debugging (only in development)
       if (process.env.NODE_ENV === "development") {
         console.error("Error submitting form:", error);
@@ -368,6 +371,8 @@ export default function ContactForm() {
                   description="If checked, we will not be able to reach you if we need to follow up."
                   disabled={form.formState.isSubmitting}
                 />
+
+                <Turnstile ref={turnstileRef} onToken={setTurnstileToken} />
 
                 <AnimatedButton
                   type="submit"
