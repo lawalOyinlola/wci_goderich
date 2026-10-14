@@ -1,11 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { toast } from "sonner";
+import Turnstile, {
+  isTurnstileEnabled,
+  type TurnstileHandle,
+} from "@/components/form/Turnstile";
 import SectionHeader from "@/components/SectionHeader";
 import { InputField } from "@/components/form/InputField";
 import { SelectField } from "@/components/form/SelectField";
@@ -70,13 +74,10 @@ const categoryOptions = PRAYER_CATEGORIES.map((cat) => ({
 
 export default function PrayerRequestForm() {
   const [submitSuccess, setSubmitSuccess] = useState(false);
-  // CAPTCHA tokens (will be set when CAPTCHA is configured)
-  const [hcaptchaToken, setHcaptchaToken] = useState<string | undefined>(
-    undefined
-  );
-  const [recaptchaToken, setRecaptchaToken] = useState<string | undefined>(
-    undefined
-  );
+  // Bot check. Tokens are single-use, so the widget is reset after each
+  // submission attempt.
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const turnstileRef = useRef<TurnstileHandle>(null);
   const { CONTACT } = CHURCH_INFO;
   const {
     phone: churchPhone = "",
@@ -120,6 +121,10 @@ export default function PrayerRequestForm() {
   }, [emailValue, phoneValue, isAnonymous, form]);
 
   const onSubmit = async (data: PrayerRequestFormValues) => {
+    if (isTurnstileEnabled && !turnstileToken) {
+      toast.warning("Please complete the verification check.");
+      return;
+    }
     const hasEmail = data.email && data.email.trim().length > 0;
     const hasPhone = data.phone && data.phone.trim().length > 0;
 
@@ -142,12 +147,8 @@ export default function PrayerRequestForm() {
         ...data,
       };
 
-      // Only include CAPTCHA tokens if they exist
-      if (hcaptchaToken) {
-        requestBody.hcaptchaToken = hcaptchaToken;
-      }
-      if (recaptchaToken) {
-        requestBody.recaptchaToken = recaptchaToken;
+      if (turnstileToken) {
+        requestBody.turnstileToken = turnstileToken;
       }
 
       const response = await fetch("/api/prayer/requests", {
@@ -164,6 +165,7 @@ export default function PrayerRequestForm() {
       }
 
       // Show success toast
+      turnstileRef.current?.reset();
       toast.success("Prayer Request Submitted!", {
         description:
           "Thank you for sharing your prayer request. Our prayer team will be praying for you. God bless you!",
@@ -174,6 +176,7 @@ export default function PrayerRequestForm() {
       form.reset();
       setTimeout(() => setSubmitSuccess(false), 5000);
     } catch (error) {
+      turnstileRef.current?.reset();
       // Log for debugging (only in development)
       if (process.env.NODE_ENV === "development") {
         console.error("Error submitting prayer request:", error);
@@ -378,6 +381,8 @@ export default function PrayerRequestForm() {
                   label="Submit anonymously (your name will not be shared publicly)"
                   description="If checked, you can submit without providing contact information"
                 />
+
+                <Turnstile ref={turnstileRef} onToken={setTurnstileToken} />
 
                 <AnimatedButton
                   type="submit"

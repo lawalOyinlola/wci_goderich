@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseServer } from "@/lib/supabase/server";
+import { requireAdmin } from "@/lib/utils/auth";
 
 /**
  * PUT - Update a prayer request (e.g., mark as answered)
@@ -8,6 +9,9 @@ export async function PUT(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const admin = requireAdmin(request);
+  if (!admin.allowed) return admin.response;
+
   try {
     const { id } = await params;
     const body = await request.json();
@@ -65,12 +69,16 @@ export async function PUT(
 }
 
 /**
- * GET - Get a single prayer request by ID
+ * GET - Get a single prayer request by ID. Admin only: the full row includes
+ * the requester's email and phone, which the public list route strips.
  */
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const admin = requireAdmin(request);
+  if (!admin.allowed) return admin.response;
+
   try {
     const { id } = await params;
 

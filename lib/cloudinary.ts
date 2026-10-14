@@ -1,3 +1,4 @@
+import { createHmac, timingSafeEqual } from "node:crypto";
 import { v2 as cloudinary, type ResourceApiResponse } from "cloudinary";
 
 /**
@@ -207,6 +208,82 @@ export async function deleteMedia(mediaUrl: string): Promise<void> {
   }
 
   await cloudinary.uploader.destroy(publicId, { resource_type: "video" });
+}
+
+/**
+ * True only for a delivery URL on this site's own Cloudinary account, for the
+ * given resource type. Used to refuse visitor-supplied URLs that point
+ * anywhere else before they're stored.
+ */
+export function isOwnCloudinaryUrl(
+  url: string,
+  resourceType: "image" | "video",
+): boolean {
+  ensureCloudinaryConfigured();
+  const cloudName = cloudinary.config().cloud_name;
+  if (!cloudName) return false;
+  return url.startsWith(
+    `https://res.cloudinary.com/${cloudName}/${resourceType}/upload/`,
+  );
+}
+
+const CLEANUP_TOKEN_TTL_MS = 60 * 60 * 1000; // 1 hour
+
+function signCleanupPayload(payload: string): string {
+  ensureCloudinaryConfigured();
+  const secret = cloudinary.config().api_secret;
+  if (!secret) throw new Error("Cloudinary API secret is not configured");
+  // Domain-separated so this HMAC can never collide with a Cloudinary
+  // request signature made with the same secret.
+  return createHmac("sha256", secret)
+    .update(`wci-upload-cleanup:v1:${payload}`)
+    .digest("base64url");
+}
+
+/**
+ * Issues a token that lets whoever just uploaded a file delete that one file
+ * (and nothing else) for the next hour, e.g. when the form it belongs to
+ * then fails to submit. The cleanup route only accepts these tokens, never
+ * raw URLs, so it can't be used to delete arbitrary assets.
+ */
+export function createCleanupToken(
+  publicId: string,
+  resourceType: "image" | "video",
+): string {
+  const payload = Buffer.from(
+    JSON.stringify({ p: publicId, r: resourceType, t: Date.now() }),
+  ).toString("base64url");
+  return `${payload}.${signCleanupPayload(payload)}`;
+}
+
+/** Returns the asset a cleanup token covers, or null if it's forged or expired. */
+export function verifyCleanupToken(
+  token: string,
+): { publicId: string; resourceType: "image" | "video" } | null {
+  const [payload, signature] = token.split(".");
+  if (!payload || !signature) return null;
+
+  const expected = Buffer.from(signCleanupPayload(payload));
+  const provided = Buffer.from(signature);
+  if (
+    expected.length !== provided.length ||
+    !timingSafeEqual(expected, provided)
+  ) {
+    return null;
+  }
+
+  try {
+    const { p, r, t } = JSON.parse(
+      Buffer.from(payload, "base64url").toString("utf8"),
+    );
+    if (typeof p !== "string" || (r !== "image" && r !== "video")) return null;
+    if (typeof t !== "number" || Date.now() - t > CLEANUP_TOKEN_TTL_MS) {
+      return null;
+    }
+    return { publicId: p, resourceType: r };
+  } catch {
+    return null;
+  }
 }
 
 /** Result shape from listImagesFromFolder */

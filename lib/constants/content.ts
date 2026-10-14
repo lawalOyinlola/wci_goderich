@@ -23,27 +23,27 @@ export const SLIDES = [
       },
     ],
   },
+  // {
+  //   title: "WORD OF FATE BIBLE INSTITUTE",
+  //   subtitle: "FORTIETH ANNIVERSARY CELEBRATION",
+  //   description: "WOFBI 40th Anniversary Celebration",
+  //   background: "linear-gradient(135deg, #1a1a1a 0%, #2d3436 100%)",
+  //   backgroundImage: "/images/bg-WOFBI_40.jpg",
+  //   image: "/images/WOFBI_40.png",
+  //   buttons: [
+  //     {
+  //       text: "Share Your Testimony",
+  //       link: "/testimonies#share-testimony",
+  //     },
+  //   ],
+  // },
   {
-    title: "WORD OF FATE BIBLE INSTITUTE",
-    subtitle: "FORTIETH ANNIVERSARY CELEBRATION",
-    description: "WOFBI 40th Anniversary Celebration",
+    title: "ISAIAH 44:3-5",
+    subtitle: "PROPHETIC FOCUS - OCTOBER 2026",
+    description: "",
     background: "linear-gradient(135deg, #1a1a1a 0%, #2d3436 100%)",
-    backgroundImage: "/images/bg-WOFBI_40.jpg",
-    image: "/images/WOFBI_40.png",
-    buttons: [
-      {
-        text: "Share Your Testimony",
-        link: "/testimonies#share-testimony",
-      },
-    ],
-  },
-  {
-    title: "JESUS CHRIST STILL HEALS AND DELIVERS TODAY!",
-    subtitle: "PROPHETIC FOCUS - AUGUST",
-    description: "Jesus Christ Still Heals and Delivers Today!",
-    background: "linear-gradient(135deg, #1a1a1a 0%, #2d3436 100%)",
-    backgroundImage: "/images/bg-prophetic_focus_august.jpeg",
-    image: "/images/prophetic_focus_august.png",
+    backgroundImage: "/images/bg-prophetic_focus_october_2026.jpg",
+    image: "/images/prophetic_focus_october_2026.png",
   },
   // {
   //   title: "SHILOH 2025",

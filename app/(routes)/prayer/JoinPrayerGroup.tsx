@@ -1,10 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { toast } from "sonner";
+import Turnstile, {
+  isTurnstileEnabled,
+  type TurnstileHandle,
+} from "@/components/form/Turnstile";
 import { InputField } from "@/components/form/InputField";
 import { SelectField } from "@/components/form/SelectField";
 import { TextAreaField } from "@/components/form/TextAreaField";
@@ -77,13 +81,10 @@ const midnightWarriorsSession = UNIQUE_PRAYER_SESSIONS.find(
 export default function JoinPrayerGroup() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
-  // CAPTCHA tokens (will be set when CAPTCHA is configured)
-  const [hcaptchaToken, setHcaptchaToken] = useState<string | undefined>(
-    undefined
-  );
-  const [recaptchaToken, setRecaptchaToken] = useState<string | undefined>(
-    undefined
-  );
+  // Bot check. Tokens are single-use, so the widget is reset after each
+  // submission attempt.
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const turnstileRef = useRef<TurnstileHandle>(null);
 
   const form = useForm<JoinPrayerGroupFormValues>({
     resolver: yupResolver(joinGroupSchema),
@@ -100,6 +101,10 @@ export default function JoinPrayerGroup() {
   const selectedGroupId = form.watch("prayerGroup");
 
   const onSubmit = async (data: JoinPrayerGroupFormValues) => {
+    if (isTurnstileEnabled && !turnstileToken) {
+      toast.warning("Please complete the verification check.");
+      return;
+    }
     setIsSubmitting(true);
     try {
       // Build request body with conditional CAPTCHA tokens
@@ -107,12 +112,8 @@ export default function JoinPrayerGroup() {
         ...data,
       };
 
-      // Only include CAPTCHA tokens if they exist
-      if (hcaptchaToken) {
-        requestBody.hcaptchaToken = hcaptchaToken;
-      }
-      if (recaptchaToken) {
-        requestBody.recaptchaToken = recaptchaToken;
+      if (turnstileToken) {
+        requestBody.turnstileToken = turnstileToken;
       }
 
       const response = await fetch("/api/prayer/groups/join", {
@@ -129,6 +130,7 @@ export default function JoinPrayerGroup() {
       }
 
       // Show success toast
+      turnstileRef.current?.reset();
       toast.success("Application Submitted!", {
         description:
           "Thank you for your interest in joining a prayer group. We'll contact you soon with more information. God bless you!",
@@ -139,6 +141,7 @@ export default function JoinPrayerGroup() {
       form.reset();
       setTimeout(() => setSubmitSuccess(false), 5000);
     } catch (error) {
+      turnstileRef.current?.reset();
       // Log for debugging (only in development)
       if (process.env.NODE_ENV === "development") {
         console.error("Error joining prayer group:", error);
@@ -181,7 +184,7 @@ export default function JoinPrayerGroup() {
               Application Submitted!
             </h3>
             <p className="text-muted-foreground">
-              Thank you for your interest in joining a prayer group. We'll
+              Thank you for your interest in joining a prayer group. We&apos;ll
               contact you soon with more information. God bless you!
             </p>
           </Card>
@@ -345,6 +348,8 @@ export default function JoinPrayerGroup() {
               placeholder="Have you been part of a prayer group before? Share your experience..."
               rows={3}
             />
+
+            <Turnstile ref={turnstileRef} onToken={setTurnstileToken} />
 
             <AnimatedButton
               type="submit"

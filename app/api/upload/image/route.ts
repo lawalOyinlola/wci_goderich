@@ -1,25 +1,31 @@
 import { NextRequest, NextResponse } from "next/server";
-import { uploadImage } from "@/lib/cloudinary";
+import { uploadImageDetailed, createCleanupToken } from "@/lib/cloudinary";
+import { checkRateLimit } from "@/lib/utils/rate-limit";
+import { isAllowedImageFile } from "@/lib/utils/image-sniff";
 
 export const maxDuration = 30; // 30 seconds for image upload
 
+// The only caller is the testimony form. Folder and preset are fixed here
+// rather than read from the request: accepting them from the client let
+// anyone upload straight into the public gallery folder.
+const TESTIMONIES_FOLDER = "WCI_Goderich/testimonies";
+
 export async function POST(request: NextRequest) {
+  const rateLimitResult = await checkRateLimit(request, {
+    maxRequests: 10,
+    windowMs: 30 * 60 * 1000, // 30 minutes
+  });
+
+  if (!rateLimitResult.allowed) {
+    return rateLimitResult.response!;
+  }
+
   try {
     const formData = await request.formData();
     const file = formData.get("file") as File | null;
-    const folder = formData.get("folder") as string | null;
-    const uploadPreset = formData.get("upload_preset") as string | null;
 
     if (!file) {
       return NextResponse.json({ error: "No file provided" }, { status: 400 });
-    }
-
-    // Validate file type
-    if (!file.type.startsWith("image/")) {
-      return NextResponse.json(
-        { error: "File must be an image" },
-        { status: 400 }
-      );
     }
 
     // Validate file size (max 10MB)
@@ -31,13 +37,20 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Upload to Cloudinary
-    // Use upload preset if provided, otherwise use folder and default transformations
-    const imageUrl = await uploadImage(file, {
+    // Validate the actual bytes, not the client-sent Content-Type
+    if (!(await isAllowedImageFile(file))) {
+      return NextResponse.json(
+        { error: "File must be a JPEG, PNG, WebP, GIF or HEIC image" },
+        { status: 400 }
+      );
+    }
+
+    const uploadPreset = process.env.CLOUDINARY_UPLOAD_PRESET_TESTIMONIES;
+    const { secure_url, public_id } = await uploadImageDetailed(file, {
       ...(uploadPreset
-        ? { upload_preset: uploadPreset, folder: folder || undefined }
+        ? { upload_preset: uploadPreset, folder: TESTIMONIES_FOLDER }
         : {
-            folder: folder || "WCI_Goderich",
+            folder: TESTIMONIES_FOLDER,
             transformation: {
               quality: "auto",
               fetch_format: "auto" as const,
@@ -45,7 +58,14 @@ export async function POST(request: NextRequest) {
           }),
     });
 
-    return NextResponse.json({ url: imageUrl, success: true }, { status: 200 });
+    return NextResponse.json(
+      {
+        url: secure_url,
+        cleanupToken: createCleanupToken(public_id, "image"),
+        success: true,
+      },
+      { status: 200 }
+    );
   } catch (error) {
     console.error("Error uploading image:", error);
     return NextResponse.json(

@@ -1,3 +1,18 @@
+/**
+ * The church's address. Every page that shows it reads FULL_ADDRESS (or these
+ * parts) from here, so it can't drift between the footer, forms and map.
+ * Sierra Leone has no postal codes, so none is listed.
+ */
+const ADDRESS = {
+  street: "Femi Turner Drive",
+  area: "Goderich",
+  city: "Freetown",
+  region: "Western Area",
+  country: "Sierra Leone",
+} as const;
+
+const FULL_ADDRESS = `${ADDRESS.street}, ${ADDRESS.area}, ${ADDRESS.city}, ${ADDRESS.country}`;
+
 export const CHURCH_INFO = {
   NAME: "WINNERS CHAPEL INT'L GODERICH",
   TAGLINE:
@@ -133,18 +148,14 @@ export const CHURCH_INFO = {
     phone: "+232 79 211003",
     email: "info@wcigoderich.org",
     whatsapp: "+232 88 123 456",
-    address: "Main Street, Goderich, Western Area, Sierra Leone",
+    address: FULL_ADDRESS,
     website: "wcigoderich.org",
     officeHours: "Monday - Friday: 8:00 AM - 5:00 PM",
   },
   CHURCH_LOCATION: {
     address: {
-      street: "Femi Turner Drive",
-      city: "Goderich",
-      region: "Western Area",
-      province: "Freetown",
-      country: "Sierra Leone",
-      postalCode: "SL-001",
+      ...ADDRESS,
+      full: FULL_ADDRESS,
     },
     coordinates: {
       lat: 8.435587,
@@ -152,8 +163,7 @@ export const CHURCH_INFO = {
     },
     parking:
       "Free parking available on church premises and surrounding streets",
-    description:
-      "Visit us at our church in Freetown, Sierra Leone. We're located in the heart of the community, easily accessible and welcoming to all.",
+    description: `Visit us at our church on ${FULL_ADDRESS}. We're located in the heart of the community, easily accessible and welcoming to all.`,
     directions: "Easily accessible by public transport",
     accessibility: [
       "Wheelchair accessible",

@@ -135,10 +135,9 @@ export function getOrganizationJsonLd() {
     telephone: CONTACT.phone,
     address: {
       "@type": "PostalAddress",
-      streetAddress: address.street,
+      streetAddress: `${address.street}, ${address.area}`,
       addressLocality: address.city,
       addressRegion: address.region,
-      postalCode: address.postalCode,
       addressCountry: "SL",
     },
     geo: {

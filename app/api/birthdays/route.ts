@@ -1,17 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseServer } from "@/lib/supabase/server";
 import type { PostgrestError } from "@supabase/supabase-js";
-import {
-  uploadImageDetailed,
-  deleteImage,
-  deleteImageByPublicId,
-} from "@/lib/cloudinary";
+import { uploadImageDetailed, deleteImageByPublicId } from "@/lib/cloudinary";
 import { checkRateLimit, consumeRateLimit } from "@/lib/utils/rate-limit";
 import { checkAuth } from "@/lib/utils/auth";
+import { isAllowedImageFile } from "@/lib/utils/image-sniff";
 import {
   normalizeStringField,
   normalizeNumberField,
 } from "@/lib/utils/validation";
+import { BIRTHDAY_PUBLIC_COLUMNS } from "@/lib/types/birthdays";
+
+const MAX_NAME_LENGTH = 100;
+const MAX_IMAGE_BYTES = 5 * 1024 * 1024;
 
 /**
  * Check if the request is from an admin
@@ -142,19 +143,15 @@ export async function GET(request: NextRequest) {
     const month = searchParams.get("month"); // Optional filter by month (1-12)
     const featured = searchParams.get("featured"); // Optional filter for featured only
     const limit = searchParams.get("limit"); // Optional limit
-    const verified = searchParams.get("verified"); // Optional filter by verified status (defaults to true)
 
+    // Public route: approved birthdays only, and only the public columns, so
+    // a photo waiting for review (image on a pending row, or pending_image on
+    // an approved one) is never served before an admin has looked at it.
     let query = supabaseServer
       .from("birthdays")
-      .select("*")
+      .select(BIRTHDAY_PUBLIC_COLUMNS)
+      .eq("verified", true)
       .order("day", { ascending: true });
-
-    // Default to showing only verified birthdays unless explicitly requested
-    if (verified === "false" || verified === "0") {
-      query = query.eq("verified", false);
-    } else {
-      query = query.eq("verified", true);
-    }
 
     if (month) {
       const monthNum = parseInt(month, 10);
@@ -211,7 +208,7 @@ export async function POST(request: NextRequest) {
       windowMs: 30 * 60 * 1000, // 30 minutes
     };
 
-    const rateLimitResult = checkRateLimit(request, {
+    const rateLimitResult = await checkRateLimit(request, {
       ...rateLimitOptions,
       count: false,
     });
@@ -221,23 +218,6 @@ export async function POST(request: NextRequest) {
     }
 
     const formData = await request.formData();
-
-    // Extract CAPTCHA token from form data for authentication
-    const hcaptchaToken = formData.get("hcaptchaToken") as string | null;
-    const recaptchaToken = formData.get("recaptchaToken") as string | null;
-    const bodyForAuth = {
-      hcaptchaToken,
-      recaptchaToken,
-    };
-
-    // Authentication: Require CAPTCHA verification
-    const authResult = await checkAuth(request, bodyForAuth, {
-      requireCaptcha: true,
-    });
-
-    if (!authResult.allowed) {
-      return authResult.response!;
-    }
 
     // Extract and normalize fields from FormData
     const rawName = formData.get("name");
@@ -253,6 +233,22 @@ export async function POST(request: NextRequest) {
     // Validation using normalized values
     if (!name) {
       return NextResponse.json({ error: "Name is required" }, { status: 400 });
+    }
+
+    if (name.length > MAX_NAME_LENGTH) {
+      return NextResponse.json(
+        { error: `Name must be ${MAX_NAME_LENGTH} characters or fewer` },
+        { status: 400 }
+      );
+    }
+
+    // PostgREST treats "*" as a wildcard in ILIKE and it can't be escaped, so
+    // a name of "*" would match (and could replace) whoever has that date.
+    if (name.includes("*")) {
+      return NextResponse.json(
+        { error: "Name can't contain *" },
+        { status: 400 }
+      );
     }
 
     if (!monthNum) {
@@ -284,9 +280,16 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Image is required" }, { status: 400 });
     }
 
-    if (!imageFile.type.startsWith("image/")) {
+    if (imageFile.size > MAX_IMAGE_BYTES) {
       return NextResponse.json(
-        { error: "File must be an image" },
+        { error: "Photo must be smaller than 5MB" },
+        { status: 400 }
+      );
+    }
+
+    if (!(await isAllowedImageFile(imageFile))) {
+      return NextResponse.json(
+        { error: "File must be a JPEG, PNG, WebP, GIF or HEIC image" },
         { status: 400 }
       );
     }
@@ -313,18 +316,16 @@ export async function POST(request: NextRequest) {
     }
 
     // Any other existing row - same-year pending, or a prior year's row
-    // (verified or not) - requires explicit confirmation before this request
-    // is allowed to replace it. There's no account system here, so this can't
-    // verify the caller is the original submitter; requiring confirmation is
-    // what keeps a replace deliberate rather than something that happens
-    // just because someone typed a name and date that already has a photo
-    // attached to it, including a previous year's already-approved one.
+    // (verified or not) - requires explicit confirmation first. Confirming
+    // does not replace anything on its own, though: there's no account system,
+    // so nothing proves the caller is whoever submitted the original. The new
+    // photo is held for review (see below) and the current one stays up.
     if (existing && !confirmOverride) {
       return NextResponse.json(
         {
           error: existing.verified
-            ? `A birthday for this name and date was already verified in ${existing.year}. Continuing will replace it with this new submission.`
-            : "A submission for this name and date is already pending review.",
+            ? `A birthday for this name and date was approved in ${existing.year}. Your new photo will replace it once it's reviewed.`
+            : "A submission for this name and date is already pending review. Your new photo will be reviewed in its place.",
           needsConfirmation: true,
           verified: existing.verified,
           submittedAt: existing.created_at,
@@ -333,10 +334,24 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // CAPTCHA is checked here, after the confirmation step rather than before
+    // it. Turnstile tokens are single-use: verifying on the first request
+    // would burn the token, and the "send for review" resubmission that
+    // follows a 409 would then fail with a token it has already spent.
+    const authResult = await checkAuth(
+      request,
+      { turnstileToken: formData.get("turnstileToken") },
+      { requireCaptcha: true }
+    );
+
+    if (!authResult.allowed) {
+      return authResult.response!;
+    }
+
     // Everything about the request is well-formed and authenticated, so this
     // counts as a real attempt against the caller's quota. Reached either
     // with no existing row, or an existing one the caller confirmed replacing.
-    const consumed = consumeRateLimit(request, rateLimitOptions);
+    const consumed = await consumeRateLimit(request, rateLimitOptions);
     if (!consumed.allowed) {
       return consumed.response!;
     }
@@ -371,98 +386,43 @@ export async function POST(request: NextRequest) {
     const verified = false; // Always false for public submissions
 
     if (existing) {
-      // Confirmed replace of the existing row - either a same-year pending
-      // submission or a prior year's row (verified or not). Update the same
-      // row rather than insert a second one for this identity.
-      //
-      // Guard on (year, verified, image) exactly as read. `image` is the part
-      // that matters most: it changes on every successful write to this row,
-      // so it doubles as an optimistic-concurrency token. Without it, two
-      // concurrent replace requests for the same row would both still match
-      // on (year, verified) - neither of those columns changes across the
-      // race - so the second write would silently clobber the first instead
-      // of failing. With it, the loser's update matches 0 rows (PGRST116).
-      const { data, error } = await withRetry<BirthdayRow>(async () =>
+      // Confirmed replacement. A public request can't prove it came from
+      // whoever submitted this row, so it never touches the live columns
+      // (name, image, year, verified) and never deletes anything. The new
+      // photo waits in pending_image until an admin approves it with
+      // approve_birthday_replacement() (supabase/schema.sql); until then the
+      // current photo stays exactly as it is. A later replacement before
+      // review simply takes the pending slot; the earlier pending upload is
+      // left in Cloudinary for the admin rather than deleted from here.
+      const { error } = await withRetry<Pick<BirthdayRow, "id">>(async () =>
         supabaseServer
           .from("birthdays")
-          .update({ name, image: imageUrl, year: currentYear, featured, verified })
+          .update({
+            pending_image: imageUrl,
+            pending_submitted_at: new Date().toISOString(),
+          })
           .eq("id", existing.id)
-          .eq("year", existing.year)
-          .eq("verified", existing.verified)
-          .eq("image", existing.image)
-          .select()
+          .select("id")
           .single()
       );
 
       if (error) {
-        // PGRST116: update matched no rows - either a genuine race (someone
-        // else's write already changed year/verified/image), or this is a
-        // retry of our own update whose first attempt actually committed but
-        // whose response never made it back (a dropped connection, a
-        // mid-flight 5xx). Those look identical from the guard alone, so
-        // re-read the row: if it already holds exactly what we were trying to
-        // write, our own retry won and this is a success, not a conflict.
-        if (error.code === "PGRST116") {
-          const { data: current } = await supabaseServer
-            .from("birthdays")
-            .select("*")
-            .eq("id", existing.id)
-            .maybeSingle();
-
-          if (
-            current?.image === imageUrl &&
-            current?.year === currentYear &&
-            current?.name === name
-          ) {
-            // Our own retry's write already landed - including its own
-            // best-effort cleanup of the old image - so there's nothing left
-            // to roll back or clean up here.
-            return NextResponse.json(
-              { data: current, success: true },
-              { status: 200 }
-            );
-          }
-
-          // Another write genuinely won the race: the image we just uploaded
-          // belongs to no row, so roll it back.
-          await rollbackUpload(imagePublicId);
-          return NextResponse.json(
-            {
-              error:
-                "This submission just changed. Please refresh and try again.",
-            },
-            { status: 409 }
-          );
-        }
-
         await rollbackUpload(imagePublicId);
-        console.error("Error replacing existing birthday:", {
+        console.error("Error saving pending birthday replacement:", {
           code: error.code,
           message: error.message,
           details: error.details,
         });
         return NextResponse.json(
-          { error: "Failed to update birthday record" },
+          { error: "Failed to save your new photo. Please try again." },
           { status: 500 }
         );
       }
 
-      // Best-effort: drop the image the replaced submission was using. We only
-      // ever persisted its URL (not a public_id), so this falls back to
-      // extracting the id from that URL and can miss under Cloudinary's
-      // dynamic-folders mode - acceptable for a cleanup step, logged either way.
-      if (existing.image) {
-        try {
-          await deleteImage(existing.image);
-        } catch (deleteError) {
-          console.error(
-            `Failed to clean up replaced Cloudinary image for birthday ${existing.id}:`,
-            deleteError
-          );
-        }
-      }
-
-      return NextResponse.json({ data, success: true }, { status: 200 });
+      return NextResponse.json(
+        { success: true, pendingReview: true },
+        { status: 202 }
+      );
     }
 
     // Insert into database using normalized values.

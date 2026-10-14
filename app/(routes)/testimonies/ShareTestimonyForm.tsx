@@ -6,6 +6,10 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { toast } from "sonner";
+import Turnstile, {
+  isTurnstileEnabled,
+  type TurnstileHandle,
+} from "@/components/form/Turnstile";
 import SectionHeader from "@/components/SectionHeader";
 import AvatarCropUploader from "@/components/AvatarCropUploader";
 import { InputField } from "@/components/form/InputField";
@@ -115,19 +119,19 @@ const categoryOptions = TESTIMONY_CATEGORIES.map((cat) => ({
   label: cat.label,
 }));
 
+/** What the upload routes return: the file's URL and a token to delete it. */
+type UploadedFile = { url: string; cleanupToken?: string };
+
 export default function ShareTestimonyForm() {
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [imageBlob, setImageBlob] = useState<Blob | null>(null);
   const [uploaderResetToken, setUploaderResetToken] = useState(0);
-  // CAPTCHA tokens (will be set when CAPTCHA is configured)
-  const [hcaptchaToken, setHcaptchaToken] = useState<string | undefined>(
-    undefined
-  );
-  const [recaptchaToken, setRecaptchaToken] = useState<string | undefined>(
-    undefined
-  );
+  // Bot check. Tokens are single-use, so the widget is reset after each
+  // submission attempt.
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const turnstileRef = useRef<TurnstileHandle>(null);
   const { CONTACT } = CHURCH_INFO;
   const {
     phone: churchPhone = "",
@@ -171,7 +175,7 @@ export default function ShareTestimonyForm() {
     file: File,
     resourceType: "video" | "audio",
     progressCallback?: (progress: number) => void
-  ): Promise<string> => {
+  ): Promise<UploadedFile> => {
     const formData = new FormData();
     formData.append("file", file);
     formData.append("resourceType", resourceType);
@@ -190,7 +194,7 @@ export default function ShareTestimonyForm() {
         try {
           if (xhr.status === 200) {
             const response = JSON.parse(xhr.responseText);
-            resolve(response.url);
+            resolve({ url: response.url, cleanupToken: response.cleanupToken });
           } else {
             const error = JSON.parse(xhr.responseText);
             reject(new Error(error.error || "Upload failed"));
@@ -224,14 +228,13 @@ export default function ShareTestimonyForm() {
     });
   };
 
-  const uploadImage = async (blob: Blob): Promise<string> => {
+  const uploadImage = async (blob: Blob): Promise<UploadedFile> => {
     const file = new File([blob], `testimony-${Date.now()}.jpg`, {
       type: "image/jpeg",
     });
 
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("folder", "WCI_Goderich/testimonies");
 
     const response = await fetch("/api/upload/image", {
       method: "POST",
@@ -244,23 +247,31 @@ export default function ShareTestimonyForm() {
     }
 
     const result = await response.json();
-    return result.url;
+    return { url: result.url, cleanupToken: result.cleanupToken };
   };
 
   const onSubmit = async (data: TestimonyFormValues) => {
+    if (isTurnstileEnabled && !turnstileToken) {
+      toast.warning("Please complete the verification check.");
+      return;
+    }
     setIsSubmitting(true);
     setUploadProgress(0);
 
-    // Track uploaded files for cleanup if submission fails
-    const uploadedFiles: string[] = [];
+    // Cleanup tokens for each uploaded file, so they can be deleted if the
+    // submission fails. The cleanup route only accepts these, not URLs.
+    const cleanupTokens: string[] = [];
+    const track = (uploaded: UploadedFile) => {
+      if (uploaded.cleanupToken) cleanupTokens.push(uploaded.cleanupToken);
+      return uploaded.url;
+    };
 
     try {
       // Upload profile image if provided (0-20%)
       let imageUrl: string | null = null;
       if (imageBlob) {
         setUploadProgress(5);
-        imageUrl = await uploadImage(imageBlob);
-        uploadedFiles.push(imageUrl);
+        imageUrl = track(await uploadImage(imageBlob));
         setUploadProgress(20);
       } else {
         setUploadProgress(20);
@@ -271,26 +282,20 @@ export default function ShareTestimonyForm() {
       let audioUrl: string | null = null;
 
       if (data.type === "video" && data.videoFile) {
-        videoUrl = await uploadFileWithProgress(
-          data.videoFile,
-          "video",
-          (progress) => {
+        videoUrl = track(
+          await uploadFileWithProgress(data.videoFile, "video", (progress) => {
             // Map progress from 20-70% (video upload is longer)
             setUploadProgress(20 + Math.round(progress * 0.5));
-          }
+          })
         );
-        uploadedFiles.push(videoUrl);
         setUploadProgress(70);
       } else if (data.type === "audio" && data.audioFile) {
-        audioUrl = await uploadFileWithProgress(
-          data.audioFile,
-          "audio",
-          (progress) => {
+        audioUrl = track(
+          await uploadFileWithProgress(data.audioFile, "audio", (progress) => {
             // Map progress from 20-70% (audio upload is longer)
             setUploadProgress(20 + Math.round(progress * 0.5));
-          }
+          })
         );
-        uploadedFiles.push(audioUrl);
         setUploadProgress(70);
       } else {
         // No media file, skip to 70%
@@ -322,12 +327,8 @@ export default function ShareTestimonyForm() {
         audioUrl: audioUrl,
       };
 
-      // Only include CAPTCHA tokens if they exist
-      if (hcaptchaToken) {
-        requestBody.hcaptchaToken = hcaptchaToken;
-      }
-      if (recaptchaToken) {
-        requestBody.recaptchaToken = recaptchaToken;
+      if (turnstileToken) {
+        requestBody.turnstileToken = turnstileToken;
       }
 
       // Submit testimony
@@ -350,6 +351,7 @@ export default function ShareTestimonyForm() {
       setUploadProgress(100);
 
       // Show success toast
+      turnstileRef.current?.reset();
       toast.success("Testimony Submitted!", {
         description:
           "Thank you for sharing your testimony. Our team will review it and it will be published soon. God bless you!",
@@ -370,20 +372,21 @@ export default function ShareTestimonyForm() {
 
       setTimeout(() => setSubmitSuccess(false), 5000);
     } catch (error) {
+      turnstileRef.current?.reset();
       // Log for debugging (only in development)
       if (process.env.NODE_ENV === "development") {
         console.error("Error submitting testimony:", error);
       }
 
       // Clean up uploaded files if submission failed
-      if (uploadedFiles.length > 0) {
+      if (cleanupTokens.length > 0) {
         try {
           await fetch("/api/upload/cleanup", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({ files: uploadedFiles }),
+            body: JSON.stringify({ tokens: cleanupTokens }),
           });
         } catch (cleanupError) {
           // Log for debugging (only in development)
@@ -645,6 +648,8 @@ export default function ShareTestimonyForm() {
                   description="Your name and role will not be displayed publicly"
                   disabled={isSubmitting}
                 />
+
+                <Turnstile ref={turnstileRef} onToken={setTurnstileToken} />
 
                 <AnimatedButton
                   type="submit"

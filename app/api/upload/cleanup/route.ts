@@ -1,15 +1,27 @@
 import { NextRequest, NextResponse } from "next/server";
-import { deleteImage, deleteMedia } from "@/lib/cloudinary";
+import { v2 as cloudinary } from "cloudinary";
+import {
+  ensureCloudinaryConfigured,
+  verifyCleanupToken,
+} from "@/lib/cloudinary";
 import { checkRateLimit } from "@/lib/utils/rate-limit";
+
+// A testimony uploads at most a photo and one video/audio file.
+const MAX_TOKENS = 3;
 
 /**
  * POST /api/upload/cleanup
- * Deletes uploaded files from Cloudinary
- * Body: { files: string[] } - Array of Cloudinary URLs to delete
+ * Deletes files the caller just uploaded, when the form they belong to fails.
+ * Body: { tokens: string[] } - the cleanupToken values returned by
+ * /api/upload/image and /api/upload/media.
+ *
+ * Only signed, unexpired tokens are honoured, so this can only delete a file
+ * the same visitor uploaded in the last hour. It used to accept raw URLs,
+ * which let anyone delete any asset on the account (gallery photos, videos).
  */
 export async function POST(request: NextRequest) {
   // Add rate limiting to prevent abuse
-  const rateLimitResult = checkRateLimit(request, {
+  const rateLimitResult = await checkRateLimit(request, {
     maxRequests: 10,
     windowMs: 60 * 1000, // 1 minute
   });
@@ -19,40 +31,47 @@ export async function POST(request: NextRequest) {
   }
   try {
     const body = await request.json();
-    const { files } = body;
+    const { tokens } = body ?? {};
 
-    if (!files || !Array.isArray(files) || files.length === 0) {
+    if (
+      !Array.isArray(tokens) ||
+      tokens.length === 0 ||
+      tokens.length > MAX_TOKENS ||
+      !tokens.every((t) => typeof t === "string")
+    ) {
       return NextResponse.json(
-        { error: "Files array is required" },
+        { error: "tokens must be a non-empty array of strings" },
         { status: 400 }
       );
     }
 
-    // Delete all files in parallel
-    const deletePromises = files.map(async (url: string) => {
-      try {
-        // Try to determine if it's an image or media file
-        // Images typically have "/image/upload/" in the URL
-        // Videos/audio have "/video/upload/" in the URL
-        if (url.includes("/image/upload/")) {
-          await deleteImage(url);
-        } else if (url.includes("/video/upload/")) {
-          await deleteMedia(url);
-        } else {
-          // Try image first, then media
-          try {
-            await deleteImage(url);
-          } catch {
-            await deleteMedia(url);
-          }
-        }
-      } catch (error) {
-        console.error(`Error deleting file ${url}:`, error);
-        // Continue with other files even if one fails
-      }
-    });
+    const assets = (tokens as string[]).map(verifyCleanupToken);
+    if (assets.some((asset) => asset === null)) {
+      return NextResponse.json(
+        { error: "Invalid or expired cleanup token" },
+        { status: 403 }
+      );
+    }
 
-    await Promise.all(deletePromises);
+    ensureCloudinaryConfigured();
+    await Promise.all(
+      assets.map(async (asset) => {
+        try {
+          await cloudinary.uploader.destroy(asset!.publicId, {
+            resource_type: asset!.resourceType,
+          });
+        } catch (error) {
+          // Constant format string, and the id JSON-quoted so it can't
+          // break the log line.
+          console.error(
+            "Error deleting uploaded file:",
+            JSON.stringify(asset!.publicId),
+            error
+          );
+          // Continue with other files even if one fails
+        }
+      })
+    );
 
     return NextResponse.json(
       { success: true, message: "Files deleted successfully" },

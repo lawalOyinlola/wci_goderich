@@ -1,10 +1,25 @@
 import { NextRequest, NextResponse } from "next/server";
 import { v2 as cloudinary } from "cloudinary";
-import { ensureCloudinaryConfigured } from "@/lib/cloudinary";
+import {
+  ensureCloudinaryConfigured,
+  createCleanupToken,
+} from "@/lib/cloudinary";
+import { checkRateLimit } from "@/lib/utils/rate-limit";
 
 export const maxDuration = 60; // 60 seconds for video/audio uploads
 
 export async function POST(request: NextRequest) {
+  // Video uploads are the most expensive thing a visitor can trigger (up to
+  // 100MB into the church's Cloudinary storage), so they get the tightest limit.
+  const rateLimitResult = await checkRateLimit(request, {
+    maxRequests: 3,
+    windowMs: 30 * 60 * 1000, // 30 minutes
+  });
+
+  if (!rateLimitResult.allowed) {
+    return rateLimitResult.response!;
+  }
+
   try {
     ensureCloudinaryConfigured();
     const formData = await request.formData();
@@ -79,7 +94,11 @@ export async function POST(request: NextRequest) {
     const uploadResult = await cloudinary.uploader.upload(dataUri, uploadOptions);
 
     return NextResponse.json(
-      { url: uploadResult.secure_url, success: true },
+      {
+        url: uploadResult.secure_url,
+        cleanupToken: createCleanupToken(uploadResult.public_id, "video"),
+        success: true,
+      },
       { status: 200 }
     );
   } catch (error) {

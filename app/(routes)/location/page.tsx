@@ -26,7 +26,7 @@ const { address, coordinates, parking, description, directions, accessibility } 
   CHURCH_LOCATION;
 const { lat, lng } = coordinates;
 
-const FULL_ADDRESS = `${address.street}, ${address.city}, ${address.region}, ${address.country}`;
+const FULL_ADDRESS = address.full;
 const DIRECTIONS_URL = getDirectionsUrl(lat, lng);
 
 export default function LocationPage() {

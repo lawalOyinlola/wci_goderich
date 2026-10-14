@@ -103,11 +103,12 @@ async function readErrorBody(response: Response): Promise<ParsedErrorBody> {
  * Submits a new birthday entry, retrying only failures that are safe to replay.
  *
  * @param formData - FormData containing name, month, day, and image file
- * @param options.confirmOverride - Pass true to replace an existing pending
- *   submission for the same name and date, after the caller has confirmed
- *   that with the user. Without it, a pending match throws
- *   {@link NeedsConfirmationError} instead of submitting.
- * @returns The created (or replaced) birthday record
+ * @param options.confirmOverride - Pass true to send the photo for review as
+ *   a replacement for an existing submission with the same name and date,
+ *   after the caller has confirmed that with the user. Without it, a match
+ *   throws {@link NeedsConfirmationError} instead of submitting.
+ * @returns The created record, or null when the photo was queued for review
+ *   as a replacement
  * @throws {NeedsConfirmationError} when a pending submission already exists
  *   and `confirmOverride` was not set
  * @throws Error with a message suitable for display for any other failure
@@ -148,7 +149,9 @@ export async function submitBirthday(
 
     if (response.ok) {
       const result = await response.json();
-      return result.data;
+      // A confirmed replacement returns 202 with no record: the new photo is
+      // held for review and the existing row is unchanged.
+      return result.data ?? null;
     }
 
     const body = await readErrorBody(response);

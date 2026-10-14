@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { supabaseServer } from "@/lib/supabase/server";
 import { transformTestimony } from "@/lib/data/testimonies";
 import { isValidUrl } from "@/lib/utils";
+import { requireAdmin } from "@/lib/utils/auth";
 
 // GET - Fetch single testimony by ID
 export async function GET(
@@ -11,10 +12,13 @@ export async function GET(
   try {
     const { id } = await params;
 
+    // Unapproved testimonies are visitor content nobody has reviewed yet, so
+    // the public lookup only ever returns approved ones (a 404 otherwise).
     const { data, error } = await supabaseServer
       .from("testimonies")
       .select("*")
       .eq("id", id)
+      .eq("verified", true)
       .single();
 
     if (error) {
@@ -52,6 +56,9 @@ export async function PUT(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const admin = requireAdmin(request);
+  if (!admin.allowed) return admin.response;
+
   try {
     const { id } = await params;
     const body = await request.json();
@@ -233,6 +240,9 @@ export async function DELETE(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const admin = requireAdmin(request);
+  if (!admin.allowed) return admin.response;
+
   try {
     const { id } = await params;
 
