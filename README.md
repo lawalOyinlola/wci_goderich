@@ -309,13 +309,6 @@ The application integrates with the following services:
 
   No user authentication is implemented. Every one of these is an anonymous public submission. All reads and writes go through the API routes using the secret key; the publishable key can only read approved birthdays and testimonies.
 
-### Database setup and moderation
-
-For a new project, run `supabase/schema.sql` in the Supabase SQL editor. For an existing project, run each file in `supabase/migrations/` that you haven't run yet, before deploying the code that goes with it.
-
-Submissions arrive unapproved and stay off the site until you set `verified` to `true` on the row in the Supabase table editor.
-
-A birthday that's already on file can't be overwritten from the website. When someone resubmits a name and date, the new photo goes into `pending_image` and the current photo stays up. To accept it, run `SELECT approve_birthday_replacement('<row id>');` in the SQL editor. To reject it, clear `pending_image` and `pending_submitted_at`. Either way the old photo is left in Cloudinary for you to delete.
 - **Cloudinary** - Image and video hosting and optimization for:
   - Birthday member photos
   - Testimony images
@@ -323,6 +316,14 @@ A birthday that's already on file can't be overwritten from the website. When so
   - Gallery photos (fetched live, cached with `use cache`)
   - Church videos, delivered as adaptive HLS streams
 - **Email** - Contact form notifications via [Resend](https://resend.com) (tried first) or SMTP/nodemailer (fallback). If neither is configured, messages are only saved to Supabase (see [Environment Variables](#environment-variables))
+
+### Database setup and moderation
+
+For a new project, run `supabase/schema.sql` in the Supabase SQL editor. For an existing project, run each file in `supabase/migrations/` that you haven't run yet, before deploying the code that goes with it.
+
+Submissions arrive unapproved and stay off the site until you set `verified` to `true` on the row in the Supabase table editor.
+
+A birthday that's already on file can't be overwritten from the website. When someone resubmits a name and date, the new photo goes into `pending_image` and the current photo stays up. To accept it, run `SELECT approve_birthday_replacement('<row id>');` in the SQL editor. To reject it, clear `pending_image` and `pending_submitted_at`. Either way the old photo is left in Cloudinary for you to delete.
 
 ## 🤝 Contributing
 
