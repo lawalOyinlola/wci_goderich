@@ -25,10 +25,15 @@ export default function ChurchServices() {
         />
       </Reveal>
 
-      <Stagger className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 auto-rows-fr">
+      {/* Flex-wrap rather than grid so a short last row (five services in
+          rows of three) sits centred instead of hugging the left edge. */}
+      <Stagger className="flex flex-wrap justify-center gap-8">
         {SERVICES.map((service) => {
           return (
-            <StaggerItem key={service.id} className="h-full">
+            <StaggerItem
+              key={service.id}
+              className="w-full sm:w-[calc((100%-2rem)/2)] lg:w-[calc((100%-4rem)/3)]"
+            >
             <Card
               className="group h-full py-6 backdrop-blur-sm border-0 hover:shadow-primary/20 hover:-translate-y-1 transition-all duration-300"
             >

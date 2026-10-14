@@ -10,16 +10,6 @@ export const SERVICES = [
     accentColor: "text-accent",
   },
   {
-    id: 2,
-    icon: "ClockCountdownIcon",
-    iconClassName: "rotate-270",
-    title: "90 Min with Jesus",
-    description: "Deepen your faith through our weekly Bible study groups.",
-    day: "Mondays",
-    times: ["06:00PM"],
-    accentColor: "text-accent",
-  },
-  {
     id: 3,
     icon: "BreadIcon",
     title: "Communion Service",
