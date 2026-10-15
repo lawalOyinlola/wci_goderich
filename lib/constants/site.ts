@@ -239,7 +239,7 @@ export const PAGE_SEO: Record<PageSeoKey, PageSeo> = {
     title: "Prayer",
     path: "/prayer",
     description:
-      "Submit prayer requests, join prayer sessions, and read answered prayers at Winners Chapel International, Goderich.",
+      "Submit prayer requests, pray through guided prayer points, and read answered prayers at Winners Chapel International, Goderich.",
   },
   "service-units": {
     title: "Service Units",

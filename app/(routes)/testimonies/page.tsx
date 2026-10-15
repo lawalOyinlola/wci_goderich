@@ -35,11 +35,11 @@ export default async function TestimoniesPage({
       <CtaSection
         title="Join Us in Prayer"
         description="Prayer is powerful and effective. Join our prayer community and experience the power of praying in agreement."
-        mainText="Whether you're looking for a prayer group, want to submit a prayer request, or need prayer points for your personal prayer time, we're here to support you in your prayer journey."
+        mainText="Whether you want to submit a prayer request or need prayer points for your personal prayer time, we're here to support you in your prayer journey."
         buttons={[
           {
-            text: "Join a Prayer Group",
-            href: "/prayer#prayer-sessions",
+            text: "Prayer Points",
+            href: "/prayer#prayer-points",
           },
           {
             text: "Submit Prayer Request",

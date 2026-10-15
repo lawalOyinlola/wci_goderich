@@ -11,10 +11,7 @@ export { FAQS } from "./faqs";
 export { SCHOOLS, WOFBI } from "./education";
 export { UPCOMING_EVENTS } from "./events";
 export {
-  MIDNIGHT_PRAYER_GROUPS,
   PRAYER_POINTS,
-  PRAYER_SESSIONS,
-  UNIQUE_PRAYER_SESSIONS,
   PRAYER_INSPIRATIONS,
   PRAYER_CATEGORIES,
 } from "./prayer";

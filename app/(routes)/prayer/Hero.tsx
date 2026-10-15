@@ -2,13 +2,13 @@
 
 import HeroTemplate from "@/components/HeroTemplate";
 import { AnimatedButton } from "@/components/ui/animated-button";
-import { ArrowDownIcon, UsersThreeIcon } from "@phosphor-icons/react";
+import { ArrowDownIcon, BookOpenIcon } from "@phosphor-icons/react";
 
 export default function Hero() {
   return (
     <HeroTemplate
       title="Prayer & Intercession"
-      description="Experience the power of prayer. Join our prayer community, submit your prayer requests, and discover prayer points to strengthen your prayer life."
+      description="Experience the power of prayer. Submit your prayer requests and discover prayer points to strengthen your prayer life."
       className="bg-linear-to-br from-blue-900 via-purple-900 to-indigo-900"
     >
       <AnimatedButton
@@ -19,9 +19,9 @@ export default function Hero() {
       />
       <AnimatedButton
         variant="outline"
-        href="#prayer-sessions"
-        text="Join Prayer Group"
-        icon={<UsersThreeIcon weight="bold" />}
+        href="#prayer-points"
+        text="Prayer Points"
+        icon={<BookOpenIcon weight="bold" />}
         size="lg"
       />
     </HeroTemplate>

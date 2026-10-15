@@ -65,7 +65,7 @@ Turn one on by uncommenting the relevant import/JSX and replacing the sample dat
 - **Services** - Sunday service flow, what to expect as a first-time guest, and service times
 - **Ministries** - Comprehensive pages for Children's Ministry (Ages 3-12), Teens Church, Youth Alive (Ages 13-18), and Businessmen Fellowship
 - **Education** - Educational programs, WOFBI enrollment (with a 40th-anniversary hero), Nigerian and Sierra Leone schools
-- **Prayer** - Prayer request submission, prayer sessions, answered prayers, and prayer points
+- **Prayer** - Prayer request submission, answered prayers, and prayer points
 - **Testimonies** - Share a testimony (browsing/filtering is built but currently disabled, see [Feature Status](#-feature-status))
 - **Gallery** - Full photo gallery with infinite scroll, a randomized (per-visit) image order that stays consistent across pages, and event-based organization
 - **Giving** - Ways to give, giving details, and Living Faith Worldwide giving information
@@ -304,7 +304,7 @@ The application integrates with the following services:
 - **Supabase** - Postgres database for:
   - Member birthdays storage and retrieval
   - Testimonies storage, filtering, and management
-  - Prayer requests and prayer group sign-ups
+  - Prayer requests
   - Contact form messages
 
   No user authentication is implemented. Every one of these is an anonymous public submission. All reads and writes go through the API routes using the secret key; the publishable key can only read approved birthdays and testimonies.

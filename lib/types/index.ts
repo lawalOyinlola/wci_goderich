@@ -22,12 +22,7 @@ export {
 export type { School, WofbiProgram } from "./education";
 
 // Prayer types
-export type {
-  PrayerRequest,
-  PrayerGroup,
-  PrayerPoint,
-  PrayerSession,
-} from "./prayer";
+export type { PrayerRequest, PrayerPoint } from "./prayer";
 
 // Gallery types
 export type {

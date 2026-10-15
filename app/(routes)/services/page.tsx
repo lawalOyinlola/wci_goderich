@@ -90,15 +90,7 @@ export default function ServicesPage() {
               <StaggerItem key={service.id} as="li">
                 <div className="flex items-start gap-5 py-8">
                   <div className="h-12 w-12 rounded-full bg-primary/10 flex-center shrink-0 text-primary">
-                    <IconComponent
-                      iconName={service.icon}
-                      size={24}
-                      className={
-                        "iconClassName" in service
-                          ? service.iconClassName
-                          : undefined
-                      }
-                    />
+                    <IconComponent iconName={service.icon} size={24} />
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 mb-2">
