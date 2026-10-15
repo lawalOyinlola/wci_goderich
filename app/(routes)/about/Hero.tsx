@@ -7,7 +7,7 @@ import { ArrowDownIcon, PlayCircleIcon } from "@phosphor-icons/react";
 import { Reveal, Stagger, StaggerItem } from "@/components/motion";
 import { ABOUT_VIDEO, CHURCH_INFO, CHURCH_VIDEOS } from "@/lib/constants";
 
-/** The hero opens the whole reel, starting on the intro video. */
+/** The hero opens the whole reel, starting on the video in the thumbnail. */
 const VIDEO_PLAYLIST = CHURCH_VIDEOS.map((video) => ({
   src: video.hls,
   fallbackSrc: video.mp4,
@@ -15,6 +15,8 @@ const VIDEO_PLAYLIST = CHURCH_VIDEOS.map((video) => ({
   title: video.title,
   orientation: video.orientation,
 }));
+
+const ABOUT_VIDEO_INDEX = CHURCH_VIDEOS.indexOf(ABOUT_VIDEO);
 
 export default function HeroSection() {
   const { CORE_VALUES } = CHURCH_INFO;
@@ -81,6 +83,7 @@ export default function HeroSection() {
                   videoSrc={ABOUT_VIDEO.hls}
                   fallbackVideoSrc={ABOUT_VIDEO.mp4}
                   playlist={VIDEO_PLAYLIST}
+                  startIndex={ABOUT_VIDEO_INDEX}
                   thumbnailSrc={ABOUT_VIDEO.poster}
                   thumbnailAlt={ABOUT_VIDEO.title}
                   className="h-full"
