@@ -160,9 +160,17 @@ export const ABOUT_OG_IMAGE = getCloudinaryVideoPoster(ABOUT_VIDEO_PUBLIC_ID, {
 
 /** Church videos, newest first. Played through the shared video modal. */
 export const CHURCH_VIDEOS: ChurchVideo[] = [
+  buildVideo("welcome_to_church_11_10_26_uyiedk", {
+    id: "welcome-to-church",
+    title: "Welcome to Church",
+    description:
+      "Beautiful faces, one church family. See you in church next Sunday. Come, and don't come alone: bring someone with you.",
+    orientation: "portrait",
+    posterSecond: 2,
+  }),
   buildVideo(ABOUT_VIDEO_PUBLIC_ID, {
-    id: "welcome",
-    title: "Welcome to Winners Chapel Goderich",
+    id: "communion",
+    title: "The Blood of Jesus",
     description:
       "A look inside our communion service with the sharing of his flesh and blood.",
     orientation: "landscape",
@@ -178,5 +186,10 @@ export const CHURCH_VIDEOS: ChurchVideo[] = [
   }),
 ];
 
-/** Intro video played from the About page hero. */
-export const ABOUT_VIDEO = CHURCH_VIDEOS[0];
+/**
+ * Video on the About page hero thumbnail. Picked by id rather than position:
+ * the thumbnail slot is landscape, and new (often portrait) videos go to the
+ * top of the list.
+ */
+export const ABOUT_VIDEO =
+  CHURCH_VIDEOS.find((video) => video.id === "communion") ?? CHURCH_VIDEOS[0];
