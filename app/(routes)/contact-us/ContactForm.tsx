@@ -92,11 +92,13 @@ export default function ContactForm() {
   const residentPastor = PASTORS.find(
     (pastor) => pastor.role === LeadershipRole.RESIDENT_PASTOR
   );
-  const {
-    email: pastorEmail = "",
-    phone: pastorPhone = "",
-    title: pastorTitle = "",
-  } = residentPastor ?? {};
+  const { phone: pastorPhone = "", title: pastorTitle = "" } =
+    residentPastor ?? {};
+  // Not every pastor entry lists an email; the email row hides when empty.
+  const pastorEmail: string =
+    residentPastor && "email" in residentPastor
+      ? String(residentPastor.email)
+      : "";
 
   // Bot check. Tokens are single-use, so the widget is reset after each
   // submission attempt.

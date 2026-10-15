@@ -185,9 +185,7 @@ export const SAMPLE_IMAGES = [
 ] as const;
 
 /** Leadership images (used by Leadership, image-with-retry, etc.) */
-export const PST_ABEL_IMG = getCloudinaryImageUrl(
-  "pst_abel_close_shot_jrplde.webp"
-);
+export const PST_FEMI_IMG = getCloudinaryImageUrl("pastor_femi.png");
 export const PST_LUNGI_IMG = getCloudinaryImageUrl(
   "pst_lungi_standing_rwdbll.jpg"
 );
@@ -195,10 +193,7 @@ export const BOARD_IMG = getCloudinaryImageUrl("open_bible_xy3r0a.webp");
 
 export function getLeadershipImagesWithRetry(retryCount: number = 1) {
   return {
-    PST_ABEL_IMG: getCloudinaryImageUrl(
-      "pst_abel_close_shot_jrplde.webp",
-      retryCount
-    ),
+    PST_FEMI_IMG: getCloudinaryImageUrl("pastor_femi.png", retryCount),
     PST_LUNGI_IMG: getCloudinaryImageUrl(
       "pst_lungi_standing_rwdbll.jpg",
       retryCount
