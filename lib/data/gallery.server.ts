@@ -232,6 +232,9 @@ export async function getGalleryImagesServer(
   };
 
   let images: GalleryImage[];
+  // Placeholder images carry a fixed timestamp, not a real upload date, so
+  // date filters would hide them for no reason.
+  let isFallback = false;
 
   try {
     const result = await fetchFromCloudinary();
@@ -239,6 +242,7 @@ export async function getGalleryImagesServer(
     if (result === "unavailable") {
       console.error("Gallery: Cloudinary unavailable, using SAMPLE_IMAGES");
       images = sampleImagesAsGallery();
+      isFallback = true;
     } else if (result) {
       images = result.resources.map((r, i) => {
         const orientation = getOrientation(r.width, r.height);
@@ -267,6 +271,7 @@ export async function getGalleryImagesServer(
     } else {
       console.info("Gallery: Cloudinary folder empty, using SAMPLE_IMAGES");
       images = sampleImagesAsGallery();
+      isFallback = true;
     }
 
     if (filters?.orientation) {
@@ -278,7 +283,9 @@ export async function getGalleryImagesServer(
     if (filters?.featured !== undefined) {
       images = images.filter((img) => img.featured === filters.featured);
     }
-    if (filters?.pastYears) {
+    if (isFallback) {
+      // Skip date filters for placeholders (see isFallback above).
+    } else if (filters?.pastYears) {
       const y = new Date().getFullYear();
       images = images.filter((img) => new Date(img.createdAt).getFullYear() < y);
     } else if (filters?.month != null && filters.month >= 1 && filters.month <= 12) {

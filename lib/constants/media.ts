@@ -150,13 +150,17 @@ const ABOUT_VIDEO_PUBLIC_ID = "Communion_Highlight_efqg0v";
 /**
  * Social share image for the About page: a 1200x630 frame from the church's
  * own service video (the pastor preaching to the congregation at 2s).
+ * Undefined without a cloud name, so the page falls back to the site-wide
+ * share image instead of a broken res.cloudinary.com URL.
  */
-export const ABOUT_OG_IMAGE = getCloudinaryVideoPoster(ABOUT_VIDEO_PUBLIC_ID, {
-  second: 2,
-  width: 1200,
-  height: 630,
-  format: "jpg",
-});
+export const ABOUT_OG_IMAGE = CLOUDINARY_CLOUD_NAME
+  ? getCloudinaryVideoPoster(ABOUT_VIDEO_PUBLIC_ID, {
+      second: 2,
+      width: 1200,
+      height: 630,
+      format: "jpg",
+    })
+  : undefined;
 
 /** Church videos, newest first. Played through the shared video modal. */
 export const CHURCH_VIDEOS: ChurchVideo[] = [

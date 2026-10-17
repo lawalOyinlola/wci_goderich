@@ -211,12 +211,25 @@ export default function MonthlyBirthdays({
       const toastId = toast.loading("Submitting your birthday details...");
 
       try {
-        await submitBirthday(formData, { confirmOverride });
+        const record = await submitBirthday(formData, { confirmOverride });
 
-        toast.success("Birthday details received!", { id: toastId });
         setPendingConfirmation(null);
         turnstileRef.current?.reset();
-        celebrate(name);
+
+        if (record) {
+          toast.success("Birthday details received!", { id: toastId });
+          celebrate(name);
+        } else {
+          // A replacement for an existing entry: the photo is held for review
+          // and nothing changes on the site yet, so no celebration.
+          toast.success("Your new photo has been sent for review.", {
+            id: toastId,
+          });
+          form.reset({ name: "", day: null });
+          setImageBlob(null);
+          setUploaderResetToken((t) => t + 1);
+          setOpen(false);
+        }
       } catch (error) {
         if (process.env.NODE_ENV === "development") {
           console.error("Error submitting birthday:", error);
@@ -252,7 +265,7 @@ export default function MonthlyBirthdays({
         setIsSubmitting(false);
       }
     },
-    [celebrate]
+    [celebrate, form]
   );
 
   const handleFormSubmit = useCallback(
