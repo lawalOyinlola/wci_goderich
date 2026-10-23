@@ -80,21 +80,37 @@ async function hitDatabase(
   windowMs: number,
   consume: boolean
 ): Promise<{ count: number; resetAt: number } | null> {
-  const { data, error } = await supabaseServer.rpc("rate_limit_hit", {
-    p_key: key,
-    p_window_ms: windowMs,
-    p_consume: consume,
-  });
-
-  const row = Array.isArray(data) ? data[0] : data;
-  if (error || !row) {
+  const warnOnce = (reason: string) => {
     if (!warnedFallback) {
       warnedFallback = true;
       console.error(
         "Rate limit database unavailable, using in-memory fallback:",
-        error?.message ?? "no row returned"
+        reason
       );
     }
+  };
+
+  let data: unknown;
+  let error: { message: string } | null;
+  try {
+    // Can throw rather than return an error, e.g. when the Supabase client
+    // can't be created because its env vars are missing.
+    ({ data, error } = await supabaseServer.rpc("rate_limit_hit", {
+      p_key: key,
+      p_window_ms: windowMs,
+      p_consume: consume,
+    }));
+  } catch (e) {
+    warnOnce(e instanceof Error ? e.message : String(e));
+    return null;
+  }
+
+  const row = (Array.isArray(data) ? data[0] : data) as
+    | { count: number; reset_at: string }
+    | null
+    | undefined;
+  if (error || !row) {
+    warnOnce(error?.message ?? "no row returned");
     return null;
   }
 
