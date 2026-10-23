@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import {
   Carousel,
@@ -16,56 +16,70 @@ interface HeroCarouselWrapperProps {
   children: ReactNode;
 }
 
+const AUTOPLAY_DELAY_MS = 6000;
+
 export function HeroCarouselWrapper({ children }: HeroCarouselWrapperProps) {
   const [api, setApi] = useState<CarouselApi>();
-  const [current, setCurrent] = useState(0);
+  const [selected, setSelected] = useState(0);
   const [count, setCount] = useState(0);
 
-  const plugin = useRef(
+  // No pause-on-hover: the hero fills the screen, so the cursor is almost
+  // always over it and the slides would rarely advance. Autoplay already
+  // pauses while the tab is hidden, and the timer restarts after every slide
+  // change (below), so a manual change always gets a full 6s on screen.
+  // Created once and kept stable across renders (embla re-initialises when
+  // the plugin list changes).
+  const [autoplay] = useState(() =>
     Autoplay({
-      delay: 6000,
+      delay: AUTOPLAY_DELAY_MS,
       stopOnInteraction: false,
-      stopOnMouseEnter: true,
+      stopOnMouseEnter: false,
       stopOnFocusIn: false,
       playOnInit: true,
-    })
+    }),
   );
-
-  const fadePlugin = useRef(Fade());
+  const [plugins] = useState(() => [autoplay, Fade()]);
 
   useEffect(() => {
     if (!api) return;
 
-    setCount(api.scrollSnapList().length);
-    setCurrent(api.selectedScrollSnap() + 1);
+    // Respect reduced-motion settings: show slides, don't rotate them.
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
 
+    const sync = () => {
+      // reInit re-initialises plugins, and playOnInit restarts autoplay.
+      if (reduceMotion) autoplay.stop();
+      setCount(api.scrollSnapList().length);
+      setSelected(api.selectedScrollSnap());
+    };
+    // Dots, arrows, keyboard and swipes all land here, as do autoplay's own
+    // changes, so restarting the timer on every select keeps a steady pace.
     const onSelect = () => {
-      setCurrent(api.selectedScrollSnap() + 1);
+      setSelected(api.selectedScrollSnap());
+      autoplay.reset();
     };
 
+    sync();
     api.on("select", onSelect);
+    api.on("reInit", sync);
 
     return () => {
       api.off("select", onSelect);
+      api.off("reInit", sync);
     };
-  }, [api]);
-
-  const scrollTo = (index: number) => {
-    api?.scrollTo(index);
-  };
+  }, [api, autoplay]);
 
   return (
     <Carousel
       setApi={setApi}
-      plugins={[plugin.current, fadePlugin.current]}
+      plugins={plugins}
       className="w-full h-full"
       opts={{
-        align: "center",
         loop: true,
         duration: 45,
       }}
-      onMouseEnter={plugin.current.stop}
-      onMouseLeave={plugin.current.reset}
     >
       <CarouselContent className="h-screen">{children}</CarouselContent>
 
@@ -73,27 +87,37 @@ export function HeroCarouselWrapper({ children }: HeroCarouselWrapperProps) {
       <CarouselPrevious variant="default" className="carousel-btn left-4!" />
       <CarouselNext variant="default" className="carousel-btn right-4!" />
 
-      {/* Slide Indicators — each button is a 44px touch target with a small visual dot inside */}
-      <div className="absolute bottom-5 left-0 right-0 flex justify-center z-20">
-        {Array.from({ length: count }).map((_, index) => (
-          <button
-            key={index}
-            type="button"
-            onClick={() => scrollTo(index)}
-            aria-label={`Go to slide ${index + 1}`}
-            aria-current={index === current - 1 ? "true" : undefined}
-            className="group flex h-11 w-11 cursor-pointer items-center justify-center"
-          >
-            <span
-              className={`h-2 rounded-full transition-all duration-300 ${
-                index === current - 1
-                  ? "bg-primary w-8 scale-110"
-                  : "bg-primary/50 w-2 group-hover:bg-white/80"
-              }`}
-            />
-          </button>
-        ))}
-      </div>
+      {count > 1 && (
+        <div className="absolute bottom-5 inset-x-0 z-20 flex justify-center pointer-events-none">
+          {/* The visible track is 20px tall. Each button stays 44px tall for
+              touch and overflows the track evenly above and below it. The
+              9px side padding makes an inactive dot's button 24px wide (the
+              WCAG 2.2 minimum target size) and keeps every gap at 18px. */}
+          <div className="pointer-events-auto flex h-5 items-center rounded-full bg-black/30 px-1 backdrop-blur-sm">
+            {Array.from({ length: count }).map((_, index) => {
+              const isActive = index === selected;
+              return (
+                <button
+                  key={index}
+                  type="button"
+                  onClick={() => api?.scrollTo(index)}
+                  aria-label={`Go to slide ${index + 1}`}
+                  aria-current={isActive ? "true" : undefined}
+                  className="group flex h-11 cursor-pointer items-center justify-center px-2.25"
+                >
+                  <span
+                    className={`block h-1.5 rounded-full transition-[width,background-color] duration-300 ${
+                      isActive
+                        ? "w-6 bg-primary"
+                        : "w-1.5 bg-white/70 group-hover:bg-white"
+                    }`}
+                  />
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
     </Carousel>
   );
 }
