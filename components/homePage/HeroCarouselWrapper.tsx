@@ -103,7 +103,7 @@ export function HeroCarouselWrapper({ children }: HeroCarouselWrapperProps) {
                   onClick={() => api?.scrollTo(index)}
                   aria-label={`Go to slide ${index + 1}`}
                   aria-current={isActive ? "true" : undefined}
-                  className="group flex h-11 cursor-pointer items-center justify-center px-[9px]"
+                  className="group flex h-11 cursor-pointer items-center justify-center px-2.25"
                 >
                   <span
                     className={`block h-1.5 rounded-full transition-[width,background-color] duration-300 ${
