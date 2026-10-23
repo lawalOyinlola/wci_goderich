@@ -5,6 +5,7 @@ import * as AvatarPrimitive from "@radix-ui/react-avatar";
 import Image from "next/image";
 
 import { cn } from "@/lib/utils";
+import { isCloudinaryUrl } from "@/lib/utils/cloudinary";
 
 function Avatar({
   className,
@@ -30,11 +31,9 @@ function AvatarImage({
 }: React.ComponentProps<typeof AvatarPrimitive.Image>) {
   const [hasError, setHasError] = React.useState(false);
 
-  // Check if the image is from Cloudinary (or other external sources that should use Next.js Image)
-  const isCloudinaryImage = src && typeof src === "string" && (
-    src.includes("res.cloudinary.com") ||
-    src.includes("cloudinary.com")
-  );
+  // Cloudinary images go through Next.js Image. The check parses the URL
+  // host, so a look-alike host or a path that contains the name doesn't match.
+  const isCloudinaryImage = typeof src === "string" && isCloudinaryUrl(src);
 
   // If image fails, return null to trigger Radix UI's fallback mechanism
   if (hasError) {
