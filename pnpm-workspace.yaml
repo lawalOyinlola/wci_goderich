@@ -15,3 +15,13 @@ overrides:
 allowBuilds:
   sharp: true
   unrs-resolver: true
+
+# Advisories that pnpm audit must skip. Each entry needs a reason and a
+# condition that ends the exception.
+auditConfig:
+  ignoreGhsas:
+    # braces stack-exhaustion DoS. Dev-only: eslint-config-next >
+    # @next/eslint-plugin-next > fast-glob > micromatch > braces. No patched
+    # release is published (3.0.3 is the latest). Re-check on each
+    # eslint-config-next update.
+    - GHSA-vfj7-8cjw-p6xm
