@@ -44,11 +44,13 @@ export function HeroCarouselWrapper({ children }: HeroCarouselWrapperProps) {
     if (!api) return;
 
     // Respect reduced-motion settings: show slides, don't rotate them.
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      autoplay.stop();
-    }
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
 
     const sync = () => {
+      // reInit re-initialises plugins, and playOnInit restarts autoplay.
+      if (reduceMotion) autoplay.stop();
       setCount(api.scrollSnapList().length);
       setSelected(api.selectedScrollSnap());
     };
