@@ -4,10 +4,18 @@
  */
 
 /**
- * Checks if a URL is a Cloudinary URL
+ * Checks if a URL is served from Cloudinary's delivery host.
+ * Parses the URL and compares the hostname exactly: a substring or unanchored
+ * regex test also matches hosts such as "res.cloudinary.com.example.net" or a
+ * path that contains "res.cloudinary.com".
  */
 export function isCloudinaryUrl(url: string): boolean {
-  return /res\.cloudinary\.com/.test(url);
+  try {
+    const { protocol, hostname } = new URL(url);
+    return protocol === "https:" && hostname === "res.cloudinary.com";
+  } catch {
+    return false;
+  }
 }
 
 /**
