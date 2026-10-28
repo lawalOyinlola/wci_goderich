@@ -88,3 +88,17 @@ jobs:
       # advisories are listed under auditConfig in pnpm-workspace.yaml.
       - name: Audit dependencies
         run: pnpm audit --audit-level high
+
+  dependency-review:
+    name: Dependency review
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      # Compares the PR's lockfile with the base branch and fails if the PR
+      # adds a package with a known moderate-or-worse advisory. `pnpm audit`
+      # checks the whole tree; this check names what the PR itself adds, so
+      # the reviewer can account for each new package.
+      - uses: actions/dependency-review-action@a1d282b36b6f3519aa1f3fc636f609c47dddb294 # v5.0.0
+        with:
+          fail-on-severity: moderate
