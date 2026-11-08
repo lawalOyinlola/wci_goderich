@@ -115,6 +115,20 @@
     }
   }
 
+  /* Countdown ribbon: a light sweep across the band. */
+  --animate-ribbon-shine: ribbon-shine 6s ease-in-out infinite;
+
+  @keyframes ribbon-shine {
+    0% {
+      transform: translateX(-120%) skewX(-12deg);
+    }
+    45%,
+    100% {
+      transform: translateX(420%) skewX(-12deg);
+    }
+  }
+
+
   --animate-spotlight: spotlight 2s ease 0.75s 1 forwards;
 
   @keyframes spotlight {
