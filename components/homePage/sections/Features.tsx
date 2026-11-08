@@ -1,56 +1,79 @@
+import { ArrowUpRightIcon } from "@phosphor-icons/react/dist/ssr";
 import { IconComponent } from "@/components/IconComponent";
-import { AnimatedButton } from "@/components/ui/animated-button";
-import { Separator } from "@/components/ui/separator";
-import { Stagger, StaggerItem } from "@/components/motion";
+import {
+  Reveal,
+  ScrollRevealText,
+  Stagger,
+  StaggerItem,
+} from "@/components/motion";
 import { FEATURES, CHURCH_INFO } from "@/lib/constants";
 
+const MANDATE_URL = "https://faithtabernacle.org.ng/mandate/";
+
 export default function Features() {
-  const { MANDATE_TASK } = CHURCH_INFO;
+  const { MANDATE_TASK, DENOMINATION } = CHURCH_INFO;
 
   return (
-    <section className="bg-card">
-      <h2 className="sr-only">Our Core Features &amp; Mandate</h2>
-      <div className="relative small-container py-14 pb-16 md:pb-20">
-        <Stagger className="grid min-[480px]:grid-cols-2 sm:grid-cols-3 lg:grid-cols-9 gap-8 relative">
-          {FEATURES.map((feature, index) => (
+    <section className="bg-background">
+      <div className="mx-auto grid max-w-6xl gap-16 px-4 py-24 md:py-32 lg:grid-cols-12 lg:items-start lg:gap-20">
+        {/* Pinned on wide screens while the three pillars scroll past. */}
+        <Reveal className="lg:sticky lg:top-32 lg:col-span-7">
+          <h2 className="text-base font-semibold text-primary">The Mandate</h2>
+
+          <blockquote className="mt-6">
+            <p className="font-lora text-3xl leading-[1.25] tracking-tight text-foreground sm:text-4xl sm:leading-[1.2]">
+              <ScrollRevealText text={`\u201C${MANDATE_TASK}\u201D`} />
+            </p>
+            <footer className="mt-6 text-sm text-muted-foreground">
+              The commission of {DENOMINATION}
+            </footer>
+          </blockquote>
+
+          <a
+            href={MANDATE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group mt-10 inline-flex items-center gap-1.5 font-semibold text-foreground underline decoration-border decoration-2 underline-offset-[6px] transition-colors duration-200 hover:decoration-primary"
+          >
+            Partake in this mission
+            <ArrowUpRightIcon
+              aria-hidden="true"
+              weight="bold"
+              className="size-4 text-primary transition-transform duration-200 ease-out group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+            />
+            <span className="sr-only">(opens in a new tab)</span>
+          </a>
+        </Reveal>
+
+        <Stagger as="ul" className="lg:col-span-5 lg:pt-12 lg:pb-24">
+          {FEATURES.map((feature) => (
             <StaggerItem
-              key={index}
-              className="group lg:col-span-2 flex flex-col h-full"
+              as="li"
+              key={feature.title}
+              className="flex gap-5 border-b border-border py-7 first:pt-0 last:border-b-0 last:pb-0"
             >
-              <div className="mb-4 w-fit">
-                <IconComponent iconName={feature.icon} />
+              <span
+                aria-hidden="true"
+                className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary"
+              >
+                <IconComponent iconName={feature.icon} size={22} />
+              </span>
+              <div>
+                <h3 className="text-lg font-semibold tracking-tight">
+                  {feature.title}
+                </h3>
+                <p className="mt-0.5 text-sm font-medium text-primary">
+                  {feature.subtitle}
+                </p>
+                <p className="mt-3 leading-relaxed text-muted-foreground">
+                  {feature.description}
+                </p>
+                <p className="mt-3 text-sm italic text-muted-foreground">
+                  {feature.bible}
+                </p>
               </div>
-              {/* heading-4 preserves the original text-xl visual size */}
-              <h3 className="heading-4 uppercase mb-2">{feature.title}</h3>
-              <p className="mb-2 text-accent leading-7">{feature.subtitle}</p>
-
-              <Separator className="mb-4 w-10! bg-accent group-hover:w-6/7! transition-all duration-300" />
-
-              <p className="text-muted-foreground mb-2 leading-7 grow">
-                {feature.description}
-              </p>
-              <blockquote className="border-l-2 pl-2 text-sm italic mt-auto">
-                {feature.bible}
-              </blockquote>
             </StaggerItem>
           ))}
-
-          <StaggerItem className="text-center bg-primary text-primary-foreground lg:px-8 p-4 lg:-mt-30 lg:pt-20 sm:py-10 sm:col-span-3 flex flex-col items-center justify-center gap-4 group">
-            {/* text-2xl was already explicit on the h4 — keep it on h3 */}
-            <h3 className="text-2xl font-semibold tracking-tight">THE MANDATE</h3>
-
-            <blockquote className="sm:border-l-2 border-secondary/30 sm:pl-2 text-lg mt-6 italic leading-7 transition-all duration-300 group-hover:border-l-0 group-hover:pl-0">
-              {MANDATE_TASK}
-            </blockquote>
-
-            <AnimatedButton
-              size="lg"
-              variant="outline"
-              className="border-2 text-center min-w-[160px] mt-4"
-              text="Partake this mission"
-              href="https://faithtabernacle.org.ng/mandate/"
-            />
-          </StaggerItem>
         </Stagger>
       </div>
     </section>
