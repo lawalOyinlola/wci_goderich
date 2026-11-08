@@ -1,0 +1,23 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//WCI Goderich//Shiloh 2026//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:shiloh-2026@wcigoderich.org
+DTSTAMP:20261108T000000Z
+DTSTART:20261208T170000Z
+DTEND:20261213T210000Z
+SUMMARY:Shiloh 2026 - Far Above
+DESCRIPTION:28th edition of Shiloh. Ministering: Bishop David Oyedepo and 
+ other anointed ministers of God. Join live on YouTube and Domi Radio.\nWa
+ tch or listen: https://wcigoderich.org/media#live-streams
+LOCATION:Canaanland\, Km 10 Idiroko Road\, Ota\, Ogun State\, Nigeria
+URL:https://wcigoderich.org/media#live-streams
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Shiloh 2026 begins tomorrow
+TRIGGER:-P1D
+END:VALARM
+END:VEVENT
+END:VCALENDAR
