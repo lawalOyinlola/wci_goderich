@@ -1,3 +1,8 @@
+/**
+ * `weekdays` uses JavaScript day numbers (0 = Sunday ... 6 = Saturday) so the
+ * home timetable can mark what is on today. `firstWeekOfMonth` limits those
+ * days to the first Wednesday of the month and the two days after it.
+ */
 export const SERVICES = [
   {
     id: 1,
@@ -7,6 +12,7 @@ export const SERVICES = [
       "Experience powerful worship, inspiring messages, and spiritual fellowship every Sunday morning.",
     day: "Sunday",
     times: ["07:00AM", "09:00AM", "11:00AM"],
+    weekdays: [0],
     accentColor: "text-accent",
   },
   {
@@ -17,6 +23,7 @@ export const SERVICES = [
       "Participate in the sacred communion service, remembering Christ's sacrifice and sharing in fellowship.",
     day: "Wednesdays",
     times: ["06:00PM"],
+    weekdays: [3],
     accentColor: "text-accent",
   },
   {
@@ -27,6 +34,7 @@ export const SERVICES = [
       "Join our daily prayer sessions to intercede for the church, community, and personal spiritual growth.",
     day: "Weekdays",
     times: ["06:00AM"],
+    weekdays: [1, 2, 3, 4, 5, 6],
     additionalSchedule: {
       day: "Saturday",
       times: ["07:00AM"],
@@ -41,6 +49,8 @@ export const SERVICES = [
       "Intensive spiritual focus with special teachings, prayer, and fasting on the first Wednesday to Friday of each month.",
     day: "First Wednesdays - Fridays",
     times: ["06:00PM"],
+    weekdays: [3, 4, 5],
+    firstWeekOfMonth: true,
     accentColor: "text-accent",
   },
   {
@@ -51,6 +61,7 @@ export const SERVICES = [
       "Join intimate home-based fellowship groups for Bible study, prayer, and building close-knit community relationships.",
     day: "Saturdays",
     times: ["05:00PM"],
+    weekdays: [6],
     accentColor: "text-accent",
   },
 ] as const;
