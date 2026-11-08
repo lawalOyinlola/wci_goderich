@@ -1,7 +1,7 @@
 // Re-export all constants for backward compatibility
 export { CHURCH_INFO } from "./church";
 export { MONTHS } from "./common";
-export { DONATIONS } from "./donations";
+export { DONATIONS, GIVING_ACCOUNT } from "./donations";
 export { FEATURES, SLIDES, SAMPLE_BIRTHDAYS } from "./content";
 export { LEADERSHIP } from "./leadership";
 export { MINISTRIES, MINISTRY_DETAILS } from "./ministries";
@@ -9,7 +9,7 @@ export { SERVICES } from "./services";
 export { SAMPLE_TESTIMONIES, TESTIMONY_CATEGORIES } from "./testimonies";
 export { FAQS } from "./faqs";
 export { SCHOOLS, WOFBI } from "./education";
-export { UPCOMING_EVENTS } from "./events";
+export { UPCOMING_EVENTS, SHILOH_2026 } from "./events";
 export {
   PRAYER_POINTS,
   PRAYER_INSPIRATIONS,

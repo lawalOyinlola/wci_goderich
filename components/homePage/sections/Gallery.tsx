@@ -40,7 +40,6 @@ export default async function Gallery() {
         <Reveal className="px-4">
           <SectionHeader
             title="Photo Collections"
-            subtitle="Gallery"
             description="Pictures from documented events, special occasions and during service"
           />
         </Reveal>

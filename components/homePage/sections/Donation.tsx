@@ -1,68 +1,49 @@
-import { WordRotate } from "@/components/ui/word-rotate";
+import Link from "next/link";
+import { ArrowRightIcon } from "@phosphor-icons/react/dist/ssr";
 import { AnimatedButton } from "@/components/ui/animated-button";
 import { Reveal } from "@/components/motion";
+import { GivingCauses } from "@/components/homePage/GivingCauses";
+import { GivingAccountCard } from "@/components/homePage/GivingAccountCard";
 import { DONATIONS } from "@/lib/constants";
 
 export default function Donation() {
   return (
-    <section
-      className="relative min-h-[500px] flex items-center justify-center overflow-hidden"
-      style={{
-        // Local asset instead of a third-party (Unsplash) URL, which could fail
-        // to resolve and log a console error. It sits behind a dark blur overlay.
-        backgroundImage: "url('/images/church_welcome.jpeg')",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundAttachment: "fixed",
-      }}
-    >
-      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
+    <section className="bg-muted/60 dark:bg-muted/30">
+      <div className="mx-auto grid max-w-6xl items-center gap-14 px-4 py-24 md:py-32 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.9fr)] lg:gap-20">
+        <Reveal>
+          <GivingCauses causes={DONATIONS} />
 
-      <div className="relative z-10 max-w-4xl mx-auto px-4 py-16 text-center text-white">
-        <Reveal
-          variant="scale"
-          className="bg-white/10 backdrop-blur-md rounded-2xl p-8 md:p-12 border border-white/20 shadow-2xl"
-        >
-          <h2 className="font-outfit">
-            <span className="text-2xl">Give towards the </span>
-            <WordRotate
-              words={DONATIONS}
-              className="text-4xl md:text-5xl font-bold leading-tight mb-6 bg-linear-to-br from-[#f59e0b] via-primary to-accent bg-clip-text text-transparent"
-              duration={2500}
-              pauseDuration={500}
-            />
-          </h2>
-
-          <p className="text-lg text-gray-200 mb-8 leading-relaxed max-w-3xl mx-auto">
-            Help us build a place of worship that will serve our community for
-            generations to come. Your generous contribution will help us create
-            a space where faith, fellowship, and hope can flourish in our
-            community.
+          <p className="mt-8 max-w-xl text-lg leading-relaxed text-muted-foreground">
+            Every offering keeps this house open and growing. Your gift builds
+            our church home, cares for members in need, brings worshippers to
+            service and keeps our sound and media equipment running.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">
             <AnimatedButton
               size="lg"
               variant="destructive"
               href="/giving"
               text="Give Now"
             />
-            <AnimatedButton
-              variant="outline"
-              size="lg"
-              className="border-border/30 text-[#fdfcfb]"
-              href="/about"
-              text="Learn More"
-            />
+            <Link
+              href="/giving#giving"
+              className="group inline-flex items-center gap-1.5 font-semibold text-foreground underline decoration-border decoration-2 underline-offset-[6px] transition-colors duration-200 hover:decoration-primary"
+            >
+              Other ways to give
+              <ArrowRightIcon
+                aria-hidden="true"
+                weight="bold"
+                className="size-4 text-primary transition-transform duration-200 ease-out group-hover:translate-x-0.5"
+              />
+            </Link>
           </div>
         </Reveal>
-      </div>
 
-      {/* Decorative elements */}
-      <div className="absolute top-10 left-10 size-20 border-2 border-white/20 rounded-full animate-pulse"></div>
-      <div className="absolute top-1/4 right-80 size-32 border border-white/20 rounded-full animate-pulse delay-[3000ms]"></div>
-      <div className="absolute bottom-10 right-10 size-16 border-2 border-white/20 rounded-full animate-pulse delay-1000"></div>
-      <div className="absolute top-1/2 left-5 size-12 border-2 border-white/20 rounded-full animate-pulse delay-500"></div>
+        <Reveal variant="fade" delay={0.1}>
+          <GivingAccountCard />
+        </Reveal>
+      </div>
     </section>
   );
 }

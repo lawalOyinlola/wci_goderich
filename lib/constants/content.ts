@@ -1,25 +1,35 @@
 import { CHURCH_INFO } from "@/lib/constants";
+import { SERVICES } from "./services";
 
 const { NAME, TAGLINE } = CHURCH_INFO;
+const ADDRESS = CHURCH_INFO.CHURCH_LOCATION.address;
+
+// "07:00AM", "09:00AM", "11:00AM" -> "7:00, 9:00 and 11:00 AM"
+const SUNDAY_TIMES = (() => {
+  const times = SERVICES[0].times.map((t) => t.replace(/^0/, "").slice(0, -2));
+  const suffix = SERVICES[0].times[0].slice(-2);
+  return `${times.slice(0, -1).join(", ")} and ${times.at(-1)} ${suffix}`;
+})();
 
 export const SLIDES = [
   {
     title: NAME,
     subtitle: "WELCOME",
     description: TAGLINE,
-    background: "linear-gradient(135deg, #004e92 0%, #1a1a1a 100%)",
+    background: "linear-gradient(135deg, #1c1917 0%, #0c0a09 100%)",
+    backgroundImage: "/images/church_welcome.jpeg",
+    // Darkens the photo so the heading and buttons stay readable.
+    overlay: true,
+    meta: `Sundays ${SUNDAY_TIMES} · ${ADDRESS.street}, ${ADDRESS.area}`,
     buttons: [
       {
-        text: "Read More",
+        text: "Plan Your Visit",
+        link: "/location",
+        primary: true,
+      },
+      {
+        text: "Our Story",
         link: "/about",
-      },
-      {
-        text: "Services",
-        link: "/services",
-      },
-      {
-        text: "Listen",
-        link: "/media",
       },
     ],
   },
@@ -38,12 +48,20 @@ export const SLIDES = [
   //   ],
   // },
   {
-    title: "ISAIAH 44:3-5",
-    subtitle: "PROPHETIC FOCUS - OCTOBER 2026",
+    title: "SHILOH 2026: FAR ABOVE",
+    subtitle: "28TH EDITION, 8 TO 13 DECEMBER 2026",
+    description: "",
+    background: "linear-gradient(135deg, #7f1d1d 0%, #ea580c 100%)",
+    backgroundImage: "/images/bg-shiloh_2026.jpg",
+    image: "/images/shiloh_2026.png",
+  },
+  {
+    title: "I AM REDEEMED, A WONDER TO MY WORLD (ISAIAH 8:18)",
+    subtitle: "PROPHETIC FOCUS - NOVEMBER 2026",
     description: "",
     background: "linear-gradient(135deg, #1a1a1a 0%, #2d3436 100%)",
-    backgroundImage: "/images/bg-prophetic_focus_october_2026.jpg",
-    image: "/images/prophetic_focus_october_2026.png",
+    backgroundImage: "/images/bg-prophetic_focus_nov_2026.jpg",
+    image: "/images/prophetic_focus_nov_2026.png",
   },
   // {
   //   title: "SHILOH 2025",

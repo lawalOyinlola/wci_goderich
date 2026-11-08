@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { HeroCarouselWrapper } from "../HeroCarouselWrapper";
+import { ShilohCountdown } from "../ShilohCountdown";
 import { CarouselItem } from "@/components/ui/carousel";
 import { Separator } from "@/components/ui/separator";
 import { AnimatedButton } from "@/components/ui/animated-button";
@@ -10,7 +11,7 @@ export default function HeroCarousel() {
   return (
     <section className="relative overflow-hidden">
       <Reveal variant="fade" className="h-full">
-      <HeroCarouselWrapper>
+      <HeroCarouselWrapper footer={<ShilohCountdown />}>
         {SLIDES.map((slide, index) => (
           <CarouselItem key={index} className="h-full p-0">
             <div className="relative h-full">
@@ -23,6 +24,12 @@ export default function HeroCarousel() {
                     : slide.background,
                 }}
               />
+              {slide.overlay && (
+                <div
+                  aria-hidden="true"
+                  className="absolute inset-0 bg-linear-to-b from-black/65 via-black/55 to-black/70"
+                />
+              )}
 
               {/* Content */}
               <div className="relative h-full flex items-center justify-center text-white z-10">
@@ -53,8 +60,26 @@ export default function HeroCarousel() {
                         {slide.title}
                       </h1>
                       {slide.description && (
-                        <p className="text-xl mb-12 opacity-80 max-w-2xl mx-auto px-4">
+                        <p
+                          className={`text-xl opacity-80 max-w-2xl mx-auto px-4 ${slide.meta ? "mb-4" : "mb-12"}`}
+                        >
                           {slide.description}
+                        </p>
+                      )}
+                      {slide.meta && (
+                        <p className="mb-10 text-base font-medium text-white/90">
+                          {/* One line per part on phones, joined by a dot
+                              from the sm breakpoint up. */}
+                          {slide.meta.split(" · ").map((part, i) => (
+                            <span key={part} className="block sm:inline">
+                              {i > 0 && (
+                                <span aria-hidden="true" className="hidden sm:inline">
+                                  {" · "}
+                                </span>
+                              )}
+                              {part}
+                            </span>
+                          ))}
                         </p>
                       )}
                     </>
@@ -66,8 +91,16 @@ export default function HeroCarousel() {
                         <AnimatedButton
                           key={btn.link}
                           size="lg"
-                          variant="secondary"
-                          className="min-w-22 sm:min-w-40 bg-secondary hover:bg-secondary/80"
+                          variant={
+                            "primary" in btn && btn.primary
+                              ? "destructive"
+                              : "secondary"
+                          }
+                          className={
+                            "primary" in btn && btn.primary
+                              ? "min-w-22 sm:min-w-40"
+                              : "min-w-22 sm:min-w-40 bg-secondary hover:bg-secondary/80"
+                          }
                           text={btn.text}
                           href={btn.link}
                         />
