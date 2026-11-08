@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useSyncExternalStore } from "react";
 import {
   motion,
   useReducedMotion,
@@ -26,17 +26,32 @@ function Word({
   progress,
   range,
   dimOpacity,
+  isStatic,
 }: {
   children: string;
   progress: MotionValue<number>;
   range: [number, number];
   dimOpacity: number;
+  isStatic: boolean;
 }) {
   const opacity = useTransform(progress, range, [dimOpacity, 1]);
   return (
-    <motion.span style={{ opacity, fontFamily: "inherit" }}>
+    <motion.span
+      style={{ opacity: isStatic ? 1 : opacity, fontFamily: "inherit" }}
+    >
       {children}
     </motion.span>
+  );
+}
+
+// false on the server and during hydration, true after it. Lets the first
+// client render match the server HTML before any client-only switch.
+const subscribeNoop = () => () => {};
+function useHydrated() {
+  return useSyncExternalStore(
+    subscribeNoop,
+    () => true,
+    () => false,
   );
 }
 
@@ -52,6 +67,7 @@ export function ScrollRevealText({
 }: ScrollRevealTextProps) {
   const ref = useRef<HTMLSpanElement>(null);
   const reduceMotion = useReducedMotion();
+  const hydrated = useHydrated();
   const { scrollYProgress } = useScroll({
     target: ref,
     // Starts as the block's top reaches 85% down the screen and finishes as
@@ -59,13 +75,10 @@ export function ScrollRevealText({
     offset: ["start 0.85", "end 0.5"],
   });
 
-  if (reduceMotion) {
-    return (
-      <span className={className} style={INHERIT_FONT}>
-        {text}
-      </span>
-    );
-  }
+  // useReducedMotion reads the media query on the first client render, but
+  // the server never can. Keep the same word tree everywhere and only show
+  // the text at full opacity once hydration is done.
+  const isStatic = hydrated && Boolean(reduceMotion);
 
   const words = text.split(" ");
   return (
@@ -79,6 +92,7 @@ export function ScrollRevealText({
               progress={scrollYProgress}
               range={[start, end]}
               dimOpacity={dimOpacity}
+              isStatic={isStatic}
             >
               {word}
             </Word>
