@@ -14,11 +14,16 @@ import Fade from "embla-carousel-fade";
 
 interface HeroCarouselWrapperProps {
   children: ReactNode;
+  /** Full-width band pinned under the slide dots (e.g. an event countdown). */
+  footer?: ReactNode;
 }
 
 const AUTOPLAY_DELAY_MS = 6000;
 
-export function HeroCarouselWrapper({ children }: HeroCarouselWrapperProps) {
+export function HeroCarouselWrapper({
+  children,
+  footer,
+}: HeroCarouselWrapperProps) {
   const [api, setApi] = useState<CarouselApi>();
   const [selected, setSelected] = useState(0);
   const [count, setCount] = useState(0);
@@ -87,37 +92,43 @@ export function HeroCarouselWrapper({ children }: HeroCarouselWrapperProps) {
       <CarouselPrevious variant="default" className="carousel-btn left-4!" />
       <CarouselNext variant="default" className="carousel-btn right-4!" />
 
-      {count > 1 && (
-        <div className="absolute bottom-5 inset-x-0 z-20 flex justify-center pointer-events-none">
-          {/* The visible track is 20px tall. Each button stays 44px tall for
+      {/* Dots sit above the footer band. The footer may render nothing (a
+          finished countdown removes itself), so the dots keep their own 20px
+          gap from the bottom unless a countdown ribbon is present. */}
+      <div className="absolute inset-x-0 bottom-0 z-20 flex flex-col items-center gap-3 pb-5 pointer-events-none has-[[data-slot=countdown-ribbon]]:pb-0">
+        {count > 1 && (
+          <div className="flex justify-center">
+            {/* The visible track is 20px tall. Each button stays 44px tall for
               touch and overflows the track evenly above and below it. The
               9px side padding makes an inactive dot's button 24px wide (the
               WCAG 2.2 minimum target size) and keeps every gap at 18px. */}
-          <div className="pointer-events-auto flex h-5 items-center rounded-full bg-black/30 px-1 backdrop-blur-sm">
-            {Array.from({ length: count }).map((_, index) => {
-              const isActive = index === selected;
-              return (
-                <button
-                  key={index}
-                  type="button"
-                  onClick={() => api?.scrollTo(index)}
-                  aria-label={`Go to slide ${index + 1}`}
-                  aria-current={isActive ? "true" : undefined}
-                  className="group flex h-11 cursor-pointer items-center justify-center px-2.25"
-                >
-                  <span
-                    className={`block h-1.5 rounded-full transition-[width,background-color] duration-300 ${
-                      isActive
-                        ? "w-6 bg-primary"
-                        : "w-1.5 bg-white/70 group-hover:bg-white"
-                    }`}
-                  />
-                </button>
-              );
-            })}
+            <div className="pointer-events-auto flex h-5 items-center rounded-full bg-black/30 px-1 backdrop-blur-sm">
+              {Array.from({ length: count }).map((_, index) => {
+                const isActive = index === selected;
+                return (
+                  <button
+                    key={index}
+                    type="button"
+                    onClick={() => api?.scrollTo(index)}
+                    aria-label={`Go to slide ${index + 1}`}
+                    aria-current={isActive ? "true" : undefined}
+                    className="group flex h-11 cursor-pointer items-center justify-center px-2.25"
+                  >
+                    <span
+                      className={`block h-1.5 rounded-full transition-[width,background-color] duration-300 ${
+                        isActive
+                          ? "w-6 bg-primary"
+                          : "w-1.5 bg-white/70 group-hover:bg-white"
+                      }`}
+                    />
+                  </button>
+                );
+              })}
+            </div>
           </div>
-        </div>
-      )}
+        )}
+        {footer}
+      </div>
     </Carousel>
   );
 }
