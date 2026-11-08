@@ -17,6 +17,7 @@ import { WordRotate } from "@/components/ui/word-rotate";
 import SectionHeader from "@/components/SectionHeader";
 import { Badge } from "@/components/ui/badge";
 import { Reveal } from "@/components/motion";
+import { GIVING_ACCOUNT } from "@/lib/constants";
 
 export default function GivingDetails() {
   const [copiedField, setCopiedField] = useState<string | null>(null);
@@ -37,11 +38,7 @@ export default function GivingDetails() {
     "Special Donation",
   ];
 
-  const accountDetails = {
-    bankName: "GTB",
-    accountName: "World Mission Agency Goderich",
-    accountNumber: "2013108629110",
-  };
+  const accountDetails = GIVING_ACCOUNT;
 
   const copyToClipboard = async (text: string, field: string, label: string) => {
     try {
