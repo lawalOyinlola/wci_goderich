@@ -16,7 +16,6 @@ import Turnstile, {
 } from "@/components/form/Turnstile";
 import { Button } from "@/components/ui/button";
 import { Highlighter } from "@/components/ui/highlighter";
-import { Separator } from "@/components/ui/separator";
 import {
   Popover,
   PopoverContent,
@@ -90,6 +89,14 @@ export default function MonthlyBirthdays({
   }, []);
 
   const { now, currentMonth, currentMonthIndex } = dateState;
+
+  // The list holds the latest celebrants, topped up from earlier months when
+  // this month has too few. Name the month only when every card belongs to it.
+  const shownBirthdays: readonly Birthday[] =
+    initialBirthdays.length > 0 ? initialBirthdays : SAMPLE_BIRTHDAYS;
+  const allThisMonth = shownBirthdays.every(
+    (birthday) => birthday.month === currentMonthIndex,
+  );
 
   type BirthdayFormValues = {
     name: string;
@@ -334,11 +341,6 @@ export default function MonthlyBirthdays({
       <section className="py-20">
         <div className="container">
           <div className="text-center mb-12">
-            <div className="flex items-center justify-center text-sm text-muted-foreground uppercase tracking-[0.4em] mb-3 font-light gap-4">
-              <Separator className="shrink sm:w-40!" />
-              <p>Birthdays</p>
-              <Separator className="shrink sm:w-40!" />
-            </div>
             <h2 className="heading-1 mb-8">Loading...</h2>
           </div>
         </div>
@@ -369,11 +371,6 @@ export default function MonthlyBirthdays({
         {/* Opacity-only reveal: a transform here would offset the rough-notation
             Highlighter stroke, which measures the heading's position to draw. */}
         <Reveal variant="fade" className="text-center mb-12">
-          <div className="flex items-center justify-center text-sm text-muted-foreground uppercase tracking-[0.4em] mb-3 font-light gap-4">
-            <Separator className="shrink sm:w-40!" />
-            <p>Birthdays</p>
-            <Separator className="shrink sm:w-40!" />
-          </div>
 
           <h2 className="heading-1 mb-8">
             Celebrating Our{"  "}
@@ -383,14 +380,17 @@ export default function MonthlyBirthdays({
               color="var(--accent)"
               isView
             >
-              <span className="text-primary-foreground">{currentMonth}</span>
+              <span className="text-primary-foreground">
+                {allThisMonth ? currentMonth : "Recent"}
+              </span>
             </Highlighter>{" "}
             Birthdays
           </h2>
 
           <p className="text-muted-foreground">
-            We celebrate all members born in {currentMonth}. God bless and keep
-            you in this new year!
+            {allThisMonth
+              ? `Happy birthday to everyone born in ${currentMonth}. God bless and keep you all.`
+              : "Our latest birthday celebrants. God bless and keep you all."}
           </p>
         </Reveal>
 
@@ -398,10 +398,7 @@ export default function MonthlyBirthdays({
           stagger={0.07}
           className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4"
         >
-          {(initialBirthdays.length > 0
-            ? initialBirthdays
-            : SAMPLE_BIRTHDAYS
-          ).map((birthday) => (
+          {shownBirthdays.map((birthday) => (
             <StaggerItem key={birthday.id}>
               <BirthdayCard birthday={birthday} />
             </StaggerItem>
@@ -411,7 +408,7 @@ export default function MonthlyBirthdays({
         {/* CTA */}
         <CtaContainer
           className="mt-12"
-          containerClassName="p-6 md:p-8 via-primary"
+          containerClassName="p-6 md:p-10 bg-none bg-muted/60 text-foreground border border-border dark:bg-muted/30"
           title={`Are you a ${currentMonth} celebrant?`}
           description="Please send your full name, exact day of birth, and a clear photo. We will celebrate you during our end-of-month thanksgiving."
         >
@@ -426,8 +423,7 @@ export default function MonthlyBirthdays({
             <PopoverTrigger asChild>
               <AnimatedButton
                 size="lg"
-                variant="secondary"
-                className="bg-background!"
+                variant="destructive"
                 text="Share your details"
               />
             </PopoverTrigger>
@@ -577,15 +573,37 @@ export default function MonthlyBirthdays({
 }
 
 export function BirthdayCard({ birthday }: { birthday: Birthday }) {
+  // A broken or missing photo shows the celebrant's initials instead of an
+  // empty tile.
+  const [failedSrc, setFailedSrc] = useState<string | null>(null);
+  const showPhoto = Boolean(birthday.image) && failedSrc !== birthday.image;
+  const initials = birthday.name
+    .replace(/^(pst|pastor|dr|deacon|dcn|dcns|bro|sis|mr|mrs|miss)\.?\s+/i, "")
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0]?.toUpperCase())
+    .join("");
+
   return (
-    <div className="relative aspect-square rounded-md overflow-hidden shadow-sm">
-      <Image
-        src={birthday.image}
-        alt={`${birthday.name} - Birthday celebration`}
-        fill
-        sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 16vw"
-        className="object-cover hover:scale-105 transition-transform duration-300"
-      />
+    <div className="relative aspect-square rounded-md overflow-hidden shadow-sm bg-linear-to-br from-red-800 to-red-950">
+      {showPhoto ? (
+        <Image
+          src={birthday.image}
+          alt={`${birthday.name} - Birthday celebration`}
+          fill
+          sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 16vw"
+          className="object-cover hover:scale-105 transition-transform duration-300"
+          onError={() => setFailedSrc(birthday.image)}
+        />
+      ) : (
+        <span
+          aria-hidden="true"
+          className="absolute inset-0 flex items-center justify-center pb-8 text-4xl font-semibold tracking-wide text-white/90"
+        >
+          {initials}
+        </span>
+      )}
       <div className="absolute inset-x-0 bottom-0 p-2 text-xs text-white bg-linear-to-t from-black/70 via-black/30 to-transparent">
         <div className="font-semibold leading-tight">{birthday.name}</div>
         <div className="opacity-80">
