@@ -30,3 +30,23 @@ export const UPCOMING_EVENTS = [
     image: "/images/shiloh-2025.jpg",
   },
 ] as const;
+
+/**
+ * Shiloh 2026 drives the countdown ribbon on the home hero. Times are UTC
+ * ISO strings; the ribbon formats them in the church's own time zone. The
+ * ribbon hides itself once `end` passes, so this can stay until the next
+ * Shiloh is announced. Keep `public/shiloh-2026.ics` in step with any change.
+ */
+export const SHILOH_2026 = {
+  name: "Shiloh 2026",
+  theme: "Far Above",
+  edition: "28th edition",
+  start: "2026-12-08T17:00:00Z", // 6:00 PM WAT, 5:00 PM in Freetown
+  end: "2026-12-13T21:00:00Z",
+  venue: "Canaanland, Km 10 Idiroko Road, Ota, Ogun State, Nigeria",
+  shortVenue: "Canaanland, Ota",
+  timeZone: "Africa/Freetown",
+  description:
+    "28th edition of Shiloh. Ministering: Bishop David Oyedepo and other anointed ministers of God. Join live on YouTube and Domi Radio.",
+  icsPath: "/shiloh-2026.ics",
+} as const;
