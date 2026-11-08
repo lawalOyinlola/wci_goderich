@@ -12,7 +12,7 @@ import {
   SignpostIcon,
 } from "@phosphor-icons/react";
 import { CHURCH_INFO } from "@/lib/constants";
-import { getDirectionsUrl } from "@/lib/utils";
+import { cn, getDirectionsUrl } from "@/lib/utils";
 import "leaflet/dist/leaflet.css";
 
 const { NAME } = CHURCH_INFO;
@@ -71,7 +71,30 @@ const POPUP_HTML = `
  * navigation and remounts cleanly — react-leaflet's MapContainer instead
  * throws "Map container is being reused" when the page unmounts and remounts.
  */
-export default function ChurchLocationMap() {
+interface ChurchLocationMapProps {
+  /**
+   * "card" (default) wraps the map in a card with labelled buttons under it.
+   * "bare" fills its parent and shows compact icon controls, for layouts
+   * that float their own cards over the map.
+   */
+  variant?: "card" | "bare";
+  /**
+   * Bare variant only: shift the church pin this many px to the right on
+   * wide screens, so cards floating over the left side don't cover it.
+   */
+  pinOffsetX?: number;
+  className?: string;
+}
+
+// Matches Tailwind's lg breakpoint, where the floating cards sit over the map.
+const WIDE_QUERY = "(min-width: 1024px)";
+
+export default function ChurchLocationMap({
+  variant = "card",
+  pinOffsetX = 0,
+  className,
+}: ChurchLocationMapProps = {}) {
+  const isBare = variant === "bare";
   const containerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<LeafletMap | null>(null);
   const leafletRef = useRef<typeof import("leaflet") | null>(null);
@@ -92,8 +115,14 @@ export default function ChurchLocationMap() {
         center: [lat, lng],
         zoom: 15,
         scrollWheelZoom: false,
+        zoomControl: !isBare,
       });
       mapRef.current = map;
+      if (isBare) {
+        // Top right keeps the zoom buttons clear of the floating cards.
+        L.control.zoom({ position: "topright" }).addTo(map);
+        offsetPin(map);
+      }
 
       L.tileLayer("/api/map-tiles/{z}/{x}/{y}.png", {
         attribution:
@@ -123,7 +152,15 @@ export default function ChurchLocationMap() {
       leafletRef.current = null;
       userMarkerRef.current = null;
     };
+    // isBare and offsetPin come from props that don't change after mount.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  function offsetPin(map: LeafletMap) {
+    if (isBare && pinOffsetX && window.matchMedia(WIDE_QUERY).matches) {
+      map.panBy([-pinOffsetX, 0], { animate: false });
+    }
+  }
 
   const handleReset = () => {
     // Drop the visitor's pin and re-center on the church.
@@ -131,8 +168,9 @@ export default function ChurchLocationMap() {
       userMarkerRef.current.remove();
       userMarkerRef.current = null;
     }
-    if (lat !== undefined && lng !== undefined) {
-      mapRef.current?.setView([lat, lng], 15);
+    if (lat !== undefined && lng !== undefined && mapRef.current) {
+      mapRef.current.setView([lat, lng], 15, { animate: false });
+      offsetPin(mapRef.current);
     }
   };
 
@@ -171,8 +209,11 @@ export default function ChurchLocationMap() {
 
         // Frame both the church and the visitor so the relationship is clear.
         if (lat !== undefined && lng !== undefined) {
+          const wide = isBare && window.matchMedia(WIDE_QUERY).matches;
           map.fitBounds([[lat, lng], userLatLng], {
-            padding: [60, 60],
+            // Keep both pins clear of the floating cards on wide screens.
+            paddingTopLeft: [wide ? pinOffsetX * 2 + 60 : 60, 60],
+            paddingBottomRight: [60, 60],
             maxZoom: 15,
           });
         } else {
@@ -186,9 +227,42 @@ export default function ChurchLocationMap() {
         }
         toast.error("Unable to get your location");
       },
-      { enableHighAccuracy: true, timeout: 8000 }
+      { enableHighAccuracy: true, timeout: 8000 },
     );
   };
+
+  if (isBare) {
+    const controlClass =
+      "flex size-10 cursor-pointer items-center justify-center rounded-lg border border-border bg-background text-foreground shadow-sm transition-[background-color,scale] duration-150 ease-out hover:bg-muted active:scale-[0.96]";
+    return (
+      <div className={cn("relative isolate h-full w-full", className)}>
+        <div ref={containerRef} className="z-0 h-full w-full" />
+        <div className="absolute bottom-20 right-4 z-1000 flex flex-col gap-2 sm:right-6 lg:bottom-6">
+          <button
+            type="button"
+            onClick={handleViewMyLocation}
+            className={controlClass}
+            aria-label="Show my location"
+            title="Show my location"
+          >
+            <NavigationArrowIcon
+              weight="fill"
+              className="size-5 text-primary"
+            />
+          </button>
+          <button
+            type="button"
+            onClick={handleReset}
+            className={controlClass}
+            aria-label="Re-centre on the church"
+            title="Re-centre on the church"
+          >
+            <ArrowCounterClockwiseIcon weight="bold" className="size-5" />
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <Card className="overflow-hidden shadow-lg max-lg:rounded-b-none lg:rounded-r-none border-0 relative group">
