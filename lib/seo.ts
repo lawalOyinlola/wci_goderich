@@ -107,7 +107,7 @@ const { CONTACT, CHURCH_LOCATION } = CHURCH_INFO;
 
 /**
  * JSON-LD structured data describing the church as an Organization, including
- * the developer (`author`) attribution and the resident/associate pastors.
+ * the developer (`author`) attribution and the pastors in SITE_PASTORS.
  */
 export function getOrganizationJsonLd() {
   const { address, coordinates } = CHURCH_LOCATION;
@@ -145,7 +145,7 @@ export function getOrganizationJsonLd() {
       latitude: coordinates.lat,
       longitude: coordinates.lng,
     },
-    // Resident & associate pastors.
+    // Pastors listed in SITE_PASTORS.
     employee: SITE_PASTORS.map((p) => ({
       "@type": "Person",
       name: p.name,
