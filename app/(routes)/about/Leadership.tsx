@@ -12,10 +12,10 @@ const Leadership = () => {
   const { title, subtitle, description, PASTORS, DIRECTORS } = LEADERSHIP;
   const [activeLeaderId, setActiveLeaderId] = useState<string | null>(null);
 
+  // Associate pastor hidden for now. Restore the commented line to show it.
   const filteredPastors = PASTORS.filter(
-    (pastor) =>
-      pastor.role === LeadershipRole.RESIDENT_PASTOR ||
-      pastor.role === LeadershipRole.ASSOCIATE_PASTOR,
+    (pastor) => pastor.role === LeadershipRole.RESIDENT_PASTOR,
+    // || pastor.role === LeadershipRole.ASSOCIATE_PASTOR,
   );
 
   const filteredDirectors = DIRECTORS.filter(
@@ -36,7 +36,16 @@ const Leadership = () => {
         </Reveal>
 
         <div className="mt-12 md:mt-24">
-          <Stagger className="max-w-4xl mx-auto grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+          <Stagger
+            className={cn(
+              "mx-auto grid gap-x-6 gap-y-12 sm:grid-cols-2",
+              // Two leaders: a narrower two-column grid keeps the pair
+              // centred instead of leaving the third column empty.
+              leaders.length > 2
+                ? "max-w-4xl lg:grid-cols-3"
+                : "max-w-[calc((56rem-3rem)/3*2+1.5rem)]",
+            )}
+          >
             {leaders.map((leader, index) => {
               const leaderId = leader.id || `leader-${index}`;
               const isActive = activeLeaderId === leaderId;

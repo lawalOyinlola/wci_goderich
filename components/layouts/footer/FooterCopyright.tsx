@@ -32,9 +32,12 @@ export function FooterCopyright() {
           href={AUTHOR.url}
           target="_blank"
           rel="noopener noreferrer me author"
+          // The brand wordmark mirrors both L's. Screen readers get the
+          // plain name from aria-label.
+          aria-label={AUTHOR.shortName}
           className="font-semibold hover:underline transition-colors"
         >
-          {AUTHOR.shortName}
+          ⅃AWA⅃
         </a>
       </span>
     </span>
