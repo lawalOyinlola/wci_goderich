@@ -14,6 +14,9 @@ overrides:
   # GHSA-mrhx-c7xc-m3w5: memory exhaustion on oversized collections. Pulled in
   # by @hookform/resolvers and eslint-plugin-react-hooks.
   zod: ^4.6.6
+  # GHSA-g3hv-75wg-m249: DoS via globparts amplification, fixed in 11.0.1.
+  # Dev-only: pulled in by @typescript-eslint/typescript-estree (ESLint).
+  minimatch@10: ^11.0.1
 
 allowBuilds:
   sharp: true
